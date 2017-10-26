@@ -36,13 +36,36 @@ var cy = cytoscape({
     // style edges
     {selector: 'edge',
       style: {
-        'mid-target-arrow-shape': 'triangle',
+        'target-arrow-shape': 'triangle',
+        'arrow-scale' : 2,
+        'curve-style' : 'bezier'
+      }},
+    {selector: 'edge[interaction = \'compound\']',
+      style: {
+        'target-arrow-shape': 'triangle-backcurve',
+      }},
+    {selector: 'edge[interaction = \'activaion\']',
+      style: {
+        'target-arrow-shape': 'triangle',
+      }},
+    {selector: 'edge[interaction = \'expression\']',
+      style: {
+        'target-arrow-shape': 'triangle-backcurve',
+      }},
+    {selector: 'edge[interaction = \'phosphorylation\']',
+      style: {
+        'target-arrow-shape': 'diamond',
+      }},
+    {selector: 'edge[interaction = \'inhibition\']',
+      style: {
+        'target-arrow-shape': 'tee',
       }},
   ]
 });
 
-var nodes, edges, path, tracer, nodeVal, outputName;
+var nodes, edges, path, tracer, nodeVal, outputName, nodeAttributes, graphString;
 var firstTime = true;
+var loadGraphCount = 0;
 
 // test if object is empty
 function isEmpty(obj) {
@@ -53,36 +76,51 @@ function isEmpty(obj) {
     return true;
 }
 
+//remove all options of dropdown
+function removeOptions(selectbox)
+{
+    var i;
+    for(i = selectbox.options.length - 1 ; i >= 0 ; i--)
+    {
+        selectbox.remove(i);
+    }
+}
+
 // read from grphml - file
-function loadFile(filePath) {
+function loadFile() {
+  path = document.getElementById('graphName').value;
   var result = null;
   var xmlhttp = new XMLHttpRequest();
-  xmlhttp.open("GET", filePath, false);
+  xmlhttp.open("GET", path, false);
   xmlhttp.send();
   if (xmlhttp.status==200) {
-    result = xmlhttp.responseText;
+    graphString = xmlhttp.responseText.split("\n");
   }
-  return result;
-}
+  // put node atttributes into dropdown select object
+  var drp = document.getElementById("values");
+  removeOptions(drp);
+  var sele = document.createElement("OPTION");
+  sele.text = "Choose value";
+  sele.value = "";
+  drp.add(sele);
+  for (var i = 0; i <= graphString.length - 1; i++) {
+    if(graphString[i].includes("for=\"node\"") && 
+      (graphString[i].includes("attr.type=\"double\"") || 
+        (graphString[i].includes("attr.type=\"boolean\"")))){
+      var nodeattr = graphString[i].split("attr.name=")[1].split(" ")[0].replace(/"/g, "");
+      var optn = document.createElement("OPTION");
+      optn.text=nodeattr;
+      optn.value=nodeattr;
+      drp.add(optn);
+    };
+  };
+  loadGraphCount ++;
+};
 
 // load graphml and create graph of it
 function visualize() {
-
-  // load file
-  path = document.getElementById('graphName').value;
-  tracer = document.getElementById('tracerInput').value;
   nodeVal = document.getElementById('values').value;
-
-  if(tracer == ""){
-    alert('Select a tracer.');
-  }
-  if(nodeVal == ""){
-    alert('Select a value for nodes.');
-  }
-  // load graphml
-  graphString = loadFile(path).split("\n");
-
-
+  $('#visualize').attr("disabled", true);
   // get nodes and edges
   nodes = [];
   edges = [];
@@ -99,22 +137,36 @@ function visualize() {
         var symbol = regExp.exec(graphString[i])[1];
         curNode.symbol = symbol;
       }
-      if(graphString[i].includes("\"v_"+tracer+"_"+nodeVal+"\"\>")){
-        var val = parseFloat(regExp.exec(graphString[i])[1]); // if availabe get logRatio
+      if(graphString[i].includes("\"v_"+nodeVal+"\"\>")){
+        var val = parseFloat(regExp.exec(graphString[i])[1]); // if availabe get node value
         curNode.val = val;
       }
       nodes.push({data: curNode}); 
     }
 
     if(graphString[i].includes("edge source")){     // get edges
+      var curEdge = {};
       s = graphString[i].split("\"")[1];
       t = graphString[i].split("\"")[3];
-      edges.push({data: {id: s.concat(t), source: s, target: t}} );
+      curEdge.id = s.concat(t);
+      curEdge.source = s;
+      curEdge.target = t;
+    }
+    if(!isEmpty(curEdge)){
+      if(graphString[i].includes("e_interaction")){     // get edges
+        var interact = regExp.exec(graphString[i])[1]; // if availabe get logRatio
+        curEdge.interaction = interact;
+      }
+      edges.push({data: curEdge} );
     }
   }
   // add nodes and edges to graph
-
-  cy.add(nodes.concat(edges))
+  if(loadGraphCount > 1){
+    cy.elements().remove();
+    firstTime = true;
+    loadGraphCount = 0;
+  }
+  cy.add(nodes.concat(edges));
   
   // update node values if tracer or values change
   if(!firstTime){
@@ -148,7 +200,7 @@ function downloadPNG(){
     download.download = outputName + '.png';
   }
   else{
-    download.download = path.replace(".graphml", "_" + tracer) + '_' + nodeVal + '.png';
+    download.download = path.replace(".graphml", "_") + '_' + nodeVal + '.png';
   }
   download.click();
 }
