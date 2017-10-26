@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+<head>
+    <title>Subgraph Visualization</title>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script> 
+	<script type="text/javascript" src="scripts/cytoscape.js"></script>  
+	<script src="http://d3js.org/d3.v3.min.js"></script>
+	
+</head>
+
+<style>
+			body {
+				font-family: helvetica neue, helvetica, liberation sans, arial, sans-serif;
+				font-size: 14px;
+			}
+			#cy {
+		        width: 90%;
+		        height: 90%;
+		        position: absolute;
+		        top: 150px;
+		        left: 50px;
+		    }
+			}
+			h1 {
+				opacity: 0.5;
+				font-size: 1em;
+				font-weight: bold;
+			}
+			button {
+			    text-align: center;
+			    display: inline-block;
+			    font-size: 16px;
+			}
+</style>
+
+
+<body>
+	<h1>Subgraph Visualization</h1>
+
+	<p id="description">Load a .graphml-file and select node value and tracer to generate a subgraph, you can download as .png.</p>
+
+	<input name="graphFile" type="text" maxlength="512" id="graphName" value=".graphml"/>
+	<select name="values" id="values">
+		<option value="" selected disabled hidden>Choose value</option>
+  		<option value="log_ratio">log2ratio</option>
+  		<option value="mean(Kontrolle)">control</option>
+  		<option value="mean(Therapie)">threrapy</option>
+	</select>
+	<select name="tracer" id="tracerInput">
+		<option value="" selected disabled hidden>Choose tracer</option>
+  		<option value="FDG_WT">FDG</option>
+  		<option value="FMISO">FMISO</option>
+  		<option value="NODAGA">NODAGA-RGD</option>
+	</select>
+
+
+	<button onclick="visualize()" id="visualize">Visualize</button>
+
+	<input name="outputFile" type="text" maxlength="512" id="outputName" value="File name"/>
+	<button id="download" onclick="downloadPNG()" disabled="disabled">Download</button>
+	
+	<div id="cy"></div>
+	
+   	<script type="text/javascript" src="scripts/graph.js"></script> 
+</body>
+
+</html>

@@ -1,0 +1,995 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns
+         http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
+<!-- Created by igraph -->
+  <key id="v_name" for="node" attr.name="name" attr.type="string"/>
+  <key id="v_mgi" for="node" attr.name="mgi" attr.type="string"/>
+  <key id="v_symbol" for="node" attr.name="symbol" attr.type="string"/>
+  <key id="v_gene_name" for="node" attr.name="gene_name" attr.type="string"/>
+  <key id="v_entrez" for="node" attr.name="entrez" attr.type="string"/>
+  <key id="v_ensembl" for="node" attr.name="ensembl" attr.type="string"/>
+  <key id="v_id" for="node" attr.name="id" attr.type="string"/>
+  <key id="v_FDG_Mutant_mean(Therapie)" for="node" attr.name="FDG_Mutant_mean(Therapie)" attr.type="boolean"/>
+  <key id="v_FDG_Mutant_mean(Kontrolle)" for="node" attr.name="FDG_Mutant_mean(Kontrolle)" attr.type="boolean"/>
+  <key id="v_FDG_Mutant_log_ratio" for="node" attr.name="FDG_Mutant_log_ratio" attr.type="boolean"/>
+  <key id="v_FDG_Mutant_regulation" for="node" attr.name="FDG_Mutant_regulation" attr.type="boolean"/>
+  <key id="v_FDG_Mutant_QXPPO151AW" for="node" attr.name="FDG_Mutant_QXPPO151AW" attr.type="boolean"/>
+  <key id="v_FDG_Mutant_QXPPO152A6" for="node" attr.name="FDG_Mutant_QXPPO152A6" attr.type="boolean"/>
+  <key id="v_FDG_Mutant_QXPPO153AE" for="node" attr.name="FDG_Mutant_QXPPO153AE" attr.type="boolean"/>
+  <key id="v_FDG_Mutant_QXPPO154AM" for="node" attr.name="FDG_Mutant_QXPPO154AM" attr.type="boolean"/>
+  <key id="v_FDG_Mutant_QXPPO155AU" for="node" attr.name="FDG_Mutant_QXPPO155AU" attr.type="boolean"/>
+  <key id="v_FDG_Mutant_QXPPO156A4" for="node" attr.name="FDG_Mutant_QXPPO156A4" attr.type="boolean"/>
+  <key id="v_FDG_Mutant_QXPPO162AD" for="node" attr.name="FDG_Mutant_QXPPO162AD" attr.type="boolean"/>
+  <key id="v_FDG_Mutant_QXPPO163AL" for="node" attr.name="FDG_Mutant_QXPPO163AL" attr.type="boolean"/>
+  <key id="v_FDG_Mutant_QXPPO164AT" for="node" attr.name="FDG_Mutant_QXPPO164AT" attr.type="boolean"/>
+  <key id="v_FDG_Mutant_QXPPO165A3" for="node" attr.name="FDG_Mutant_QXPPO165A3" attr.type="boolean"/>
+  <key id="v_FDG_Mutant_QXPPO166AB" for="node" attr.name="FDG_Mutant_QXPPO166AB" attr.type="boolean"/>
+  <key id="v_FDG_Mutant_p-value" for="node" attr.name="FDG_Mutant_p-value" attr.type="boolean"/>
+  <key id="v_FDG_WT_mean(Therapie)" for="node" attr.name="FDG_WT_mean(Therapie)" attr.type="double"/>
+  <key id="v_FDG_WT_mean(Kontrolle)" for="node" attr.name="FDG_WT_mean(Kontrolle)" attr.type="double"/>
+  <key id="v_FDG_WT_log_ratio" for="node" attr.name="FDG_WT_log_ratio" attr.type="double"/>
+  <key id="v_FDG_WT_regulation" for="node" attr.name="FDG_WT_regulation" attr.type="double"/>
+  <key id="v_FDG_WT_QXPPO103AD" for="node" attr.name="FDG_WT_QXPPO103AD" attr.type="double"/>
+  <key id="v_FDG_WT_QXPPO104AL" for="node" attr.name="FDG_WT_QXPPO104AL" attr.type="double"/>
+  <key id="v_FDG_WT_QXPPO105AT" for="node" attr.name="FDG_WT_QXPPO105AT" attr.type="double"/>
+  <key id="v_FDG_WT_QXPPO106A3" for="node" attr.name="FDG_WT_QXPPO106A3" attr.type="double"/>
+  <key id="v_FDG_WT_QXPPO107AB" for="node" attr.name="FDG_WT_QXPPO107AB" attr.type="double"/>
+  <key id="v_FDG_WT_QXPPO108AJ" for="node" attr.name="FDG_WT_QXPPO108AJ" attr.type="double"/>
+  <key id="v_FDG_WT_QXPPO109AR" for="node" attr.name="FDG_WT_QXPPO109AR" attr.type="double"/>
+  <key id="v_FDG_WT_QXPPO110AU" for="node" attr.name="FDG_WT_QXPPO110AU" attr.type="double"/>
+  <key id="v_FDG_WT_p-value" for="node" attr.name="FDG_WT_p-value" attr.type="double"/>
+  <key id="v_FMISO_mean(Therapie)" for="node" attr.name="FMISO_mean(Therapie)" attr.type="boolean"/>
+  <key id="v_FMISO_mean(Kontrolle)" for="node" attr.name="FMISO_mean(Kontrolle)" attr.type="boolean"/>
+  <key id="v_FMISO_log_ratio" for="node" attr.name="FMISO_log_ratio" attr.type="boolean"/>
+  <key id="v_FMISO_regulation" for="node" attr.name="FMISO_regulation" attr.type="boolean"/>
+  <key id="v_FMISO_QXPPO136AO" for="node" attr.name="FMISO_QXPPO136AO" attr.type="boolean"/>
+  <key id="v_FMISO_QXPPO137AW" for="node" attr.name="FMISO_QXPPO137AW" attr.type="boolean"/>
+  <key id="v_FMISO_QXPPO138A6" for="node" attr.name="FMISO_QXPPO138A6" attr.type="boolean"/>
+  <key id="v_FMISO_QXPPO139AE" for="node" attr.name="FMISO_QXPPO139AE" attr.type="boolean"/>
+  <key id="v_FMISO_QXPPO140AH" for="node" attr.name="FMISO_QXPPO140AH" attr.type="boolean"/>
+  <key id="v_FMISO_QXPPO141AP" for="node" attr.name="FMISO_QXPPO141AP" attr.type="boolean"/>
+  <key id="v_FMISO_QXPPO142AX" for="node" attr.name="FMISO_QXPPO142AX" attr.type="boolean"/>
+  <key id="v_FMISO_QXPPO143A7" for="node" attr.name="FMISO_QXPPO143A7" attr.type="boolean"/>
+  <key id="v_FMISO_QXPPO144AF" for="node" attr.name="FMISO_QXPPO144AF" attr.type="boolean"/>
+  <key id="v_FMISO_p-value" for="node" attr.name="FMISO_p-value" attr.type="boolean"/>
+  <key id="v_NODAGA_mean(Therapie)" for="node" attr.name="NODAGA_mean(Therapie)" attr.type="boolean"/>
+  <key id="v_NODAGA_mean(Kontrolle)" for="node" attr.name="NODAGA_mean(Kontrolle)" attr.type="boolean"/>
+  <key id="v_NODAGA_log_ratio" for="node" attr.name="NODAGA_log_ratio" attr.type="boolean"/>
+  <key id="v_NODAGA_regulation" for="node" attr.name="NODAGA_regulation" attr.type="boolean"/>
+  <key id="v_NODAGA_QXPPO119A0" for="node" attr.name="NODAGA_QXPPO119A0" attr.type="boolean"/>
+  <key id="v_NODAGA_QXPPO120A3" for="node" attr.name="NODAGA_QXPPO120A3" attr.type="boolean"/>
+  <key id="v_NODAGA_QXPPO121AB" for="node" attr.name="NODAGA_QXPPO121AB" attr.type="boolean"/>
+  <key id="v_NODAGA_QXPPO122AJ" for="node" attr.name="NODAGA_QXPPO122AJ" attr.type="boolean"/>
+  <key id="v_NODAGA_QXPPO123AR" for="node" attr.name="NODAGA_QXPPO123AR" attr.type="boolean"/>
+  <key id="v_NODAGA_QXPPO124A1" for="node" attr.name="NODAGA_QXPPO124A1" attr.type="boolean"/>
+  <key id="v_NODAGA_QXPPO125A9" for="node" attr.name="NODAGA_QXPPO125A9" attr.type="boolean"/>
+  <key id="v_NODAGA_QXPPO126AH" for="node" attr.name="NODAGA_QXPPO126AH" attr.type="boolean"/>
+  <key id="v_NODAGA_p-value" for="node" attr.name="NODAGA_p-value" attr.type="boolean"/>
+  <key id="v_deregnet_score" for="node" attr.name="deregnet_score" attr.type="double"/>
+  <key id="e_interaction" for="edge" attr.name="interaction" attr.type="string"/>
+  <graph id="G" edgedefault="directed">
+    <node id="n0">
+      <data key="v_name">Q3TRM8</data>
+      <data key="v_mgi">MGI:2670962</data>
+      <data key="v_symbol">Hk3</data>
+      <data key="v_gene_name">hexokinase 3</data>
+      <data key="v_entrez">212032</data>
+      <data key="v_ensembl">ENSMUSG00000025877</data>
+      <data key="v_id">n228</data>
+      <data key="v_FDG_Mutant_mean(Therapie)">false</data>
+      <data key="v_FDG_Mutant_mean(Kontrolle)">false</data>
+      <data key="v_FDG_Mutant_log_ratio">false</data>
+      <data key="v_FDG_Mutant_regulation">false</data>
+      <data key="v_FDG_Mutant_QXPPO151AW">false</data>
+      <data key="v_FDG_Mutant_QXPPO152A6">false</data>
+      <data key="v_FDG_Mutant_QXPPO153AE">false</data>
+      <data key="v_FDG_Mutant_QXPPO154AM">false</data>
+      <data key="v_FDG_Mutant_QXPPO155AU">false</data>
+      <data key="v_FDG_Mutant_QXPPO156A4">false</data>
+      <data key="v_FDG_Mutant_QXPPO162AD">false</data>
+      <data key="v_FDG_Mutant_QXPPO163AL">false</data>
+      <data key="v_FDG_Mutant_QXPPO164AT">false</data>
+      <data key="v_FDG_Mutant_QXPPO165A3">false</data>
+      <data key="v_FDG_Mutant_QXPPO166AB">false</data>
+      <data key="v_FDG_Mutant_p-value">false</data>
+      <data key="v_FMISO_mean(Therapie)">false</data>
+      <data key="v_FMISO_mean(Kontrolle)">false</data>
+      <data key="v_FMISO_log_ratio">false</data>
+      <data key="v_FMISO_regulation">false</data>
+      <data key="v_FMISO_QXPPO136AO">false</data>
+      <data key="v_FMISO_QXPPO137AW">false</data>
+      <data key="v_FMISO_QXPPO138A6">false</data>
+      <data key="v_FMISO_QXPPO139AE">false</data>
+      <data key="v_FMISO_QXPPO140AH">false</data>
+      <data key="v_FMISO_QXPPO141AP">false</data>
+      <data key="v_FMISO_QXPPO142AX">false</data>
+      <data key="v_FMISO_QXPPO143A7">false</data>
+      <data key="v_FMISO_QXPPO144AF">false</data>
+      <data key="v_FMISO_p-value">false</data>
+      <data key="v_NODAGA_mean(Therapie)">false</data>
+      <data key="v_NODAGA_mean(Kontrolle)">false</data>
+      <data key="v_NODAGA_log_ratio">false</data>
+      <data key="v_NODAGA_regulation">false</data>
+      <data key="v_NODAGA_QXPPO119A0">false</data>
+      <data key="v_NODAGA_QXPPO120A3">false</data>
+      <data key="v_NODAGA_QXPPO121AB">false</data>
+      <data key="v_NODAGA_QXPPO122AJ">false</data>
+      <data key="v_NODAGA_QXPPO123AR">false</data>
+      <data key="v_NODAGA_QXPPO124A1">false</data>
+      <data key="v_NODAGA_QXPPO125A9">false</data>
+      <data key="v_NODAGA_QXPPO126AH">false</data>
+      <data key="v_NODAGA_p-value">false</data>
+    </node>
+    <node id="n1">
+      <data key="v_name">P05132</data>
+      <data key="v_mgi">MGI:97592</data>
+      <data key="v_symbol">Prkaca</data>
+      <data key="v_gene_name">protein kinase, cAMP dependent, catalytic, alpha</data>
+      <data key="v_entrez">18747</data>
+      <data key="v_ensembl">ENSMUSG00000005469</data>
+      <data key="v_id">n586</data>
+      <data key="v_FDG_Mutant_mean(Therapie)">false</data>
+      <data key="v_FDG_Mutant_mean(Kontrolle)">false</data>
+      <data key="v_FDG_Mutant_log_ratio">false</data>
+      <data key="v_FDG_Mutant_regulation">false</data>
+      <data key="v_FDG_Mutant_QXPPO151AW">false</data>
+      <data key="v_FDG_Mutant_QXPPO152A6">false</data>
+      <data key="v_FDG_Mutant_QXPPO153AE">false</data>
+      <data key="v_FDG_Mutant_QXPPO154AM">false</data>
+      <data key="v_FDG_Mutant_QXPPO155AU">false</data>
+      <data key="v_FDG_Mutant_QXPPO156A4">false</data>
+      <data key="v_FDG_Mutant_QXPPO162AD">false</data>
+      <data key="v_FDG_Mutant_QXPPO163AL">false</data>
+      <data key="v_FDG_Mutant_QXPPO164AT">false</data>
+      <data key="v_FDG_Mutant_QXPPO165A3">false</data>
+      <data key="v_FDG_Mutant_QXPPO166AB">false</data>
+      <data key="v_FDG_Mutant_p-value">false</data>
+      <data key="v_FMISO_mean(Therapie)">false</data>
+      <data key="v_FMISO_mean(Kontrolle)">false</data>
+      <data key="v_FMISO_log_ratio">false</data>
+      <data key="v_FMISO_regulation">false</data>
+      <data key="v_FMISO_QXPPO136AO">false</data>
+      <data key="v_FMISO_QXPPO137AW">false</data>
+      <data key="v_FMISO_QXPPO138A6">false</data>
+      <data key="v_FMISO_QXPPO139AE">false</data>
+      <data key="v_FMISO_QXPPO140AH">false</data>
+      <data key="v_FMISO_QXPPO141AP">false</data>
+      <data key="v_FMISO_QXPPO142AX">false</data>
+      <data key="v_FMISO_QXPPO143A7">false</data>
+      <data key="v_FMISO_QXPPO144AF">false</data>
+      <data key="v_FMISO_p-value">false</data>
+      <data key="v_NODAGA_mean(Therapie)">false</data>
+      <data key="v_NODAGA_mean(Kontrolle)">false</data>
+      <data key="v_NODAGA_log_ratio">false</data>
+      <data key="v_NODAGA_regulation">false</data>
+      <data key="v_NODAGA_QXPPO119A0">false</data>
+      <data key="v_NODAGA_QXPPO120A3">false</data>
+      <data key="v_NODAGA_QXPPO121AB">false</data>
+      <data key="v_NODAGA_QXPPO122AJ">false</data>
+      <data key="v_NODAGA_QXPPO123AR">false</data>
+      <data key="v_NODAGA_QXPPO124A1">false</data>
+      <data key="v_NODAGA_QXPPO125A9">false</data>
+      <data key="v_NODAGA_QXPPO126AH">false</data>
+      <data key="v_NODAGA_p-value">false</data>
+    </node>
+    <node id="n2">
+      <data key="v_name">Q8JZV7</data>
+      <data key="v_mgi">MGI:2443978</data>
+      <data key="v_symbol">Amdhd2</data>
+      <data key="v_gene_name">amidohydrolase domain containing 2</data>
+      <data key="v_entrez">245847</data>
+      <data key="v_ensembl">ENSMUSG00000036820</data>
+      <data key="v_id">n726</data>
+      <data key="v_FDG_Mutant_mean(Therapie)">false</data>
+      <data key="v_FDG_Mutant_mean(Kontrolle)">false</data>
+      <data key="v_FDG_Mutant_log_ratio">false</data>
+      <data key="v_FDG_Mutant_regulation">false</data>
+      <data key="v_FDG_Mutant_QXPPO151AW">false</data>
+      <data key="v_FDG_Mutant_QXPPO152A6">false</data>
+      <data key="v_FDG_Mutant_QXPPO153AE">false</data>
+      <data key="v_FDG_Mutant_QXPPO154AM">false</data>
+      <data key="v_FDG_Mutant_QXPPO155AU">false</data>
+      <data key="v_FDG_Mutant_QXPPO156A4">false</data>
+      <data key="v_FDG_Mutant_QXPPO162AD">false</data>
+      <data key="v_FDG_Mutant_QXPPO163AL">false</data>
+      <data key="v_FDG_Mutant_QXPPO164AT">false</data>
+      <data key="v_FDG_Mutant_QXPPO165A3">false</data>
+      <data key="v_FDG_Mutant_QXPPO166AB">false</data>
+      <data key="v_FDG_Mutant_p-value">false</data>
+      <data key="v_FDG_WT_mean(Therapie)">0</data>
+      <data key="v_FDG_WT_mean(Kontrolle)">0.000505631</data>
+      <data key="v_FDG_WT_log_ratio">-8.6583</data>
+      <data key="v_FDG_WT_regulation">1</data>
+      <data key="v_FDG_WT_QXPPO103AD">0</data>
+      <data key="v_FDG_WT_QXPPO104AL">0</data>
+      <data key="v_FDG_WT_QXPPO105AT">0</data>
+      <data key="v_FDG_WT_QXPPO106A3">0</data>
+      <data key="v_FDG_WT_QXPPO107AB">0.000765279</data>
+      <data key="v_FDG_WT_QXPPO108AJ">0.000814946</data>
+      <data key="v_FDG_WT_QXPPO109AR">0</data>
+      <data key="v_FDG_WT_QXPPO110AU">0.000651256</data>
+      <data key="v_FDG_WT_p-value">0.00031</data>
+      <data key="v_FMISO_mean(Therapie)">false</data>
+      <data key="v_FMISO_mean(Kontrolle)">false</data>
+      <data key="v_FMISO_log_ratio">false</data>
+      <data key="v_FMISO_regulation">false</data>
+      <data key="v_FMISO_QXPPO136AO">false</data>
+      <data key="v_FMISO_QXPPO137AW">false</data>
+      <data key="v_FMISO_QXPPO138A6">false</data>
+      <data key="v_FMISO_QXPPO139AE">false</data>
+      <data key="v_FMISO_QXPPO140AH">false</data>
+      <data key="v_FMISO_QXPPO141AP">false</data>
+      <data key="v_FMISO_QXPPO142AX">false</data>
+      <data key="v_FMISO_QXPPO143A7">false</data>
+      <data key="v_FMISO_QXPPO144AF">false</data>
+      <data key="v_FMISO_p-value">false</data>
+      <data key="v_NODAGA_mean(Therapie)">false</data>
+      <data key="v_NODAGA_mean(Kontrolle)">false</data>
+      <data key="v_NODAGA_log_ratio">false</data>
+      <data key="v_NODAGA_regulation">false</data>
+      <data key="v_NODAGA_QXPPO119A0">false</data>
+      <data key="v_NODAGA_QXPPO120A3">false</data>
+      <data key="v_NODAGA_QXPPO121AB">false</data>
+      <data key="v_NODAGA_QXPPO122AJ">false</data>
+      <data key="v_NODAGA_QXPPO123AR">false</data>
+      <data key="v_NODAGA_QXPPO124A1">false</data>
+      <data key="v_NODAGA_QXPPO125A9">false</data>
+      <data key="v_NODAGA_QXPPO126AH">false</data>
+      <data key="v_NODAGA_p-value">false</data>
+      <data key="v_deregnet_score">-8.6583</data>
+    </node>
+    <node id="n3">
+      <data key="v_name">P29788</data>
+      <data key="v_mgi">MGI:98940</data>
+      <data key="v_symbol">Vtn</data>
+      <data key="v_gene_name">vitronectin</data>
+      <data key="v_entrez">22370</data>
+      <data key="v_ensembl">ENSMUSG00000017344</data>
+      <data key="v_id">n728</data>
+      <data key="v_FDG_Mutant_mean(Therapie)">false</data>
+      <data key="v_FDG_Mutant_mean(Kontrolle)">false</data>
+      <data key="v_FDG_Mutant_log_ratio">false</data>
+      <data key="v_FDG_Mutant_regulation">false</data>
+      <data key="v_FDG_Mutant_QXPPO151AW">false</data>
+      <data key="v_FDG_Mutant_QXPPO152A6">false</data>
+      <data key="v_FDG_Mutant_QXPPO153AE">false</data>
+      <data key="v_FDG_Mutant_QXPPO154AM">false</data>
+      <data key="v_FDG_Mutant_QXPPO155AU">false</data>
+      <data key="v_FDG_Mutant_QXPPO156A4">false</data>
+      <data key="v_FDG_Mutant_QXPPO162AD">false</data>
+      <data key="v_FDG_Mutant_QXPPO163AL">false</data>
+      <data key="v_FDG_Mutant_QXPPO164AT">false</data>
+      <data key="v_FDG_Mutant_QXPPO165A3">false</data>
+      <data key="v_FDG_Mutant_QXPPO166AB">false</data>
+      <data key="v_FDG_Mutant_p-value">false</data>
+      <data key="v_FDG_WT_mean(Therapie)">0.00050296</data>
+      <data key="v_FDG_WT_mean(Kontrolle)">0.00395952</data>
+      <data key="v_FDG_WT_log_ratio">-2.45476</data>
+      <data key="v_FDG_WT_regulation">1</data>
+      <data key="v_FDG_WT_QXPPO103AD">0</data>
+      <data key="v_FDG_WT_QXPPO104AL">0.001691</data>
+      <data key="v_FDG_WT_QXPPO105AT">0</data>
+      <data key="v_FDG_WT_QXPPO106A3">0</data>
+      <data key="v_FDG_WT_QXPPO107AB">0.00432129</data>
+      <data key="v_FDG_WT_QXPPO108AJ">0.00473472</data>
+      <data key="v_FDG_WT_QXPPO109AR">0.00462304</data>
+      <data key="v_FDG_WT_QXPPO110AU">0.00251585</data>
+      <data key="v_FDG_WT_p-value">0.01298</data>
+      <data key="v_FMISO_mean(Therapie)">false</data>
+      <data key="v_FMISO_mean(Kontrolle)">false</data>
+      <data key="v_FMISO_log_ratio">false</data>
+      <data key="v_FMISO_regulation">false</data>
+      <data key="v_FMISO_QXPPO136AO">false</data>
+      <data key="v_FMISO_QXPPO137AW">false</data>
+      <data key="v_FMISO_QXPPO138A6">false</data>
+      <data key="v_FMISO_QXPPO139AE">false</data>
+      <data key="v_FMISO_QXPPO140AH">false</data>
+      <data key="v_FMISO_QXPPO141AP">false</data>
+      <data key="v_FMISO_QXPPO142AX">false</data>
+      <data key="v_FMISO_QXPPO143A7">false</data>
+      <data key="v_FMISO_QXPPO144AF">false</data>
+      <data key="v_FMISO_p-value">false</data>
+      <data key="v_NODAGA_mean(Therapie)">false</data>
+      <data key="v_NODAGA_mean(Kontrolle)">false</data>
+      <data key="v_NODAGA_log_ratio">false</data>
+      <data key="v_NODAGA_regulation">false</data>
+      <data key="v_NODAGA_QXPPO119A0">false</data>
+      <data key="v_NODAGA_QXPPO120A3">false</data>
+      <data key="v_NODAGA_QXPPO121AB">false</data>
+      <data key="v_NODAGA_QXPPO122AJ">false</data>
+      <data key="v_NODAGA_QXPPO123AR">false</data>
+      <data key="v_NODAGA_QXPPO124A1">false</data>
+      <data key="v_NODAGA_QXPPO125A9">false</data>
+      <data key="v_NODAGA_QXPPO126AH">false</data>
+      <data key="v_NODAGA_p-value">false</data>
+      <data key="v_deregnet_score">-2.45476</data>
+    </node>
+    <node id="n4">
+      <data key="v_name">P29416</data>
+      <data key="v_mgi">MGI:96073</data>
+      <data key="v_symbol">Hexa</data>
+      <data key="v_gene_name">hexosaminidase A</data>
+      <data key="v_entrez">15211</data>
+      <data key="v_ensembl">ENSMUSG00000025232</data>
+      <data key="v_id">n949</data>
+      <data key="v_FDG_Mutant_mean(Therapie)">false</data>
+      <data key="v_FDG_Mutant_mean(Kontrolle)">false</data>
+      <data key="v_FDG_Mutant_log_ratio">false</data>
+      <data key="v_FDG_Mutant_regulation">false</data>
+      <data key="v_FDG_Mutant_QXPPO151AW">false</data>
+      <data key="v_FDG_Mutant_QXPPO152A6">false</data>
+      <data key="v_FDG_Mutant_QXPPO153AE">false</data>
+      <data key="v_FDG_Mutant_QXPPO154AM">false</data>
+      <data key="v_FDG_Mutant_QXPPO155AU">false</data>
+      <data key="v_FDG_Mutant_QXPPO156A4">false</data>
+      <data key="v_FDG_Mutant_QXPPO162AD">false</data>
+      <data key="v_FDG_Mutant_QXPPO163AL">false</data>
+      <data key="v_FDG_Mutant_QXPPO164AT">false</data>
+      <data key="v_FDG_Mutant_QXPPO165A3">false</data>
+      <data key="v_FDG_Mutant_QXPPO166AB">false</data>
+      <data key="v_FDG_Mutant_p-value">false</data>
+      <data key="v_FMISO_mean(Therapie)">false</data>
+      <data key="v_FMISO_mean(Kontrolle)">false</data>
+      <data key="v_FMISO_log_ratio">false</data>
+      <data key="v_FMISO_regulation">false</data>
+      <data key="v_FMISO_QXPPO136AO">false</data>
+      <data key="v_FMISO_QXPPO137AW">false</data>
+      <data key="v_FMISO_QXPPO138A6">false</data>
+      <data key="v_FMISO_QXPPO139AE">false</data>
+      <data key="v_FMISO_QXPPO140AH">false</data>
+      <data key="v_FMISO_QXPPO141AP">false</data>
+      <data key="v_FMISO_QXPPO142AX">false</data>
+      <data key="v_FMISO_QXPPO143A7">false</data>
+      <data key="v_FMISO_QXPPO144AF">false</data>
+      <data key="v_FMISO_p-value">false</data>
+      <data key="v_NODAGA_mean(Therapie)">false</data>
+      <data key="v_NODAGA_mean(Kontrolle)">false</data>
+      <data key="v_NODAGA_log_ratio">false</data>
+      <data key="v_NODAGA_regulation">false</data>
+      <data key="v_NODAGA_QXPPO119A0">false</data>
+      <data key="v_NODAGA_QXPPO120A3">false</data>
+      <data key="v_NODAGA_QXPPO121AB">false</data>
+      <data key="v_NODAGA_QXPPO122AJ">false</data>
+      <data key="v_NODAGA_QXPPO123AR">false</data>
+      <data key="v_NODAGA_QXPPO124A1">false</data>
+      <data key="v_NODAGA_QXPPO125A9">false</data>
+      <data key="v_NODAGA_QXPPO126AH">false</data>
+      <data key="v_NODAGA_p-value">false</data>
+    </node>
+    <node id="n5">
+      <data key="v_name">Q99LC3</data>
+      <data key="v_mgi">MGI:1914523</data>
+      <data key="v_symbol">Ndufa10</data>
+      <data key="v_gene_name">NADH dehydrogenase (ubiquinone) 1 alpha subcomplex 10</data>
+      <data key="v_entrez">67273</data>
+      <data key="v_ensembl">ENSMUSG00000026260</data>
+      <data key="v_id">n954</data>
+      <data key="v_FDG_Mutant_mean(Therapie)">false</data>
+      <data key="v_FDG_Mutant_mean(Kontrolle)">false</data>
+      <data key="v_FDG_Mutant_log_ratio">false</data>
+      <data key="v_FDG_Mutant_regulation">false</data>
+      <data key="v_FDG_Mutant_QXPPO151AW">false</data>
+      <data key="v_FDG_Mutant_QXPPO152A6">false</data>
+      <data key="v_FDG_Mutant_QXPPO153AE">false</data>
+      <data key="v_FDG_Mutant_QXPPO154AM">false</data>
+      <data key="v_FDG_Mutant_QXPPO155AU">false</data>
+      <data key="v_FDG_Mutant_QXPPO156A4">false</data>
+      <data key="v_FDG_Mutant_QXPPO162AD">false</data>
+      <data key="v_FDG_Mutant_QXPPO163AL">false</data>
+      <data key="v_FDG_Mutant_QXPPO164AT">false</data>
+      <data key="v_FDG_Mutant_QXPPO165A3">false</data>
+      <data key="v_FDG_Mutant_QXPPO166AB">false</data>
+      <data key="v_FDG_Mutant_p-value">false</data>
+      <data key="v_FDG_WT_mean(Therapie)">0.0200438</data>
+      <data key="v_FDG_WT_mean(Kontrolle)">0.0215352</data>
+      <data key="v_FDG_WT_log_ratio">0.47405</data>
+      <data key="v_FDG_WT_regulation">-1</data>
+      <data key="v_FDG_WT_QXPPO103AD">0.0207667</data>
+      <data key="v_FDG_WT_QXPPO104AL">0.0180018</data>
+      <data key="v_FDG_WT_QXPPO105AT">0.0235551</data>
+      <data key="v_FDG_WT_QXPPO106A3">0.0189822</data>
+      <data key="v_FDG_WT_QXPPO107AB">0.0180389</data>
+      <data key="v_FDG_WT_QXPPO108AJ">0.0246678</data>
+      <data key="v_FDG_WT_QXPPO109AR">0.0192814</data>
+      <data key="v_FDG_WT_QXPPO110AU">0.0246843</data>
+      <data key="v_FDG_WT_p-value">0.00996</data>
+      <data key="v_FMISO_mean(Therapie)">false</data>
+      <data key="v_FMISO_mean(Kontrolle)">false</data>
+      <data key="v_FMISO_log_ratio">false</data>
+      <data key="v_FMISO_regulation">false</data>
+      <data key="v_FMISO_QXPPO136AO">false</data>
+      <data key="v_FMISO_QXPPO137AW">false</data>
+      <data key="v_FMISO_QXPPO138A6">false</data>
+      <data key="v_FMISO_QXPPO139AE">false</data>
+      <data key="v_FMISO_QXPPO140AH">false</data>
+      <data key="v_FMISO_QXPPO141AP">false</data>
+      <data key="v_FMISO_QXPPO142AX">false</data>
+      <data key="v_FMISO_QXPPO143A7">false</data>
+      <data key="v_FMISO_QXPPO144AF">false</data>
+      <data key="v_FMISO_p-value">false</data>
+      <data key="v_NODAGA_mean(Therapie)">false</data>
+      <data key="v_NODAGA_mean(Kontrolle)">false</data>
+      <data key="v_NODAGA_log_ratio">false</data>
+      <data key="v_NODAGA_regulation">false</data>
+      <data key="v_NODAGA_QXPPO119A0">false</data>
+      <data key="v_NODAGA_QXPPO120A3">false</data>
+      <data key="v_NODAGA_QXPPO121AB">false</data>
+      <data key="v_NODAGA_QXPPO122AJ">false</data>
+      <data key="v_NODAGA_QXPPO123AR">false</data>
+      <data key="v_NODAGA_QXPPO124A1">false</data>
+      <data key="v_NODAGA_QXPPO125A9">false</data>
+      <data key="v_NODAGA_QXPPO126AH">false</data>
+      <data key="v_NODAGA_p-value">false</data>
+      <data key="v_deregnet_score">0.47405</data>
+    </node>
+    <node id="n6">
+      <data key="v_name">Q7TSV4</data>
+      <data key="v_mgi">MGI:97564</data>
+      <data key="v_symbol">Pgm1</data>
+      <data key="v_gene_name">phosphoglucomutase 1</data>
+      <data key="v_entrez">66681</data>
+      <data key="v_ensembl">ENSMUSG00000029171</data>
+      <data key="v_id">n1501</data>
+      <data key="v_FDG_Mutant_mean(Therapie)">false</data>
+      <data key="v_FDG_Mutant_mean(Kontrolle)">false</data>
+      <data key="v_FDG_Mutant_log_ratio">false</data>
+      <data key="v_FDG_Mutant_regulation">false</data>
+      <data key="v_FDG_Mutant_QXPPO151AW">false</data>
+      <data key="v_FDG_Mutant_QXPPO152A6">false</data>
+      <data key="v_FDG_Mutant_QXPPO153AE">false</data>
+      <data key="v_FDG_Mutant_QXPPO154AM">false</data>
+      <data key="v_FDG_Mutant_QXPPO155AU">false</data>
+      <data key="v_FDG_Mutant_QXPPO156A4">false</data>
+      <data key="v_FDG_Mutant_QXPPO162AD">false</data>
+      <data key="v_FDG_Mutant_QXPPO163AL">false</data>
+      <data key="v_FDG_Mutant_QXPPO164AT">false</data>
+      <data key="v_FDG_Mutant_QXPPO165A3">false</data>
+      <data key="v_FDG_Mutant_QXPPO166AB">false</data>
+      <data key="v_FDG_Mutant_p-value">false</data>
+      <data key="v_FDG_WT_mean(Therapie)">9.67068e-05</data>
+      <data key="v_FDG_WT_mean(Kontrolle)">0.000612318</data>
+      <data key="v_FDG_WT_log_ratio">-2.4659</data>
+      <data key="v_FDG_WT_regulation">1</data>
+      <data key="v_FDG_WT_QXPPO103AD">0</data>
+      <data key="v_FDG_WT_QXPPO104AL">0</data>
+      <data key="v_FDG_WT_QXPPO105AT">0.000484926</data>
+      <data key="v_FDG_WT_QXPPO106A3">0</data>
+      <data key="v_FDG_WT_QXPPO107AB">0.000475002</data>
+      <data key="v_FDG_WT_QXPPO108AJ">0.00132576</data>
+      <data key="v_FDG_WT_QXPPO109AR">0.000112687</data>
+      <data key="v_FDG_WT_QXPPO110AU">0.000808744</data>
+      <data key="v_FDG_WT_p-value">0.01633</data>
+      <data key="v_FMISO_mean(Therapie)">false</data>
+      <data key="v_FMISO_mean(Kontrolle)">false</data>
+      <data key="v_FMISO_log_ratio">false</data>
+      <data key="v_FMISO_regulation">false</data>
+      <data key="v_FMISO_QXPPO136AO">false</data>
+      <data key="v_FMISO_QXPPO137AW">false</data>
+      <data key="v_FMISO_QXPPO138A6">false</data>
+      <data key="v_FMISO_QXPPO139AE">false</data>
+      <data key="v_FMISO_QXPPO140AH">false</data>
+      <data key="v_FMISO_QXPPO141AP">false</data>
+      <data key="v_FMISO_QXPPO142AX">false</data>
+      <data key="v_FMISO_QXPPO143A7">false</data>
+      <data key="v_FMISO_QXPPO144AF">false</data>
+      <data key="v_FMISO_p-value">false</data>
+      <data key="v_NODAGA_mean(Therapie)">false</data>
+      <data key="v_NODAGA_mean(Kontrolle)">false</data>
+      <data key="v_NODAGA_log_ratio">false</data>
+      <data key="v_NODAGA_regulation">false</data>
+      <data key="v_NODAGA_QXPPO119A0">false</data>
+      <data key="v_NODAGA_QXPPO120A3">false</data>
+      <data key="v_NODAGA_QXPPO121AB">false</data>
+      <data key="v_NODAGA_QXPPO122AJ">false</data>
+      <data key="v_NODAGA_QXPPO123AR">false</data>
+      <data key="v_NODAGA_QXPPO124A1">false</data>
+      <data key="v_NODAGA_QXPPO125A9">false</data>
+      <data key="v_NODAGA_QXPPO126AH">false</data>
+      <data key="v_NODAGA_p-value">false</data>
+      <data key="v_deregnet_score">-2.4659</data>
+    </node>
+    <node id="n7">
+      <data key="v_name">P23780</data>
+      <data key="v_mgi">MGI:88151</data>
+      <data key="v_symbol">Glb1</data>
+      <data key="v_gene_name">galactosidase, beta 1</data>
+      <data key="v_entrez">12091</data>
+      <data key="v_ensembl">ENSMUSG00000045594</data>
+      <data key="v_id">n1811</data>
+      <data key="v_FDG_Mutant_mean(Therapie)">false</data>
+      <data key="v_FDG_Mutant_mean(Kontrolle)">false</data>
+      <data key="v_FDG_Mutant_log_ratio">false</data>
+      <data key="v_FDG_Mutant_regulation">false</data>
+      <data key="v_FDG_Mutant_QXPPO151AW">false</data>
+      <data key="v_FDG_Mutant_QXPPO152A6">false</data>
+      <data key="v_FDG_Mutant_QXPPO153AE">false</data>
+      <data key="v_FDG_Mutant_QXPPO154AM">false</data>
+      <data key="v_FDG_Mutant_QXPPO155AU">false</data>
+      <data key="v_FDG_Mutant_QXPPO156A4">false</data>
+      <data key="v_FDG_Mutant_QXPPO162AD">false</data>
+      <data key="v_FDG_Mutant_QXPPO163AL">false</data>
+      <data key="v_FDG_Mutant_QXPPO164AT">false</data>
+      <data key="v_FDG_Mutant_QXPPO165A3">false</data>
+      <data key="v_FDG_Mutant_QXPPO166AB">false</data>
+      <data key="v_FDG_Mutant_p-value">false</data>
+      <data key="v_FMISO_mean(Therapie)">false</data>
+      <data key="v_FMISO_mean(Kontrolle)">false</data>
+      <data key="v_FMISO_log_ratio">false</data>
+      <data key="v_FMISO_regulation">false</data>
+      <data key="v_FMISO_QXPPO136AO">false</data>
+      <data key="v_FMISO_QXPPO137AW">false</data>
+      <data key="v_FMISO_QXPPO138A6">false</data>
+      <data key="v_FMISO_QXPPO139AE">false</data>
+      <data key="v_FMISO_QXPPO140AH">false</data>
+      <data key="v_FMISO_QXPPO141AP">false</data>
+      <data key="v_FMISO_QXPPO142AX">false</data>
+      <data key="v_FMISO_QXPPO143A7">false</data>
+      <data key="v_FMISO_QXPPO144AF">false</data>
+      <data key="v_FMISO_p-value">false</data>
+      <data key="v_NODAGA_mean(Therapie)">false</data>
+      <data key="v_NODAGA_mean(Kontrolle)">false</data>
+      <data key="v_NODAGA_log_ratio">false</data>
+      <data key="v_NODAGA_regulation">false</data>
+      <data key="v_NODAGA_QXPPO119A0">false</data>
+      <data key="v_NODAGA_QXPPO120A3">false</data>
+      <data key="v_NODAGA_QXPPO121AB">false</data>
+      <data key="v_NODAGA_QXPPO122AJ">false</data>
+      <data key="v_NODAGA_QXPPO123AR">false</data>
+      <data key="v_NODAGA_QXPPO124A1">false</data>
+      <data key="v_NODAGA_QXPPO125A9">false</data>
+      <data key="v_NODAGA_QXPPO126AH">false</data>
+      <data key="v_NODAGA_p-value">false</data>
+    </node>
+    <node id="n8">
+      <data key="v_name">Q9QZ08</data>
+      <data key="v_mgi">MGI:1860418</data>
+      <data key="v_symbol">Nagk</data>
+      <data key="v_gene_name">N-acetylglucosamine kinase</data>
+      <data key="v_entrez">56174</data>
+      <data key="v_ensembl">ENSMUSG00000034744</data>
+      <data key="v_id">n1953</data>
+      <data key="v_FDG_Mutant_mean(Therapie)">false</data>
+      <data key="v_FDG_Mutant_mean(Kontrolle)">false</data>
+      <data key="v_FDG_Mutant_log_ratio">false</data>
+      <data key="v_FDG_Mutant_regulation">false</data>
+      <data key="v_FDG_Mutant_QXPPO151AW">false</data>
+      <data key="v_FDG_Mutant_QXPPO152A6">false</data>
+      <data key="v_FDG_Mutant_QXPPO153AE">false</data>
+      <data key="v_FDG_Mutant_QXPPO154AM">false</data>
+      <data key="v_FDG_Mutant_QXPPO155AU">false</data>
+      <data key="v_FDG_Mutant_QXPPO156A4">false</data>
+      <data key="v_FDG_Mutant_QXPPO162AD">false</data>
+      <data key="v_FDG_Mutant_QXPPO163AL">false</data>
+      <data key="v_FDG_Mutant_QXPPO164AT">false</data>
+      <data key="v_FDG_Mutant_QXPPO165A3">false</data>
+      <data key="v_FDG_Mutant_QXPPO166AB">false</data>
+      <data key="v_FDG_Mutant_p-value">false</data>
+      <data key="v_FMISO_mean(Therapie)">false</data>
+      <data key="v_FMISO_mean(Kontrolle)">false</data>
+      <data key="v_FMISO_log_ratio">false</data>
+      <data key="v_FMISO_regulation">false</data>
+      <data key="v_FMISO_QXPPO136AO">false</data>
+      <data key="v_FMISO_QXPPO137AW">false</data>
+      <data key="v_FMISO_QXPPO138A6">false</data>
+      <data key="v_FMISO_QXPPO139AE">false</data>
+      <data key="v_FMISO_QXPPO140AH">false</data>
+      <data key="v_FMISO_QXPPO141AP">false</data>
+      <data key="v_FMISO_QXPPO142AX">false</data>
+      <data key="v_FMISO_QXPPO143A7">false</data>
+      <data key="v_FMISO_QXPPO144AF">false</data>
+      <data key="v_FMISO_p-value">false</data>
+      <data key="v_NODAGA_mean(Therapie)">false</data>
+      <data key="v_NODAGA_mean(Kontrolle)">false</data>
+      <data key="v_NODAGA_log_ratio">false</data>
+      <data key="v_NODAGA_regulation">false</data>
+      <data key="v_NODAGA_QXPPO119A0">false</data>
+      <data key="v_NODAGA_QXPPO120A3">false</data>
+      <data key="v_NODAGA_QXPPO121AB">false</data>
+      <data key="v_NODAGA_QXPPO122AJ">false</data>
+      <data key="v_NODAGA_QXPPO123AR">false</data>
+      <data key="v_NODAGA_QXPPO124A1">false</data>
+      <data key="v_NODAGA_QXPPO125A9">false</data>
+      <data key="v_NODAGA_QXPPO126AH">false</data>
+      <data key="v_NODAGA_p-value">false</data>
+    </node>
+    <node id="n9">
+      <data key="v_name">Q8BRK8</data>
+      <data key="v_mgi">MGI:1336173</data>
+      <data key="v_symbol">Prkaa2</data>
+      <data key="v_gene_name">protein kinase, AMP-activated, alpha 2 catalytic subunit</data>
+      <data key="v_entrez">108079</data>
+      <data key="v_ensembl">ENSMUSG00000028518</data>
+      <data key="v_id">n1962</data>
+      <data key="v_FDG_Mutant_mean(Therapie)">false</data>
+      <data key="v_FDG_Mutant_mean(Kontrolle)">false</data>
+      <data key="v_FDG_Mutant_log_ratio">false</data>
+      <data key="v_FDG_Mutant_regulation">false</data>
+      <data key="v_FDG_Mutant_QXPPO151AW">false</data>
+      <data key="v_FDG_Mutant_QXPPO152A6">false</data>
+      <data key="v_FDG_Mutant_QXPPO153AE">false</data>
+      <data key="v_FDG_Mutant_QXPPO154AM">false</data>
+      <data key="v_FDG_Mutant_QXPPO155AU">false</data>
+      <data key="v_FDG_Mutant_QXPPO156A4">false</data>
+      <data key="v_FDG_Mutant_QXPPO162AD">false</data>
+      <data key="v_FDG_Mutant_QXPPO163AL">false</data>
+      <data key="v_FDG_Mutant_QXPPO164AT">false</data>
+      <data key="v_FDG_Mutant_QXPPO165A3">false</data>
+      <data key="v_FDG_Mutant_QXPPO166AB">false</data>
+      <data key="v_FDG_Mutant_p-value">false</data>
+      <data key="v_FDG_WT_mean(Therapie)">0</data>
+      <data key="v_FDG_WT_mean(Kontrolle)">0.000848877</data>
+      <data key="v_FDG_WT_log_ratio">-8.6583</data>
+      <data key="v_FDG_WT_regulation">1</data>
+      <data key="v_FDG_WT_QXPPO103AD">0</data>
+      <data key="v_FDG_WT_QXPPO104AL">0</data>
+      <data key="v_FDG_WT_QXPPO105AT">0</data>
+      <data key="v_FDG_WT_QXPPO106A3">0</data>
+      <data key="v_FDG_WT_QXPPO107AB">0.00107266</data>
+      <data key="v_FDG_WT_QXPPO108AJ">0.00124747</data>
+      <data key="v_FDG_WT_QXPPO109AR">0.000361235</data>
+      <data key="v_FDG_WT_QXPPO110AU">0.000940521</data>
+      <data key="v_FDG_WT_p-value">4e-05</data>
+      <data key="v_FMISO_mean(Therapie)">false</data>
+      <data key="v_FMISO_mean(Kontrolle)">false</data>
+      <data key="v_FMISO_log_ratio">false</data>
+      <data key="v_FMISO_regulation">false</data>
+      <data key="v_FMISO_QXPPO136AO">false</data>
+      <data key="v_FMISO_QXPPO137AW">false</data>
+      <data key="v_FMISO_QXPPO138A6">false</data>
+      <data key="v_FMISO_QXPPO139AE">false</data>
+      <data key="v_FMISO_QXPPO140AH">false</data>
+      <data key="v_FMISO_QXPPO141AP">false</data>
+      <data key="v_FMISO_QXPPO142AX">false</data>
+      <data key="v_FMISO_QXPPO143A7">false</data>
+      <data key="v_FMISO_QXPPO144AF">false</data>
+      <data key="v_FMISO_p-value">false</data>
+      <data key="v_NODAGA_mean(Therapie)">false</data>
+      <data key="v_NODAGA_mean(Kontrolle)">false</data>
+      <data key="v_NODAGA_log_ratio">false</data>
+      <data key="v_NODAGA_regulation">false</data>
+      <data key="v_NODAGA_QXPPO119A0">false</data>
+      <data key="v_NODAGA_QXPPO120A3">false</data>
+      <data key="v_NODAGA_QXPPO121AB">false</data>
+      <data key="v_NODAGA_QXPPO122AJ">false</data>
+      <data key="v_NODAGA_QXPPO123AR">false</data>
+      <data key="v_NODAGA_QXPPO124A1">false</data>
+      <data key="v_NODAGA_QXPPO125A9">false</data>
+      <data key="v_NODAGA_QXPPO126AH">false</data>
+      <data key="v_NODAGA_p-value">false</data>
+      <data key="v_deregnet_score">-8.6583</data>
+    </node>
+    <node id="n10">
+      <data key="v_name">P51656</data>
+      <data key="v_mgi">MGI:105077</data>
+      <data key="v_symbol">Hsd17b1</data>
+      <data key="v_gene_name">hydroxysteroid (17-beta) dehydrogenase 1</data>
+      <data key="v_entrez">15485</data>
+      <data key="v_ensembl">ENSMUSG00000019301</data>
+      <data key="v_id">n2262</data>
+      <data key="v_FDG_Mutant_mean(Therapie)">false</data>
+      <data key="v_FDG_Mutant_mean(Kontrolle)">false</data>
+      <data key="v_FDG_Mutant_log_ratio">false</data>
+      <data key="v_FDG_Mutant_regulation">false</data>
+      <data key="v_FDG_Mutant_QXPPO151AW">false</data>
+      <data key="v_FDG_Mutant_QXPPO152A6">false</data>
+      <data key="v_FDG_Mutant_QXPPO153AE">false</data>
+      <data key="v_FDG_Mutant_QXPPO154AM">false</data>
+      <data key="v_FDG_Mutant_QXPPO155AU">false</data>
+      <data key="v_FDG_Mutant_QXPPO156A4">false</data>
+      <data key="v_FDG_Mutant_QXPPO162AD">false</data>
+      <data key="v_FDG_Mutant_QXPPO163AL">false</data>
+      <data key="v_FDG_Mutant_QXPPO164AT">false</data>
+      <data key="v_FDG_Mutant_QXPPO165A3">false</data>
+      <data key="v_FDG_Mutant_QXPPO166AB">false</data>
+      <data key="v_FDG_Mutant_p-value">false</data>
+      <data key="v_FMISO_mean(Therapie)">false</data>
+      <data key="v_FMISO_mean(Kontrolle)">false</data>
+      <data key="v_FMISO_log_ratio">false</data>
+      <data key="v_FMISO_regulation">false</data>
+      <data key="v_FMISO_QXPPO136AO">false</data>
+      <data key="v_FMISO_QXPPO137AW">false</data>
+      <data key="v_FMISO_QXPPO138A6">false</data>
+      <data key="v_FMISO_QXPPO139AE">false</data>
+      <data key="v_FMISO_QXPPO140AH">false</data>
+      <data key="v_FMISO_QXPPO141AP">false</data>
+      <data key="v_FMISO_QXPPO142AX">false</data>
+      <data key="v_FMISO_QXPPO143A7">false</data>
+      <data key="v_FMISO_QXPPO144AF">false</data>
+      <data key="v_FMISO_p-value">false</data>
+      <data key="v_NODAGA_mean(Therapie)">false</data>
+      <data key="v_NODAGA_mean(Kontrolle)">false</data>
+      <data key="v_NODAGA_log_ratio">false</data>
+      <data key="v_NODAGA_regulation">false</data>
+      <data key="v_NODAGA_QXPPO119A0">false</data>
+      <data key="v_NODAGA_QXPPO120A3">false</data>
+      <data key="v_NODAGA_QXPPO121AB">false</data>
+      <data key="v_NODAGA_QXPPO122AJ">false</data>
+      <data key="v_NODAGA_QXPPO123AR">false</data>
+      <data key="v_NODAGA_QXPPO124A1">false</data>
+      <data key="v_NODAGA_QXPPO125A9">false</data>
+      <data key="v_NODAGA_QXPPO126AH">false</data>
+      <data key="v_NODAGA_p-value">false</data>
+    </node>
+    <node id="n11">
+      <data key="v_name">B2RWS6</data>
+      <data key="v_mgi">MGI:1276116</data>
+      <data key="v_symbol">Ep300</data>
+      <data key="v_gene_name">E1A binding protein p300</data>
+      <data key="v_entrez">328572</data>
+      <data key="v_ensembl">ENSMUSG00000055024</data>
+      <data key="v_id">n2337</data>
+      <data key="v_FDG_Mutant_mean(Therapie)">false</data>
+      <data key="v_FDG_Mutant_mean(Kontrolle)">false</data>
+      <data key="v_FDG_Mutant_log_ratio">false</data>
+      <data key="v_FDG_Mutant_regulation">false</data>
+      <data key="v_FDG_Mutant_QXPPO151AW">false</data>
+      <data key="v_FDG_Mutant_QXPPO152A6">false</data>
+      <data key="v_FDG_Mutant_QXPPO153AE">false</data>
+      <data key="v_FDG_Mutant_QXPPO154AM">false</data>
+      <data key="v_FDG_Mutant_QXPPO155AU">false</data>
+      <data key="v_FDG_Mutant_QXPPO156A4">false</data>
+      <data key="v_FDG_Mutant_QXPPO162AD">false</data>
+      <data key="v_FDG_Mutant_QXPPO163AL">false</data>
+      <data key="v_FDG_Mutant_QXPPO164AT">false</data>
+      <data key="v_FDG_Mutant_QXPPO165A3">false</data>
+      <data key="v_FDG_Mutant_QXPPO166AB">false</data>
+      <data key="v_FDG_Mutant_p-value">false</data>
+      <data key="v_FMISO_mean(Therapie)">false</data>
+      <data key="v_FMISO_mean(Kontrolle)">false</data>
+      <data key="v_FMISO_log_ratio">false</data>
+      <data key="v_FMISO_regulation">false</data>
+      <data key="v_FMISO_QXPPO136AO">false</data>
+      <data key="v_FMISO_QXPPO137AW">false</data>
+      <data key="v_FMISO_QXPPO138A6">false</data>
+      <data key="v_FMISO_QXPPO139AE">false</data>
+      <data key="v_FMISO_QXPPO140AH">false</data>
+      <data key="v_FMISO_QXPPO141AP">false</data>
+      <data key="v_FMISO_QXPPO142AX">false</data>
+      <data key="v_FMISO_QXPPO143A7">false</data>
+      <data key="v_FMISO_QXPPO144AF">false</data>
+      <data key="v_FMISO_p-value">false</data>
+      <data key="v_NODAGA_mean(Therapie)">false</data>
+      <data key="v_NODAGA_mean(Kontrolle)">false</data>
+      <data key="v_NODAGA_log_ratio">false</data>
+      <data key="v_NODAGA_regulation">false</data>
+      <data key="v_NODAGA_QXPPO119A0">false</data>
+      <data key="v_NODAGA_QXPPO120A3">false</data>
+      <data key="v_NODAGA_QXPPO121AB">false</data>
+      <data key="v_NODAGA_QXPPO122AJ">false</data>
+      <data key="v_NODAGA_QXPPO123AR">false</data>
+      <data key="v_NODAGA_QXPPO124A1">false</data>
+      <data key="v_NODAGA_QXPPO125A9">false</data>
+      <data key="v_NODAGA_QXPPO126AH">false</data>
+      <data key="v_NODAGA_p-value">false</data>
+    </node>
+    <node id="n12">
+      <data key="v_name">Q62469</data>
+      <data key="v_mgi">MGI:96600</data>
+      <data key="v_symbol">Itga2</data>
+      <data key="v_gene_name">integrin alpha 2</data>
+      <data key="v_entrez">16398</data>
+      <data key="v_ensembl">ENSMUSG00000015533</data>
+      <data key="v_id">n3237</data>
+      <data key="v_FDG_Mutant_mean(Therapie)">false</data>
+      <data key="v_FDG_Mutant_mean(Kontrolle)">false</data>
+      <data key="v_FDG_Mutant_log_ratio">false</data>
+      <data key="v_FDG_Mutant_regulation">false</data>
+      <data key="v_FDG_Mutant_QXPPO151AW">false</data>
+      <data key="v_FDG_Mutant_QXPPO152A6">false</data>
+      <data key="v_FDG_Mutant_QXPPO153AE">false</data>
+      <data key="v_FDG_Mutant_QXPPO154AM">false</data>
+      <data key="v_FDG_Mutant_QXPPO155AU">false</data>
+      <data key="v_FDG_Mutant_QXPPO156A4">false</data>
+      <data key="v_FDG_Mutant_QXPPO162AD">false</data>
+      <data key="v_FDG_Mutant_QXPPO163AL">false</data>
+      <data key="v_FDG_Mutant_QXPPO164AT">false</data>
+      <data key="v_FDG_Mutant_QXPPO165A3">false</data>
+      <data key="v_FDG_Mutant_QXPPO166AB">false</data>
+      <data key="v_FDG_Mutant_p-value">false</data>
+      <data key="v_FMISO_mean(Therapie)">false</data>
+      <data key="v_FMISO_mean(Kontrolle)">false</data>
+      <data key="v_FMISO_log_ratio">false</data>
+      <data key="v_FMISO_regulation">false</data>
+      <data key="v_FMISO_QXPPO136AO">false</data>
+      <data key="v_FMISO_QXPPO137AW">false</data>
+      <data key="v_FMISO_QXPPO138A6">false</data>
+      <data key="v_FMISO_QXPPO139AE">false</data>
+      <data key="v_FMISO_QXPPO140AH">false</data>
+      <data key="v_FMISO_QXPPO141AP">false</data>
+      <data key="v_FMISO_QXPPO142AX">false</data>
+      <data key="v_FMISO_QXPPO143A7">false</data>
+      <data key="v_FMISO_QXPPO144AF">false</data>
+      <data key="v_FMISO_p-value">false</data>
+      <data key="v_NODAGA_mean(Therapie)">false</data>
+      <data key="v_NODAGA_mean(Kontrolle)">false</data>
+      <data key="v_NODAGA_log_ratio">false</data>
+      <data key="v_NODAGA_regulation">false</data>
+      <data key="v_NODAGA_QXPPO119A0">false</data>
+      <data key="v_NODAGA_QXPPO120A3">false</data>
+      <data key="v_NODAGA_QXPPO121AB">false</data>
+      <data key="v_NODAGA_QXPPO122AJ">false</data>
+      <data key="v_NODAGA_QXPPO123AR">false</data>
+      <data key="v_NODAGA_QXPPO124A1">false</data>
+      <data key="v_NODAGA_QXPPO125A9">false</data>
+      <data key="v_NODAGA_QXPPO126AH">false</data>
+      <data key="v_NODAGA_p-value">false</data>
+    </node>
+    <node id="n13">
+      <data key="v_name">P51569</data>
+      <data key="v_mgi">MGI:1347344</data>
+      <data key="v_symbol">Gla</data>
+      <data key="v_gene_name">galactosidase, alpha</data>
+      <data key="v_entrez">11605</data>
+      <data key="v_ensembl">ENSMUSG00000031266</data>
+      <data key="v_id">n3648</data>
+      <data key="v_FDG_Mutant_mean(Therapie)">false</data>
+      <data key="v_FDG_Mutant_mean(Kontrolle)">false</data>
+      <data key="v_FDG_Mutant_log_ratio">false</data>
+      <data key="v_FDG_Mutant_regulation">false</data>
+      <data key="v_FDG_Mutant_QXPPO151AW">false</data>
+      <data key="v_FDG_Mutant_QXPPO152A6">false</data>
+      <data key="v_FDG_Mutant_QXPPO153AE">false</data>
+      <data key="v_FDG_Mutant_QXPPO154AM">false</data>
+      <data key="v_FDG_Mutant_QXPPO155AU">false</data>
+      <data key="v_FDG_Mutant_QXPPO156A4">false</data>
+      <data key="v_FDG_Mutant_QXPPO162AD">false</data>
+      <data key="v_FDG_Mutant_QXPPO163AL">false</data>
+      <data key="v_FDG_Mutant_QXPPO164AT">false</data>
+      <data key="v_FDG_Mutant_QXPPO165A3">false</data>
+      <data key="v_FDG_Mutant_QXPPO166AB">false</data>
+      <data key="v_FDG_Mutant_p-value">false</data>
+      <data key="v_FMISO_mean(Therapie)">false</data>
+      <data key="v_FMISO_mean(Kontrolle)">false</data>
+      <data key="v_FMISO_log_ratio">false</data>
+      <data key="v_FMISO_regulation">false</data>
+      <data key="v_FMISO_QXPPO136AO">false</data>
+      <data key="v_FMISO_QXPPO137AW">false</data>
+      <data key="v_FMISO_QXPPO138A6">false</data>
+      <data key="v_FMISO_QXPPO139AE">false</data>
+      <data key="v_FMISO_QXPPO140AH">false</data>
+      <data key="v_FMISO_QXPPO141AP">false</data>
+      <data key="v_FMISO_QXPPO142AX">false</data>
+      <data key="v_FMISO_QXPPO143A7">false</data>
+      <data key="v_FMISO_QXPPO144AF">false</data>
+      <data key="v_FMISO_p-value">false</data>
+      <data key="v_NODAGA_mean(Therapie)">false</data>
+      <data key="v_NODAGA_mean(Kontrolle)">false</data>
+      <data key="v_NODAGA_log_ratio">false</data>
+      <data key="v_NODAGA_regulation">false</data>
+      <data key="v_NODAGA_QXPPO119A0">false</data>
+      <data key="v_NODAGA_QXPPO120A3">false</data>
+      <data key="v_NODAGA_QXPPO121AB">false</data>
+      <data key="v_NODAGA_QXPPO122AJ">false</data>
+      <data key="v_NODAGA_QXPPO123AR">false</data>
+      <data key="v_NODAGA_QXPPO124A1">false</data>
+      <data key="v_NODAGA_QXPPO125A9">false</data>
+      <data key="v_NODAGA_QXPPO126AH">false</data>
+      <data key="v_NODAGA_p-value">false</data>
+    </node>
+    <node id="n14">
+      <data key="v_name">Q64459</data>
+      <data key="v_mgi">MGI:88609</data>
+      <data key="v_symbol">Cyp3a11</data>
+      <data key="v_gene_name">cytochrome P450, family 3, subfamily a, polypeptide 11</data>
+      <data key="v_entrez">13112</data>
+      <data key="v_ensembl">ENSMUSG00000056035</data>
+      <data key="v_id">n3792</data>
+      <data key="v_FDG_Mutant_mean(Therapie)">false</data>
+      <data key="v_FDG_Mutant_mean(Kontrolle)">false</data>
+      <data key="v_FDG_Mutant_log_ratio">false</data>
+      <data key="v_FDG_Mutant_regulation">false</data>
+      <data key="v_FDG_Mutant_QXPPO151AW">false</data>
+      <data key="v_FDG_Mutant_QXPPO152A6">false</data>
+      <data key="v_FDG_Mutant_QXPPO153AE">false</data>
+      <data key="v_FDG_Mutant_QXPPO154AM">false</data>
+      <data key="v_FDG_Mutant_QXPPO155AU">false</data>
+      <data key="v_FDG_Mutant_QXPPO156A4">false</data>
+      <data key="v_FDG_Mutant_QXPPO162AD">false</data>
+      <data key="v_FDG_Mutant_QXPPO163AL">false</data>
+      <data key="v_FDG_Mutant_QXPPO164AT">false</data>
+      <data key="v_FDG_Mutant_QXPPO165A3">false</data>
+      <data key="v_FDG_Mutant_QXPPO166AB">false</data>
+      <data key="v_FDG_Mutant_p-value">false</data>
+      <data key="v_FDG_WT_mean(Therapie)">0.00511301</data>
+      <data key="v_FDG_WT_mean(Kontrolle)">0.00423992</data>
+      <data key="v_FDG_WT_log_ratio">0.79661</data>
+      <data key="v_FDG_WT_regulation">-1</data>
+      <data key="v_FDG_WT_QXPPO103AD">0.00408649</data>
+      <data key="v_FDG_WT_QXPPO104AL">0.0054469</data>
+      <data key="v_FDG_WT_QXPPO105AT">0.0062023</data>
+      <data key="v_FDG_WT_QXPPO106A3">0.0048679</data>
+      <data key="v_FDG_WT_QXPPO107AB">0.00260942</data>
+      <data key="v_FDG_WT_QXPPO108AJ">0.00567598</data>
+      <data key="v_FDG_WT_QXPPO109AR">0.00471405</data>
+      <data key="v_FDG_WT_QXPPO110AU">0.00434408</data>
+      <data key="v_FDG_WT_p-value">0.01655</data>
+      <data key="v_FMISO_mean(Therapie)">false</data>
+      <data key="v_FMISO_mean(Kontrolle)">false</data>
+      <data key="v_FMISO_log_ratio">false</data>
+      <data key="v_FMISO_regulation">false</data>
+      <data key="v_FMISO_QXPPO136AO">false</data>
+      <data key="v_FMISO_QXPPO137AW">false</data>
+      <data key="v_FMISO_QXPPO138A6">false</data>
+      <data key="v_FMISO_QXPPO139AE">false</data>
+      <data key="v_FMISO_QXPPO140AH">false</data>
+      <data key="v_FMISO_QXPPO141AP">false</data>
+      <data key="v_FMISO_QXPPO142AX">false</data>
+      <data key="v_FMISO_QXPPO143A7">false</data>
+      <data key="v_FMISO_QXPPO144AF">false</data>
+      <data key="v_FMISO_p-value">false</data>
+      <data key="v_NODAGA_mean(Therapie)">false</data>
+      <data key="v_NODAGA_mean(Kontrolle)">false</data>
+      <data key="v_NODAGA_log_ratio">false</data>
+      <data key="v_NODAGA_regulation">false</data>
+      <data key="v_NODAGA_QXPPO119A0">false</data>
+      <data key="v_NODAGA_QXPPO120A3">false</data>
+      <data key="v_NODAGA_QXPPO121AB">false</data>
+      <data key="v_NODAGA_QXPPO122AJ">false</data>
+      <data key="v_NODAGA_QXPPO123AR">false</data>
+      <data key="v_NODAGA_QXPPO124A1">false</data>
+      <data key="v_NODAGA_QXPPO125A9">false</data>
+      <data key="v_NODAGA_QXPPO126AH">false</data>
+      <data key="v_NODAGA_p-value">false</data>
+      <data key="v_deregnet_score">0.79661</data>
+    </node>
+    <edge source="n0" target="n6">
+      <data key="e_interaction">compound</data>
+    </edge>
+    <edge source="n0" target="n7">
+      <data key="e_interaction">compound</data>
+    </edge>
+    <edge source="n1" target="n5">
+      <data key="e_interaction">inhibition</data>
+    </edge>
+    <edge source="n1" target="n9">
+      <data key="e_interaction">indirect effect</data>
+    </edge>
+    <edge source="n1" target="n10">
+      <data key="e_interaction">indirect effect</data>
+    </edge>
+    <edge source="n1" target="n11">
+      <data key="e_interaction">phosphorylation</data>
+    </edge>
+    <edge source="n2" target="n0">
+      <data key="e_interaction">compound</data>
+    </edge>
+    <edge source="n3" target="n12">
+      <data key="e_interaction">activation</data>
+    </edge>
+    <edge source="n4" target="n8">
+      <data key="e_interaction">compound</data>
+    </edge>
+    <edge source="n4" target="n13">
+      <data key="e_interaction">compound</data>
+    </edge>
+    <edge source="n6" target="n0">
+      <data key="e_interaction">compound</data>
+    </edge>
+    <edge source="n7" target="n4">
+      <data key="e_interaction">compound</data>
+    </edge>
+    <edge source="n8" target="n2">
+      <data key="e_interaction">compound</data>
+    </edge>
+    <edge source="n10" target="n14">
+      <data key="e_interaction">compound</data>
+    </edge>
+    <edge source="n11" target="n0">
+      <data key="e_interaction">expression</data>
+    </edge>
+    <edge source="n12" target="n1">
+      <data key="e_interaction">activation</data>
+    </edge>
+    <edge source="n13" target="n7">
+      <data key="e_interaction">compound</data>
+    </edge>
+    <edge source="n13" target="n13">
+      <data key="e_interaction">compound</data>
+    </edge>
+    <edge source="n14" target="n10">
+      <data key="e_interaction">compound</data>
+    </edge>
+  </graph>
+</graphml>
