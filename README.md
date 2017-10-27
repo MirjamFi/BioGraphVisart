@@ -1,4 +1,6 @@
 # SubgraphVisualization
+
+### !Only in Safari (for the moment)!
 Load a .graphml-file and select node value and tracer to generate a subgraph, you can download as .png.
 
 The .graphml-file has to be in the same directory or a subfolder as the subgraphVisualization.html.
