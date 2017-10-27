@@ -15,11 +15,17 @@
 				font-size: 14px;
 			}
 			#cy {
-		        width: 90%;
-		        height: 80%;
+		        width: 79%;
+		        height: 79%;
 		        position: absolute;
-		        top: 150px;
-		        left: 50px;
+		        top: 200px;
+		        left: 200px;
+		    }
+		    #legend {
+		        position: absolute;
+		        top: 250px;
+		        left: 10px;
+		        font-size: 11px;
 		    }
 			}
 			h1 {
@@ -38,7 +44,7 @@
 <body>
 	<h1>Subgraph Visualization</h1>
 
-	<p id="description">Load a .graphml-file and select node value and tracer to generate a subgraph, you can download as .png.</p>
+	<p id="description">Load a .graphml-file and select node value to generate a subgraph, you can download as .png.</p>
 
 	<div id="dataPart">
 		<input name="graphFile" type="text" maxlength="512" id="graphName" value=".graphml"/>
@@ -51,14 +57,40 @@
 
 		<button onclick="visualize()" id="visualize" disabled="disabled">Visualize</button>
 	</div>
+
 	<p></p>
+
 	<div id="downloadPart">
 		<input name="outputFile" type="text" maxlength="512" id="outputName" value="File name"/>
 		<button id="download" onclick="downloadPNG()" disabled="disabled">Download</button>
 	</div>
 
-	<div id="cy"></div>
-	
+	<div align="left" id="legend" style="visibility: hidden">
+		<table id="arrows">
+		  <tr>
+		    <td>Activation</td>
+		    <td><img width="25" height="20" src="legends/activation.png" alt="" style=""></td>
+		  </tr>
+		  <tr>
+		  	<td>Inhibition</td> 
+		  	<td><img  width="22" height="20" src="legends/inhibition.png" alt=""></td> 
+		  </tr>
+		  <tr>
+		  	<td>Compound</td>
+		  	<td><img width="25" height="20" src="legends/compoundExpression.png" alt=""></td>
+		  </tr>
+		  <tr>
+		  	<td>Expression</td>
+		  	 <td><img width="25" height="20" src="legends/compoundExpression.png" alt=""></td>
+		  </tr>
+		  <tr>
+		    <td>Phosphorylation</td>
+		    <td><img width="25" height="20" src="legends/phosphorylation.png" alt=""></td>
+		  </tr>
+		</table>
+	</div>
+
+	<div align="left" id="cy"></div>
 
    	<script type="text/javascript" src="scripts/graph.js"></script> 
 </body>

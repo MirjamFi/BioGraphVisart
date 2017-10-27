@@ -66,6 +66,7 @@ var cy = cytoscape({
 var nodes, edges, path, tracer, nodeVal, outputName, nodeAttributes, graphString;
 var firstTime = true;
 var loadGraphCount = 0;
+var legendDrawn = false;
 
 // test if object is empty
 function isEmpty(obj) {
@@ -89,38 +90,103 @@ function removeOptions(selectbox)
 // read from grphml - file
 function loadFile() {
   path = document.getElementById('graphName').value;
+  console.log(path.endsWith('.graphml'));
+  if(!path.endsWith('.graphml')){
+    alert('Please give a .graphml-file.');
+    return;
+  };
   var result = null;
   var xmlhttp = new XMLHttpRequest();
   xmlhttp.open("GET", path, false);
   xmlhttp.send();
   if (xmlhttp.status==200) {
     graphString = xmlhttp.responseText.split("\n");
-  }
-  // put node atttributes into dropdown select object
-  var drp = document.getElementById("values");
-  removeOptions(drp);
-  var sele = document.createElement("OPTION");
-  sele.text = "Choose value";
-  sele.value = "";
-  drp.add(sele);
-  for (var i = 0; i <= graphString.length - 1; i++) {
-    if(graphString[i].includes("for=\"node\"") && 
-      (graphString[i].includes("attr.type=\"double\"") || 
-        (graphString[i].includes("attr.type=\"boolean\"")))){
-      var nodeattr = graphString[i].split("attr.name=")[1].split(" ")[0].replace(/"/g, "");
-      var optn = document.createElement("OPTION");
-      optn.text=nodeattr;
-      optn.value=nodeattr;
-      drp.add(optn);
+
+    // put node atttributes into dropdown select object
+    var drp = document.getElementById("values");
+    removeOptions(drp);
+    var sele = document.createElement("OPTION");
+    sele.text = "Choose value";
+    sele.value = "";
+    drp.add(sele);
+    for (var i = 0; i <= graphString.length - 1; i++) {
+      if(graphString[i].includes("for=\"node\"") && 
+        (graphString[i].includes("attr.type=\"double\"") || 
+          (graphString[i].includes("attr.type=\"boolean\"")))){
+        var nodeattr = graphString[i].split("attr.name=")[1].split(" ")[0].replace(/"/g, "");
+        var optn = document.createElement("OPTION");
+        optn.text=nodeattr;
+        optn.value=nodeattr;
+        drp.add(optn);
+      };
     };
-  };
-  loadGraphCount ++;
+    loadGraphCount ++;
+    }
+  else{
+    alert('Invalid file path.');
+    return;
+  }
+  
 };
+
+function createLegend(){
+  document.getElementById('legend').setAttribute('style','visibility:visible');
+
+  //Append a defs (for definition) element to your SVG
+  var svg = d3.select("#legend").append("svg");
+  svg.attr("width", 189).attr("height", 220);
+  var defs = svg.append("defs");
+
+  //Append a linearGradient element to the defs and give it a unique id
+  var linearGradient = defs.append("linearGradient")
+      .attr("id", "linear-gradient");
+
+  linearGradient.selectAll("stop") 
+    .data([                             
+        {offset: "0%", color: "#0000ff"}, 
+        {offset: "50%", color: "#ffffff"},          
+        {offset: "100%", color: "#ff0000"}    
+      ])                  
+    .enter().append("stop")
+    .attr("offset", function(d) { return d.offset; }) 
+    .attr("stop-color", function(d) { return d.color; });
+
+  svg.append("rect")
+  .attr("width", 189)
+  .attr("height", 20)
+  .style("fill", "url(#linear-gradient)");
+
+  svg.append("text")      // text label for the x axis
+        .attr("x", 10 )
+        .attr("y", 29 )
+        .style("text-anchor", "middle")
+        .text("-10");
+  svg.append("text")      
+      .attr("x", 94.5 )
+      .attr("y", 29 )
+      .style("text-anchor", "middle")
+      .text("0");
+  svg.append("text")      
+      .attr("x", 94.5 )
+      .attr("y", 40 )
+      .style("text-anchor", "middle")
+      .text("log2ratio");
+  svg.append("text")      // text label for the x axis
+      .attr("x", 183 )
+      .attr("y", 29 )
+      .style("text-anchor", "middle")
+      .text("10");
+
+  //document.getElementById("defs").setAttribute('style','visibility:visible');*/
+
+  $('#visualize').attr("disabled", true);
+}
 
 // load graphml and create graph of it
 function visualize() {
+
   nodeVal = document.getElementById('values').value;
-  $('#visualize').attr("disabled", true);
+  
   // get nodes and edges
   nodes = [];
   edges = [];
@@ -180,6 +246,10 @@ function visualize() {
   // calculate layout only once
   if(firstTime){
       firstTime = false;
+      if(!legendDrawn){
+        legendDrawn = true;
+        createLegend();
+      }
       cy.layout({
       name: 'cose',//'breadthfirst',
         }).run();
@@ -191,7 +261,6 @@ function visualize() {
 // download png of graph
 function downloadPNG(){
   outputName = document.getElementById('outputName').value;
-  //generate PNG image to display from "id = downloadPNG"
   var png64 = cy.png();
   $('#downloadPNG').attr('href', png64);
   var download = document.createElement('a');
