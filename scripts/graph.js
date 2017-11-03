@@ -227,7 +227,6 @@ function visualize() {
       }
       if(graphString[i].includes("\"v_"+nodeVal+"\"\>")){
         var val = regExp.exec(graphString[i])[1]; // if availabe get node value
-               console.log(val);
         if(!isNaN(parseFloat(val))){
           val = parseFloat(val);
           nodeValuesNum.push(val);
@@ -260,12 +259,12 @@ function visualize() {
   // if attributes values are only 0 or 1 make them boolean
   if(!isEmpty(nodeValuesNum)){
     uniqueVals = new Set(nodeValuesNum);
-    if(uniqueVals.size == 2){
+    if(uniqueVals.size === 2){
       nodes.forEach( function(nodeEntry){
-        if(nodeEntry.data.val == 0){
+        if(nodeEntry.data.val === 0){
            nodeEntry.data.val = "false";
         }
-        if(nodeEntry.data.val == 1){
+        if(nodeEntry.data.val === 1){
            nodeEntry.data.val = "true";
         }   
       });
@@ -276,8 +275,8 @@ function visualize() {
   // set min and max for legend
   if(!isEmpty(nodeValuesNum)){
     if(!nodeValuesNum.includes("empty")){
-      nodesMin = Math.max.apply(Math,nodeValuesNum).toFixed(2);
-      nodesMax = Math.max.apply(Math,nodeValuesNum).toFixed(2);
+      nodesMin = parseFloat(Math.max.apply(Math,nodeValuesNum).toFixed(2));
+      nodesMax = parseFloat(Math.max.apply(Math,nodeValuesNum).toFixed(2));
     }
     if(!firstTime){
       if(nodesMin>oldMin){
@@ -289,27 +288,22 @@ function visualize() {
     }
 
     if(nodesMin >= 0 ){
-      nodesMin = -1;
+      nodesMin = -1.0;
     }
     if(nodesMax <= 0){
-      nodesMax = 1;
+      nodesMax = 1.0;
     }
-    else{
-      if((!firstTime && nodesMax != oldMax) || (!firstTime && nodesMin != oldMin)){
-        alert('Legend\'s limits changed');
-        oldMax = nodesMax;
-        oldMin = nodesMin;
-      }
-
-    }
-    console.log(nodesMin != oldMin);
   }
-  else{
+  
+  else if(isEmpty(nodeValuesNum)){
     nodesMin = "false";
     nodesMax = "true";
-    if(!firstTime){
-      alert('Legend\'s limits changed');
-    }
+  }
+
+  if((!firstTime && !(nodesMax === oldMax)) || (!firstTime && !(nodesMin === oldMin))){
+    alert('Legend\'s limits changed');
+    oldMax = nodesMax;
+    oldMin = nodesMin;
   }
 
   // add nodes and edges to graph
@@ -348,8 +342,11 @@ function visualize() {
 
   // show legend and update if necessary
   document.getElementById('legend').setAttribute('style','visibility:visible');
-  if(Number.isFinite(nodesMin)){    // numerical attribute
+  if(!isNaN(nodesMin) && (!isNaN(nodesMax)))  {    // numerical attribute
     $("#mid").text("0");
+    $("#min").text(nodesMin);
+    $("#max").text(nodesMax);
+
     cy.style()                // update the elements in the graph with the new style
       .selector('node[val <0]')
           .style('background-color', 'mapData(val,'+ nodesMin+', 0, #006cf0, white)')
@@ -358,13 +355,14 @@ function visualize() {
       .selector('node[val >0]')
         .style('background-color', 'mapData(val,0,'+ nodesMax+', white, #d50000)')
       .update(); 
+
   }
   else{
     $("#mid").text("");         // boolean attribute
+  
+    $("#min").text(nodesMin);
+    $("#max").text(nodesMax);
   }
-  $("#min").text(nodesMin);
-  $("#max").text(nodesMax);
-
 
 
 }
