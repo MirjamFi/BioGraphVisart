@@ -2,7 +2,7 @@
   create a graph with Cytoscape
 */
 
-var nodes, edges, path, tracer, nodeVal, outputName, nodeAttributes, graphString;
+var nodes, edges, path, tracer, nodeVal, outputName, nodeAttributes, graphString, oldMin, oldMax;
 var firstTime = true;
 var loadGraphCount = 0;
 var legendDrawn = false;
@@ -84,8 +84,6 @@ var cy = cytoscape({
         }}
       ]
   });
-
-
 
 
 // test if object is empty
@@ -201,12 +199,12 @@ function createLegend(){
       .text(nodesMax)
       .attr("id",'max');
 
-
-  $('#visualize').attr("disabled", true);
 }
 
 // load graphml and create graph of it
 function visualize() {
+
+  $('#loadGraphml').attr("disabled", true);
 
   nodeVal = document.getElementById('values').value;
 
@@ -229,6 +227,7 @@ function visualize() {
       }
       if(graphString[i].includes("\"v_"+nodeVal+"\"\>")){
         var val = regExp.exec(graphString[i])[1]; // if availabe get node value
+               console.log(val);
         if(!isNaN(parseFloat(val))){
           val = parseFloat(val);
           nodeValuesNum.push(val);
@@ -261,7 +260,6 @@ function visualize() {
   // if attributes values are only 0 or 1 make them boolean
   if(!isEmpty(nodeValuesNum)){
     uniqueVals = new Set(nodeValuesNum);
-    console.log(uniqueVals);
     if(uniqueVals.size == 2){
       nodes.forEach( function(nodeEntry){
         if(nodeEntry.data.val == 0){
@@ -281,16 +279,37 @@ function visualize() {
       nodesMin = Math.max.apply(Math,nodeValuesNum).toFixed(2);
       nodesMax = Math.max.apply(Math,nodeValuesNum).toFixed(2);
     }
+    if(!firstTime){
+      if(nodesMin>oldMin){
+        nodesMin = oldMin;
+      }
+      if(nodesMax<oldMax){
+        nodesMax = oldMax;
+      }
+    }
+
     if(nodesMin >= 0 ){
       nodesMin = -1;
     }
     if(nodesMax <= 0){
       nodesMax = 1;
     }
+    else{
+      if((!firstTime && nodesMax != oldMax) || (!firstTime && nodesMin != oldMin)){
+        alert('Legend\'s limits changed');
+        oldMax = nodesMax;
+        oldMin = nodesMin;
+      }
+
+    }
+    console.log(nodesMin != oldMin);
   }
   else{
     nodesMin = "false";
     nodesMax = "true";
+    if(!firstTime){
+      alert('Legend\'s limits changed');
+    }
   }
 
   // add nodes and edges to graph
@@ -322,6 +341,8 @@ function visualize() {
         }).run();
       $('#download').removeAttr('disabled');
       createLegend();
+      oldMin = nodesMin;
+      oldMax = nodesMax;
 
   }
 
@@ -341,7 +362,6 @@ function visualize() {
   else{
     $("#mid").text("");         // boolean attribute
   }
-
   $("#min").text(nodesMin);
   $("#max").text(nodesMax);
 
