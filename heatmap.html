@@ -2,133 +2,80 @@
 <meta charset="utf-8">
 
 <style>
-  .axis path,
-  .axis line {
-    fill: none;
-    stroke: black;
-    shape-rendering: crispEdges;
-  }
-  .axis text {
-      font-family: sans-serif;
-      font-size: 11px;
-   }
-   
-    body { margin: 0; }
-    svg {
-      position: absolute;
-      top: 0;
-      left: 0;
-    }
-
+ #container {
+    min-width: 300px;
+    max-width: 800px;
+    height: 400px;
+    margin: 1em auto;
+}
 </style>
 
-<script src="//d3js.org/d3.v3.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/heatmap.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
 
+<div id="container"></div>
 
 
 <script>
-  var itemSize = 22,
-      cellSize = itemSize - 1,
-      margin = {top: 120, right: 20, bottom: 20, left: 110};
+$(function () {
+    $('#container').highcharts({
+        
+        chart: {
+            type: 'heatmap',
+            marginTop: 40,
+            marginBottom: 40
+        },
 
-  var formatDate = d3.time.format("%Y-%m-%d");
+        title: {
+            text: 'Sales per employee per weekday'
+        },
 
-  d3.csv('data/heatmap_test.csv', function ( response ) {
+        xAxis: {
+            categories: ['Alexander', 'Marie', 'Maximilian', 'Sophia', 'Lukas', 'Maria', 'Leon', 'Anna', 'Tim', 'Laura']
+        },
 
-    var data = response.map(function( item ) {
-        var newItem = {};
-        newItem.country = item.x;
-        newItem.product = item.y;
-        newItem.value = item.value;
-        return newItem;
+        yAxis: {
+            categories: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+            title: null
+        },
+
+        colorAxis: {
+            min: 0,
+            minColor: '#FFFFFF',
+            maxColor: Highcharts.getOptions().colors[0]
+        },
+
+        legend: {
+            align: 'right',
+            layout: 'vertical',
+            margin: 0,
+            verticalAlign: 'top',
+            y: 25,
+            symbolHeight: 320
+        },
+
+        tooltip: {
+            formatter: function () {
+                return '<b>' + this.series.xAxis.categories[this.point.x] + '</b> sold <br><b>' +
+                    this.point.value + '</b> items on <br><b>' + this.series.yAxis.categories[this.point.y] + '</b>';
+            }
+        },
+
+        series: [{
+            name: 'Sales per employee',
+            borderWidth: 1,
+            data: [[0,0,10],[0,1,19],[0,2,8],[0,3,24],[0,4,67],[1,0,92],[1,1,58],[1,2,78],[1,3,117],[1,4,48],[2,0,35],[2,1,15],[2,2,123],[2,3,64],[2,4,52],[3,0,72],[3,1,132],[3,2,114],[3,3,19],[3,4,16],[4,0,38],[4,1,5],[4,2,8],[4,3,117],[4,4,115],[5,0,88],[5,1,32],[5,2,12],[5,3,6],[5,4,120],[6,0,13],[6,1,44],[6,2,88],[6,3,98],[6,4,96],[7,0,31],[7,1,1],[7,2,82],[7,3,32],[7,4,30],[8,0,85],[8,1,97],[8,2,123],[8,3,64],[8,4,84],[9,0,47],[9,1,114],[9,2,31],[9,3,48],[9,4,91]],
+            dataLabels: {
+                enabled: true,
+                color: 'black',
+                style: {
+                    textShadow: 'none'
+                }
+            }
+        }]
+
     });
-    
- 	var x_elements = d3.set(data.map(function( item ) { return item.product; } )).values(),
-       y_elements = d3.set(data.map(function( item ) { return item.country; } )).values();
-
-	var x_range = x_elements.length * itemSize
-	var y_range = y_elements.length * itemSize
-	
-    var xScale = d3.scale.ordinal()
-        .domain(x_elements)
-        .rangeBands([0, x_range]);    
-    
-	var map = {};
-	map.width = x_range * 1.2;
-	map.height = y_range * 2;
-
-  
-
-    var xAxis = d3.svg.axis()
-        .scale(xScale)
-        .tickFormat(function (d) {
-            return d;
-        })
-        .orient("top");
-
-	map.canvas =
-  		d3.select('body')
-    		.append('canvas')
-      	.attr('width', map.width)
-      	.attr('height', map.height)
-      	.node().getContext('2d');
-
-	map.svg =
-  		d3.select('body')
-    		.append('svg')
-      	.attr('width', map.width)
-      	.attr('height', map.height)
-      	.append('g').attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-	map.svg.append('rect')
-  		.attr('class', 'overlay')
-  		.attr('width', map.width)
-  		.attr('height', map.height);
-  
-
- 
-
-    var yScale = d3.scale.ordinal()
-        .domain(y_elements)
-        .rangeBands([0, y_elements.length * itemSize]);
-
-    var yAxis = d3.svg.axis()
-        .scale(yScale)
-        .tickFormat(function (d) {
-            return d;
-        })
-        .orient("left");
-
-    var colorScale = d3.scale.threshold()
-        .domain([0.85, 1])
-        .range(["#2980B9", "#E67E22", "#27AE60", "#27AE60"]);
-
-    var cells = map.svg.selectAll('rect')
-        .data(data)
-        .enter().append('g').append('rect')
-        .attr('class', 'cell')
-        .attr('width', cellSize)
-        .attr('height', cellSize)
-        .attr('y', function(d) { return yScale(d.country); })
-        .attr('x', function(d) { return xScale(d.product); })
-        .attr('fill', function(d) { return colorScale(d.value); });
-
-    map.svg.append("g")
-        .attr("class", "y axis")
-        .call(yAxis)
-        .selectAll('text')
-        .attr('font-weight', 'normal');
-
-    map.svg.append("g")
-        .attr("class", "x axis")
-        .call(xAxis)
-        .selectAll('text')
-        .attr('font-weight', 'normal')
-        .style("text-anchor", "start")
-        .attr("dx", ".8em")
-        .attr("dy", ".5em")
-        .attr("transform", function (d) {
-            return "rotate(-65)";
-        });
-  });
+});
 </script>
