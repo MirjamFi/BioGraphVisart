@@ -15,6 +15,8 @@ initiate cytoscape graph
 */
 var cy = cytoscape({
     container: document.getElementById('cy'),
+    ready: function(){
+          },
     style: [
          // style nodes
       {selector: 'node',
@@ -86,6 +88,7 @@ var cy = cytoscape({
   });
 
 
+
 // test if object is empty
 function isEmpty(obj) {
     for(var key in obj) {
@@ -142,7 +145,6 @@ function loadFile() {
     alert('Invalid file path.');
     return;
   }
-  
 };
 
 function createLegend(){
@@ -348,7 +350,6 @@ function visualize() {
       createLegend();
       oldMin = nodesMin;
       oldMax = nodesMax;
-
   }
 
   // show legend and update if necessary
@@ -375,6 +376,30 @@ function visualize() {
     $("#max").text(nodesMax);
   }
 
+  cy.nodes().qtip({       // show node attibute value by mouseover
+    show: {   
+      event: 'mouseover', 
+      solo: true,
+    },
+    content: function(){
+      if(!isNaN(parseFloat(this.data('val')))){
+        return parseFloat(this.data('val')).toFixed(2); } //numbers
+      else{
+        return this.data('val');          //bools
+      }
+    },
+    position: {
+      my: 'top center',
+      at: 'bottom center'
+    },
+    style: {
+      classes: 'qtip-bootstrap',
+      tip: {
+        width: 16,
+        height: 8
+      }
+    },
+    });
 
 }
 
