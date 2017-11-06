@@ -9,12 +9,59 @@ var legendDrawn = false;
 var svg;
 var  nodesMin = -1;
 var nodesMax = 1;
+var cy;
+
+
 
 /* 
-initiate cytoscape graph 
+read from grphml - file and initialize cy-object
 */
-var cy = cytoscape({
+function loadFile() {
+  path = document.getElementById('graphName').value;
+  if(!path.endsWith('.graphml')){
+    alert('Please give a .graphml-file.');
+    return;
+  };
+  var result = null;
+  var xmlhttp = new XMLHttpRequest();
+  xmlhttp.open("GET", path, false);
+  xmlhttp.send();
+  if (xmlhttp.status==200) {
+    graphString = xmlhttp.responseText.split("\n");
+
+    // put node atttributes into dropdown select object
+    var drp = document.getElementById("values");
+    removeOptions(drp);
+    var sele = document.createElement("OPTION");
+    sele.text = "Choose value";
+    sele.value = "";
+    drp.add(sele);
+    for (var i = 0; i <= graphString.length - 1; i++) {
+      if(graphString[i].includes("for=\"node\"") && 
+        (graphString[i].includes("attr.type=\"double\"") || 
+          (graphString[i].includes("attr.type=\"boolean\"")))){
+        var nodeattr = graphString[i].split("attr.name=")[1].split(" ")[0].replace(/"/g, "");
+        var optn = document.createElement("OPTION");
+        optn.text=nodeattr;
+        optn.value=nodeattr;
+        drp.add(optn);
+      };
+    };
+    loadGraphCount ++;
+    createCyObject();
+  }
+  else{
+    alert('Invalid file path.');
+    return;
+  }
+};
+
+// initiate cytoscape graph 
+function createCyObject(){
+  cy = cytoscape({
     container: document.getElementById('cy'),
+    ready: function(){
+          },
     style: [
          // style nodes
       {selector: 'node',
@@ -84,67 +131,37 @@ var cy = cytoscape({
         }}
       ]
   });
-
-
-// test if object is empty
-function isEmpty(obj) {
-    for(var key in obj) {
-        if(obj.hasOwnProperty(key))
-            return false;
-    }
-    return true;
 }
 
-//remove all options of dropdown
-function removeOptions(selectbox){
-    var i;
-    for(i = selectbox.options.length - 1 ; i >= 0 ; i--)
-    {
-        selectbox.remove(i);
-    }
+
+/*
+visualize a graph from .graphml-file
+*/
+function visualize() {
+
+  $('#loadGraphml').attr("disabled", true);
+
+  nodeVal = document.getElementById('values').value;
+
+  // get nodes and edges
+  getNodesAndEdges();
+
+  transform01toTF();
+
+  // set min and max for legend
+  legendsRange();
+
+  // add nodes and edges to graph
+  addNodesAndEdges();
+
+  calculateLayout();
+
+  showLegend();
+
+  showMetaInfo();
 }
 
-// read from grphml - file
-function loadFile() {
-  path = document.getElementById('graphName').value;
-  if(!path.endsWith('.graphml')){
-    alert('Please give a .graphml-file.');
-    return;
-  };
-  var result = null;
-  var xmlhttp = new XMLHttpRequest();
-  xmlhttp.open("GET", path, false);
-  xmlhttp.send();
-  if (xmlhttp.status==200) {
-    graphString = xmlhttp.responseText.split("\n");
-
-    // put node atttributes into dropdown select object
-    var drp = document.getElementById("values");
-    removeOptions(drp);
-    var sele = document.createElement("OPTION");
-    sele.text = "Choose value";
-    sele.value = "";
-    drp.add(sele);
-    for (var i = 0; i <= graphString.length - 1; i++) {
-      if(graphString[i].includes("for=\"node\"") && 
-        (graphString[i].includes("attr.type=\"double\"") || 
-          (graphString[i].includes("attr.type=\"boolean\"")))){
-        var nodeattr = graphString[i].split("attr.name=")[1].split(" ")[0].replace(/"/g, "");
-        var optn = document.createElement("OPTION");
-        optn.text=nodeattr;
-        optn.value=nodeattr;
-        drp.add(optn);
-      };
-    };
-    loadGraphCount ++;
-    }
-  else{
-    alert('Invalid file path.');
-    return;
-  }
-  
-};
-
+//initialize legend
 function createLegend(){
 
   //Append a defs (for definition) element to your SVG
@@ -187,11 +204,6 @@ function createLegend(){
         .text(nodesMin)
         .attr("id", 'min');
 
-  /*svg.append("text")      // legend title
-      .attr("x", 94.5 )
-      .attr("y", 40 )
-      .style("text-anchor", "middle")
-      .text("")*/
   svg.append("text")      // text label for the x axis
       .attr("x", 179 )
       .attr("y", 29 )
@@ -199,16 +211,16 @@ function createLegend(){
       .text(nodesMax)
       .attr("id",'max');
 
+  svg.append("text")      // text label for the x axis
+      .attr("x", 94.5 )
+      .attr("y", 50 )
+      .style("text-anchor", "middle")
+      .text("")
+      .attr("id",'legendChanged');
 }
 
-// load graphml and create graph of it
-function visualize() {
-
-  $('#loadGraphml').attr("disabled", true);
-
-  nodeVal = document.getElementById('values').value;
-
-  // get nodes and edges
+//get information of nodes ande edges
+function getNodesAndEdges(){
   nodes = [];
   edges = [];
   nodeValuesNum = [];
@@ -236,6 +248,10 @@ function visualize() {
       if(!curNode.val){
         curNode.val = 0;
       }
+      if(graphString[i].includes("v_gene_name")){       // get gene names
+        var genename = graphString[i].split("\>")[1].split("\<")[0];
+        curNode.genename = genename;
+      }
       nodes.push({data: curNode}); 
     }
 
@@ -255,7 +271,10 @@ function visualize() {
       edges.push({data: curEdge} );
     }
   }
+}
 
+//transform 0 and 1 as atttributes to true and false
+function transform01toTF(){
   // if attributes values are only 0 or 1 make them boolean
   if(!isEmpty(nodeValuesNum)){
     uniqueVals = new Set(nodeValuesNum);
@@ -271,8 +290,10 @@ function visualize() {
       nodeValuesNum = ["empty"]
     }
   }
+}
 
-  // set min and max for legend
+//set legends range by min and max of nodes' attributes
+function legendsRange(){
   if(!isEmpty(nodeValuesNum)){
     if(!nodeValuesNum.includes("empty")){
       nodesMin = parseFloat(Math.max.apply(Math,nodeValuesNum).toFixed(2));
@@ -301,12 +322,18 @@ function visualize() {
   }
 
   if((!firstTime && !(nodesMax === oldMax)) || (!firstTime && !(nodesMin === oldMin))){
-    alert('Legend\'s limits changed');
+    //alert('Legend\'s limits changed');
     oldMax = nodesMax;
     oldMin = nodesMin;
+     $("#legendChanged").text("Legend\'s limits changed");
   }
+  else{
+    $("#legendChanged").text("");
+  }
+}
 
-  // add nodes and edges to graph
+//add nodes and edges to cy-object (update if attribute has changed)
+function addNodesAndEdges(){
   if(loadGraphCount > 1){
     cy.elements().remove();
     firstTime = true;
@@ -323,7 +350,10 @@ function visualize() {
       });
     }
   }
+}
 
+//calculate graph layout (only once)
+function calculateLayout(){
   // calculate layout and legend only once
   if(firstTime){
       firstTime = false;
@@ -337,9 +367,11 @@ function visualize() {
       createLegend();
       oldMin = nodesMin;
       oldMax = nodesMax;
-
   }
+}
 
+//show legend
+function showLegend(){
   // show legend and update if necessary
   document.getElementById('legend').setAttribute('style','visibility:visible');
   if(!isNaN(nodesMin) && (!isNaN(nodesMax)))  {    // numerical attribute
@@ -363,11 +395,61 @@ function visualize() {
     $("#min").text(nodesMin);
     $("#max").text(nodesMax);
   }
-
-
 }
 
-// download png of graph
+//show meta-information of nodes by mouseover
+function showMetaInfo(){
+  cy.nodes().qtip({       // show node attibute value by mouseover
+    show: {   
+      event: 'mouseover', 
+      solo: true,
+    },
+    content: {text : function(){
+      if(!isNaN(parseFloat(this.data('val')))){
+        return '<b>'+nodeVal +'</b>: ' + parseFloat(this.data('val')).toFixed(2) +
+        '<br>' + '<b>gene name</b>: ' + this.data('genename'); } //numbers
+      else{
+        return '<b>'+nodeVal +'</b>: '+ this.data('val') +
+        '<br>' + '<b>gene name</b>: ' + this.data('genename');          //bools
+      }
+    }},
+    position: {
+      my: 'top center',
+      at: 'bottom center'
+    },
+    style: {
+      classes: 'qtip-bootstrap',
+      tip: {
+        width: 8,
+        height: 8
+      }
+    },
+    });
+}
+
+/* helper functions */
+// test if object is empty
+function isEmpty(obj) {
+    for(var key in obj) {
+        if(obj.hasOwnProperty(key))
+            return false;
+    }
+    return true;
+}
+
+//remove all options of dropdown
+function removeOptions(selectbox){
+    var i;
+    for(i = selectbox.options.length - 1 ; i >= 0 ; i--)
+    {
+        selectbox.remove(i);
+    }
+}
+
+
+/* 
+  download png of graph
+*/
 function downloadPNG(){
   outputName = document.getElementById('outputName').value;
   var png64 = cy.png();
