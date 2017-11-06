@@ -248,6 +248,10 @@ function getNodesAndEdges(){
       if(!curNode.val){
         curNode.val = 0;
       }
+      if(graphString[i].includes("v_gene_name")){       // get gene names
+        var genename = graphString[i].split("\>")[1].split("\<")[0];
+        curNode.genename = genename;
+      }
       nodes.push({data: curNode}); 
     }
 
@@ -400,13 +404,15 @@ function showMetaInfo(){
       event: 'mouseover', 
       solo: true,
     },
-    content: function(){
+    content: {text : function(){
       if(!isNaN(parseFloat(this.data('val')))){
-        return parseFloat(this.data('val')).toFixed(2); } //numbers
+        return '<b>'+nodeVal +'</b>: ' + parseFloat(this.data('val')).toFixed(2) +
+        '<br>' + '<b>gene name</b>: ' + this.data('genename'); } //numbers
       else{
-        return this.data('val');          //bools
+        return '<b>'+nodeVal +'</b>: '+ this.data('val') +
+        '<br>' + '<b>gene name</b>: ' + this.data('genename');          //bools
       }
-    },
+    }},
     position: {
       my: 'top center',
       at: 'bottom center'
@@ -414,7 +420,7 @@ function showMetaInfo(){
     style: {
       classes: 'qtip-bootstrap',
       tip: {
-        width: 16,
+        width: 8,
         height: 8
       }
     },
