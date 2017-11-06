@@ -199,6 +199,13 @@ function createLegend(){
       .text(nodesMax)
       .attr("id",'max');
 
+  svg.append("text")      // text label for the x axis
+      .attr("x", 94.5 )
+      .attr("y", 50 )
+      .style("text-anchor", "middle")
+      .text("")
+      .attr("id",'legendChanged');
+
 }
 
 // load graphml and create graph of it
@@ -301,9 +308,13 @@ function visualize() {
   }
 
   if((!firstTime && !(nodesMax === oldMax)) || (!firstTime && !(nodesMin === oldMin))){
-    alert('Legend\'s limits changed');
+    //alert('Legend\'s limits changed');
     oldMax = nodesMax;
     oldMin = nodesMin;
+     $("#legendChanged").text("Legend\'s limits changed");
+  }
+  else{
+    $("#legendChanged").text("");
   }
 
   // add nodes and edges to graph
