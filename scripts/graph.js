@@ -33,16 +33,16 @@ function loadFile() {
     // put node atttributes into dropdown select object
     var drp = document.getElementById("values");
     removeOptions(drp);
-    var drpShapes = document.getElementById("nodeShapes");
+    var drpShapes = document.getElementById("nodeShapesAttr");
     removeOptions(drpShapes);
 
     var sele = document.createElement("OPTION");
-    sele.text = "Choose attribute";
+    sele.text = "Choose node's attribute";
     sele.value = "";
     drp.add(sele);
     
     var seleShapes = document.createElement("OPTION");
-    seleShapes.text = "Choose attribute";
+    seleShapes.text = "Choose shape's attribute";
     seleShapes.value = "";
     drpShapes.add(seleShapes);
   
@@ -181,7 +181,7 @@ function visualize() {
 
   showMetaInfo();
 
-  document.getElementById('nodeShapes').setAttribute('style','visibility:visible');
+  activateNodeShapeChange();
 }
 
 //initialize legend
@@ -469,17 +469,40 @@ function removeOptions(selectbox){
     }
 }
 
+function activateNodeShapeChange(){
+  document.getElementById('nodeShapesAttr').setAttribute('style','visibility:visible');
+  document.getElementById('nodeShapes').setAttribute('style','visibility:visible');
+
+  var drpShape = document.getElementById("nodeShapes");
+  removeOptions(drpShape);
+  var seleShape = document.createElement("OPTION");
+  seleShape.text = "Choose shape";
+  seleShape.value = "";
+  drpShape.add(seleShape);
+
+  const shapesArray = ["rectangle", "triangle", "rhomboid", "pentagon", "tag"];
+
+  shapesArray.forEach(function(s){
+    var nodeShape = s;
+    var optnShape = document.createElement("OPTION");
+    optnShape.text=nodeShape;
+    optnShape.value=nodeShape;
+    drpShape.add(optnShape);
+  })
+}
+
 /*
   change node shape of nodes with given attribute
 */
 function changeNodeShapes(){
-  var shapeAttribute = document.getElementById('nodeShapes').value;
+  var shapeAttribute = document.getElementById('nodeShapesAttr').value;
+  var shape = document.getElementById('nodeShapes').value;
   var i = 0;
   var id = "";
-  cy.style()
+  /*cy.style()
     .selector('node')        
     .style('shape', 'ellipse')
-    .update(); 
+    .update(); */
   while(i < graphString.length){
 
     if(graphString[i].includes("node id")){   // get node id
@@ -488,13 +511,12 @@ function changeNodeShapes(){
     else if(id != "" && graphString[i].includes('\"v_'+shapeAttribute+'\">true<')){
       cy.style()
         .selector('node[id ="'+id+'"]')        
-        .style('shape', 'roundrectangle')
+        .style('shape', shape)
         .update(); 
     }
     i++;
   }
 }
-
 
 /* 
   download png of graph
