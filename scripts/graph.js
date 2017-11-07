@@ -31,20 +31,37 @@ function loadFile() {
     graphString = xmlhttp.responseText.split("\n");
 
     // put node atttributes into dropdown select object
-    var drp = document.getElementById("values");
+    var drp = document.getElementById("values");      // node attributes
     removeOptions(drp);
     var drpShapes = document.getElementById("nodeShapesAttr");
     removeOptions(drpShapes);
 
-    var sele = document.createElement("OPTION");
+    var sele = document.createElement("OPTION");    
     sele.text = "Choose node's attribute";
     sele.value = "";
     drp.add(sele);
     
-    var seleShapes = document.createElement("OPTION");
+    var seleShapes = document.createElement("OPTION");  // shape attributes
     seleShapes.text = "Choose shape's attribute";
     seleShapes.value = "";
     drpShapes.add(seleShapes);
+
+    var drpShape = document.getElementById("nodeShapes"); // shapes
+    removeOptions(drpShape);
+    var seleShape = document.createElement("OPTION");
+    seleShape.text = "Choose shape";
+    seleShape.value = "";
+    drpShape.add(seleShape);
+
+    const shapesArray = ["rectangle", "octagon", "rhomboid", "pentagon", "tag"];
+
+    shapesArray.forEach(function(s){
+      var nodeShape = s;
+      var optnShape = document.createElement("OPTION");
+      optnShape.text=nodeShape;
+      optnShape.value=nodeShape;
+      drpShape.add(optnShape);
+    })
   
     for (var i = 0; i <= graphString.length - 1; i++) {
       if(graphString[i].includes("for=\"node\"") && 
@@ -469,34 +486,22 @@ function removeOptions(selectbox){
     }
 }
 
+// show drop downs for nodes' shapes attribute and shape itself
 function activateNodeShapeChange(){
   document.getElementById('nodeShapesAttr').setAttribute('style','visibility:visible');
   document.getElementById('nodeShapes').setAttribute('style','visibility:visible');
-
-  var drpShape = document.getElementById("nodeShapes");
-  removeOptions(drpShape);
-  var seleShape = document.createElement("OPTION");
-  seleShape.text = "Choose shape";
-  seleShape.value = "";
-  drpShape.add(seleShape);
-
-  const shapesArray = ["rectangle", "triangle", "rhomboid", "pentagon", "tag"];
-
-  shapesArray.forEach(function(s){
-    var nodeShape = s;
-    var optnShape = document.createElement("OPTION");
-    optnShape.text=nodeShape;
-    optnShape.value=nodeShape;
-    drpShape.add(optnShape);
-  })
 }
 
 /*
   change node shape of nodes with given attribute
 */
 function changeNodeShapes(){
+  var usedShapesAttributes = [];
   var shapeAttribute = document.getElementById('nodeShapesAttr').value;
   var shape = document.getElementById('nodeShapes').value;
+  if(shapeAttribute == "" || shape == ""){
+    return;
+  }
   var i = 0;
   var id = "";
   /*cy.style()
