@@ -208,9 +208,11 @@ var graphlib = new function() {
 	        GAB.nodes[indexOfNode].data[GBprfx] = node.data;
         });
         GABedges = GAB.edges.map(function(edge) { 
-	        return GA.nodes[edge.sid].data[on].toString() + GA.nodes[edge.tid].data[on].toString(); 
+	    return GA.nodes[edge.sid].data[on].toString() + GA.nodes[edge.tid].data[on].toString(); 
         });
-        GABon = GAB.nodes.map(function(node) { return node.data[GAprfx] ? node.data[GAprfx][on] : node.data[GBprfx][on]; });
+        GABon = GAB.nodes.map(function(node) { 
+	    return node.data[GAprfx] ? node.data[GAprfx][on] : node.data[GBprfx][on];
+       	});
         GB.edges.forEach(function(edge) {
 	    var source = GB.nodes[edge.sid];
 	    var target = GB.nodes[edge.tid];
