@@ -2,7 +2,8 @@
   create a graph with Cytoscape
 */
 
-var nodes, edges, path, tracer, nodeVal, outputName, nodeAttributes, graphString, oldMin, oldMax;
+var nodes, edges, path, tracer, nodeVal, outputName, nodeAttributes, 
+  graphString, oldMin, oldMax, nodeShapeAttr;
 var firstTime = true;
 var loadGraphCount = 0;
 var legendDrawn = false;
@@ -30,12 +31,38 @@ function loadFile() {
     graphString = xmlhttp.responseText.split("\n");
 
     // put node atttributes into dropdown select object
-    var drp = document.getElementById("values");
+    var drp = document.getElementById("values");      // node attributes
     removeOptions(drp);
-    var sele = document.createElement("OPTION");
-    sele.text = "Choose value";
+    var drpShapes = document.getElementById("nodeShapesAttr");
+    removeOptions(drpShapes);
+
+    var sele = document.createElement("OPTION");    
+    sele.text = "Choose node's attribute";
     sele.value = "";
     drp.add(sele);
+    
+    var seleShapes = document.createElement("OPTION");  // shape attributes
+    seleShapes.text = "Choose shape's attribute";
+    seleShapes.value = "";
+    drpShapes.add(seleShapes);
+
+    var drpShape = document.getElementById("nodeShapes"); // shapes
+    removeOptions(drpShape);
+    var seleShape = document.createElement("OPTION");
+    seleShape.text = "Choose shape";
+    seleShape.value = "";
+    drpShape.add(seleShape);
+
+    const shapesArray = ["rectangle", "octagon", "rhomboid", "pentagon", "tag"];
+
+    shapesArray.forEach(function(s){
+      var nodeShape = s;
+      var optnShape = document.createElement("OPTION");
+      optnShape.text=nodeShape;
+      optnShape.value=nodeShape;
+      drpShape.add(optnShape);
+    })
+  
     for (var i = 0; i <= graphString.length - 1; i++) {
       if(graphString[i].includes("for=\"node\"") && 
         (graphString[i].includes("attr.type=\"double\"") || 
@@ -45,6 +72,17 @@ function loadFile() {
         optn.text=nodeattr;
         optn.value=nodeattr;
         drp.add(optn);
+
+        if(graphString[i].includes("attr.type=\"boolean\"")){
+          var nodeattrShape = graphString[i].split("attr.name=")[1].split(" ")[0].replace(/"/g, "");
+          var optnShape = document.createElement("OPTION");
+          optnShape.text=nodeattrShape;
+          optnShape.value=nodeattrShape;
+          drpShapes.add(optnShape);
+        }
+      };
+      if(graphString[i].includes("<node id=\"n0\">")){
+        break;
       };
     };
     loadGraphCount ++;
@@ -159,6 +197,8 @@ function visualize() {
   showLegend();
 
   showMetaInfo();
+
+  activateNodeShapeChange();
 }
 
 //initialize legend
@@ -264,8 +304,8 @@ function getNodesAndEdges(){
       curEdge.target = t;
     }
     if(!isEmpty(curEdge)){
-      if(graphString[i].includes("e_interaction")){     // get edges
-        var interact = regExp.exec(graphString[i])[1]; // if availabe get logRatio
+      if(graphString[i].includes("e_interaction")){     // get edges interaction type
+        var interact = regExp.exec(graphString[i])[1]; 
         curEdge.interaction = interact;
       }
       edges.push({data: curEdge} );
@@ -446,6 +486,42 @@ function removeOptions(selectbox){
     }
 }
 
+// show drop downs for nodes' shapes attribute and shape itself
+function activateNodeShapeChange(){
+  document.getElementById('nodeShapesAttr').setAttribute('style','visibility:visible');
+  document.getElementById('nodeShapes').setAttribute('style','visibility:visible');
+}
+
+/*
+  change node shape of nodes with given attribute
+*/
+function changeNodeShapes(){
+  var usedShapesAttributes = [];
+  var shapeAttribute = document.getElementById('nodeShapesAttr').value;
+  var shape = document.getElementById('nodeShapes').value;
+  if(shapeAttribute == "" || shape == ""){
+    return;
+  }
+  var i = 0;
+  var id = "";
+  /*cy.style()
+    .selector('node')        
+    .style('shape', 'ellipse')
+    .update(); */
+  while(i < graphString.length){
+
+    if(graphString[i].includes("node id")){   // get node id
+      id = graphString[i].split("\"")[1];
+    } 
+    else if(id != "" && graphString[i].includes('\"v_'+shapeAttribute+'\">true<')){
+      cy.style()
+        .selector('node[id ="'+id+'"]')        
+        .style('shape', shape)
+        .update(); 
+    }
+    i++;
+  }
+}
 
 /* 
   download png of graph
