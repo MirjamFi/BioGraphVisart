@@ -11,6 +11,8 @@ var svg;
 var  nodesMin = -1;
 var nodesMax = 1;
 var cy;
+var firstShape = true;
+var usedShapeAttributes = [];
 
 
 
@@ -206,7 +208,7 @@ function createLegend(){
 
   //Append a defs (for definition) element to your SVG
   svg = d3.select("#legend").append("svg");
-  svg.attr("width", 189).attr("height", 220);
+  svg.attr("width", 189).attr("height", 60);
   var defs = svg.append("defs");
 
   //Append a linearGradient element to the defs and give it a unique id
@@ -496,9 +498,9 @@ function activateNodeShapeChange(){
   change node shape of nodes with given attribute
 */
 function changeNodeShapes(){
-  var usedShapesAttributes = [];
   var shapeAttribute = document.getElementById('nodeShapesAttr').value;
   var shape = document.getElementById('nodeShapes').value;
+
   if(shapeAttribute == "" || shape == ""){
     return;
   }
@@ -514,12 +516,68 @@ function changeNodeShapes(){
       id = graphString[i].split("\"")[1];
     } 
     else if(id != "" && graphString[i].includes('\"v_'+shapeAttribute+'\">true<')){
+
       cy.style()
         .selector('node[id ="'+id+'"]')        
         .style('shape', shape)
-        .update(); 
+        .update();
+
     }
     i++;
+  }
+  $('#legend').append('<table width="189" border="0" id="shapes"><td colspan="2" rowspan="1"></table>');
+
+  // Find a <table> element with id="myTable":
+  var tableShapes = document.getElementById("shapes");
+
+  if(firstShape){
+    firstShape = false;
+    // Create an empty <thead> element and add it to the table:
+    var header = tableShapes.createTHead();
+
+    // Create an empty <tr> element and add it to the first position of <thead>:
+    var row = header.insertRow(0);     
+
+    // Insert a new cell (<td>) at the first position of the "new" <tr> element:
+    var cell = row.insertCell(0);
+
+    // Add some bold text in the new cell:
+    cell.innerHTML = "<b>Attribute</b>";   
+
+    // Insert a new cell (<td>) at the first position of the "new" <tr> element:
+    var cell2 = row.insertCell(1);
+
+    // Add some bold text in the new cell:
+    cell2.innerHTML = "<b>Shape</b>";
+  }
+
+  // add a new row to table containing attribute and shape
+  if(isEmpty(usedShapeAttributes) || !usedShapeAttributes.hasOwnProperty(shapeAttribute)){
+
+    // Insert a row in the table at the last row
+    var newRow   = tableShapes.insertRow(tableShapes.rows.length);
+
+    // Insert a cell in the row at index 0 (attribute)
+    var newCell  = newRow.insertCell(0);
+
+    // Append a text node to the cell
+    var newText  = document.createTextNode(shapeAttribute);
+    newCell.appendChild(newText);
+
+    usedShapeAttributes[shapeAttribute] = {"row":tableShapes.rows.length-1, "usedShape":shape};
+
+    // Insert a cell in the row at index 1 (shape)
+    var newCell2  = newRow.insertCell(1);
+    // Append a text node to the cell
+    var newText2  = document.createTextNode(shape);
+    newCell2.appendChild(newText2);
+  }
+
+  // update shape of a attribute already used
+  else{
+    var rowIndex = usedShapeAttributes[shapeAttribute].row;
+    var cellIndex = 1;
+    tableShapes.rows[rowIndex].cells[cellIndex].innerHTML = shape;
   }
 }
 
