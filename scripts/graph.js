@@ -3,7 +3,7 @@
 */
 
 var nodes, edges, path, tracer, nodeVal, outputName, nodeAttributes, 
-  graphString, oldMin, oldMax, nodeShapeAttr;
+  graphString, oldMin, oldMax, nodeShapeAttr, shapeNode, ycoord;
 var firstTime = true;
 var loadGraphCount = 0;
 var legendDrawn = false;
@@ -172,7 +172,6 @@ function createCyObject(){
       ]
   });
 }
-
 
 /*
 visualize a graph from .graphml-file
@@ -404,6 +403,11 @@ function calculateLayout(){
       }
       cy.layout({
       name: 'cose',//'breadthfirst',
+        // Whether to fit the network view after when done
+      fit: true,
+
+      // Padding on fit
+      padding: 30
         }).run();
       $('#download').removeAttr('disabled');
       createLegend();
@@ -525,9 +529,62 @@ function changeNodeShapes(){
     }
     i++;
   }
-  $('#legend').append('<table width="189" border="0" id="shapes"><td colspan="2" rowspan="1"></table>');
 
-  // Find a <table> element with id="myTable":
+  if(isEmpty(usedShapeAttributes)){// || !usedShapeAttributes.hasOwnProperty(shapeAttribute)){
+    usedShapeAttributes[shapeAttribute] = {"usedShape":shape};
+     shapeNode = cytoscape({
+        container: document.getElementById('legend'),
+        layout: {
+          name: 'preset'
+        },
+        style: [
+            {selector: 'node',
+              style: {
+              width: 18,
+              height: 18,
+              shape: shape,
+              'background-color': '#666666',
+              label: 'data(id)',
+              'font-size': 10
+            }
+          }
+        ]
+      });
+ 
+ shapeNode.add({ // node n1
+            group: 'nodes', 
+
+            data: { 
+              id: shapeAttribute, 
+            },
+            position: { // the model position of the node (optional on init, mandatory after)
+              x: 94,
+              y: 50
+            }
+          });
+ ycoord = 50;
+}
+  
+  // update shape of a attribute already used
+  else if (usedShapeAttributes.hasOwnProperty(shapeAttribute)){
+    shapeNode.style()
+      .selector('node[id ="'+shapeAttribute+'"]')        
+      .style('shape', shape)
+      .update();
+  }
+
+  else if(!isEmpty(usedShapeAttributes) && !usedShapeAttributes.hasOwnProperty(shapeAttribute)){
+    ycoord = ycoord + 35;
+    usedShapeAttributes[shapeAttribute] = {"usedShape":shape};
+    shapeNode.add( { group: "nodes", data: { id: shapeAttribute}, position:{'x':94, 'y':ycoord}});
+    shapeNode.style()
+        .selector('node[id ="'+shapeAttribute+'"]')        
+        .style('shape', shape)
+        .update();
+  }
+  /*if(firstShape){
+    $('#legend').append('<table width="189" border="0" id="shapes"><td colspan="2" rowspan="1"></table>');
+  }
   var tableShapes = document.getElementById("shapes");
 
   if(firstShape){
@@ -568,17 +625,17 @@ function changeNodeShapes(){
 
     // Insert a cell in the row at index 1 (shape)
     var newCell2  = newRow.insertCell(1);
+    newCell2.id = shapeAttribute + usedShapeAttributes[shapeAttribute].row;
     // Append a text node to the cell
     var newText2  = document.createTextNode(shape);
     newCell2.appendChild(newText2);
   }
-
-  // update shape of a attribute already used
   else{
-    var rowIndex = usedShapeAttributes[shapeAttribute].row;
+     var rowIndex = usedShapeAttributes[shapeAttribute].row;
     var cellIndex = 1;
     tableShapes.rows[rowIndex].cells[cellIndex].innerHTML = shape;
-  }
+  }*/
+
 }
 
 /* 
