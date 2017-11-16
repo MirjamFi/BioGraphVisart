@@ -319,7 +319,7 @@ function transform01toTF(){
   // if attributes values are only 0 or 1 make them boolean
   if(!isEmpty(nodeValuesNum)){
     uniqueVals = new Set(nodeValuesNum);
-    if(uniqueVals.size === 2){
+    if(uniqueVals.size === 2 && uniqueVals.has(0) && uniqueVals.has(1)){
       nodes.forEach( function(nodeEntry){
         if(nodeEntry.data.val === 0){
            nodeEntry.data.val = "false";
@@ -339,7 +339,7 @@ function legendsRange(){
     if(!nodeValuesNum.includes("empty")){
       nodesMin = parseFloat(Math.max.apply(Math,nodeValuesNum).toFixed(2));
       nodesMax = parseFloat(Math.max.apply(Math,nodeValuesNum).toFixed(2));
-    }
+    
     if(!firstTime){
       if(nodesMin>oldMin){
         nodesMin = oldMin;
@@ -349,11 +349,16 @@ function legendsRange(){
       }
     }
 
-    if(nodesMin >= 0 ){
+    if(nodesMin >= 0){
       nodesMin = -1.0;
     }
     if(nodesMax <= 0){
       nodesMax = 1.0;
+    }
+  }
+    else{
+      nodesMin = "false";
+      nodesMax = "true";
     }
   }
   
@@ -363,7 +368,6 @@ function legendsRange(){
   }
 
   if((!firstTime && !(nodesMax === oldMax)) || (!firstTime && !(nodesMin === oldMin))){
-    //alert('Legend\'s limits changed');
     oldMax = nodesMax;
     oldMin = nodesMin;
      $("#legendChanged").text("Legend\'s limits changed");
@@ -510,10 +514,6 @@ function changeNodeShapes(){
   }
   var i = 0;
   var id = "";
-  /*cy.style()
-    .selector('node')        
-    .style('shape', 'ellipse')
-    .update(); */
   while(i < graphString.length){
 
     if(graphString[i].includes("node id")){   // get node id
@@ -551,19 +551,19 @@ function changeNodeShapes(){
         ]
       });
  
- shapeNode.add({ // node n1
-            group: 'nodes', 
+   shapeNode.add({ // node n1
+              group: 'nodes', 
 
-            data: { 
-              id: shapeAttribute, 
-            },
-            position: { // the model position of the node (optional on init, mandatory after)
-              x: 94,
-              y: 50
-            }
-          });
- ycoord = 50;
-}
+              data: { 
+                id: shapeAttribute, 
+              },
+              position: { // the model position of the node (optional on init, mandatory after)
+                x: 94,
+                y: 50
+              }
+            });
+   ycoord = 50;
+  } 
   
   // update shape of a attribute already used
   else if (usedShapeAttributes.hasOwnProperty(shapeAttribute)){
@@ -582,59 +582,6 @@ function changeNodeShapes(){
         .style('shape', shape)
         .update();
   }
-  /*if(firstShape){
-    $('#legend').append('<table width="189" border="0" id="shapes"><td colspan="2" rowspan="1"></table>');
-  }
-  var tableShapes = document.getElementById("shapes");
-
-  if(firstShape){
-    firstShape = false;
-    // Create an empty <thead> element and add it to the table:
-    var header = tableShapes.createTHead();
-
-    // Create an empty <tr> element and add it to the first position of <thead>:
-    var row = header.insertRow(0);     
-
-    // Insert a new cell (<td>) at the first position of the "new" <tr> element:
-    var cell = row.insertCell(0);
-
-    // Add some bold text in the new cell:
-    cell.innerHTML = "<b>Attribute</b>";   
-
-    // Insert a new cell (<td>) at the first position of the "new" <tr> element:
-    var cell2 = row.insertCell(1);
-
-    // Add some bold text in the new cell:
-    cell2.innerHTML = "<b>Shape</b>";
-  }
-
-  // add a new row to table containing attribute and shape
-  if(isEmpty(usedShapeAttributes) || !usedShapeAttributes.hasOwnProperty(shapeAttribute)){
-
-    // Insert a row in the table at the last row
-    var newRow   = tableShapes.insertRow(tableShapes.rows.length);
-
-    // Insert a cell in the row at index 0 (attribute)
-    var newCell  = newRow.insertCell(0);
-
-    // Append a text node to the cell
-    var newText  = document.createTextNode(shapeAttribute);
-    newCell.appendChild(newText);
-
-    usedShapeAttributes[shapeAttribute] = {"row":tableShapes.rows.length-1, "usedShape":shape};
-
-    // Insert a cell in the row at index 1 (shape)
-    var newCell2  = newRow.insertCell(1);
-    newCell2.id = shapeAttribute + usedShapeAttributes[shapeAttribute].row;
-    // Append a text node to the cell
-    var newText2  = document.createTextNode(shape);
-    newCell2.appendChild(newText2);
-  }
-  else{
-     var rowIndex = usedShapeAttributes[shapeAttribute].row;
-    var cellIndex = 1;
-    tableShapes.rows[rowIndex].cells[cellIndex].innerHTML = shape;
-  }*/
 
 }
 
