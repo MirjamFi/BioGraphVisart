@@ -36,8 +36,8 @@ function getFilesList(){
         drpFiles.add(gfile);
       });
     });
-    getDrpDwnFiles = false;
   }
+  getDrpDwnFiles = false;
 }
 
 /* 

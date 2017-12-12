@@ -5,6 +5,8 @@ var http = require("http"),
     express = require("express");
 var app     = express();
 
+var foundFiles = [];
+
 app.use(express.static('../../'));
 
 app.get('/',function(req,res){
@@ -13,11 +15,17 @@ app.get('/',function(req,res){
 
 app.listen(3000);
 
-
 app.get("/foundFiles", function(req, res) {
-    var foundFiles = [];
-    var startPath = '../data/';
-    var filter = '.graphml';
+    if(foundFiles.length == 0){
+        var startPath = '../data/';
+        var filter = '.graphml';
+
+        fromDir(startPath, filter, foundFiles);
+    }   
+    res.send(foundFiles);}
+)
+
+function fromDir(startPath, filter){
     if (!fs.existsSync(startPath)){
         console.log("no dir ",startPath);
         return;
@@ -35,7 +43,7 @@ app.get("/foundFiles", function(req, res) {
             foundFiles.push(filename);
         };
     };
-    res.send(foundFiles);
-})
+    return foundFiles
+}
 
 console.log("Server running at http://localhost:3000/");

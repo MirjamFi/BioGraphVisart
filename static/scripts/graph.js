@@ -11,6 +11,7 @@ function visualize() {
 
   nodeVal = document.getElementById('values').value;
 
+  $('#gfiles').attr("disabled", true);
   // get nodes and edges
   getNodesAndEdges();
 
@@ -95,6 +96,12 @@ function getNodesAndEdges(){
   edges = [];
   nodeValuesNum = [];
   sorafenibTargets = [];
+  oncogenes = [];
+  variants=[];
+  varSor = [];
+  varOnc = [];
+  oncSor = [];
+  oncSorVar = [];
 
   var regExp = /\>([^)]+)\</; // get symbol name between > <
 
@@ -124,10 +131,47 @@ function getNodesAndEdges(){
         curNode.genename = genename;
       }
       nodes.push({data: curNode}); 
+      
       if(graphString[i].includes("\"v_sorafenib_targets\">true")){
         var sorafenibTarget = curNode.id;
         sorafenibTargets.push(sorafenibTarget);
       }
+
+      if(graphString[i].includes("v_oncogenes_vogelstein\">true")){
+        var oncogene = curNode.id;
+        if(oncogene == sorafenibTarget){
+          oncSor.push(curNode.id);
+          sorafenibTargets.pop();
+        }
+        else{
+          oncogenes.push(oncogene);
+        }
+      }
+
+    if(graphString[i].includes("v_vcf_Sift\">1") || 
+      graphString[i].includes("v_vcf_PolyPhen2\">1") || 
+      graphString[i].includes("v_vcf_MetaLR\">1")){
+        var variant = curNode.id;
+        if(variant == sorafenibTarget){
+          varSor.push(curNode.id);
+          sorafenibTargets.pop();
+        }
+        else if(variant == oncogene){
+          varOnc.push(curNode.id);
+          oncogenes.pop();
+        }
+        else if(variant == oncogene && variant == sorafenibTarget){
+          oncSorVar.push(curNode.id);
+          sorafenibTargets.pop();
+          oncogenes.pop();
+          varSor.pop();
+          oncSor.pop()
+        }
+        else{
+           variants.push(variant);
+        }
+      }
+      
     }
 
     if(graphString[i].includes("edge source")){     // get edges
@@ -219,17 +263,84 @@ function addNodesAndEdges(){
     loadGraphCount = 0;
   }
   cy.add(nodes.concat(edges));
+  varPill = new Set(variants.concat(sorafenibTargets));
+  console.log(varPill.length);
+
   for(var i = 0, len = sorafenibTargets.length; i < len; i++){
     n = sorafenibTargets[i];
+    cy.style()
+    .selector('node[id=\''+n+'\']')
+      .style('background-image', pill_black) 
+      .style('background-height','40%')
+      .style('background-width','40%')
+      .style('background-position-y','90%')
+      .style('color','#b8b8b8');
+  };
+
+  for(var i = 0, len = oncogenes.length; i < len; i++){
+    n = oncogenes[i];
       cy.style()
       .selector('node[id=\''+n+'\']')
-        .style('background-image', pill_black) 
-        .style('background-height','30%')
-        .style('background-width','30%')
+        .style('background-image', disease_black) 
+        .style('background-height','40%')
+        .style('background-width','40%')
+        .style('background-position-y','90%')
+        .style('color','#b8b8b8');
+  };
+  for(var i = 0, len = variants.length; i < len; i++){
+    n = variants[i];
+      cy.style()
+      .selector('node[id=\''+n+'\']')
+        .style('background-image', variant_black) 
+        .style('background-height','40%')
+        .style('background-width','40%')
         .style('background-position-y','90%')
         .style('color','#b8b8b8');
   };
 
+  for(var i = 0, len = varSor.length; i < len; i++){
+    n = varSor[i];
+    cy.style()
+      .selector('node[id=\''+n+'\']')
+        .style('background-image', variant_pill) 
+        .style('background-height','40%')
+        .style('background-width','50%')
+        .style('background-position-y','90%')
+        .style('color','#b8b8b8');
+  };
+
+  for(var i = 0, len = varOnc.length; i < len; i++){
+    n = varOnc[i];
+    cy.style()
+      .selector('node[id=\''+n+'\']')
+        .style('background-image', variant_disease) 
+        .style('background-height','40%')
+        .style('background-width','50%')
+        .style('background-position-y','90%')
+        .style('color','#b8b8b8');
+  };
+
+  for(var i = 0, len = oncSor.length; i < len; i++){
+    n = oncSor[i];
+    cy.style()
+      .selector('node[id=\''+n+'\']')
+        .style('background-image', pill_disease) 
+        .style('background-height','40%')
+        .style('background-width','50%')
+        .style('background-position-y','90%')
+        .style('color','#b8b8b8');
+  };
+
+  for(var i = 0, len = oncSorVar.length; i < len; i++){
+    n = oncSorVar[i];
+    cy.style()
+      .selector('node[id=\''+n+'\']')
+        .style('background-image', pill_disease_variant) 
+        .style('background-height','40%')
+        .style('background-width','50%')
+        .style('background-position-y','90%')
+        .style('color','#b8b8b8');
+  };
   // update node values if tracer or values change
   if(!firstTime){
     for(n=0; n < nodes.length; n++){
