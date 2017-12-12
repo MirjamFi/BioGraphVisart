@@ -2,21 +2,6 @@
   create a graph with Cytoscape
 */
 
-
-
-
-var nodes, edges, path, tracer, nodeVal, outputName, nodeAttributes, 
-  graphString, oldMin, oldMax, nodeShapeAttr, shapeNode, ycoord, sorafenibTargets;
-var firstTime = true;
-var loadGraphCount = 0;
-var legendDrawn = false;
-var svg;
-var  nodesMin = -1;
-var nodesMax = 1;
-var cy;
-var firstShape = true;
-var usedShapeAttributes = [];
-
 /*
 visualize a graph from .graphml-file
 */

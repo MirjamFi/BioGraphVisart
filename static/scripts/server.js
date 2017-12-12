@@ -1,11 +1,9 @@
 var http = require("http"),
     url = require("url"),
     path = require("path"),
-    fs = require("fs");
-
-var express = require("express");
+    fs = require("fs"),
+    express = require("express");
 var app     = express();
-var path    = require("path");
 
 app.use(express.static('../../'));
 

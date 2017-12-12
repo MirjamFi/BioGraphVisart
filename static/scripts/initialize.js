@@ -9,12 +9,13 @@ var nodesMax = 1;
 var cy;
 var firstShape = true;
 var usedShapeAttributes = [];
+var getDrpDwnFiles = true;
 
 /* 
 create a drop dpwn menu for graphml-files
 */
 function getFilesList(){
-  if(firstTime){
+  if(getDrpDwnFiles){
     var drpFiles = document.getElementById("gfiles");      
       removeOptions(drpFiles);
 
@@ -35,6 +36,7 @@ function getFilesList(){
         drpFiles.add(gfile);
       });
     });
+    getDrpDwnFiles = false;
   }
 }
 
@@ -48,7 +50,6 @@ function loadFile() {
     alert('Please give a .graphml-file.');
     return;
   };
-  var result = null;
   var xmlhttp = new XMLHttpRequest();
   xmlhttp.open("GET", path, false);
   xmlhttp.send();
