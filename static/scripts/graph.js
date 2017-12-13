@@ -102,6 +102,14 @@ function getNodesAndEdges(){
   varOnc = [];
   oncSor = [];
   oncSorVar = [];
+  drivers = [];
+  driOnc = [];
+  driOncSor = [];
+  driOncVar = [];
+  driOncSorVar = [];
+  driSor = [];
+  driSorVar = [];
+  driVar = [];
 
   var regExp = /\>([^)]+)\</; // get symbol name between > <
 
@@ -109,6 +117,7 @@ function getNodesAndEdges(){
     if(graphString[i].includes("node id")){   // get node id
       var curNode = {};
       curNode.id = graphString[i].split("\"")[1]  ;
+      nodes.push({data: curNode});
     }
     if(!isEmpty(curNode)){
       if(graphString[i].includes("symbol\"\>")){  // get symbol of node
@@ -130,8 +139,8 @@ function getNodesAndEdges(){
         var genename = graphString[i].split("\>")[1].split("\<")[0];
         curNode.genename = genename;
       }
-      nodes.push({data: curNode}); 
-      
+       
+      //attributes for icons
       if(graphString[i].includes("\"v_sorafenib_targets\">true")){
         var sorafenibTarget = curNode.id;
         sorafenibTargets.push(sorafenibTarget);
@@ -139,7 +148,7 @@ function getNodesAndEdges(){
 
       if(graphString[i].includes("v_oncogenes_vogelstein\">true")){
         var oncogene = curNode.id;
-        if(oncogene == sorafenibTarget){
+        if(oncogene == sorafenibTarget && !oncSor.includes(variant)){
           oncSor.push(curNode.id);
           sorafenibTargets.pop();
         }
@@ -152,15 +161,15 @@ function getNodesAndEdges(){
       graphString[i].includes("v_vcf_PolyPhen2\">1") || 
       graphString[i].includes("v_vcf_MetaLR\">1")){
         var variant = curNode.id;
-        if(variant == sorafenibTarget){
+        if(variant == sorafenibTarget && !varSor.includes(variant)){
           varSor.push(curNode.id);
           sorafenibTargets.pop();
         }
-        else if(variant == oncogene){
+        if(variant == oncogene){
           varOnc.push(curNode.id);
           oncogenes.pop();
         }
-        else if(variant == oncogene && variant == sorafenibTarget){
+        if(variant == oncogene && variant == sorafenibTarget && !oncSorVar.includes(variant)){
           oncSorVar.push(curNode.id);
           sorafenibTargets.pop();
           oncogenes.pop();
@@ -174,6 +183,60 @@ function getNodesAndEdges(){
       
     }
 
+    if(graphString[i].includes("v_drivers_Uniprot\">true") || 
+      graphString[i].includes("v_drivers_tsgene\">true") || 
+      graphString[i].includes("v_drivers_vogelstein\">true")||
+      graphString[i].includes("v_drivers_Rubio-Perez\">true") ||
+      graphString[i].includes("v_drivers_cosmic\">true")){
+        var driver = curNode.id;
+        if(driver == sorafenibTarget && !driSor.includes(driver)){
+          driSor.push(curNode.id);
+          sorafenibTargets.pop();
+        }
+        if(driver == oncogene && !driOnc.includes(driver)){
+          driOnc.push(curNode.id);
+          oncogenes.pop();
+        }
+        if(driver == variant && !driVar.includes(driver)){
+          driVar.push(driver);
+          variants.pop();
+        }
+        if(driver == oncogene && driver == sorafenibTarget && !driOncSor.includes(driver)){
+          driOncSor.push(curNode.id);
+          sorafenibTargets.pop();
+          oncogenes.pop();
+          driOnc.pop();
+          driSor.pop();
+        }
+        if(driver == oncogene && driver == variant && !driOncVar.includes(driver)){
+          driOncVar.push(curNode.id);
+          oncogenes.pop();
+          variants.pop();
+          driOnc.pop();
+          driVar.pop();
+        }
+        if(driver == sorafenibTarget && driver == variant && !driSorVar.includes(driver)){
+          driSorVar.push(curNode.id);
+          sorafenibTargets.pop();
+          variants.pop();
+          driSor.pop();
+          driVar.pop();
+        }
+        if(driver == oncogene && driver == sorafenibTarget && driver == variant && !driOncSorVar.includes(driver)){
+          driOncSorVar.push(curNode.id);
+          sorafenibTargets.pop();
+          oncogenes.pop();
+          variants.pop();
+          driSor.pop();
+          driOnc.pop();
+          driVar.pop();
+        }
+        if(! drivers.includes(driver)){
+           drivers.push(driver);
+          }
+        }
+    
+      
     if(graphString[i].includes("edge source")){     // get edges
       var curEdge = {};
       s = graphString[i].split("\"")[1];
@@ -263,8 +326,6 @@ function addNodesAndEdges(){
     loadGraphCount = 0;
   }
   cy.add(nodes.concat(edges));
-  varPill = new Set(variants.concat(sorafenibTargets));
-  console.log(varPill.length);
 
   for(var i = 0, len = sorafenibTargets.length; i < len; i++){
     n = sorafenibTargets[i];
@@ -305,7 +366,7 @@ function addNodesAndEdges(){
         .style('background-image', variant_pill) 
         .style('background-height','40%')
         .style('background-width','50%')
-        .style('background-position-y','90%')
+        .style('background-position-y','93%')
         .style('color','#b8b8b8');
   };
 
@@ -316,7 +377,7 @@ function addNodesAndEdges(){
         .style('background-image', variant_disease) 
         .style('background-height','40%')
         .style('background-width','50%')
-        .style('background-position-y','90%')
+        .style('background-position-y','93%')
         .style('color','#b8b8b8');
   };
 
@@ -336,6 +397,92 @@ function addNodesAndEdges(){
     cy.style()
       .selector('node[id=\''+n+'\']')
         .style('background-image', pill_disease_variant) 
+        .style('background-height','40%')
+        .style('background-width','50%')
+        .style('background-position-y','90%')
+        .style('color','#b8b8b8');
+  };
+
+  for(var i = 0, len = drivers.length; i < len; i++){
+    n = drivers[i];
+    cy.style()
+      .selector('node[id=\''+n+'\']')
+        .style('background-image', gene_black) 
+        .style('background-height','40%')
+        .style('background-width','40%')
+        .style('background-position-y','93%')
+        .style('color','#b8b8b8');
+  };
+
+  for(var i = 0, len = driSor.length; i < len; i++){
+    n = driSor[i];
+    cy.style()
+      .selector('node[id=\''+n+'\']')
+        .style('background-image', gene_pill) 
+        .style('background-height','60%')
+        .style('background-width','60%')
+        .style('background-position-y','93%')
+        .style('color','#b8b8b8');
+  };
+
+  for(var i = 0, len = driVar.length; i < len; i++){
+    n = driVar[i];
+    cy.style()
+      .selector('node[id=\''+n+'\']')
+        .style('background-image', gene_variant) 
+        .style('background-height','60%')
+        .style('background-width','60%')
+        .style('background-position-y','93%')
+        .style('color','#b8b8b8');
+  };
+
+  for(var i = 0, len = driOnc.length; i < len; i++){
+    n = driOnc[i];
+    cy.style()
+      .selector('node[id=\''+n+'\']')
+        .style('background-image', gene_disease) 
+        .style('background-height','50%')
+        .style('background-width','50%')
+        .style('background-position-y','99%')
+        .style('color','#b8b8b8');
+  };
+
+  for(var i = 0, len = driSorVar.length; i < len; i++){
+    n = driSorVar[i];
+    cy.style()
+      .selector('node[id=\''+n+'\']')
+        .style('background-image', gene_variant_pill) 
+        .style('background-height','40%')
+        .style('background-width','50%')
+        .style('background-position-y','90%')
+        .style('color','#b8b8b8');
+  };
+
+  for(var i = 0, len = driOncVar.length; i < len; i++){
+    n = driOncVar[i];
+    cy.style()
+      .selector('node[id=\''+n+'\']')
+        .style('background-image', gene_variant_disease) 
+        .style('background-height','40%')
+        .style('background-width','50%')
+        .style('background-position-y','90%')
+        .style('color','#b8b8b8');
+  };
+  for(var i = 0, len = driOncSor.length; i < len; i++){
+    n = driOncSor[i];
+    cy.style()
+      .selector('node[id=\''+n+'\']')
+        .style('background-image', gene_pill_disease) 
+        .style('background-height','40%')
+        .style('background-width','50%')
+        .style('background-position-y','90%')
+        .style('color','#b8b8b8');
+  };
+  for(var i = 0, len = driOncSorVar.length; i < len; i++){
+    n = driOncSorVar[i];
+    cy.style()
+      .selector('node[id=\''+n+'\']')
+        .style('background-image', gene_pill_disease_variant) 
         .style('background-height','40%')
         .style('background-width','50%')
         .style('background-position-y','90%')
