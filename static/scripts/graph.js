@@ -320,11 +320,12 @@ function legendsRange(){
 
 //add nodes and edges to cy-object (update if attribute has changed)
 function addNodesAndEdges(){
-  if(loadGraphCount > 1){
+
+  /*if(loadGraphCount > 1){
     cy.elements().remove();
     firstTime = true;
     loadGraphCount = 0;
-  }
+  }*/
   cy.add(nodes.concat(edges));
 
   for(var i = 0, len = sorafenibTargets.length; i < len; i++){
@@ -501,12 +502,11 @@ function addNodesAndEdges(){
 
 //calculate graph layout (only once)
 function calculateLayout(){
+
   // calculate layout and legend only once
   if(firstTime){
       firstTime = false;
-      if(!legendDrawn){
-        legendDrawn = true;
-      }
+
       cy.layout({
       name: 'cose',//'breadthfirst',
         // Whether to fit the network view after when done
