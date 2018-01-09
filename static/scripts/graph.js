@@ -36,7 +36,6 @@ function visualize() {
 function createLegend(){
   var defs = svg.append("defs");
 
-  console.log(nodesMin);
   if(nodesMin === "false"){
     svg.append("rect")
     .attr("width", 99)
@@ -342,164 +341,179 @@ function addNodesAndEdges(){
 
   for(var i = 0, len = sorafenibTargets.length; i < len; i++){
     n = sorafenibTargets[i];
-    cy.style()
-    .selector('node[id=\''+n+'\']')
+    cy.batch(function(){
+    cy.$('node[id=\''+n+'\']')
       .style('background-image', pill_black) 
       .style('background-height','40%')
       .style('background-width','40%')
       .style('background-position-y','90%')
       .style('color','#b8b8b8');
+    });
   };
 
   for(var i = 0, len = oncogenes.length; i < len; i++){
     n = oncogenes[i];
-      cy.style()
-      .selector('node[id=\''+n+'\']')
+    cy.batch(function(){
+      cy.$('node[id=\''+n+'\']')
         .style('background-image', disease_black) 
         .style('background-height','40%')
         .style('background-width','40%')
         .style('background-position-y','90%')
         .style('color','#b8b8b8');
+        });
   };
   for(var i = 0, len = variants.length; i < len; i++){
     n = variants[i];
-      cy.style()
-      .selector('node[id=\''+n+'\']')
+    cy.batch(function(){
+      cy.$('node[id=\''+n+'\']')
         .style('background-image', variant_black) 
         .style('background-height','40%')
         .style('background-width','40%')
         .style('background-position-y','90%')
         .style('color','#b8b8b8');
+        });
   };
 
   for(var i = 0, len = varSor.length; i < len; i++){
     n = varSor[i];
-    cy.style()
-      .selector('node[id=\''+n+'\']')
+    cy.batch(function(){
+    cy.$('node[id=\''+n+'\']')
         .style('background-image', variant_pill) 
         .style('background-height','40%')
         .style('background-width','50%')
         .style('background-position-y','93%')
         .style('color','#b8b8b8');
+        });
   };
 
   for(var i = 0, len = varOnc.length; i < len; i++){
     n = varOnc[i];
-    cy.style()
-      .selector('node[id=\''+n+'\']')
+    cy.batch(function(){
+    cy.$('node[id=\''+n+'\']')
         .style('background-image', variant_disease) 
         .style('background-height','40%')
         .style('background-width','50%')
         .style('background-position-y','93%')
         .style('color','#b8b8b8');
+        });
   };
 
   for(var i = 0, len = oncSor.length; i < len; i++){
     n = oncSor[i];
-    cy.style()
-      .selector('node[id=\''+n+'\']')
+    cy.batch(function(){
+    cy.$('node[id=\''+n+'\']')
         .style('background-image', pill_disease) 
         .style('background-height','40%')
         .style('background-width','50%')
         .style('background-position-y','90%')
         .style('color','#b8b8b8');
+        });
   };
 
   for(var i = 0, len = oncSorVar.length; i < len; i++){
     n = oncSorVar[i];
-    cy.style()
-      .selector('node[id=\''+n+'\']')
+    cy.batch(function(){
+    cy.$('node[id=\''+n+'\']')
         .style('background-image', pill_disease_variant) 
         .style('background-height','40%')
         .style('background-width','50%')
         .style('background-position-y','90%')
         .style('color','#b8b8b8');
+      });
   };
 
   for(var i = 0, len = drivers.length; i < len; i++){
     n = drivers[i];
-    cy.style()
-      .selector('node[id=\''+n+'\']')
+    cy.batch(function(){
+    cy.$('node[id=\''+n+'\']')
         .style('background-image', gene_black) 
         .style('background-height','40%')
         .style('background-width','40%')
         .style('background-position-y','93%')
         .style('color','#b8b8b8');
+      });
   };
 
   for(var i = 0, len = driSor.length; i < len; i++){
     n = driSor[i];
-    cy.style()
-      .selector('node[id=\''+n+'\']')
+    cy.batch(function(){
+    cy.$('node[id=\''+n+'\']')
         .style('background-image', gene_pill) 
         .style('background-height','60%')
         .style('background-width','60%')
         .style('background-position-y','93%')
         .style('color','#b8b8b8');
+        });
   };
 
   for(var i = 0, len = driVar.length; i < len; i++){
     n = driVar[i];
-    cy.style()
-      .selector('node[id=\''+n+'\']')
+    cy.batch(function(){
+    cy.$('node[id=\''+n+'\']')
         .style('background-image', gene_variant) 
         .style('background-height','60%')
         .style('background-width','60%')
         .style('background-position-y','93%')
         .style('color','#b8b8b8');
+        });
   };
 
   for(var i = 0, len = driOnc.length; i < len; i++){
     n = driOnc[i];
-    cy.style()
-      .selector('node[id=\''+n+'\']')
+    cy.batch(function(){
+    cy.$('node[id=\''+n+'\']')
         .style('background-image', gene_disease) 
         .style('background-height','50%')
         .style('background-width','50%')
         .style('background-position-y','99%')
         .style('color','#b8b8b8');
+        });
   };
 
   for(var i = 0, len = driSorVar.length; i < len; i++){
     n = driSorVar[i];
-    cy.style()
-      .selector('node[id=\''+n+'\']')
+    cy.batch(function(){
+    cy.$('node[id=\''+n+'\']')
         .style('background-image', gene_variant_pill) 
         .style('background-height','40%')
         .style('background-width','50%')
         .style('background-position-y','90%')
         .style('color','#b8b8b8');
+        });
   };
 
   for(var i = 0, len = driOncVar.length; i < len; i++){
     n = driOncVar[i];
-    cy.style()
-      .selector('node[id=\''+n+'\']')
+    cy.batch(function(){
+    cy.$('node[id=\''+n+'\']')
         .style('background-image', gene_variant_disease) 
         .style('background-height','40%')
         .style('background-width','50%')
         .style('background-position-y','90%')
         .style('color','#b8b8b8');
+        });
   };
   for(var i = 0, len = driOncSor.length; i < len; i++){
     n = driOncSor[i];
-    cy.style()
-      .selector('node[id=\''+n+'\']')
+    cy.batch(function(){
+    cy.$('node[id=\''+n+'\']')
         .style('background-image', gene_pill_disease) 
         .style('background-height','40%')
         .style('background-width','50%')
         .style('background-position-y','90%')
         .style('color','#b8b8b8');
+      });
   };
   for(var i = 0, len = driOncSorVar.length; i < len; i++){
     n = driOncSorVar[i];
-    cy.style()
-      .selector('node[id=\''+n+'\']')
+    cy.batch(function(){
+    cy.$('node[id=\''+n+'\']')
         .style('background-image', gene_pill_disease_variant) 
         .style('background-height','40%')
         .style('background-width','50%')
         .style('background-position-y','90%')
         .style('color','#b8b8b8');
+        });
   };
   // update node values if tracer or values change
   if(!firstTime){
