@@ -2,6 +2,11 @@
 <html>
 <head>
     <title>Subgraph Visualization</title>
+<!--    <script src='browser/swagger-client.js' type='text/javascript'></script>
+	<script>
+	var swaggerClient = new SwaggerClient(specUrl);
+	</script>-->
+
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/qtip2/3.0.3/basic/jquery.qtip.js"></script>
 	<script src="http://d3js.org/d3.v3.min.js"></script> 
@@ -30,7 +35,7 @@
 		        width: 79%;
 		        height: 79%;
 		        position: absolute;
-		        top: 200px;
+		        top: 250px;
 		        left: 200px;
 		    }
 		    #legend {
@@ -48,7 +53,7 @@
 			button {
 			    text-align: center;
 			    display: inline-block;
-			    font-size: 16px;
+			    font-size: 14px;
 			}
 </style>
 
@@ -59,13 +64,38 @@
 	<p id="description">Load a .graphml-file and select node value to generate a subgraph, you can download as .png.</p>
 
 	<div id="dataPart">
-		<!--<input name="graphFile" type="text" maxlength="512" id="graphName" value=".graphml"/>-->
-		<select name="gfiles" id="gfiles" onclick="getFilesList()">
+		<table id="arrows">
+			<tr>
+				<td>
+					Type file name manually (in folder data)
+				</td>
+				<td>
+					<input type="checkbox" id="upload">
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Select from list
+				</td>
+				<td>
+					<input type="checkbox" id="database">
+				</td>
+				<td>
+					<button onclick="checkedBox()" id = "start">Start</button>
+				</td>
+			</tr>
+		</table>
+		
+
+		<input name="graphFile" type="text" maxlength="512" id="graphName" value=".graphml"/ style="visibility: hidden">
+
+		<select name="gfiles" id="gfiles" onclick="getFilesList()" style="visibility: hidden">
 			<option value="">Choose .graphml-file</option>
 		</select>
-		<button onclick="loadFile()" id="loadGraphml">Load .graphml</button>
 
-		<select name="values" id="values" onchange="visualize()">
+		<button onclick="loadFile()" id="loadGraphml" style="visibility: hidden">Load .graphml</button>
+
+		<select name="values" id="values" onchange="visualize()" style="visibility: hidden">
 			<option value="" selected disabled hidden>Choose node's attribute</option>
 		</select>
 
@@ -81,7 +111,7 @@
 
 	<p></p>
 
-	<div id="downloadPart">
+	<div id="downloadPart" style="visibility: hidden">
 		<input name="outputFile" type="text" maxlength="512" id="outputName" value="File name"/>
 		<button id="download" onclick="downloadPNG()" disabled="disabled">Download</button>
 	</div>
