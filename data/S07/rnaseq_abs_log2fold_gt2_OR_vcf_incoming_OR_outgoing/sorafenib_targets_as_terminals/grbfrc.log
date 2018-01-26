@@ -1,0 +1,113 @@
+
+Gurobi 7.0.1 (linux64) logging started Sun Jul  2 21:46:07 2017
+
+Optimize a model with 21691 rows, 14464 columns and 73015 nonzeros
+Variable types: 0 continuous, 14464 integer (14464 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 9e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 5e+01]
+Presolve removed 21350 rows and 14165 columns
+Presolve time: 0.07s
+Presolved: 341 rows, 299 columns, 2588 nonzeros
+Variable types: 0 continuous, 299 integer (299 binary)
+
+Root relaxation: objective 2.100000e+01, 26 iterations, 0.00 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0   21.00000    0    2          -   21.00000      -     -    0s
+     0     0   21.00000    0    3          -   21.00000      -     -    0s
+     0     0   21.00000    0    3          -   21.00000      -     -    0s
+     0     0   21.00000    0    3          -   21.00000      -     -    0s
+     0     0   21.00000    0    3          -   21.00000      -     -    0s
+     0     0   21.00000    0    2          -   21.00000      -     -    0s
+     0     0   21.00000    0    2          -   21.00000      -     -    0s
+     0     0   21.00000    0    2          -   21.00000      -     -    0s
+     0     0   21.00000    0    2          -   21.00000      -     -    0s
+     0     2   21.00000    0    2          -   21.00000      -     -    0s
+*    7     6               3      20.0000000   20.50000  2.50%   4.4    0s
+
+Cutting planes:
+  MIR: 3
+  Lazy constraints: 15
+
+Explored 15 nodes (200 simplex iterations) in 0.29 seconds
+Thread count was 12 (of 12 available processors)
+
+Solution count 1: 20 
+Pool objective bound 20
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 2.000000000000e+01, best bound 2.000000000000e+01, gap 0.0000%
+Optimize a model with 21691 rows, 14464 columns and 73015 nonzeros
+Variable types: 0 continuous, 14464 integer (14464 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 9e+00]
+  Objective range  [2e-01, 8e-01]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 5e+01]
+Presolve removed 21350 rows and 14165 columns
+Presolve time: 0.06s
+Presolved: 341 rows, 299 columns, 2588 nonzeros
+
+Loaded MIP start with objective -8.88178e-16
+
+Variable types: 0 continuous, 299 integer (299 binary)
+
+Root relaxation: objective 1.800000e+00, 41 iterations, 0.00 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    1.80000    0    5   -0.00000    1.80000      -     -    0s
+H    0     0                       1.4000000    1.80000  28.6%     -    0s
+
+Cutting planes:
+  Gomory: 1
+
+Explored 0 nodes (41 simplex iterations) in 0.11 seconds
+Thread count was 12 (of 12 available processors)
+
+Solution count 2: 1.4 -8.88178e-16 
+Pool objective bound 1.4
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 1.400000000000e+00, best bound 1.400000000000e+00, gap 0.0000%
+Optimize a model with 21691 rows, 14464 columns and 73015 nonzeros
+Variable types: 0 continuous, 14464 integer (14464 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 9e+00]
+  Objective range  [1e-01, 9e-01]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 5e+01]
+Presolve removed 21350 rows and 14165 columns
+Presolve time: 0.05s
+Presolved: 341 rows, 299 columns, 2588 nonzeros
+
+Loaded MIP start with objective -2.22045e-16
+
+Variable types: 0 continuous, 299 integer (299 binary)
+
+Root relaxation: objective 5.272727e-01, 41 iterations, 0.00 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    0.52727    0    5   -0.00000    0.52727      -     -    0s
+     0     0    0.22727    0    3   -0.00000    0.22727      -     -    0s
+     0     0    0.22727    0    5   -0.00000    0.22727      -     -    0s
+
+Cutting planes:
+  Gomory: 1
+
+Explored 0 nodes (75 simplex iterations) in 0.13 seconds
+Thread count was 12 (of 12 available processors)
+
+Solution count 1: -2.22045e-16 
+Pool objective bound -2.22045e-16
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective -2.220446049250e-16, best bound -2.220446049250e-16, gap -

@@ -59,6 +59,13 @@
 
 
 <body>
+	<script type="text/javascript">
+		if (window.File && window.FileReader && window.FileList && window.Blob) {
+		  // Great success! All the File APIs are supported.
+		} else {
+		  alert('The File APIs are not fully supported in this browser.');
+		}
+	</script>
 	<h1>Subgraph Visualization</h1>
 
 	<p id="description">Load a .graphml-file and select node value to generate a subgraph, you can download as .png.</p>
@@ -67,7 +74,7 @@
 		<table id="arrows">
 			<tr>
 				<td>
-					Type file name manually (in folder data)
+					Upload file 
 				</td>
 				<td>
 					<input type="checkbox" id="upload">
@@ -75,25 +82,25 @@
 			</tr>
 			<tr>
 				<td>
-					Select from list
+					Select file from list
 				</td>
 				<td>
 					<input type="checkbox" id="database">
 				</td>
 				<td>
-					<button onclick="checkedBox()" id = "start">Start</button>
+					<button onclick="checkedBox()" id = "start">Select</button>
 				</td>
 			</tr>
 		</table>
 		
-
-		<input name="graphFile" type="text" maxlength="512" id="graphName" value=".graphml"/ style="visibility: hidden">
+		<input type="file" id="graphName" name="file" style="visibility: hidden"/>
+		<!--<input name="graphFile" type="text" maxlength="512" id="graphName" value=".graphml"/ style="visibility: hidden">-->
 
 		<select name="gfiles" id="gfiles" onclick="getFilesList()" style="visibility: hidden">
 			<option value="">Choose .graphml-file</option>
 		</select>
 
-		<button onclick="loadFile()" id="loadGraphml" style="visibility: hidden">Load .graphml</button>
+		<button onclick="readFile()" id="loadGraphml" style="visibility: hidden">Load .graphml</button>
 
 		<select name="values" id="values" onchange="visualize()" style="visibility: hidden">
 			<option value="" selected disabled hidden>Choose node's attribute</option>

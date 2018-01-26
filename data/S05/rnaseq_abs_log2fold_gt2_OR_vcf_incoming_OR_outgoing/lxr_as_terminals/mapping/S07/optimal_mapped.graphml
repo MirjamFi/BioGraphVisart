@@ -1,0 +1,932 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns
+         http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
+<!-- Created by igraph -->
+  <key id="v_root" for="node" attr.name="root" attr.type="boolean"/>
+  <key id="v_score" for="node" attr.name="score" attr.type="double"/>
+  <key id="v_id" for="node" attr.name="id" attr.type="string"/>
+  <key id="v_pathways" for="node" attr.name="pathways" attr.type="string"/>
+  <key id="v_NODETYPE" for="node" attr.name="NODETYPE" attr.type="string"/>
+  <key id="v_name" for="node" attr.name="name" attr.type="string"/>
+  <key id="v_kegg_link" for="node" attr.name="kegg_link" attr.type="string"/>
+  <key id="v_sorafenib_targets" for="node" attr.name="sorafenib_targets" attr.type="boolean"/>
+  <key id="v_oncogenes_vogelstein" for="node" attr.name="oncogenes_vogelstein" attr.type="boolean"/>
+  <key id="v_tumor_suppressors_vogelstein" for="node" attr.name="tumor_suppressors_vogelstein" attr.type="boolean"/>
+  <key id="v_drivers_vogelstein" for="node" attr.name="drivers_vogelstein" attr.type="boolean"/>
+  <key id="v_drivers_Rubio-Perez" for="node" attr.name="drivers_Rubio-Perez" attr.type="boolean"/>
+  <key id="v_drivers_cosmic" for="node" attr.name="drivers_cosmic" attr.type="boolean"/>
+  <key id="v_drivers_Uniprot" for="node" attr.name="drivers_Uniprot" attr.type="boolean"/>
+  <key id="v_drivers_tsgene" for="node" attr.name="drivers_tsgene" attr.type="boolean"/>
+  <key id="v_lxr_merge" for="node" attr.name="lxr_merge" attr.type="boolean"/>
+  <key id="v_lxr_pathway_wikipathways" for="node" attr.name="lxr_pathway_wikipathways" attr.type="boolean"/>
+  <key id="v_lxr_rxr_hepatocyte_ingenuity" for="node" attr.name="lxr_rxr_hepatocyte_ingenuity" attr.type="boolean"/>
+  <key id="v_lxr_rxr_macrophage_ingenuity" for="node" attr.name="lxr_rxr_macrophage_ingenuity" attr.type="boolean"/>
+  <key id="v_lxr_targets_wikipedia" for="node" attr.name="lxr_targets_wikipedia" attr.type="boolean"/>
+  <key id="v_oatp_members_liver" for="node" attr.name="oatp_members_liver" attr.type="boolean"/>
+  <key id="v_imaging_targets" for="node" attr.name="imaging_targets" attr.type="boolean"/>
+  <key id="v_imaging_w_oatp_members" for="node" attr.name="imaging_w_oatp_members" attr.type="boolean"/>
+  <key id="v_symbol" for="node" attr.name="symbol" attr.type="string"/>
+  <key id="v_ensembl" for="node" attr.name="ensembl" attr.type="string"/>
+  <key id="v_entrez" for="node" attr.name="entrez" attr.type="string"/>
+  <key id="v_rnaseq_abs_log2fold_gt2_OR_vcf_incoming" for="node" attr.name="rnaseq_abs_log2fold_gt2_OR_vcf_incoming" attr.type="double"/>
+  <key id="v_rnaseq_log2fold_gt2_OR_vcf_incoming" for="node" attr.name="rnaseq_log2fold_gt2_OR_vcf_incoming" attr.type="double"/>
+  <key id="v_rnaseq_abs_log2fold_gt2_OR_vcf_static_OR_incoming_OR_outgoing" for="node" attr.name="rnaseq_abs_log2fold_gt2_OR_vcf_static_OR_incoming_OR_outgoing" attr.type="double"/>
+  <key id="v_rnaseq_log2fold_ltneg2_OR_vcf_static_OR_outgoing" for="node" attr.name="rnaseq_log2fold_ltneg2_OR_vcf_static_OR_outgoing" attr.type="double"/>
+  <key id="v_rnaseq_abs_log2fold_gt2_OR_vcf_static" for="node" attr.name="rnaseq_abs_log2fold_gt2_OR_vcf_static" attr.type="double"/>
+  <key id="v_vcf_phylop_score" for="node" attr.name="vcf_phylop_score" attr.type="double"/>
+  <key id="v_rnaseq_log2fold_gt2_OR_vcf_static_OR_incoming" for="node" attr.name="rnaseq_log2fold_gt2_OR_vcf_static_OR_incoming" attr.type="double"/>
+  <key id="v_vcf_static_OR_outgoing" for="node" attr.name="vcf_static_OR_outgoing" attr.type="double"/>
+  <key id="v_vcf_static" for="node" attr.name="vcf_static" attr.type="double"/>
+  <key id="v_rnaseq_abs_log2fold_gt2" for="node" attr.name="rnaseq_abs_log2fold_gt2" attr.type="double"/>
+  <key id="v_rnaseq_log2fold_ltneg2_OR_vcf_static_OR_incoming" for="node" attr.name="rnaseq_log2fold_ltneg2_OR_vcf_static_OR_incoming" attr.type="double"/>
+  <key id="v_vcf_static_OR_incoming_OR_outgoing" for="node" attr.name="vcf_static_OR_incoming_OR_outgoing" attr.type="double"/>
+  <key id="v_rnaseq_abs_log2fold_gt2_OR_vcf_static_OR_incoming" for="node" attr.name="rnaseq_abs_log2fold_gt2_OR_vcf_static_OR_incoming" attr.type="double"/>
+  <key id="v_rnaseq_log2fold_gt2_OR_vcf_static" for="node" attr.name="rnaseq_log2fold_gt2_OR_vcf_static" attr.type="double"/>
+  <key id="v_rnaseq_log2fold_ltneg2_OR_vcf_static_OR_incoming_OR_outgoing" for="node" attr.name="rnaseq_log2fold_ltneg2_OR_vcf_static_OR_incoming_OR_outgoing" attr.type="double"/>
+  <key id="v_rnaseq_log2fold_gt2_OR_vcf_static_OR_incoming_OR_outgoing" for="node" attr.name="rnaseq_log2fold_gt2_OR_vcf_static_OR_incoming_OR_outgoing" attr.type="double"/>
+  <key id="v_vcf_PolyPhen2" for="node" attr.name="vcf_PolyPhen2" attr.type="double"/>
+  <key id="v_vcf_Sift" for="node" attr.name="vcf_Sift" attr.type="double"/>
+  <key id="v_rnaseq_log2fold_gt2_OR_vcf_static_OR_outgoing" for="node" attr.name="rnaseq_log2fold_gt2_OR_vcf_static_OR_outgoing" attr.type="double"/>
+  <key id="v_rnaseq_log2fold_ltneg2_OR_vcf_incoming" for="node" attr.name="rnaseq_log2fold_ltneg2_OR_vcf_incoming" attr.type="double"/>
+  <key id="v_rnaseq_log2fold_ltneg2" for="node" attr.name="rnaseq_log2fold_ltneg2" attr.type="double"/>
+  <key id="v_vcf_MetaLR" for="node" attr.name="vcf_MetaLR" attr.type="double"/>
+  <key id="v_rnaseq_abs_log2fold_gt2_OR_vcf_incoming_OR_outgoing" for="node" attr.name="rnaseq_abs_log2fold_gt2_OR_vcf_incoming_OR_outgoing" attr.type="double"/>
+  <key id="v_vcf_incoming_OR_outgoing" for="node" attr.name="vcf_incoming_OR_outgoing" attr.type="double"/>
+  <key id="v_vcf_static_OR_incoming" for="node" attr.name="vcf_static_OR_incoming" attr.type="double"/>
+  <key id="v_rnaseq_log2fold_ltneg2_OR_vcf_incoming_OR_outgoing" for="node" attr.name="rnaseq_log2fold_ltneg2_OR_vcf_incoming_OR_outgoing" attr.type="double"/>
+  <key id="v_rnaseq_log2fold_gt2_OR_vcf_incoming_OR_outgoing" for="node" attr.name="rnaseq_log2fold_gt2_OR_vcf_incoming_OR_outgoing" attr.type="double"/>
+  <key id="v_rnaseq_abs_log2fold_gt2_OR_vcf_static_OR_outgoing" for="node" attr.name="rnaseq_abs_log2fold_gt2_OR_vcf_static_OR_outgoing" attr.type="double"/>
+  <key id="v_rnaseq_log2fold_gt2_OR_vcf_outgoing" for="node" attr.name="rnaseq_log2fold_gt2_OR_vcf_outgoing" attr.type="double"/>
+  <key id="v_rnaseq_log2fold_gt2" for="node" attr.name="rnaseq_log2fold_gt2" attr.type="double"/>
+  <key id="v_vcf_outgoing" for="node" attr.name="vcf_outgoing" attr.type="double"/>
+  <key id="v_rnaseq_abs_log2fold_gt2_OR_vcf_outgoing" for="node" attr.name="rnaseq_abs_log2fold_gt2_OR_vcf_outgoing" attr.type="double"/>
+  <key id="v_rnaseq_log2fold_ltneg2_OR_vcf_static" for="node" attr.name="rnaseq_log2fold_ltneg2_OR_vcf_static" attr.type="double"/>
+  <key id="v_vcf_incoming" for="node" attr.name="vcf_incoming" attr.type="double"/>
+  <key id="v_rnaseq_log2fold_ltneg2_OR_vcf_outgoing" for="node" attr.name="rnaseq_log2fold_ltneg2_OR_vcf_outgoing" attr.type="double"/>
+  <key id="v_rnaseq_log2fold" for="node" attr.name="rnaseq_log2fold" attr.type="double"/>
+  <key id="v_hsa04066" for="node" attr.name="hsa04066" attr.type="double"/>
+  <key id="v_hsa04919" for="node" attr.name="hsa04919" attr.type="double"/>
+  <key id="v_hsa05222" for="node" attr.name="hsa05222" attr.type="double"/>
+  <key id="v_hsa04071" for="node" attr.name="hsa04071" attr.type="double"/>
+  <key id="v_hsa04022" for="node" attr.name="hsa04022" attr.type="double"/>
+  <key id="v_hsa04150" for="node" attr.name="hsa04150" attr.type="double"/>
+  <key id="v_hsa04920" for="node" attr.name="hsa04920" attr.type="double"/>
+  <key id="v_hsa04510" for="node" attr.name="hsa04510" attr.type="double"/>
+  <key id="v_hsa05166" for="node" attr.name="hsa05166" attr.type="double"/>
+  <key id="v_hsa05230" for="node" attr.name="hsa05230" attr.type="double"/>
+  <key id="v_hsa04722" for="node" attr.name="hsa04722" attr.type="double"/>
+  <key id="v_hsa05223" for="node" attr.name="hsa05223" attr.type="double"/>
+  <key id="v_hsa04662" for="node" attr.name="hsa04662" attr.type="double"/>
+  <key id="v_hsa04024" for="node" attr.name="hsa04024" attr.type="double"/>
+  <key id="v_hsa04213" for="node" attr.name="hsa04213" attr.type="double"/>
+  <key id="v_hsa05212" for="node" attr.name="hsa05212" attr.type="double"/>
+  <key id="v_hsa04668" for="node" attr.name="hsa04668" attr.type="double"/>
+  <key id="v_hsa01522" for="node" attr.name="hsa01522" attr.type="double"/>
+  <key id="v_hsa04933" for="node" attr.name="hsa04933" attr.type="double"/>
+  <key id="v_hsa05214" for="node" attr.name="hsa05214" attr.type="double"/>
+  <key id="v_hsa04923" for="node" attr.name="hsa04923" attr.type="double"/>
+  <key id="v_hsa04910" for="node" attr.name="hsa04910" attr.type="double"/>
+  <key id="v_hsa04922" for="node" attr.name="hsa04922" attr.type="double"/>
+  <key id="v_hsa04370" for="node" attr.name="hsa04370" attr.type="double"/>
+  <key id="v_hsa04932" for="node" attr.name="hsa04932" attr.type="double"/>
+  <key id="v_hsa05145" for="node" attr.name="hsa05145" attr.type="double"/>
+  <key id="v_hsa04611" for="node" attr.name="hsa04611" attr.type="double"/>
+  <key id="v_hsa05215" for="node" attr.name="hsa05215" attr.type="double"/>
+  <key id="v_hsa04917" for="node" attr.name="hsa04917" attr.type="double"/>
+  <key id="v_hsa05231" for="node" attr.name="hsa05231" attr.type="double"/>
+  <key id="v_hsa04664" for="node" attr.name="hsa04664" attr.type="double"/>
+  <key id="v_hsa05169" for="node" attr.name="hsa05169" attr.type="double"/>
+  <key id="v_hsa05213" for="node" attr.name="hsa05213" attr.type="double"/>
+  <key id="v_hsa04380" for="node" attr.name="hsa04380" attr.type="double"/>
+  <key id="v_hsa04012" for="node" attr.name="hsa04012" attr.type="double"/>
+  <key id="v_hsa05200" for="node" attr.name="hsa05200" attr.type="double"/>
+  <key id="v_hsa05211" for="node" attr.name="hsa05211" attr.type="double"/>
+  <key id="v_hsa05162" for="node" attr.name="hsa05162" attr.type="double"/>
+  <key id="v_hsa05142" for="node" attr.name="hsa05142" attr.type="double"/>
+  <key id="v_hsa04914" for="node" attr.name="hsa04914" attr.type="double"/>
+  <key id="v_hsa04657" for="node" attr.name="hsa04657" attr.type="double"/>
+  <key id="v_hsa05221" for="node" attr.name="hsa05221" attr.type="double"/>
+  <key id="v_hsa04973" for="node" attr.name="hsa04973" attr.type="double"/>
+  <key id="v_hsa04931" for="node" attr.name="hsa04931" attr.type="double"/>
+  <key id="v_hsa04068" for="node" attr.name="hsa04068" attr.type="double"/>
+  <key id="v_hsa04725" for="node" attr.name="hsa04725" attr.type="double"/>
+  <key id="v_hsa04211" for="node" attr.name="hsa04211" attr.type="double"/>
+  <key id="v_hsa04151" for="node" attr.name="hsa04151" attr.type="double"/>
+  <key id="v_hsa04140" for="node" attr.name="hsa04140" attr.type="double"/>
+  <key id="v_hsa04210" for="node" attr.name="hsa04210" attr.type="double"/>
+  <key id="v_hsa04728" for="node" attr.name="hsa04728" attr.type="double"/>
+  <key id="v_hsa04371" for="node" attr.name="hsa04371" attr.type="double"/>
+  <key id="v_hsa05224" for="node" attr.name="hsa05224" attr.type="double"/>
+  <key id="v_hsa05218" for="node" attr.name="hsa05218" attr.type="double"/>
+  <key id="v_hsa05210" for="node" attr.name="hsa05210" attr.type="double"/>
+  <key id="v_hsa05418" for="node" attr.name="hsa05418" attr.type="double"/>
+  <key id="v_hsa05161" for="node" attr.name="hsa05161" attr.type="double"/>
+  <key id="v_hsa01521" for="node" attr.name="hsa01521" attr.type="double"/>
+  <key id="v_hsa04720" for="node" attr.name="hsa04720" attr.type="double"/>
+  <key id="v_hsa04114" for="node" attr.name="hsa04114" attr.type="double"/>
+  <key id="v_hsa03015" for="node" attr.name="hsa03015" attr.type="double"/>
+  <key id="v_hsa04261" for="node" attr.name="hsa04261" attr.type="double"/>
+  <key id="v_hsa04915" for="node" attr.name="hsa04915" attr.type="double"/>
+  <key id="v_hsa04630" for="node" attr.name="hsa04630" attr.type="double"/>
+  <key id="v_hsa05152" for="node" attr.name="hsa05152" attr.type="double"/>
+  <key id="v_hsa04666" for="node" attr.name="hsa04666" attr.type="double"/>
+  <key id="v_hsa05164" for="node" attr.name="hsa05164" attr.type="double"/>
+  <key id="v_hsa05220" for="node" attr.name="hsa05220" attr.type="double"/>
+  <key id="v_hsa05160" for="node" attr.name="hsa05160" attr.type="double"/>
+  <key id="v_hsa05205" for="node" attr.name="hsa05205" attr.type="double"/>
+  <key id="v_hsa04015" for="node" attr.name="hsa04015" attr.type="double"/>
+  <key id="v_hsa01524" for="node" attr.name="hsa01524" attr.type="double"/>
+  <key id="v_hsa04014" for="node" attr.name="hsa04014" attr.type="double"/>
+  <key id="v_hsa04620" for="node" attr.name="hsa04620" attr.type="double"/>
+  <key id="v_hsa04062" for="node" attr.name="hsa04062" attr.type="double"/>
+  <key id="v_hsa04072" for="node" attr.name="hsa04072" attr.type="double"/>
+  <key id="v_hsa04660" for="node" attr.name="hsa04660" attr.type="double"/>
+  <key id="v_hsa04152" for="node" attr.name="hsa04152" attr.type="double"/>
+  <key id="v_hsa04550" for="node" attr.name="hsa04550" attr.type="double"/>
+  <key id="v_hsa04010" for="node" attr.name="hsa04010" attr.type="double"/>
+  <key id="e_pathways" for="edge" attr.name="pathways" attr.type="string"/>
+  <key id="e_interaction_types" for="edge" attr.name="interaction_types" attr.type="string"/>
+  <key id="e_activation" for="edge" attr.name="activation" attr.type="double"/>
+  <key id="e_activation_inhibition" for="edge" attr.name="activation_inhibition" attr.type="double"/>
+  <key id="e_inhibition" for="edge" attr.name="inhibition" attr.type="double"/>
+  <key id="e_phosphorylation" for="edge" attr.name="phosphorylation" attr.type="double"/>
+  <key id="e_dephosphorylation" for="edge" attr.name="dephosphorylation" attr.type="double"/>
+  <graph id="G" edgedefault="directed">
+    <node id="n0">
+      <data key="v_root">false</data>
+      <data key="v_score">0</data>
+      <data key="v_id">n3658</data>
+      <data key="v_pathways">hsa05221,hsa05218</data>
+      <data key="v_NODETYPE">Gene</data>
+      <data key="v_name">4893</data>
+      <data key="v_kegg_link">http://www.kegg.jp/dbget-bin/www_bget?hsa:4893</data>
+      <data key="v_sorafenib_targets">false</data>
+      <data key="v_oncogenes_vogelstein">true</data>
+      <data key="v_tumor_suppressors_vogelstein">false</data>
+      <data key="v_drivers_vogelstein">true</data>
+      <data key="v_drivers_Rubio-Perez">true</data>
+      <data key="v_drivers_cosmic">true</data>
+      <data key="v_drivers_Uniprot">true</data>
+      <data key="v_drivers_tsgene">false</data>
+      <data key="v_lxr_merge">false</data>
+      <data key="v_lxr_pathway_wikipathways">false</data>
+      <data key="v_lxr_rxr_hepatocyte_ingenuity">false</data>
+      <data key="v_lxr_rxr_macrophage_ingenuity">false</data>
+      <data key="v_lxr_targets_wikipedia">false</data>
+      <data key="v_oatp_members_liver">false</data>
+      <data key="v_imaging_targets">false</data>
+      <data key="v_imaging_w_oatp_members">false</data>
+      <data key="v_symbol">NRAS</data>
+      <data key="v_ensembl">ENSG00000213281</data>
+      <data key="v_entrez">4893</data>
+      <data key="v_rnaseq_abs_log2fold_gt2_OR_vcf_incoming">1</data>
+      <data key="v_rnaseq_log2fold_gt2_OR_vcf_incoming">0</data>
+      <data key="v_rnaseq_abs_log2fold_gt2_OR_vcf_static_OR_incoming_OR_outgoing">1</data>
+      <data key="v_rnaseq_log2fold_ltneg2_OR_vcf_static_OR_outgoing">1</data>
+      <data key="v_rnaseq_abs_log2fold_gt2_OR_vcf_static">1</data>
+      <data key="v_vcf_phylop_score">0</data>
+      <data key="v_rnaseq_log2fold_gt2_OR_vcf_static_OR_incoming">0</data>
+      <data key="v_vcf_static_OR_outgoing">0</data>
+      <data key="v_vcf_static">0</data>
+      <data key="v_rnaseq_abs_log2fold_gt2">1</data>
+      <data key="v_rnaseq_log2fold_ltneg2_OR_vcf_static_OR_incoming">1</data>
+      <data key="v_vcf_static_OR_incoming_OR_outgoing">0</data>
+      <data key="v_rnaseq_abs_log2fold_gt2_OR_vcf_static_OR_incoming">1</data>
+      <data key="v_rnaseq_log2fold_gt2_OR_vcf_static">0</data>
+      <data key="v_rnaseq_log2fold_ltneg2_OR_vcf_static_OR_incoming_OR_outgoing">1</data>
+      <data key="v_rnaseq_log2fold_gt2_OR_vcf_static_OR_incoming_OR_outgoing">0</data>
+      <data key="v_vcf_PolyPhen2">0</data>
+      <data key="v_vcf_Sift">0</data>
+      <data key="v_rnaseq_log2fold_gt2_OR_vcf_static_OR_outgoing">0</data>
+      <data key="v_rnaseq_log2fold_ltneg2_OR_vcf_incoming">1</data>
+      <data key="v_rnaseq_log2fold_ltneg2">1</data>
+      <data key="v_vcf_MetaLR">0</data>
+      <data key="v_rnaseq_abs_log2fold_gt2_OR_vcf_incoming_OR_outgoing">1</data>
+      <data key="v_vcf_incoming_OR_outgoing">0</data>
+      <data key="v_vcf_static_OR_incoming">0</data>
+      <data key="v_rnaseq_log2fold_ltneg2_OR_vcf_incoming_OR_outgoing">1</data>
+      <data key="v_rnaseq_log2fold_gt2_OR_vcf_incoming_OR_outgoing">0</data>
+      <data key="v_rnaseq_abs_log2fold_gt2_OR_vcf_static_OR_outgoing">1</data>
+      <data key="v_rnaseq_log2fold_gt2_OR_vcf_outgoing">0</data>
+      <data key="v_rnaseq_log2fold_gt2">0</data>
+      <data key="v_vcf_outgoing">0</data>
+      <data key="v_rnaseq_abs_log2fold_gt2_OR_vcf_outgoing">1</data>
+      <data key="v_rnaseq_log2fold_ltneg2_OR_vcf_static">1</data>
+      <data key="v_vcf_incoming">0</data>
+      <data key="v_rnaseq_log2fold_ltneg2_OR_vcf_outgoing">1</data>
+      <data key="v_rnaseq_log2fold">-2.31933</data>
+      <data key="v_hsa04066">0</data>
+      <data key="v_hsa04919">0</data>
+      <data key="v_hsa05222">0</data>
+      <data key="v_hsa04071">0</data>
+      <data key="v_hsa04022">0</data>
+      <data key="v_hsa04150">0</data>
+      <data key="v_hsa04920">0</data>
+      <data key="v_hsa04510">0</data>
+      <data key="v_hsa05166">0</data>
+      <data key="v_hsa05230">0</data>
+      <data key="v_hsa04722">0</data>
+      <data key="v_hsa05223">0</data>
+      <data key="v_hsa04662">0</data>
+      <data key="v_hsa04024">0</data>
+      <data key="v_hsa04213">0</data>
+      <data key="v_hsa05212">0</data>
+      <data key="v_hsa04668">0</data>
+      <data key="v_hsa01522">0</data>
+      <data key="v_hsa04933">0</data>
+      <data key="v_hsa05214">0</data>
+      <data key="v_hsa04923">0</data>
+      <data key="v_hsa04910">0</data>
+      <data key="v_hsa04922">0</data>
+      <data key="v_hsa04370">0</data>
+      <data key="v_hsa04932">0</data>
+      <data key="v_hsa05145">0</data>
+      <data key="v_hsa04611">0</data>
+      <data key="v_hsa05215">0</data>
+      <data key="v_hsa04917">0</data>
+      <data key="v_hsa05231">0</data>
+      <data key="v_hsa04664">0</data>
+      <data key="v_hsa05169">0</data>
+      <data key="v_hsa05213">0</data>
+      <data key="v_hsa04380">0</data>
+      <data key="v_hsa04012">0</data>
+      <data key="v_hsa05200">0</data>
+      <data key="v_hsa05211">0</data>
+      <data key="v_hsa05162">0</data>
+      <data key="v_hsa05142">0</data>
+      <data key="v_hsa04914">0</data>
+      <data key="v_hsa04657">0</data>
+      <data key="v_hsa05221">1</data>
+      <data key="v_hsa04973">0</data>
+      <data key="v_hsa04931">0</data>
+      <data key="v_hsa04068">0</data>
+      <data key="v_hsa04725">0</data>
+      <data key="v_hsa04211">0</data>
+      <data key="v_hsa04151">0</data>
+      <data key="v_hsa04140">0</data>
+      <data key="v_hsa04210">0</data>
+      <data key="v_hsa04728">0</data>
+      <data key="v_hsa04371">0</data>
+      <data key="v_hsa05224">0</data>
+      <data key="v_hsa05218">1</data>
+      <data key="v_hsa05210">0</data>
+      <data key="v_hsa05418">0</data>
+      <data key="v_hsa05161">0</data>
+      <data key="v_hsa01521">0</data>
+      <data key="v_hsa04720">0</data>
+      <data key="v_hsa04114">0</data>
+      <data key="v_hsa03015">0</data>
+      <data key="v_hsa04261">0</data>
+      <data key="v_hsa04915">0</data>
+      <data key="v_hsa04630">0</data>
+      <data key="v_hsa05152">0</data>
+      <data key="v_hsa04666">0</data>
+      <data key="v_hsa05164">0</data>
+      <data key="v_hsa05220">0</data>
+      <data key="v_hsa05160">0</data>
+      <data key="v_hsa05205">0</data>
+      <data key="v_hsa04015">0</data>
+      <data key="v_hsa01524">0</data>
+      <data key="v_hsa04014">0</data>
+      <data key="v_hsa04620">0</data>
+      <data key="v_hsa04062">0</data>
+      <data key="v_hsa04072">0</data>
+      <data key="v_hsa04660">0</data>
+      <data key="v_hsa04152">0</data>
+      <data key="v_hsa04550">0</data>
+      <data key="v_hsa04010">0</data>
+    </node>
+    <node id="n1">
+      <data key="v_root">false</data>
+      <data key="v_score">1</data>
+      <data key="v_id">n5083</data>
+      <data key="v_pathways">hsa04024,hsa04211,hsa04071,hsa04919,hsa04664,hsa04210,hsa05230,hsa04010,hsa04660,hsa04923,hsa04933,hsa05215,hsa04722,hsa04068,hsa05164,hsa04380,hsa04611,hsa04728,hsa04066,hsa04370,hsa04371,hsa05160,hsa04662,hsa04014,hsa05145,hsa04140,hsa05205,hsa04213,hsa04620,hsa04012,hsa04915,hsa05152,hsa05211,hsa04920,hsa05222,hsa04914,hsa05223,hsa05212,hsa04917,hsa04072,hsa05162,hsa04630,hsa05169,hsa04152,hsa05200,hsa04022,hsa05224,hsa04261,hsa04150,hsa05166,hsa04510,hsa05221,hsa04668,hsa04151,hsa05210,hsa05218,hsa01524,hsa05214,hsa05418,hsa05161,hsa04922,hsa04932,hsa01522,hsa04015,hsa04973,hsa04931,hsa04666,hsa04725,hsa05142,hsa05220,hsa05231,hsa04550,hsa01521,hsa04062,hsa05213,hsa04910</data>
+      <data key="v_NODETYPE">Gene</data>
+      <data key="v_name">10000</data>
+      <data key="v_kegg_link">None</data>
+      <data key="v_sorafenib_targets">false</data>
+      <data key="v_oncogenes_vogelstein">false</data>
+      <data key="v_tumor_suppressors_vogelstein">false</data>
+      <data key="v_drivers_vogelstein">false</data>
+      <data key="v_drivers_Rubio-Perez">true</data>
+      <data key="v_drivers_cosmic">false</data>
+      <data key="v_drivers_Uniprot">false</data>
+      <data key="v_drivers_tsgene">false</data>
+      <data key="v_lxr_merge">false</data>
+      <data key="v_lxr_pathway_wikipathways">false</data>
+      <data key="v_lxr_rxr_hepatocyte_ingenuity">false</data>
+      <data key="v_lxr_rxr_macrophage_ingenuity">false</data>
+      <data key="v_lxr_targets_wikipedia">false</data>
+      <data key="v_oatp_members_liver">false</data>
+      <data key="v_imaging_targets">false</data>
+      <data key="v_imaging_w_oatp_members">false</data>
+      <data key="v_symbol">AKT3</data>
+      <data key="v_ensembl">ENSG00000117020</data>
+      <data key="v_entrez">10000</data>
+      <data key="v_rnaseq_abs_log2fold_gt2_OR_vcf_incoming">0</data>
+      <data key="v_rnaseq_log2fold_gt2_OR_vcf_incoming">0</data>
+      <data key="v_rnaseq_abs_log2fold_gt2_OR_vcf_static_OR_incoming_OR_outgoing">0</data>
+      <data key="v_rnaseq_log2fold_ltneg2_OR_vcf_static_OR_outgoing">0</data>
+      <data key="v_rnaseq_abs_log2fold_gt2_OR_vcf_static">0</data>
+      <data key="v_vcf_phylop_score">0</data>
+      <data key="v_rnaseq_log2fold_gt2_OR_vcf_static_OR_incoming">0</data>
+      <data key="v_vcf_static_OR_outgoing">0</data>
+      <data key="v_vcf_static">0</data>
+      <data key="v_rnaseq_abs_log2fold_gt2">0</data>
+      <data key="v_rnaseq_log2fold_ltneg2_OR_vcf_static_OR_incoming">0</data>
+      <data key="v_vcf_static_OR_incoming_OR_outgoing">0</data>
+      <data key="v_rnaseq_abs_log2fold_gt2_OR_vcf_static_OR_incoming">0</data>
+      <data key="v_rnaseq_log2fold_gt2_OR_vcf_static">0</data>
+      <data key="v_rnaseq_log2fold_ltneg2_OR_vcf_static_OR_incoming_OR_outgoing">0</data>
+      <data key="v_rnaseq_log2fold_gt2_OR_vcf_static_OR_incoming_OR_outgoing">0</data>
+      <data key="v_vcf_PolyPhen2">0</data>
+      <data key="v_vcf_Sift">0</data>
+      <data key="v_rnaseq_log2fold_gt2_OR_vcf_static_OR_outgoing">0</data>
+      <data key="v_rnaseq_log2fold_ltneg2_OR_vcf_incoming">0</data>
+      <data key="v_rnaseq_log2fold_ltneg2">0</data>
+      <data key="v_vcf_MetaLR">0</data>
+      <data key="v_rnaseq_abs_log2fold_gt2_OR_vcf_incoming_OR_outgoing">0</data>
+      <data key="v_vcf_incoming_OR_outgoing">0</data>
+      <data key="v_vcf_static_OR_incoming">0</data>
+      <data key="v_rnaseq_log2fold_ltneg2_OR_vcf_incoming_OR_outgoing">0</data>
+      <data key="v_rnaseq_log2fold_gt2_OR_vcf_incoming_OR_outgoing">0</data>
+      <data key="v_rnaseq_abs_log2fold_gt2_OR_vcf_static_OR_outgoing">0</data>
+      <data key="v_rnaseq_log2fold_gt2_OR_vcf_outgoing">0</data>
+      <data key="v_rnaseq_log2fold_gt2">0</data>
+      <data key="v_vcf_outgoing">0</data>
+      <data key="v_rnaseq_abs_log2fold_gt2_OR_vcf_outgoing">0</data>
+      <data key="v_rnaseq_log2fold_ltneg2_OR_vcf_static">0</data>
+      <data key="v_vcf_incoming">0</data>
+      <data key="v_rnaseq_log2fold_ltneg2_OR_vcf_outgoing">0</data>
+      <data key="v_rnaseq_log2fold">0</data>
+      <data key="v_hsa04066">1</data>
+      <data key="v_hsa04919">1</data>
+      <data key="v_hsa05222">1</data>
+      <data key="v_hsa04071">1</data>
+      <data key="v_hsa04022">1</data>
+      <data key="v_hsa04150">1</data>
+      <data key="v_hsa04920">1</data>
+      <data key="v_hsa04510">1</data>
+      <data key="v_hsa05166">1</data>
+      <data key="v_hsa05230">1</data>
+      <data key="v_hsa04722">1</data>
+      <data key="v_hsa05223">1</data>
+      <data key="v_hsa04662">1</data>
+      <data key="v_hsa04024">1</data>
+      <data key="v_hsa04213">1</data>
+      <data key="v_hsa05212">1</data>
+      <data key="v_hsa04668">1</data>
+      <data key="v_hsa01522">1</data>
+      <data key="v_hsa04933">1</data>
+      <data key="v_hsa05214">1</data>
+      <data key="v_hsa04923">1</data>
+      <data key="v_hsa04910">1</data>
+      <data key="v_hsa04922">1</data>
+      <data key="v_hsa04370">1</data>
+      <data key="v_hsa04932">1</data>
+      <data key="v_hsa05145">1</data>
+      <data key="v_hsa04611">1</data>
+      <data key="v_hsa05215">1</data>
+      <data key="v_hsa04917">1</data>
+      <data key="v_hsa05231">1</data>
+      <data key="v_hsa04664">1</data>
+      <data key="v_hsa05169">1</data>
+      <data key="v_hsa05213">1</data>
+      <data key="v_hsa04380">1</data>
+      <data key="v_hsa04012">1</data>
+      <data key="v_hsa05200">1</data>
+      <data key="v_hsa05211">1</data>
+      <data key="v_hsa05162">1</data>
+      <data key="v_hsa05142">1</data>
+      <data key="v_hsa04914">1</data>
+      <data key="v_hsa04657">0</data>
+      <data key="v_hsa05221">1</data>
+      <data key="v_hsa04973">1</data>
+      <data key="v_hsa04931">1</data>
+      <data key="v_hsa04068">1</data>
+      <data key="v_hsa04725">1</data>
+      <data key="v_hsa04211">1</data>
+      <data key="v_hsa04151">1</data>
+      <data key="v_hsa04140">1</data>
+      <data key="v_hsa04210">1</data>
+      <data key="v_hsa04728">1</data>
+      <data key="v_hsa04371">1</data>
+      <data key="v_hsa05224">1</data>
+      <data key="v_hsa05218">1</data>
+      <data key="v_hsa05210">1</data>
+      <data key="v_hsa05418">1</data>
+      <data key="v_hsa05161">1</data>
+      <data key="v_hsa01521">1</data>
+      <data key="v_hsa04720">0</data>
+      <data key="v_hsa04114">0</data>
+      <data key="v_hsa03015">0</data>
+      <data key="v_hsa04261">1</data>
+      <data key="v_hsa04915">1</data>
+      <data key="v_hsa04630">1</data>
+      <data key="v_hsa05152">1</data>
+      <data key="v_hsa04666">1</data>
+      <data key="v_hsa05164">1</data>
+      <data key="v_hsa05220">1</data>
+      <data key="v_hsa05160">1</data>
+      <data key="v_hsa05205">1</data>
+      <data key="v_hsa04015">1</data>
+      <data key="v_hsa01524">1</data>
+      <data key="v_hsa04014">1</data>
+      <data key="v_hsa04620">1</data>
+      <data key="v_hsa04062">1</data>
+      <data key="v_hsa04072">1</data>
+      <data key="v_hsa04660">1</data>
+      <data key="v_hsa04152">1</data>
+      <data key="v_hsa04550">1</data>
+      <data key="v_hsa04010">1</data>
+    </node>
+    <node id="n2">
+      <data key="v_root">false</data>
+      <data key="v_score">1</data>
+      <data key="v_id">n5267</data>
+      <data key="v_pathways">hsa04720,hsa04114,hsa04010,hsa04150,hsa04722,hsa04931,hsa04914</data>
+      <data key="v_NODETYPE">Gene</data>
+      <data key="v_name">6196</data>
+      <data key="v_kegg_link">None</data>
+      <data key="v_sorafenib_targets">false</data>
+      <data key="v_oncogenes_vogelstein">false</data>
+      <data key="v_tumor_suppressors_vogelstein">false</data>
+      <data key="v_drivers_vogelstein">false</data>
+      <data key="v_drivers_Rubio-Perez">false</data>
+      <data key="v_drivers_cosmic">false</data>
+      <data key="v_drivers_Uniprot">true</data>
+      <data key="v_drivers_tsgene">true</data>
+      <data key="v_lxr_merge">false</data>
+      <data key="v_lxr_pathway_wikipathways">false</data>
+      <data key="v_lxr_rxr_hepatocyte_ingenuity">false</data>
+      <data key="v_lxr_rxr_macrophage_ingenuity">false</data>
+      <data key="v_lxr_targets_wikipedia">false</data>
+      <data key="v_oatp_members_liver">false</data>
+      <data key="v_imaging_targets">false</data>
+      <data key="v_imaging_w_oatp_members">false</data>
+      <data key="v_symbol">RPS6KA2</data>
+      <data key="v_ensembl">ENSG00000071242</data>
+      <data key="v_entrez">6196</data>
+      <data key="v_rnaseq_abs_log2fold_gt2_OR_vcf_incoming">0</data>
+      <data key="v_rnaseq_log2fold_gt2_OR_vcf_incoming">0</data>
+      <data key="v_rnaseq_abs_log2fold_gt2_OR_vcf_static_OR_incoming_OR_outgoing">0</data>
+      <data key="v_rnaseq_log2fold_ltneg2_OR_vcf_static_OR_outgoing">0</data>
+      <data key="v_rnaseq_abs_log2fold_gt2_OR_vcf_static">0</data>
+      <data key="v_vcf_phylop_score">0</data>
+      <data key="v_rnaseq_log2fold_gt2_OR_vcf_static_OR_incoming">0</data>
+      <data key="v_vcf_static_OR_outgoing">0</data>
+      <data key="v_vcf_static">0</data>
+      <data key="v_rnaseq_abs_log2fold_gt2">0</data>
+      <data key="v_rnaseq_log2fold_ltneg2_OR_vcf_static_OR_incoming">0</data>
+      <data key="v_vcf_static_OR_incoming_OR_outgoing">0</data>
+      <data key="v_rnaseq_abs_log2fold_gt2_OR_vcf_static_OR_incoming">0</data>
+      <data key="v_rnaseq_log2fold_gt2_OR_vcf_static">0</data>
+      <data key="v_rnaseq_log2fold_ltneg2_OR_vcf_static_OR_incoming_OR_outgoing">0</data>
+      <data key="v_rnaseq_log2fold_gt2_OR_vcf_static_OR_incoming_OR_outgoing">0</data>
+      <data key="v_vcf_PolyPhen2">0</data>
+      <data key="v_vcf_Sift">0</data>
+      <data key="v_rnaseq_log2fold_gt2_OR_vcf_static_OR_outgoing">0</data>
+      <data key="v_rnaseq_log2fold_ltneg2_OR_vcf_incoming">0</data>
+      <data key="v_rnaseq_log2fold_ltneg2">0</data>
+      <data key="v_vcf_MetaLR">0</data>
+      <data key="v_rnaseq_abs_log2fold_gt2_OR_vcf_incoming_OR_outgoing">0</data>
+      <data key="v_vcf_incoming_OR_outgoing">0</data>
+      <data key="v_vcf_static_OR_incoming">0</data>
+      <data key="v_rnaseq_log2fold_ltneg2_OR_vcf_incoming_OR_outgoing">0</data>
+      <data key="v_rnaseq_log2fold_gt2_OR_vcf_incoming_OR_outgoing">0</data>
+      <data key="v_rnaseq_abs_log2fold_gt2_OR_vcf_static_OR_outgoing">0</data>
+      <data key="v_rnaseq_log2fold_gt2_OR_vcf_outgoing">0</data>
+      <data key="v_rnaseq_log2fold_gt2">0</data>
+      <data key="v_vcf_outgoing">0</data>
+      <data key="v_rnaseq_abs_log2fold_gt2_OR_vcf_outgoing">0</data>
+      <data key="v_rnaseq_log2fold_ltneg2_OR_vcf_static">0</data>
+      <data key="v_vcf_incoming">0</data>
+      <data key="v_rnaseq_log2fold_ltneg2_OR_vcf_outgoing">0</data>
+      <data key="v_rnaseq_log2fold">0</data>
+      <data key="v_hsa04066">0</data>
+      <data key="v_hsa04919">0</data>
+      <data key="v_hsa05222">0</data>
+      <data key="v_hsa04071">0</data>
+      <data key="v_hsa04022">0</data>
+      <data key="v_hsa04150">1</data>
+      <data key="v_hsa04920">0</data>
+      <data key="v_hsa04510">0</data>
+      <data key="v_hsa05166">0</data>
+      <data key="v_hsa05230">0</data>
+      <data key="v_hsa04722">1</data>
+      <data key="v_hsa05223">0</data>
+      <data key="v_hsa04662">0</data>
+      <data key="v_hsa04024">0</data>
+      <data key="v_hsa04213">0</data>
+      <data key="v_hsa05212">0</data>
+      <data key="v_hsa04668">0</data>
+      <data key="v_hsa01522">0</data>
+      <data key="v_hsa04933">0</data>
+      <data key="v_hsa05214">0</data>
+      <data key="v_hsa04923">0</data>
+      <data key="v_hsa04910">0</data>
+      <data key="v_hsa04922">0</data>
+      <data key="v_hsa04370">0</data>
+      <data key="v_hsa04932">0</data>
+      <data key="v_hsa05145">0</data>
+      <data key="v_hsa04611">0</data>
+      <data key="v_hsa05215">0</data>
+      <data key="v_hsa04917">0</data>
+      <data key="v_hsa05231">0</data>
+      <data key="v_hsa04664">0</data>
+      <data key="v_hsa05169">0</data>
+      <data key="v_hsa05213">0</data>
+      <data key="v_hsa04380">0</data>
+      <data key="v_hsa04012">0</data>
+      <data key="v_hsa05200">0</data>
+      <data key="v_hsa05211">0</data>
+      <data key="v_hsa05162">0</data>
+      <data key="v_hsa05142">0</data>
+      <data key="v_hsa04914">1</data>
+      <data key="v_hsa04657">0</data>
+      <data key="v_hsa05221">0</data>
+      <data key="v_hsa04973">0</data>
+      <data key="v_hsa04931">1</data>
+      <data key="v_hsa04068">0</data>
+      <data key="v_hsa04725">0</data>
+      <data key="v_hsa04211">0</data>
+      <data key="v_hsa04151">0</data>
+      <data key="v_hsa04140">0</data>
+      <data key="v_hsa04210">0</data>
+      <data key="v_hsa04728">0</data>
+      <data key="v_hsa04371">0</data>
+      <data key="v_hsa05224">0</data>
+      <data key="v_hsa05218">0</data>
+      <data key="v_hsa05210">0</data>
+      <data key="v_hsa05418">0</data>
+      <data key="v_hsa05161">0</data>
+      <data key="v_hsa01521">0</data>
+      <data key="v_hsa04720">1</data>
+      <data key="v_hsa04114">1</data>
+      <data key="v_hsa03015">0</data>
+      <data key="v_hsa04261">0</data>
+      <data key="v_hsa04915">0</data>
+      <data key="v_hsa04630">0</data>
+      <data key="v_hsa05152">0</data>
+      <data key="v_hsa04666">0</data>
+      <data key="v_hsa05164">0</data>
+      <data key="v_hsa05220">0</data>
+      <data key="v_hsa05160">0</data>
+      <data key="v_hsa05205">0</data>
+      <data key="v_hsa04015">0</data>
+      <data key="v_hsa01524">0</data>
+      <data key="v_hsa04014">0</data>
+      <data key="v_hsa04620">0</data>
+      <data key="v_hsa04062">0</data>
+      <data key="v_hsa04072">0</data>
+      <data key="v_hsa04660">0</data>
+      <data key="v_hsa04152">0</data>
+      <data key="v_hsa04550">0</data>
+      <data key="v_hsa04010">1</data>
+    </node>
+    <node id="n3">
+      <data key="v_root">true</data>
+      <data key="v_score">1</data>
+      <data key="v_id">n6065</data>
+      <data key="v_pathways">hsa04071,hsa04152,hsa04261,hsa04151,hsa04728,hsa03015</data>
+      <data key="v_NODETYPE">Gene</data>
+      <data key="v_name">5523</data>
+      <data key="v_kegg_link">None</data>
+      <data key="v_sorafenib_targets">false</data>
+      <data key="v_oncogenes_vogelstein">false</data>
+      <data key="v_tumor_suppressors_vogelstein">false</data>
+      <data key="v_drivers_vogelstein">false</data>
+      <data key="v_drivers_Rubio-Perez">false</data>
+      <data key="v_drivers_cosmic">false</data>
+      <data key="v_drivers_Uniprot">false</data>
+      <data key="v_drivers_tsgene">false</data>
+      <data key="v_lxr_merge">false</data>
+      <data key="v_lxr_pathway_wikipathways">false</data>
+      <data key="v_lxr_rxr_hepatocyte_ingenuity">false</data>
+      <data key="v_lxr_rxr_macrophage_ingenuity">false</data>
+      <data key="v_lxr_targets_wikipedia">false</data>
+      <data key="v_oatp_members_liver">false</data>
+      <data key="v_imaging_targets">false</data>
+      <data key="v_imaging_w_oatp_members">false</data>
+      <data key="v_symbol">PPP2R3A</data>
+      <data key="v_ensembl">ENSG00000073711</data>
+      <data key="v_entrez">5523</data>
+      <data key="v_rnaseq_abs_log2fold_gt2_OR_vcf_incoming">1</data>
+      <data key="v_rnaseq_log2fold_gt2_OR_vcf_incoming">0</data>
+      <data key="v_rnaseq_abs_log2fold_gt2_OR_vcf_static_OR_incoming_OR_outgoing">1</data>
+      <data key="v_rnaseq_log2fold_ltneg2_OR_vcf_static_OR_outgoing">1</data>
+      <data key="v_rnaseq_abs_log2fold_gt2_OR_vcf_static">1</data>
+      <data key="v_vcf_phylop_score">0</data>
+      <data key="v_rnaseq_log2fold_gt2_OR_vcf_static_OR_incoming">0</data>
+      <data key="v_vcf_static_OR_outgoing">0</data>
+      <data key="v_vcf_static">0</data>
+      <data key="v_rnaseq_abs_log2fold_gt2">1</data>
+      <data key="v_rnaseq_log2fold_ltneg2_OR_vcf_static_OR_incoming">1</data>
+      <data key="v_vcf_static_OR_incoming_OR_outgoing">0</data>
+      <data key="v_rnaseq_abs_log2fold_gt2_OR_vcf_static_OR_incoming">1</data>
+      <data key="v_rnaseq_log2fold_gt2_OR_vcf_static">0</data>
+      <data key="v_rnaseq_log2fold_ltneg2_OR_vcf_static_OR_incoming_OR_outgoing">1</data>
+      <data key="v_rnaseq_log2fold_gt2_OR_vcf_static_OR_incoming_OR_outgoing">0</data>
+      <data key="v_vcf_PolyPhen2">0</data>
+      <data key="v_vcf_Sift">0</data>
+      <data key="v_rnaseq_log2fold_gt2_OR_vcf_static_OR_outgoing">0</data>
+      <data key="v_rnaseq_log2fold_ltneg2_OR_vcf_incoming">1</data>
+      <data key="v_rnaseq_log2fold_ltneg2">1</data>
+      <data key="v_vcf_MetaLR">0</data>
+      <data key="v_rnaseq_abs_log2fold_gt2_OR_vcf_incoming_OR_outgoing">1</data>
+      <data key="v_vcf_incoming_OR_outgoing">0</data>
+      <data key="v_vcf_static_OR_incoming">0</data>
+      <data key="v_rnaseq_log2fold_ltneg2_OR_vcf_incoming_OR_outgoing">1</data>
+      <data key="v_rnaseq_log2fold_gt2_OR_vcf_incoming_OR_outgoing">0</data>
+      <data key="v_rnaseq_abs_log2fold_gt2_OR_vcf_static_OR_outgoing">1</data>
+      <data key="v_rnaseq_log2fold_gt2_OR_vcf_outgoing">0</data>
+      <data key="v_rnaseq_log2fold_gt2">0</data>
+      <data key="v_vcf_outgoing">0</data>
+      <data key="v_rnaseq_abs_log2fold_gt2_OR_vcf_outgoing">1</data>
+      <data key="v_rnaseq_log2fold_ltneg2_OR_vcf_static">1</data>
+      <data key="v_vcf_incoming">0</data>
+      <data key="v_rnaseq_log2fold_ltneg2_OR_vcf_outgoing">1</data>
+      <data key="v_rnaseq_log2fold">-2.53152</data>
+      <data key="v_hsa04066">0</data>
+      <data key="v_hsa04919">0</data>
+      <data key="v_hsa05222">0</data>
+      <data key="v_hsa04071">1</data>
+      <data key="v_hsa04022">0</data>
+      <data key="v_hsa04150">0</data>
+      <data key="v_hsa04920">0</data>
+      <data key="v_hsa04510">0</data>
+      <data key="v_hsa05166">0</data>
+      <data key="v_hsa05230">0</data>
+      <data key="v_hsa04722">0</data>
+      <data key="v_hsa05223">0</data>
+      <data key="v_hsa04662">0</data>
+      <data key="v_hsa04024">0</data>
+      <data key="v_hsa04213">0</data>
+      <data key="v_hsa05212">0</data>
+      <data key="v_hsa04668">0</data>
+      <data key="v_hsa01522">0</data>
+      <data key="v_hsa04933">0</data>
+      <data key="v_hsa05214">0</data>
+      <data key="v_hsa04923">0</data>
+      <data key="v_hsa04910">0</data>
+      <data key="v_hsa04922">0</data>
+      <data key="v_hsa04370">0</data>
+      <data key="v_hsa04932">0</data>
+      <data key="v_hsa05145">0</data>
+      <data key="v_hsa04611">0</data>
+      <data key="v_hsa05215">0</data>
+      <data key="v_hsa04917">0</data>
+      <data key="v_hsa05231">0</data>
+      <data key="v_hsa04664">0</data>
+      <data key="v_hsa05169">0</data>
+      <data key="v_hsa05213">0</data>
+      <data key="v_hsa04380">0</data>
+      <data key="v_hsa04012">0</data>
+      <data key="v_hsa05200">0</data>
+      <data key="v_hsa05211">0</data>
+      <data key="v_hsa05162">0</data>
+      <data key="v_hsa05142">0</data>
+      <data key="v_hsa04914">0</data>
+      <data key="v_hsa04657">0</data>
+      <data key="v_hsa05221">0</data>
+      <data key="v_hsa04973">0</data>
+      <data key="v_hsa04931">0</data>
+      <data key="v_hsa04068">0</data>
+      <data key="v_hsa04725">0</data>
+      <data key="v_hsa04211">0</data>
+      <data key="v_hsa04151">1</data>
+      <data key="v_hsa04140">0</data>
+      <data key="v_hsa04210">0</data>
+      <data key="v_hsa04728">1</data>
+      <data key="v_hsa04371">0</data>
+      <data key="v_hsa05224">0</data>
+      <data key="v_hsa05218">0</data>
+      <data key="v_hsa05210">0</data>
+      <data key="v_hsa05418">0</data>
+      <data key="v_hsa05161">0</data>
+      <data key="v_hsa01521">0</data>
+      <data key="v_hsa04720">0</data>
+      <data key="v_hsa04114">0</data>
+      <data key="v_hsa03015">1</data>
+      <data key="v_hsa04261">1</data>
+      <data key="v_hsa04915">0</data>
+      <data key="v_hsa04630">0</data>
+      <data key="v_hsa05152">0</data>
+      <data key="v_hsa04666">0</data>
+      <data key="v_hsa05164">0</data>
+      <data key="v_hsa05220">0</data>
+      <data key="v_hsa05160">0</data>
+      <data key="v_hsa05205">0</data>
+      <data key="v_hsa04015">0</data>
+      <data key="v_hsa01524">0</data>
+      <data key="v_hsa04014">0</data>
+      <data key="v_hsa04620">0</data>
+      <data key="v_hsa04062">0</data>
+      <data key="v_hsa04072">0</data>
+      <data key="v_hsa04660">0</data>
+      <data key="v_hsa04152">1</data>
+      <data key="v_hsa04550">0</data>
+      <data key="v_hsa04010">0</data>
+    </node>
+    <node id="n4">
+      <data key="v_root">false</data>
+      <data key="v_score">0</data>
+      <data key="v_id">n6330</data>
+      <data key="v_pathways">hsa04657</data>
+      <data key="v_NODETYPE">Gene</data>
+      <data key="v_name">5595</data>
+      <data key="v_kegg_link">None</data>
+      <data key="v_sorafenib_targets">false</data>
+      <data key="v_oncogenes_vogelstein">false</data>
+      <data key="v_tumor_suppressors_vogelstein">false</data>
+      <data key="v_drivers_vogelstein">false</data>
+      <data key="v_drivers_Rubio-Perez">false</data>
+      <data key="v_drivers_cosmic">false</data>
+      <data key="v_drivers_Uniprot">false</data>
+      <data key="v_drivers_tsgene">false</data>
+      <data key="v_lxr_merge">false</data>
+      <data key="v_lxr_pathway_wikipathways">false</data>
+      <data key="v_lxr_rxr_hepatocyte_ingenuity">false</data>
+      <data key="v_lxr_rxr_macrophage_ingenuity">false</data>
+      <data key="v_lxr_targets_wikipedia">false</data>
+      <data key="v_oatp_members_liver">false</data>
+      <data key="v_imaging_targets">false</data>
+      <data key="v_imaging_w_oatp_members">false</data>
+      <data key="v_symbol">MAPK3</data>
+      <data key="v_ensembl">ENSG00000102882</data>
+      <data key="v_entrez">5595</data>
+      <data key="v_rnaseq_abs_log2fold_gt2_OR_vcf_incoming">0</data>
+      <data key="v_rnaseq_log2fold_gt2_OR_vcf_incoming">0</data>
+      <data key="v_rnaseq_abs_log2fold_gt2_OR_vcf_static_OR_incoming_OR_outgoing">0</data>
+      <data key="v_rnaseq_log2fold_ltneg2_OR_vcf_static_OR_outgoing">0</data>
+      <data key="v_rnaseq_abs_log2fold_gt2_OR_vcf_static">0</data>
+      <data key="v_vcf_phylop_score">0</data>
+      <data key="v_rnaseq_log2fold_gt2_OR_vcf_static_OR_incoming">0</data>
+      <data key="v_vcf_static_OR_outgoing">0</data>
+      <data key="v_vcf_static">0</data>
+      <data key="v_rnaseq_abs_log2fold_gt2">0</data>
+      <data key="v_rnaseq_log2fold_ltneg2_OR_vcf_static_OR_incoming">0</data>
+      <data key="v_vcf_static_OR_incoming_OR_outgoing">0</data>
+      <data key="v_rnaseq_abs_log2fold_gt2_OR_vcf_static_OR_incoming">0</data>
+      <data key="v_rnaseq_log2fold_gt2_OR_vcf_static">0</data>
+      <data key="v_rnaseq_log2fold_ltneg2_OR_vcf_static_OR_incoming_OR_outgoing">0</data>
+      <data key="v_rnaseq_log2fold_gt2_OR_vcf_static_OR_incoming_OR_outgoing">0</data>
+      <data key="v_vcf_PolyPhen2">0</data>
+      <data key="v_vcf_Sift">0</data>
+      <data key="v_rnaseq_log2fold_gt2_OR_vcf_static_OR_outgoing">0</data>
+      <data key="v_rnaseq_log2fold_ltneg2_OR_vcf_incoming">0</data>
+      <data key="v_rnaseq_log2fold_ltneg2">0</data>
+      <data key="v_vcf_MetaLR">0</data>
+      <data key="v_rnaseq_abs_log2fold_gt2_OR_vcf_incoming_OR_outgoing">0</data>
+      <data key="v_vcf_incoming_OR_outgoing">0</data>
+      <data key="v_vcf_static_OR_incoming">0</data>
+      <data key="v_rnaseq_log2fold_ltneg2_OR_vcf_incoming_OR_outgoing">0</data>
+      <data key="v_rnaseq_log2fold_gt2_OR_vcf_incoming_OR_outgoing">0</data>
+      <data key="v_rnaseq_abs_log2fold_gt2_OR_vcf_static_OR_outgoing">0</data>
+      <data key="v_rnaseq_log2fold_gt2_OR_vcf_outgoing">0</data>
+      <data key="v_rnaseq_log2fold_gt2">0</data>
+      <data key="v_vcf_outgoing">0</data>
+      <data key="v_rnaseq_abs_log2fold_gt2_OR_vcf_outgoing">0</data>
+      <data key="v_rnaseq_log2fold_ltneg2_OR_vcf_static">0</data>
+      <data key="v_vcf_incoming">0</data>
+      <data key="v_rnaseq_log2fold_ltneg2_OR_vcf_outgoing">0</data>
+      <data key="v_rnaseq_log2fold">0</data>
+      <data key="v_hsa04066">0</data>
+      <data key="v_hsa04919">0</data>
+      <data key="v_hsa05222">0</data>
+      <data key="v_hsa04071">0</data>
+      <data key="v_hsa04022">0</data>
+      <data key="v_hsa04150">0</data>
+      <data key="v_hsa04920">0</data>
+      <data key="v_hsa04510">0</data>
+      <data key="v_hsa05166">0</data>
+      <data key="v_hsa05230">0</data>
+      <data key="v_hsa04722">0</data>
+      <data key="v_hsa05223">0</data>
+      <data key="v_hsa04662">0</data>
+      <data key="v_hsa04024">0</data>
+      <data key="v_hsa04213">0</data>
+      <data key="v_hsa05212">0</data>
+      <data key="v_hsa04668">0</data>
+      <data key="v_hsa01522">0</data>
+      <data key="v_hsa04933">0</data>
+      <data key="v_hsa05214">0</data>
+      <data key="v_hsa04923">0</data>
+      <data key="v_hsa04910">0</data>
+      <data key="v_hsa04922">0</data>
+      <data key="v_hsa04370">0</data>
+      <data key="v_hsa04932">0</data>
+      <data key="v_hsa05145">0</data>
+      <data key="v_hsa04611">0</data>
+      <data key="v_hsa05215">0</data>
+      <data key="v_hsa04917">0</data>
+      <data key="v_hsa05231">0</data>
+      <data key="v_hsa04664">0</data>
+      <data key="v_hsa05169">0</data>
+      <data key="v_hsa05213">0</data>
+      <data key="v_hsa04380">0</data>
+      <data key="v_hsa04012">0</data>
+      <data key="v_hsa05200">0</data>
+      <data key="v_hsa05211">0</data>
+      <data key="v_hsa05162">0</data>
+      <data key="v_hsa05142">0</data>
+      <data key="v_hsa04914">0</data>
+      <data key="v_hsa04657">1</data>
+      <data key="v_hsa05221">0</data>
+      <data key="v_hsa04973">0</data>
+      <data key="v_hsa04931">0</data>
+      <data key="v_hsa04068">0</data>
+      <data key="v_hsa04725">0</data>
+      <data key="v_hsa04211">0</data>
+      <data key="v_hsa04151">0</data>
+      <data key="v_hsa04140">0</data>
+      <data key="v_hsa04210">0</data>
+      <data key="v_hsa04728">0</data>
+      <data key="v_hsa04371">0</data>
+      <data key="v_hsa05224">0</data>
+      <data key="v_hsa05218">0</data>
+      <data key="v_hsa05210">0</data>
+      <data key="v_hsa05418">0</data>
+      <data key="v_hsa05161">0</data>
+      <data key="v_hsa01521">0</data>
+      <data key="v_hsa04720">0</data>
+      <data key="v_hsa04114">0</data>
+      <data key="v_hsa03015">0</data>
+      <data key="v_hsa04261">0</data>
+      <data key="v_hsa04915">0</data>
+      <data key="v_hsa04630">0</data>
+      <data key="v_hsa05152">0</data>
+      <data key="v_hsa04666">0</data>
+      <data key="v_hsa05164">0</data>
+      <data key="v_hsa05220">0</data>
+      <data key="v_hsa05160">0</data>
+      <data key="v_hsa05205">0</data>
+      <data key="v_hsa04015">0</data>
+      <data key="v_hsa01524">0</data>
+      <data key="v_hsa04014">0</data>
+      <data key="v_hsa04620">0</data>
+      <data key="v_hsa04062">0</data>
+      <data key="v_hsa04072">0</data>
+      <data key="v_hsa04660">0</data>
+      <data key="v_hsa04152">0</data>
+      <data key="v_hsa04550">0</data>
+      <data key="v_hsa04010">0</data>
+    </node>
+    <edge source="n0" target="n4">
+      <data key="e_pathways">None</data>
+      <data key="e_interaction_types">activation,phosphorylation</data>
+      <data key="e_activation">1</data>
+      <data key="e_activation_inhibition">1</data>
+      <data key="e_inhibition">0</data>
+      <data key="e_phosphorylation">1</data>
+      <data key="e_dephosphorylation">0</data>
+    </edge>
+    <edge source="n1" target="n4">
+      <data key="e_pathways">None</data>
+      <data key="e_interaction_types">activation,phosphorylation</data>
+      <data key="e_activation">1</data>
+      <data key="e_activation_inhibition">1</data>
+      <data key="e_inhibition">0</data>
+      <data key="e_phosphorylation">1</data>
+      <data key="e_dephosphorylation">0</data>
+    </edge>
+    <edge source="n2" target="n0">
+      <data key="e_pathways">None</data>
+      <data key="e_interaction_types">activation,phosphorylation</data>
+      <data key="e_activation">1</data>
+      <data key="e_activation_inhibition">1</data>
+      <data key="e_inhibition">0</data>
+      <data key="e_phosphorylation">1</data>
+      <data key="e_dephosphorylation">0</data>
+    </edge>
+    <edge source="n3" target="n1">
+      <data key="e_pathways">None</data>
+      <data key="e_interaction_types">activation,phosphorylation</data>
+      <data key="e_activation">1</data>
+      <data key="e_activation_inhibition">1</data>
+      <data key="e_inhibition">0</data>
+      <data key="e_phosphorylation">1</data>
+      <data key="e_dephosphorylation">0</data>
+    </edge>
+    <edge source="n4" target="n0">
+      <data key="e_pathways">None</data>
+      <data key="e_interaction_types">activation,phosphorylation</data>
+      <data key="e_activation">1</data>
+      <data key="e_activation_inhibition">1</data>
+      <data key="e_inhibition">0</data>
+      <data key="e_phosphorylation">1</data>
+      <data key="e_dephosphorylation">0</data>
+    </edge>
+    <edge source="n4" target="n2">
+      <data key="e_pathways">None</data>
+      <data key="e_interaction_types">inhibition,dephosphorylation</data>
+      <data key="e_activation">0</data>
+      <data key="e_activation_inhibition">-1</data>
+      <data key="e_inhibition">1</data>
+      <data key="e_phosphorylation">0</data>
+      <data key="e_dephosphorylation">1</data>
+    </edge>
+  </graph>
+</graphml>
