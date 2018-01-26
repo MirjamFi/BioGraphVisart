@@ -7,6 +7,7 @@ visualize a graph from .graphml-file
 */
 function visualize() {
 
+  $('#graphName').attr("disabled", true);
   $('#loadGraphml').attr("disabled", true);
 
   nodeVal = document.getElementById('values').value;
@@ -27,9 +28,12 @@ function visualize() {
 
   showLegend();
 
+  document.getElementById('downloadPart').style.visibility = "visible";
+
   showMetaInfo();
 
   activateNodeShapeChange();
+
 }
 
 //initialize legend

@@ -1,5 +1,5 @@
 var nodes, edges, path, tracer, nodeVal, outputName, nodeAttributes, 
-  graphString, oldMin, oldMax, nodeShapeAttr, shapeNode, ycoord;
+ graphString, oldMin, oldMax, nodeShapeAttr, shapeNode, ycoord;
 var firstTime = true;
 var loadGraphCount = 0;
 var legendDrawn = false;
@@ -40,84 +40,153 @@ function getFilesList(){
   getDrpDwnFiles = false;
 }
 
+
+function checkedBox(){
+
+    var up = document.getElementById("upload").checked;
+    var db = document.getElementById("database").checked;
+    if(up & db){
+      alert("Please select manual upload OR database.")
+    }
+    else if(up){
+     // path = document.getElementById('grapFile').value;
+      document.getElementById('graphName').style.visibility = "visible";
+      document.getElementById('gfiles').remove();
+      document.getElementById('loadGraphml').style.visibility = "visible";
+      document.getElementById('loadGraphml').disabled = false;
+      document.getElementById("upload").disabled = true;
+      document.getElementById("database").disabled = true;
+      document.getElementById("start").disabled = true;
+     // document.getElementById('gfiles').style.visibility = "hidden";
+    }
+    else if(db){
+      // path = document.getElementById('gfiles').value;
+      document.getElementById('gfiles').style.visibility = "visible";
+      document.getElementById('graphName').remove();
+      document.getElementById('loadGraphml').style.visibility = "visible";
+      document.getElementById('loadGraphml').disabled = false;
+      document.getElementById("upload").disabled = true;
+      document.getElementById("database").disabled = true;
+      document.getElementById("start").disabled = true;
+      //document.getElementById('graphFile').style.visibility = "hidden";
+    }
+    else{
+      alert("Please select manual upload or database usage.")
+    }
+
+}
+
 /* 
 read from grphml - file and initialize cy-object
 */
-function loadFile() {
-  //path = document.getElementById('graphName').value;
-  path = document.getElementById('gfiles').value;
-  if(!path.endsWith('.graphml')){
-    alert('Please give a .graphml-file.');
-    return;
-  };
-  var xmlhttp = new XMLHttpRequest();
-  xmlhttp.open("GET", path, false);
-  xmlhttp.send();
-  if (xmlhttp.status==200) {
-    graphString = xmlhttp.responseText.split("\n");
+function readFile() {
+  if(document.getElementById("upload").checked){
+          var files = document.getElementById('graphName').files;
+          if (!files.length) {
+            alert('Please select a file!');
+            return;
+          }
 
-    // put node atttributes into dropdown select object
-    var drp = document.getElementById("values");      // node attributes
-    removeOptions(drp);
-    var drpShapes = document.getElementById("nodeShapesAttr");
-    removeOptions(drpShapes);
+          var file = files[0];
 
-    var sele = document.createElement("OPTION");    
-    sele.text = "Choose node's attribute";
-    sele.value = "";
-    drp.add(sele);
-    
-    var seleShapes = document.createElement("OPTION");  // shape attributes
-    seleShapes.text = "Choose shape's attribute";
-    seleShapes.value = "";
-    drpShapes.add(seleShapes);
+          if(!file["name"].endsWith("graphml")){
+            alert('Please select a .graphml-file.');
+            return;
+          }
 
-    var drpShape = document.getElementById("nodeShapes"); // shapes
-    removeOptions(drpShape);
-    var seleShape = document.createElement("OPTION");
-    seleShape.text = "Choose shape";
-    seleShape.value = "";
-    drpShape.add(seleShape);
-
-    const shapesArray = ["rectangle", "octagon", "rhomboid", "pentagon", "tag"];
-
-    shapesArray.forEach(function(s){
-      var nodeShape = s;
-      var optnShape = document.createElement("OPTION");
-      optnShape.text=nodeShape;
-      optnShape.value=nodeShape;
-      drpShape.add(optnShape);
-    })
+          var reader = new FileReader();
+          reader.onloadend = function(evt) {
+            if (evt.target.readyState == FileReader.DONE) { // DONE == 2
+              var arrayBuffer = evt.target.result;
+              graphString = arrayBuffer.split('\n');;
+              loadFile();
+            }
+          };
+          reader.readAsText(file);
+  }
+  else if(db = document.getElementById("database").checked){
+    path = document.getElementById('gfiles').value;
   
-    for (var i = 0; i <= graphString.length - 1; i++) {
-      if(graphString[i].includes("for=\"node\"") && 
-        (graphString[i].includes("attr.type=\"double\"") || 
-          (graphString[i].includes("attr.type=\"boolean\"")))){
-        var nodeattr = graphString[i].split("attr.name=")[1].split(" ")[0].replace(/"/g, "");
-        var optn = document.createElement("OPTION");
-        optn.text=nodeattr;
-        optn.value=nodeattr;
-        drp.add(optn);
-
-        if(graphString[i].includes("attr.type=\"boolean\"")){
-          var nodeattrShape = graphString[i].split("attr.name=")[1].split(" ")[0].replace(/"/g, "");
-          var optnShape = document.createElement("OPTION");
-          optnShape.text=nodeattrShape;
-          optnShape.value=nodeattrShape;
-          drpShapes.add(optnShape);
-        }
-      };
-      if(graphString[i].includes("<node id=\"n0\">")){
-        break;
-      };
+    if(!path.endsWith('.graphml')){
+      alert('Please give a .graphml-file.');
+      return;
     };
-    loadGraphCount ++;
-    createCyObject();
-  }
-  else{
-    alert('Invalid file path.');
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("GET", path, false);
+    xmlhttp.send();
+    if (xmlhttp.status==200) {
+      graphString = xmlhttp.responseText.split("\n");
+      loadFile();
+   } 
+    else{
+      alert('Invalid file path.');
     return;
+    }
   }
+}
+
+
+function loadFile() {
+  // put node atttributes into dropdown select object
+  var drp = document.getElementById("values");      // node attributes
+  drp.style.visibility = "visible";
+  removeOptions(drp);
+  var drpShapes = document.getElementById("nodeShapesAttr");
+  removeOptions(drpShapes);
+
+  var sele = document.createElement("OPTION");    
+  sele.text = "Choose node's attribute";
+  sele.value = "";
+  drp.add(sele);
+  
+  var seleShapes = document.createElement("OPTION");  // shape attributes
+  seleShapes.text = "Choose shape's attribute";
+  seleShapes.value = "";
+  drpShapes.add(seleShapes);
+
+  var drpShape = document.getElementById("nodeShapes"); // shapes
+  removeOptions(drpShape);
+  var seleShape = document.createElement("OPTION");
+  seleShape.text = "Choose shape";
+  seleShape.value = "";
+  drpShape.add(seleShape);
+
+  const shapesArray = ["rectangle", "octagon", "rhomboid", "pentagon", "tag"];
+
+  shapesArray.forEach(function(s){
+    var nodeShape = s;
+    var optnShape = document.createElement("OPTION");
+    optnShape.text=nodeShape;
+    optnShape.value=nodeShape;
+    drpShape.add(optnShape);
+  })
+
+  for (var i = 0; i <= graphString.length - 1; i++) {
+    if(graphString[i].includes("for=\"node\"") && 
+      (graphString[i].includes("attr.type=\"double\"") || 
+        (graphString[i].includes("attr.type=\"boolean\"")))){
+      var nodeattr = graphString[i].split("attr.name=")[1].split(" ")[0].replace(/"/g, "");
+      var optn = document.createElement("OPTION");
+      optn.text=nodeattr;
+      optn.value=nodeattr;
+      drp.add(optn);
+
+      if(graphString[i].includes("attr.type=\"boolean\"")){
+        var nodeattrShape = graphString[i].split("attr.name=")[1].split(" ")[0].replace(/"/g, "");
+        var optnShape = document.createElement("OPTION");
+        optnShape.text=nodeattrShape;
+        optnShape.value=nodeattrShape;
+        drpShapes.add(optnShape);
+      }
+    };
+    if(graphString[i].includes("<node id=\"n0\">")){
+      break;
+    };
+  };
+  loadGraphCount ++;
+  createCyObject();
+  
+
 };
 
 // initiate cytoscape graph 
