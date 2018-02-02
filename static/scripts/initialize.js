@@ -43,37 +43,20 @@ function getFilesList(){
 
 function checkedBox(){
 
-    var up = document.getElementById("upload").checked;
-    var db = document.getElementById("database").checked;
-    if(up & db){
-      alert("Please select manual upload OR database.")
-    }
-    else if(up){
-     // path = document.getElementById('grapFile').value;
-      document.getElementById('graphName').style.visibility = "visible";
-      document.getElementById('gfiles').remove();
-      document.getElementById('loadGraphml').style.visibility = "visible";
-      document.getElementById('loadGraphml').disabled = false;
-      document.getElementById("upload").disabled = true;
-      document.getElementById("database").disabled = true;
-      document.getElementById("start").disabled = true;
-     // document.getElementById('gfiles').style.visibility = "hidden";
-    }
-    else if(db){
-      // path = document.getElementById('gfiles').value;
-      document.getElementById('gfiles').style.visibility = "visible";
-      document.getElementById('graphName').remove();
-      document.getElementById('loadGraphml').style.visibility = "visible";
-      document.getElementById('loadGraphml').disabled = false;
-      document.getElementById("upload").disabled = true;
-      document.getElementById("database").disabled = true;
-      document.getElementById("start").disabled = true;
-      //document.getElementById('graphFile').style.visibility = "hidden";
-    }
-    else{
-      alert("Please select manual upload or database usage.")
-    }
-
+  var selectedFile = document.querySelector('input[name="selectedFile"]:checked').value;
+  if(selectedFile === "upload"){
+    document.getElementById('graphName').style.visibility = "visible";
+    document.getElementById('gfiles').remove();
+  }
+  else if(selectedFile === "database"){
+    document.getElementById('gfiles').style.visibility = "visible";
+    document.getElementById('graphName').remove();
+  }
+  document.getElementById('loadGraphml').style.visibility = "visible";
+  document.getElementById('loadGraphml').disabled = false;
+  document.getElementById("upload").disabled = true;
+  document.getElementById("database").disabled = true;
+  document.getElementById("start").disabled = true;
 }
 
 /* 
