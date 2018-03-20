@@ -351,7 +351,7 @@ function addNodesAndEdges(){
       .style('background-height','40%')
       .style('background-width','40%')
       .style('background-position-y','90%')
-      .style('color','#b8b8b8');
+      //.style('color','#b8b8b8');
     });
   };
 
@@ -363,7 +363,7 @@ function addNodesAndEdges(){
         .style('background-height','40%')
         .style('background-width','40%')
         .style('background-position-y','90%')
-        .style('color','#b8b8b8');
+        //.style('color','#b8b8b8');
         });
   };
   for(var i = 0, len = variants.length; i < len; i++){
@@ -374,7 +374,7 @@ function addNodesAndEdges(){
         .style('background-height','40%')
         .style('background-width','40%')
         .style('background-position-y','90%')
-        .style('color','#b8b8b8');
+        //.style('color','#b8b8b8');
         });
   };
 
@@ -386,7 +386,7 @@ function addNodesAndEdges(){
         .style('background-height','40%')
         .style('background-width','50%')
         .style('background-position-y','93%')
-        .style('color','#b8b8b8');
+        //.style('color','#b8b8b8');
         });
   };
 
@@ -398,7 +398,7 @@ function addNodesAndEdges(){
         .style('background-height','40%')
         .style('background-width','50%')
         .style('background-position-y','93%')
-        .style('color','#b8b8b8');
+        //.style('color','#b8b8b8');
         });
   };
 
@@ -410,7 +410,7 @@ function addNodesAndEdges(){
         .style('background-height','40%')
         .style('background-width','50%')
         .style('background-position-y','90%')
-        .style('color','#b8b8b8');
+        //.style('color','#b8b8b8');
         });
   };
 
@@ -422,7 +422,7 @@ function addNodesAndEdges(){
         .style('background-height','40%')
         .style('background-width','50%')
         .style('background-position-y','90%')
-        .style('color','#b8b8b8');
+        //.style('color','#b8b8b8');
       });
   };
 
@@ -434,7 +434,7 @@ function addNodesAndEdges(){
         .style('background-height','40%')
         .style('background-width','40%')
         .style('background-position-y','93%')
-        .style('color','#b8b8b8');
+        //.style('color','#b8b8b8');
       });
   };
 
@@ -446,7 +446,7 @@ function addNodesAndEdges(){
         .style('background-height','60%')
         .style('background-width','60%')
         .style('background-position-y','93%')
-        .style('color','#b8b8b8');
+        //.style('color','#b8b8b8');
         });
   };
 
@@ -458,7 +458,7 @@ function addNodesAndEdges(){
         .style('background-height','60%')
         .style('background-width','60%')
         .style('background-position-y','93%')
-        .style('color','#b8b8b8');
+        //.style('color','#b8b8b8');
         });
   };
 
@@ -470,7 +470,7 @@ function addNodesAndEdges(){
         .style('background-height','50%')
         .style('background-width','50%')
         .style('background-position-y','99%')
-        .style('color','#b8b8b8');
+        //.style('color','#b8b8b8');
         });
   };
 
@@ -482,7 +482,7 @@ function addNodesAndEdges(){
         .style('background-height','40%')
         .style('background-width','50%')
         .style('background-position-y','90%')
-        .style('color','#b8b8b8');
+        //.style('color','#b8b8b8');
         });
   };
 
@@ -494,7 +494,7 @@ function addNodesAndEdges(){
         .style('background-height','40%')
         .style('background-width','50%')
         .style('background-position-y','90%')
-        .style('color','#b8b8b8');
+        //.style('color','#b8b8b8');
         });
   };
   for(var i = 0, len = driOncSor.length; i < len; i++){
@@ -505,7 +505,7 @@ function addNodesAndEdges(){
         .style('background-height','40%')
         .style('background-width','50%')
         .style('background-position-y','90%')
-        .style('color','#b8b8b8');
+        //.style('color','#b8b8b8');
       });
   };
   for(var i = 0, len = driOncSorVar.length; i < len; i++){
@@ -516,7 +516,7 @@ function addNodesAndEdges(){
         .style('background-height','40%')
         .style('background-width','50%')
         .style('background-position-y','90%')
-        .style('color','#b8b8b8');
+        //.style('color','#b8b8b8');
         });
   };
   // update node values if tracer or values change

@@ -193,31 +193,35 @@ function createCyObject(){
           "text-valign" : "center",
           "text-halign" : "center",
           "font-size" : 10,
-          "color":"#b8b8b8"
+          //"color":"black"
       }},
       // attributes with numbers
       {selector: 'node[val <0]',
         style: {
-          'background-color': 'mapData(val,'+ nodesMin+', 0, #006cf0, white)'
+          'background-color': 'mapData(val,'+ nodesMin+', 0, #006cf0, white)',
+          'color': 'mapData(val,'+ nodesMin+', 0, white, black)'
       }},
       {selector: 'node[val >0]',
         style: {
-          'background-color': 'mapData(val, 0,'+ nodesMax+', white, #d50000)'
+          'background-color': 'mapData(val, 0,'+ nodesMax+', white, #d50000)',
+          'color': 'mapData(val,0,'+ nodesMax+', black, white)'
       }},
       {selector: 'node[val = 0]',
         style: {
           'background-color': 'white',
-          'color':'#b8b8b8'
+          'color':'black'
       }},
 
       // attributes with boolean
       {selector: 'node[val = "false"]',
         style: {
-          'background-color': '#006cf0'
+          'background-color': '#006cf0',
+          'color':'white'
       }},
       {selector: 'node[val = "true"]',
         style: {
-          'background-color': '#d50000'
+          'background-color': '#d50000',
+          'color':'white'
       }},
 
       // style edges
