@@ -568,11 +568,13 @@ function showLegend(){
 
     cy.style()                // update the elements in the graph with the new style
       .selector('node[val <0]')
-          .style('background-color', 'mapData(val,'+ nodesMin+', 0, #006cf0, white)', )
+          .style('background-color', 'mapData(val,'+ nodesMin+', 0, #006cf0, white)',
+                  'color': 'mapData(val,'+ nodesMin+', 0, white, black)')
     .update();
     cy.style()
       .selector('node[val >0]')
-        .style('background-color', 'mapData(val,0,'+ nodesMax+', white, #d50000)')
+        .style('background-color', 'mapData(val,0,'+ nodesMax+', white, #d50000)',
+              'color': 'mapData(val,0,'+ nodesMax+', black, white)')
       .update(); 
   }
   else{
