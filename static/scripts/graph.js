@@ -14,13 +14,12 @@ function visualize() {
 
   $('#gfiles').attr("disabled", true);
   // get nodes and edges
-  getNodesAndEdges();
+  nodeValuesNum = getNodesAndEdges();
 
-  transform01toTF();
+  nodeValuesNum = transform01toTF(nodeValuesNum);
 
   // set min and max for legend
-  legendsRange();
-
+  legendsRange(nodeValuesNum);
   // add nodes and edges to graph
   addNodesAndEdges();
 
@@ -123,10 +122,18 @@ function getNodesAndEdges(){
   driSor = [];
   driSorVar = [];
   driVar = [];
+  nodeValuesNum = [];
+  attributesTypes = {};
+
 
   var regExp = /\>([^)]+)\</; // get symbol name between > <
 
   for (var i = 0; i <= graphString.length - 1; i++) {
+    if(graphString[i].includes("attr.type=")){
+      //var curAttr = {};
+      attributesTypes[graphString[i].split(" ")[3].split("\"")[1]] = graphString[i].split(" ")[6].split("\"")[1];
+      //attributesTypes.push(curAttr);
+    }
     if(graphString[i].includes("node id")){   // get node id
       var curNode = {};
       curNode.id = graphString[i].split("\"")[1]  ;
@@ -140,13 +147,19 @@ function getNodesAndEdges(){
       if(graphString[i].includes("\"v_"+nodeVal+"\"\>")){
         var val = regExp.exec(graphString[i])[1]; // if availabe get node value
         if(!isNaN(parseFloat(val))){
-          val = parseFloat(val);
-          nodeValuesNum.push(val);
+          attrID = graphString[i].split(" ")[7].split("\"")[1];
+          currVal = {};
+          currVal.val = parseFloat(val);
+          currVal.attr = attributesTypes[attrID];;
+          nodeValuesNum.push(currVal);
         }
-        curNode.val = val;
-      }
-      if(!curNode.val){
-        curNode.val = 0;
+        else if(val === "false" || val === "true"){
+          currVal = {};
+          currVal.val = val;
+          currVal.attr = "boolean";
+          nodeValuesNum.push(currVal);
+        }
+        curNode.val = currVal.val;
       }
       if(graphString[i].includes("v_gene_name")){       // get gene names
         var genename = graphString[i].split("\>")[1].split("\<")[0];
@@ -266,34 +279,61 @@ function getNodesAndEdges(){
       edges.push({data: curEdge} );
     }
   }
+  return nodeValuesNum;
 }
 
 //transform 0 and 1 as atttributes to true and false
-function transform01toTF(){
+function transform01toTF(nodeValuesNumT){
   // if attributes values are only 0 or 1 make them boolean
-  if(!isEmpty(nodeValuesNum)){
-    uniqueVals = new Set(nodeValuesNum);
-    if(uniqueVals.size === 2 && uniqueVals.has(0) && uniqueVals.has(1)){
-      nodes.forEach( function(nodeEntry){
-        if(nodeEntry.data.val === 0){
-           nodeEntry.data.val = "false";
-        }
-        if(nodeEntry.data.val === 1){
-           nodeEntry.data.val = "true";
-        }   
-      });
-      nodeValuesNum = ["empty"]
+  nodeValues = [];
+  lenNodeValues = nodeValuesNumT.length;
+  // attribute not available 
+  if(isEmpty(nodeValuesNumT)){
+      return [];
+  }
+  else if(!isEmpty(nodeValuesNumT)){
+    for(var i=0; i < nodeValuesNumT.length; i++){
+      attrType = Object.entries(nodeValuesNumT[i])[1][1];
+      // boolean attributes and boolean atribtes tored as 0 or 1
+      if(attrType == "boolean" ){
+          if(Object.entries(nodeValuesNumT[i])[0][1] == 0){
+            nodeValues.push("false");
+          }
+          if(Object.entries(nodeValuesNumT[i])[0][1] == 1){
+            nodeValues.push("true"); 
+          } 
+       // }
+        delete nodeValuesNumT[i];  
+        lenNodeValues -=1;
+      }
+      
+      // double attributes
+      if(attrType === "double"){
+        //nodeEntry.data.val = Object.entries(nodeValuesNumT[i])[0][1];
+        nodeValues.push(Object.entries(nodeValuesNumT[i])[0][1])
+      }
     }
   }
+  if(lenNodeValues == 0){
+    return ["empty"];
+  } 
+  
+  return nodeValues;
+  
 }
 
 //set legends range by min and max of nodes' attributes
-function legendsRange(){
+function legendsRange(nodeValuesNum){
   if(!isEmpty(nodeValuesNum)){
     if(!nodeValuesNum.includes("empty")){
-      nodesMin = parseFloat(Math.max.apply(Math,nodeValuesNum).toFixed(2));
-      nodesMax = parseFloat(Math.max.apply(Math,nodeValuesNum).toFixed(2));
-    
+      //nodesMin = parseFloat(Math.max.apply(Math,nodeValuesNum).toFixed(2));
+      //nodesMax = parseFloat(Math.max.apply(Math,nodeValuesNum).toFixed(2));
+      nodesMin = nodeValuesNum.reduce(function(a, b) {
+                  return parseFloat(Math.min(a, b).toFixed(2));
+                });
+      nodesMax = nodeValuesNum.reduce(function(a, b) {
+            return parseFloat(Math.max(a, b).toFixed(2));
+          });
     if(!firstTime){
       if(nodesMin>oldMin){
         nodesMin = oldMin;
@@ -568,13 +608,11 @@ function showLegend(){
 
     cy.style()                // update the elements in the graph with the new style
       .selector('node[val <0]')
-          .style('background-color', 'mapData(val,'+ nodesMin+', 0, #006cf0, white)',
-                  'color': 'mapData(val,'+ nodesMin+', 0, white, black)')
-    .update();
+          .style('background-color', 'mapData(val,'+ nodesMin+', 0, #006cf0, white)')
+      .update();
     cy.style()
       .selector('node[val >0]')
-        .style('background-color', 'mapData(val,0,'+ nodesMax+', white, #d50000)',
-              'color': 'mapData(val,0,'+ nodesMax+', black, white)')
+        .style('background-color', 'mapData(val,0,'+ nodesMax+', white, #d50000)')
       .update(); 
   }
   else{
