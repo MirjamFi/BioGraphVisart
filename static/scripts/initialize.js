@@ -27,7 +27,7 @@ function getFilesList(){
     $.get("/foundFiles", function(foundFiles) {
     // put graphml files into dropdown select object
       foundFiles.forEach( function (file){
-        filename = file.replace('../data/', '')
+        filename = file.replace(/\\/g,'/')
         file = file.replace('..', 'http://127.0.0.1:3000/static')
         var gf = file;
         var gfile = document.createElement("OPTION");
