@@ -235,7 +235,7 @@ function createCyObject(){
         style: {
           'target-arrow-shape': 'triangle-backcurve',
         }},
-      {selector: 'edge[interaction = \'activaion\']',
+      {selector: 'edge[interaction = \'activation\']',
         style: {
           'target-arrow-shape': 'triangle',
         }},

@@ -376,11 +376,6 @@ function legendsRange(nodeValuesNum){
 //add nodes and edges to cy-object (update if attribute has changed)
 function addNodesAndEdges(){
 
-  /*if(loadGraphCount > 1){
-    cy.elements().remove();
-    firstTime = true;
-    loadGraphCount = 0;
-  }*/
   cy.add(nodes.concat(edges));
 
   for(var i = 0, len = sorafenibTargets.length; i < len; i++){
@@ -403,7 +398,6 @@ function addNodesAndEdges(){
         .style('background-height','40%')
         .style('background-width','40%')
         .style('background-position-y','90%')
-        //.style('color','#b8b8b8');
         });
   };
   for(var i = 0, len = variants.length; i < len; i++){
@@ -414,7 +408,6 @@ function addNodesAndEdges(){
         .style('background-height','40%')
         .style('background-width','40%')
         .style('background-position-y','90%')
-        //.style('color','#b8b8b8');
         });
   };
 
@@ -426,7 +419,6 @@ function addNodesAndEdges(){
         .style('background-height','40%')
         .style('background-width','50%')
         .style('background-position-y','93%')
-        //.style('color','#b8b8b8');
         });
   };
 
@@ -438,7 +430,6 @@ function addNodesAndEdges(){
         .style('background-height','40%')
         .style('background-width','50%')
         .style('background-position-y','93%')
-        //.style('color','#b8b8b8');
         });
   };
 
@@ -450,7 +441,6 @@ function addNodesAndEdges(){
         .style('background-height','40%')
         .style('background-width','50%')
         .style('background-position-y','90%')
-        //.style('color','#b8b8b8');
         });
   };
 
@@ -462,7 +452,6 @@ function addNodesAndEdges(){
         .style('background-height','40%')
         .style('background-width','50%')
         .style('background-position-y','90%')
-        //.style('color','#b8b8b8');
       });
   };
 
@@ -474,7 +463,6 @@ function addNodesAndEdges(){
         .style('background-height','40%')
         .style('background-width','40%')
         .style('background-position-y','93%')
-        //.style('color','#b8b8b8');
       });
   };
 
@@ -486,7 +474,6 @@ function addNodesAndEdges(){
         .style('background-height','60%')
         .style('background-width','60%')
         .style('background-position-y','93%')
-        //.style('color','#b8b8b8');
         });
   };
 
@@ -498,7 +485,6 @@ function addNodesAndEdges(){
         .style('background-height','60%')
         .style('background-width','60%')
         .style('background-position-y','93%')
-        //.style('color','#b8b8b8');
         });
   };
 
@@ -510,7 +496,6 @@ function addNodesAndEdges(){
         .style('background-height','50%')
         .style('background-width','50%')
         .style('background-position-y','99%')
-        //.style('color','#b8b8b8');
         });
   };
 
@@ -522,7 +507,6 @@ function addNodesAndEdges(){
         .style('background-height','40%')
         .style('background-width','50%')
         .style('background-position-y','90%')
-        //.style('color','#b8b8b8');
         });
   };
 
@@ -534,7 +518,6 @@ function addNodesAndEdges(){
         .style('background-height','40%')
         .style('background-width','50%')
         .style('background-position-y','90%')
-        //.style('color','#b8b8b8');
         });
   };
   for(var i = 0, len = driOncSor.length; i < len; i++){
@@ -545,7 +528,6 @@ function addNodesAndEdges(){
         .style('background-height','40%')
         .style('background-width','50%')
         .style('background-position-y','90%')
-        //.style('color','#b8b8b8');
       });
   };
   for(var i = 0, len = driOncSorVar.length; i < len; i++){
@@ -556,7 +538,6 @@ function addNodesAndEdges(){
         .style('background-height','40%')
         .style('background-width','50%')
         .style('background-position-y','90%')
-        //.style('color','#b8b8b8');
         });
   };
   // update node values if tracer or values change
@@ -688,6 +669,8 @@ function changeNodeShapes(){
   if(shapeAttribute == "" || shape == ""){
     return;
   }
+
+  // select nodes with given attribute
   var i = 0;
   var id = "";
   while(i < graphString.length){
@@ -706,8 +689,18 @@ function changeNodeShapes(){
     i++;
   }
 
-  if(isEmpty(usedShapeAttributes)){// || !usedShapeAttributes.hasOwnProperty(shapeAttribute)){
-    usedShapeAttributes[shapeAttribute] = {"usedShape":shape};
+  // list all shapes already used
+  usedShapes = []
+  for (var key in usedShapeAttributes) {
+    if (Object.prototype.hasOwnProperty.call(usedShapeAttributes, key)) {
+        var val = usedShapeAttributes[key];
+        usedShapes[val] = key;
+    }
+  }
+
+  // no shapes have been used so far
+  if(isEmpty(usedShapeAttributes)){
+    usedShapeAttributes[shapeAttribute] = shape;
      shapeNode = cytoscape({
         container: document.getElementById('legend'),
         layout: {
@@ -740,18 +733,54 @@ function changeNodeShapes(){
             });
    ycoord = 50;
   } 
+
+  // test if shape has been used for another attribute
+  else if(Object.keys(usedShapes).includes(shape)){
+    if(usedShapes[shape] == shapeAttribute) return;
+    var replace = confirm("Shape is already used. Do you want to replace "+usedShapes[shape]+" by "+ shapeAttribute+"?")
+
+    // is shape has been used change previous attributes shape back to ellipse
+    if(replace){
+      delete(usedShapeAttributes[usedShapes[shape]]);
+      ycoord = shapeNode.$('node[id ="'+usedShapes[shape]+'"]').position()['y']-35;
+      shapeNode.remove('node[id ="'+usedShapes[shape]+'"]');
+
+      var i = 0;
+      var id = "";
+      while(i < graphString.length){
+
+        if(graphString[i].includes("node id")){   // get node id
+          id = graphString[i].split("\"")[1];
+        } 
+        else if(id != "" && graphString[i].includes('\"v_'+usedShapes[shape]+'\">true<')){
+
+          cy.style()
+            .selector('node[id ="'+id+'"]')        
+            .style('shape', 'ellipse')
+            .update();
+
+        }
+        i++;
+      }
+    }
+    else return;
+
+  }
   
   // update shape of a attribute already used
-  else if (usedShapeAttributes.hasOwnProperty(shapeAttribute)){
+  if (usedShapeAttributes.hasOwnProperty(shapeAttribute)){
     shapeNode.style()
       .selector('node[id ="'+shapeAttribute+'"]')        
       .style('shape', shape)
       .update();
+    usedShapeAttributes[shapeAttribute] = shape;
+    usedShapes[shape] = shapeAttribute
   }
 
+  // add new shape and attribute
   else if(!isEmpty(usedShapeAttributes) && !usedShapeAttributes.hasOwnProperty(shapeAttribute)){
     ycoord = ycoord + 35;
-    usedShapeAttributes[shapeAttribute] = {"usedShape":shape};
+    usedShapeAttributes[shapeAttribute] = shape;
     shapeNode.add( { group: "nodes", data: { id: shapeAttribute}, position:{'x':94, 'y':ycoord}});
     shapeNode.style()
         .selector('node[id ="'+shapeAttribute+'"]')        
