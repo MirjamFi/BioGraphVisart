@@ -64,32 +64,32 @@ read from grphml - file and initialize cy-object
 */
 function readFile() {
   if(document.getElementById("upload").checked){
-          var files = document.getElementById('graphName').files;
-          if (!files.length) {
-            alert('Please select a file!');
-            return;
-          }
+    var files = document.getElementById('graphName').files;
+    if (!files.length) {
+      alert('Please select a file!');
+      return;
+    }
 
-          var file = files[0];
+    var file = files[0];
 
-          if(!file["name"].endsWith("graphml")){
-            alert('Please select a .graphml-file.');
-            return;
-          }
+    if(!file["name"].endsWith("graphml")){
+      alert('Please select a .graphml-file.');
+      return;
+    }
 
-          var reader = new FileReader();
-          reader.onloadend = function(evt) {
-            if (evt.target.readyState == FileReader.DONE) { // DONE == 2
-              var arrayBuffer = evt.target.result;
-              graphString = arrayBuffer.split('\n');;
-              loadFile();
-            }
-          };
-          reader.readAsText(file);
+    var reader = new FileReader();
+    reader.onloadend = function(evt) {
+      if (evt.target.readyState == FileReader.DONE) { // DONE == 2
+        var arrayBuffer = evt.target.result;
+        graphString = arrayBuffer.split('\n');;
+        loadFile();
+      }
+    };
+    reader.readAsText(file);
   }
-  else if(db = document.getElementById("database").checked){
+  else if(document.getElementById("database").checked){
     path = document.getElementById('gfiles').value;
-  
+    console.log(path)
     if(!path.endsWith('.graphml')){
       alert('Please give a .graphml-file.');
       return;
