@@ -7,7 +7,6 @@ visualize a graph from .graphml-file
 */
 function visualize() {
 
-  $('#loadGraphml').attr("disabled", true);
 
   nodeVal = document.getElementById('values').value;
 
