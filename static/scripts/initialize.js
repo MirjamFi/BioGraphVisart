@@ -196,15 +196,23 @@ function createCyObject(){
           //"color":"black"
       }},
       // attributes with numbers
-      {selector: 'node[val <0]',
+      {selector: 'node[val <0], node[val >'+0.9*nodesMin+']',
         style: {
           'background-color': 'mapData(val,'+ nodesMin+', 0, #006cf0, white)',
-          'color': 'mapData(val,'+ nodesMin+', 0, white, black)'
+          'color': 'black'
       }},
-      {selector: 'node[val >0]',
+      {selector: 'node[val <='+0.9*nodesMin+'], node[val <0]',
+        style: {
+          'color': 'white'
+      }},
+      {selector: 'node[val >0], node[val >'+0.9*nodesMax+']',
         style: {
           'background-color': 'mapData(val, 0,'+ nodesMax+', white, #d50000)',
-          'color': 'mapData(val,0,'+ nodesMax+', black, white)'
+          'color': 'black'
+      }},
+      {selector: 'node[val >='+0.9*nodesMax+'], node[val >0]',
+        style: {
+          'color': 'white'
       }},
       {selector: 'node[val = 0]',
         style: {

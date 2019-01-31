@@ -394,6 +394,8 @@ function transform01toTF(nodeValuesNumT){
 
 //set legends range by min and max of nodes' attributes
 function legendsRange(nodeValuesNum){
+  console.log(0.9*nodesMin);
+  console.log(0.9*nodesMax);
   if(!isEmpty(nodeValuesNum)){
     if(!nodeValuesNum.includes("empty")){
       //nodesMin = parseFloat(Math.max.apply(Math,nodeValuesNum).toFixed(2));
@@ -658,13 +660,23 @@ function showLegend(){
     $("#max").text(nodesMax);
 
     cy.style()                // update the elements in the graph with the new style
-      .selector('node[val <0]')
-          .style('background-color', 'mapData(val,'+ nodesMin+', 0, #006cf0, white)')
-      .update();
-    cy.style()
+    .selector('node[val <0]')
+        .style('background-color', 'mapData(val,'+ nodesMin+', 0, #006cf0, white)').update();
+    cy.style()               
+    .selector('node[val <0]')
+        .style('color', 'black').update();
+    cy.style() 
+      .selector('node[val <='+0.5*nodesMin+']')
+        .style('color', 'white').update();
+    cy.style() 
       .selector('node[val >0]')
-        .style('background-color', 'mapData(val,0,'+ nodesMax+', white, #d50000)')
-      .update(); 
+        .style('background-color', 'mapData(val, 0,'+ nodesMax+', white, #d50000)').update();
+    cy.style() 
+      .selector('node[val >0]')
+        .style('color', 'black').update();
+    cy.style() 
+      .selector('node[val >='+0.5*nodesMax+']')
+        .style('color', 'white').update();
   }
   else{
     $("#mid").text("");         // boolean attribute
