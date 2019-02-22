@@ -34,6 +34,7 @@ function visualize() {
 
   showLegend();
 
+  document.getElementById('resetLayout').style.visibility = "visible";
   document.getElementById('downloadPart').style.visibility = "visible";
 
   showMetaInfo();
@@ -908,3 +909,13 @@ function downloadSVG(){
     saveAs(svgBlob, path.replace(".graphml", "_") + '_' + nodeVal + "legend.svg");
   } 
 }
+
+
+/*
+reset view (zoom, position)
+*/
+function resetLayout(){
+  cy.layout({
+      name: 'dagre',
+    }).run();
+};
