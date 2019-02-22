@@ -394,8 +394,6 @@ function transform01toTF(nodeValuesNumT){
 
 //set legends range by min and max of nodes' attributes
 function legendsRange(nodeValuesNum){
-  console.log(0.9*nodesMin);
-  console.log(0.9*nodesMax);
   if(!isEmpty(nodeValuesNum)){
     if(!nodeValuesNum.includes("empty")){
       //nodesMin = parseFloat(Math.max.apply(Math,nodeValuesNum).toFixed(2));
@@ -899,4 +897,14 @@ function downloadSVG(){
   else{
      saveAs(new Blob([svgContent], {type:"image/svg+xml;charset=utf-8"}), path.replace(".graphml", "_") + '_' + nodeVal + ".svg");
   }  
+  if(outputName != "File name"){
+    var svgData = $("#svgid")[0].outerHTML;
+    var svgBlob = new Blob([svgData], {type:"image/svg+xml;charset=utf-8"});
+    saveAs(svgBlob, outputName +"_legend.svg");
+  }
+  else{
+    var svgData = $("#svgid")[0].outerHTML;
+    var svgBlob = new Blob([svgData], {type:"image/svg+xml;charset=utf-8"});
+    saveAs(svgBlob, path.replace(".graphml", "_") + '_' + nodeVal + "legend.svg");
+  } 
 }
