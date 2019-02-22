@@ -588,7 +588,7 @@ function changeNodeShapes(){
 /* 
   download png of graph
 */
-function downloadPNG(){
+/*function downloadPNG(){
   outputName = document.getElementById('outputName').value;
   var png64 = cy.png();
   $('#downloadPNG').attr('href', png64);
@@ -601,4 +601,16 @@ function downloadPNG(){
     download.download = path.replace(".graphml", "_") + '_' + nodeVal + '.png';
   }
   download.click();
+}*/
+
+
+function downloadSVGLeft(){
+  outputName = document.getElementById('outputNameLeft').value;
+  var svgContent = cy.svg({scale: 1, full: true});
+  if(outputName != "File name"){
+    saveAs(new Blob([svgContent], {type:"image/svg+xml;charset=utf-8"}), outputName +".svg");
+  }
+  else{
+     saveAs(new Blob([svgContent], {type:"image/svg+xml;charset=utf-8"}), path.replace(".graphml", "_") + '_' + nodeVal + ".svg");
+  }
 }
