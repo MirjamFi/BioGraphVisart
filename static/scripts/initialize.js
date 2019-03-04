@@ -89,7 +89,6 @@ function readFile() {
   }
   else if(document.getElementById("database").checked){
     path = document.getElementById('gfiles').value;
-    console.log(path)
     if(!path.endsWith('.graphml')){
       alert('Please give a .graphml-file.');
       return;
@@ -243,7 +242,7 @@ function createCyObject(){
         style: {
           'target-arrow-shape': 'triangle-backcurve',
         }},
-      {selector: 'edge[interaction = \'activation\']',
+      {selector: 'edge[interaction = \'activaion\']',
         style: {
           'target-arrow-shape': 'triangle',
         }},
@@ -258,6 +257,14 @@ function createCyObject(){
       {selector: 'edge[interaction = \'inhibition\']',
         style: {
           'target-arrow-shape': 'tee',
+        }},
+      {selector: 'edge[interaction = \'indirect effect\']',
+        style: {
+          'target-arrow-shape': 'circle',
+        }},
+              {selector: 'edge[interaction = \'state change\']',
+        style: {
+          'target-arrow-shape': 'square',
         }}
       ]
   });

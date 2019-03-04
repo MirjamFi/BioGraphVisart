@@ -347,6 +347,7 @@ function getNodesAndEdges(){
         var interact = regExp.exec(graphString[i])[1]; 
         curEdge.interaction = interact;
       }
+      curEdge.id = curEdge.id +'_'+ curEdge.interaction;
       edges.push({data: curEdge} );
     }
   }
@@ -646,6 +647,38 @@ function calculateLayout(){
       createLegend();
       oldMin = nodesMin;
       oldMax = nodesMax;
+
+      // mouve legend
+      /*var mousePosition;
+      var offset = [0,0];
+      var isDown = false;
+
+      var leg = document.getElementById('legend');
+      leg.addEventListener('mousedown', function(e) {
+          isDown = true;
+          offset = [
+              leg.offsetLeft - e.clientX,
+              leg.offsetTop - e.clientY
+          ];
+        }, true);
+
+      document.addEventListener('mouseup', function() {
+          isDown = false;
+      }, true);
+
+      document.addEventListener('mousemove', function(event) {
+          event.preventDefault();
+          if (isDown) {
+              mousePosition = {
+
+                  x : event.clientX,
+                  y : event.clientY
+
+              };
+              leg.style.left = (mousePosition.x + offset[0]) + 'px';
+              leg.style.top  = (mousePosition.y + offset[1]) + 'px';
+          }
+      }, true);*/
   }
 }
 
