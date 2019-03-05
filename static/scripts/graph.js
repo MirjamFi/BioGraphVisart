@@ -40,7 +40,6 @@ function visualize() {
   showMetaInfo();
 
   activateNodeShapeChange();
-
 }
 
 //initialize legend
