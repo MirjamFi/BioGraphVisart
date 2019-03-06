@@ -173,6 +173,7 @@ function loadFile() {
 
 // initiate cytoscape graph 
 function createCyObject(){
+
   cy = cytoscape({
     container: document.getElementById('cy'),
     ready: function(){
