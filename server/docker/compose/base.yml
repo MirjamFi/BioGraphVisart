@@ -1,0 +1,9 @@
+version: "3.5"
+services:
+  graphvis-api:
+    image: graphvis/api
+    build:
+      context: ../..
+      shm_size: '1gb'
+    cap_add:
+      - SYS_ADMIN

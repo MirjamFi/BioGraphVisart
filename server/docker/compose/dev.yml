@@ -1,0 +1,10 @@
+version: "3"
+services:
+  graphvis-api:
+    ports:
+      - '3001:3001/tcp'
+    volumes:
+      - '../../src:/app/src'
+    environment:
+      GRAPHVIS_HOST: 0.0.0.0
+    command: nodemon src/main.js
