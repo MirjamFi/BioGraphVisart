@@ -1,4 +1,3 @@
-const axios = require('axios');
 const xml2js = require('xml2js');
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -11,8 +10,6 @@ cytosnap.use(['cytoscape-dagre']);
 
 const app = express();
 app.use(bodyParser.text({ type: 'application/xml' }));
-
-const deregnetJwt = process.env.DEREGNET_JWT;
 
 class Graph {
   constructor(data) {
@@ -247,7 +244,7 @@ const getPng = async (nodes, edges, nodesMin, nodesMax) => {
     height: 1200,
     background: 'transparent'
     });
-  return new Buffer(img, 'base64');
+  return Buffer.from(img, 'base64');
 }
 
 const visualize = async (
@@ -263,16 +260,6 @@ const visualize = async (
   const nodesMax = Math.max(...nodes.map(node => node.val)).toFixed(2);
   return getPng(nodes, edges, nodesMin, nodesMax);
 };
-
-app.get('/png/:subgraphId', async (req, res) => {
-  const { subgraphId } = req.params;
-  const graphmlStr = await axios.get(`https://dereg.net/deregnet/subgraph/${subgraphId}/graphml`, {
-    headers: { Authorization: `Bearer ${deregnetJwt}` },
-  });
-  const img = await visualize(graphmlStr.data);
-  res.header('Content-Type', 'image/png');
-  res.end(img);
-});
 
 app.get('/png', async (req, res) => {
   const img = await visualize(req.body);
