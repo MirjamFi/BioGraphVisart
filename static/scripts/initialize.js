@@ -76,7 +76,7 @@ function readFile() {
       alert('Please select a .graphml-file.');
       return;
     }
-
+    path = file.name;
     var reader = new FileReader();
     reader.onloadend = function(evt) {
       if (evt.target.readyState == FileReader.DONE) { // DONE == 2
