@@ -1,2 +1,4 @@
 # silly apple
-.DS_Store
+.DS_Store 
+
+node_modules/
