@@ -18,7 +18,7 @@ COPY package.json /app/package.json
 RUN groupadd -r app && useradd -r -g app -G audio,video app \
     && mkdir -p /home/app/Downloads \
     && chown -R app:app /home/app \
-	&& chown -R app:app /app 
+    && chown -R app:app /app 
 
 USER app
 WORKDIR /app
@@ -29,8 +29,8 @@ USER root
 
 RUN cd node_modules/puppeteer/.local-chromium/*/chrome-linux/ \
     && chown root:root chrome_sandbox \
-	&& chmod 4755 chrome_sandbox \
-	&& cp -p chrome_sandbox /usr/local/sbin/chrome-devel-sandbox 
+    && chmod 4755 chrome_sandbox \
+    && cp -p chrome_sandbox /usr/local/sbin/chrome-devel-sandbox 
 	
 ENV CHROME_DEVEL_SANDBOX=/usr/local/sbin/chrome-devel-sandbox
 
