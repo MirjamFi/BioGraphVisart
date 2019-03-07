@@ -7,4 +7,4 @@ services:
       - '../../src:/app/src'
     environment:
       GRAPHVIS_HOST: 0.0.0.0
-    command: nodemon src/main.js
+    command: nodemon --trace-warnings src/main.js

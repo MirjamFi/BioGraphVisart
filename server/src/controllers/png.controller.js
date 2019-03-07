@@ -183,6 +183,8 @@ const cytoSnapToPng = async (nodes, edges, nodesMin, nodesMax) => {
     height: 1200,
     background: 'transparent',
   });
+  snap.stop(); /* TODO: may be inefficient since cytosnap
+  basically launches and closes a browser for every request?... */
   return Buffer.from(img, 'base64');
 };
 

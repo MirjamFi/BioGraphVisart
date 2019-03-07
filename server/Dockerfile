@@ -34,6 +34,10 @@ RUN cd node_modules/puppeteer/.local-chromium/*/chrome-linux/ \
 	
 ENV CHROME_DEVEL_SANDBOX=/usr/local/sbin/chrome-devel-sandbox
 
+RUN wget -O /usr/local/bin/dumb-init https://github.com/Yelp/dumb-init/releases/download/v1.2.2/dumb-init_1.2.2_amd64 \
+    && chmod +x /usr/local/bin/dumb-init
+
 USER app
 
+ENTRYPOINT ["dumb-init", "--"]
 CMD ["node", "src/main.js"]
