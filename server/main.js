@@ -139,12 +139,12 @@ const getPng = async (nodes, edges, nodesMin, nodesMax) => {
       {
         selector: 'node[val < 0]',
         style: {
-          'background-color': `mapData(val, ${nodesMin}, 0, #006cf0, white)`,
+          'background-color': 'mapData(val, '+nodesMin+', 0, #006cf0, white)',
           color: 'black',
         },
       },
       {
-        selector: `node[val <= ${0.5 * nodesMin}]`,
+        selector: 'node[val <= '+0.5 * nodesMin+']',
         style: {
           color: 'white',
         },
@@ -152,12 +152,12 @@ const getPng = async (nodes, edges, nodesMin, nodesMax) => {
       {
         selector: 'node[val > 0]',
         style: {
-          'background-color': `mapData(val, 0, ${nodesMax}, white, #d50000)`,
+          'background-color': 'mapData(val, 0, '+nodesMax+', white, #d50000)',
           color: 'black',
         },
       },
       {
-        selector: `node[val >= ${0.5 * nodesMax}]`,
+        selector: 'node[val >= '+0.5 * nodesMax+']',
         style: {
           color: 'white',
         },
@@ -236,7 +236,11 @@ const getPng = async (nodes, edges, nodesMin, nodesMax) => {
       {selector: 'node[val >='+0.5*nodesMax+']',
         style: {
             'color': 'white'
-        }}
+        }},
+      {selector: 'node[!val]',
+        style:{
+          'color': "black"}
+      }
       ],
     resolvesTo: 'base64',
     format: 'png',
@@ -256,8 +260,8 @@ const visualize = async (
   const graphml = await parseGraphML(graphmlStr);
   const nodes = graphml.getNodesForVisualization(valueAttr, labelAttr);
   const edges = graphml.getEdgesForVisualization(interactionAttr);
-  const nodesMin = Math.min(...nodes.map(node => node.val)).toFixed(2);
-  const nodesMax = Math.max(...nodes.map(node => node.val)).toFixed(2);
+  const nodesMin = parseFloat(Math.min(...nodes.map(node => node.data.val))).toFixed(2);
+  const nodesMax = parseFloat(Math.max(...nodes.map(node => node.data.val))).toFixed(2);
   return getPng(nodes, edges, nodesMin, nodesMax);
 };
 
