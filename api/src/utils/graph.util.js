@@ -22,14 +22,19 @@ class Graph {
         Object.assign(nodes[index].data, { [data.$.key]: data._ });
       });
     });
-    var legendNode = {};
-    legendNode.v_symbol = "legend";
-    nodes.push({data:legendNode});
     return nodes;
   }
 
   getNodesForVisualization(valueAttr, labelAttr) {
-    return this.nodes.map(node => (
+    const nodes = [...this.nodes];
+    // add trick node for the node color legend
+    const legendNode = {
+      data: {
+        v_symbol: 'legend',
+      },
+    };
+    nodes.push(legendNode);
+    return nodes.map(node => (
       {
         data: {
           id: node.id,
