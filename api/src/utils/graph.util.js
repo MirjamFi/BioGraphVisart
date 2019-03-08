@@ -22,6 +22,9 @@ class Graph {
         Object.assign(nodes[index].data, { [data.$.key]: data._ });
       });
     });
+    var legendNode = {};
+    legendNode.v_symbol = "legend";
+    nodes.push({data:legendNode});
     return nodes;
   }
 
