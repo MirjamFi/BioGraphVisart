@@ -30,7 +30,7 @@ class Graph {
     // add trick node for the node color legend
     const legendNode = {
       data: {
-        v_symbol: 'legend',
+        _graphvisPseudoNode: 'nodeColorLegend',
       },
     };
     nodes.push(legendNode);
@@ -40,6 +40,7 @@ class Graph {
           id: node.id,
           label: node.data[labelAttr],
           val: parseFloat(node.data[valueAttr]),
+          _graphvisPseudoNode: node.data['_graphvisPseudoNode'],
         },
       }
     ));
