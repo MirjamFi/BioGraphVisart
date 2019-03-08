@@ -218,7 +218,6 @@ const getPng = async (
   const edges = graph.getEdgesForVisualization(interactionAttr);
   const nodesMin = parseFloat(Math.min(...nodesFilteredNaN.map(node => node.data.val))).toFixed(2);
   const nodesMax = parseFloat(Math.max(...nodesFilteredNaN.map(node => node.data.val))).toFixed(2);
-  console.log(nodes);
   return cytoSnapToPng(nodes, edges, nodesMin, nodesMax, labelAttr);
 };
 
