@@ -176,6 +176,7 @@ const cytoSnapToPng = async (nodes, edges, nodesMin, nodesMax) => {
           color: 'black',
         },
       },
+
     ],
     resolvesTo: 'base64',
     format: 'png',
@@ -196,9 +197,10 @@ const getPng = async (
 ) => {
   const graph = await Graph.fromGraphML(graphmlStr);
   const nodes = graph.getNodesForVisualization(valueAttr, labelAttr);
+  const nodesFilteredNaN = nodes.filter(function(node) {if(!isNaN(node.data.val))return node.data.val});
   const edges = graph.getEdgesForVisualization(interactionAttr);
-  const nodesMin = parseFloat(Math.min(...nodes.map(node => node.data.val))).toFixed(2);
-  const nodesMax = parseFloat(Math.max(...nodes.map(node => node.data.val))).toFixed(2);
+  const nodesMin = parseFloat(Math.min(...nodesFilteredNaN.map(node => node.data.val))).toFixed(2);
+  const nodesMax = parseFloat(Math.max(...nodesFilteredNaN.map(node => node.data.val))).toFixed(2);
   return cytoSnapToPng(nodes, edges, nodesMin, nodesMax);
 };
 
