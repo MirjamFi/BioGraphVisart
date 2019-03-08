@@ -47,21 +47,21 @@ function getNodesAndEdges(){
   nodes = [];
   edges = [];
   nodeValuesNum = [];
-  sorafenibTargets = [];
-  oncogenes = [];
-  variants=[];
-  varSor = [];
-  varOnc = [];
-  oncSor = [];
-  oncSorVar = [];
-  drivers = [];
-  driOnc = [];
-  driOncSor = [];
-  driOncVar = [];
-  driOncSorVar = [];
-  driSor = [];
-  driSorVar = [];
-  driVar = [];
+  // sorafenibTargets = [];
+  // oncogenes = [];
+  // variants=[];
+  // varSor = [];
+  // varOnc = [];
+  // oncSor = [];
+  // oncSorVar = [];
+  // drivers = [];
+  // driOnc = [];
+  // driOncSor = [];
+  // driOncVar = [];
+  // driOncSorVar = [];
+  // driSor = [];
+  // driSorVar = [];
+  // driVar = [];
   nodeValuesNum = [];
   attributesTypes = {};
 
@@ -628,45 +628,8 @@ function calculateLayout(){
         }).run();
       $('#download').removeAttr('disabled');
 
-      // create Legend
-      // svg = d3.select("#legend").append("svg")
-      // .attr("id", "svgid");
-      // svg.attr("width", 189).attr("height", 60);
-      // createLegend();
       oldMin = nodesMin;
       oldMax = nodesMax;
-
-      // mouve legend
-      /*var mousePosition;
-      var offset = [0,0];
-      var isDown = false;
-
-      var leg = document.getElementById('legend');
-      leg.addEventListener('mousedown', function(e) {
-          isDown = true;
-          offset = [
-              leg.offsetLeft - e.clientX,
-              leg.offsetTop - e.clientY
-          ];
-        }, true);
-
-      document.addEventListener('mouseup', function() {
-          isDown = false;
-      }, true);
-
-      document.addEventListener('mousemove', function(event) {
-          event.preventDefault();
-          if (isDown) {
-              mousePosition = {
-
-                  x : event.clientX,
-                  y : event.clientY
-
-              };
-              leg.style.left = (mousePosition.x + offset[0]) + 'px';
-              leg.style.top  = (mousePosition.y + offset[1]) + 'px';
-          }
-      }, true);*/
   }
 }
 
@@ -674,36 +637,6 @@ function calculateLayout(){
 function showLegend(){
   // show legend and update if necessary
   document.getElementById('legend').setAttribute('style','visibility:visible');
-  /*if(!isNaN(nodesMin) && (!isNaN(nodesMax)))  {    // numerical attribute
-    $("#mid").text("0");
-    $("#min").text(nodesMin);
-    $("#max").text(nodesMax);
-
-    cy.style()                // update the elements in the graph with the new style
-    .selector('node[val <0]')
-        .style('background-color', 'mapData(val,'+ nodesMin+', 0, #006cf0, white)').update();
-    cy.style()               
-    .selector('node[val <0]')
-        .style('color', 'black').update();
-    cy.style() 
-      .selector('node[val <='+0.5*nodesMin+']')
-        .style('color', 'white').update();
-    cy.style() 
-      .selector('node[val >0]')
-        .style('background-color', 'mapData(val, 0,'+ nodesMax+', white, #d50000)').update();
-    cy.style() 
-      .selector('node[val >0]')
-        .style('color', 'black').update();
-    cy.style() 
-      .selector('node[val >='+0.5*nodesMax+']')
-        .style('color', 'white').update();
-  }
-  else{
-    $("#mid").text("");         // boolean attribute
-  
-    $("#min").text(nodesMin);
-    $("#max").text(nodesMax);
-  }*/
 }
 
 //show meta-information of nodes by mouseover
@@ -921,16 +854,6 @@ function downloadSVG(){
   else{
      saveAs(new Blob([svgContent], {type:"image/svg+xml;charset=utf-8"}), path.replace(".graphml", "_") + '_' + nodeVal + ".svg");
   }  
-  /*if(outputName != "File name"){
-    var svgData = $("#svgid")[0].outerHTML;
-    var svgBlob = new Blob([svgData], {type:"image/svg+xml;charset=utf-8"});
-    saveAs(svgBlob, outputName +"_legend.svg");
-  }
-  else{
-    var svgData = $("#svgid")[0].outerHTML;
-    var svgBlob = new Blob([svgData], {type:"image/svg+xml;charset=utf-8"});
-    saveAs(svgBlob, path.replace(".graphml", "_") + '_' + nodeVal + "legend.svg");
-  } */
 }
 
 
