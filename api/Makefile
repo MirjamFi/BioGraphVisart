@@ -4,8 +4,8 @@ BASE=$(COMPOSE)/base.yml
 DEV=$(COMPOSE)/dev.yml
 PROD=$(COMPOSE)/prod.yml
 
-graphvis/api:
-	docker-compose -f $(BASE) build graphvis-api
+vis-api:
+	docker-compose -f $(BASE) build $@
 
 up:
 	docker-compose -f $(BASE) -f $(DEV) up 

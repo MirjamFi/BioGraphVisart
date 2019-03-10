@@ -1,6 +1,6 @@
 version: "3.5"
 services:
-  graphvis-api:
+  vis-api:
     ports:
       - '3001:3001/tcp'
     volumes:

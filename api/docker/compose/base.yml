@@ -1,7 +1,7 @@
 version: "3.5"
 services:
-  graphvis-api:
-    image: graphvis/api
+  vis-api:
+    image: biograph/vis-api
     build:
       context: ../..
       shm_size: '1gb'
