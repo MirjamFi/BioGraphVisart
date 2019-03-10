@@ -1,0 +1,11 @@
+version: "3.5"
+services:
+  vis-ui:
+    build:
+      context: ../..
+      dockerfile: ./docker/dev/Dockerfile
+    ports:
+      - '3000:3000/tcp'
+    volumes:
+      - '../../src:/app/src'
+      - '../../public:/app/public'

@@ -1,0 +1,16 @@
+/* navbar */
+.navbar-default {
+    background-color: SkyBlue;
+    border-color: #EE6D39;
+    border-width: 2px;
+    height: 10vh;
+}
+/* Title */
+.navbar-default .navbar-brand {
+    color: Gold;
+    font-weight: bold;
+}
+.navbar-default .navbar-brand:hover,
+.navbar-default .navbar-brand:focus {
+    color: #5E5E5E;
+}

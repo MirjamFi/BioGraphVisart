@@ -1,0 +1,39 @@
+{
+  "name": "@biograph/vis-ui",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "axios": "^0.18.0",
+    "bootstrap": "^4.3.1",
+    "cytoscape": "^3.5.0",
+    "cytoscape-dagre": "^2.2.2",
+    "font-awesome": "^4.7.0",
+    "glamor": "^2.20.40",
+    "joi-browser": "^13.4.0",
+    "jquery": "^3.3.1",
+    "popper.js": "^1.14.7",
+    "react": "^16.8.4",
+    "react-cytoscapejs": "^1.1.0",
+    "react-dom": "^16.8.4",
+    "react-router-dom": "^4.3.1",
+    "react-scripts": "2.1.8",
+    "react-table": "^6.9.2",
+    "react-toastify": "^4.5.2",
+    "xml2js": "^0.4.19"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}

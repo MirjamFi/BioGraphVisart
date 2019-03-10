@@ -1,0 +1,13 @@
+body {
+    background: url(../images/background.jpeg);
+    margin: 0;
+    font-family: sans-serif;
+}
+
+main {
+    padding-top: 20px;
+}
+
+.clickable {
+    cursor: pointer;
+}

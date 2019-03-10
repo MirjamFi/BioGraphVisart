@@ -1,0 +1,18 @@
+.form {
+    border-radius: 25px;
+    padding: 30px;
+    background-color: Khaki;
+}
+
+.form input[type="file"] {
+    display: none;
+}
+
+.file-input {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    color: Khaki;
+    background-color: CornflowerBlue;
+}
