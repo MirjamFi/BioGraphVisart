@@ -63,11 +63,13 @@ create a drop dpwn menu for graphml-files
 read from grphml - file and initialize cy-object
 */
 function readFile() {
-  console.log(usedShapeAttributes);
   if(shapeNode){
     shapeNode.elements().remove();
   }
   usedShapeAttributes = [];
+  nodesMin = -1;
+  nodesMax = 1;
+  firstTime = true;
 
   // if(document.getElementById("upload").checked){
     var files = document.getElementById('graphName').files;
@@ -179,7 +181,7 @@ function loadFile() {
 
 // initiate cytoscape graph 
 function createCyObject(){
-  document.getElementById('cy').innerHTLM = "";
+  // document.getElementById('cy').innerHTLM = "";
   cy = cytoscape({
     container: document.getElementById('cy'),
     ready: function(){
@@ -203,6 +205,11 @@ function createCyObject(){
           "text-halign" : "center",
           "font-size" : 10,
           //"color":"black"
+      }},
+      {selector: 'node[!val]',
+        style: {
+          'background-color': 'white',
+          'color':'black'
       }},
       // attributes with numbers
       {selector: 'node[val <0]',

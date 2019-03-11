@@ -396,7 +396,111 @@ function getTextWidth(text, font) {
 //add nodes and edges to cy-object (update if attribute has changed)
 function addNodesAndEdges(){
 
-  cy.add(nodes.concat(edges));
+  // cy.add(nodes.concat(edges));
+  cy = cytoscape({
+    container: document.getElementById('cy'),
+    ready: function(){
+          },
+    elements: nodes.concat(edges),
+    layout: {
+    name: 'dagre'
+  },
+    style: [
+         // style nodes
+      {selector: 'node',
+        style: {
+          width: 50,
+          height: 50,
+          shape: 'ellipse',
+          'background-color': 'white',
+          'border-color' : 'black',
+          'border-style' : 'solid',
+          'border-width' : '2',
+          label: 'data(symbol)',
+          "text-valign" : "center",
+          "text-halign" : "center",
+          "font-size" : 10,
+          //"color":"black"
+      }},
+      {selector: 'node[!val]',
+        style: {
+          'background-color': 'white',
+          'color':'black'
+      }},
+      // attributes with numbers
+      {selector: 'node[val <0]',
+        style: {
+          'background-color': 'mapData(val,'+ nodesMin+', 0, #006cf0, white)',
+          'color': 'black'
+      }},
+      {selector: 'node[val <='+0.5*nodesMin+']',
+        style: {
+          'color': 'white'
+      }},
+      {selector: 'node[val >0]',
+        style: {
+          'background-color': 'mapData(val, 0,'+ nodesMax+', white, #d50000)',
+          'color': 'black'
+      }},
+      {selector: 'node[val >='+0.5*nodesMax+']',
+        style: {
+          'color': 'white'
+      }},
+      {selector: 'node[val = 0]',
+        style: {
+          'background-color': 'white',
+          'color':'black'
+      }},
+
+      // attributes with boolean
+      {selector: 'node[val = "false"]',
+        style: {
+          'background-color': '#006cf0',
+          'color':'white'
+      }},
+      {selector: 'node[val = "true"]',
+        style: {
+          'background-color': '#d50000',
+          'color':'white'
+      }},
+
+      // style edges
+      {selector: 'edge',
+        style: {
+          'target-arrow-shape': 'triangle',
+          'arrow-scale' : 2,
+          'curve-style' : 'bezier'
+        }},
+      {selector: 'edge[interaction = \'compound\']',
+        style: {
+          'target-arrow-shape': 'triangle-backcurve',
+        }},
+      {selector: 'edge[interaction = \'activaion\']',
+        style: {
+          'target-arrow-shape': 'triangle',
+        }},
+      {selector: 'edge[interaction = \'expression\']',
+        style: {
+          'target-arrow-shape': 'triangle-backcurve',
+        }},
+      {selector: 'edge[interaction = \'phosphorylation\']',
+        style: {
+          'target-arrow-shape': 'diamond',
+        }},
+      {selector: 'edge[interaction = \'inhibition\']',
+        style: {
+          'target-arrow-shape': 'tee',
+        }},
+      {selector: 'edge[interaction = \'indirect effect\']',
+        style: {
+          'target-arrow-shape': 'circle',
+        }},
+              {selector: 'edge[interaction = \'state change\']',
+        style: {
+          'target-arrow-shape': 'square',
+        }}
+      ]
+  });
 
   // calculate label position for legend and style legend
   var fontSize = 10;
@@ -698,7 +802,6 @@ function activateNodeShapeChange(){
   change node shape of nodes with given attribute
 */
 function changeNodeShapes(){
-  console.log(usedShapeAttributes);
   var shapeAttribute = document.getElementById('nodeShapesAttr').value;
   var shape = document.getElementById('nodeShapes').value;
 
