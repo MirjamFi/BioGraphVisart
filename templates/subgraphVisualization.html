@@ -46,6 +46,15 @@
 		        left: 10px;
 		        font-size: 11px;
 		        width: 180px;
+		        height: 200px;
+		    }
+		   	#legendNodes {
+		        position: absolute;
+		        top: 200px;
+		        left: 10px;
+		        font-size: 11px;
+		        width: 180px;
+		        height: 200px;
 		    }
 			}
 			h1 {
@@ -74,16 +83,16 @@
 	<p id="description" >Load a .graphml-file and select node value to generate a subgraph, you can download as .png.</p>
 
 	<div id="dataPart">
-		<table id="uploadTable">
+		<!--<tr><table id="uploadTable">
 			<tr>
 				<td>
 					Upload file 
 				</td>
 				<td>
-					<input type="radio" id="upload" value="upload" name = "selectedFile">
+					<input type="radio" id="upload" value="upload" name = "selectedFile" onclick="checkedBox()">
 				</td>
 			</tr>
-			<tr>
+			
 				<td>
 					Select file from list
 				</td>
@@ -94,16 +103,16 @@
 					<button onclick="checkedBox()" id = "start">Select</button>
 				</td>
 			</tr>
-		</table>
+		</table>-->
 		
-		<input type="file" accept=".graphml" id="graphName" name="file" style="visibility: hidden"/>
+		<input type="file" accept=".graphml" id="graphName" name="file" />
 		<!--<input name="graphFile" type="text" maxlength="512" id="graphName" value=".graphml"/ style="visibility: hidden">-->
 
-		<select name="gfiles" id="gfiles" onclick="getFilesList()" style="visibility: hidden">
+		<!--<select name="gfiles" id="gfiles" onclick="getFilesList()" style="visibility: hidden">
 			<option value="">Choose .graphml-file</option>
-		</select>
+		</select>-->
 
-		<button onclick="readFile()" id="loadGraphml" style="visibility: hidden">Load .graphml</button>
+		<button onclick="readFile()" id="loadGraphml" >Load .graphml</button>
 		<p></p>
 		<select name="values" id="values" onchange="visualize()" style="visibility: hidden">
 			<option value="" selected disabled hidden>Choose node's attribute</option>
@@ -184,6 +193,7 @@
 		  </tr>
 		</table>
 		<p></p>
+		<div id="legendNodes"></div>
 	</div>
 	
 	<div align="left" id="cy"></div>

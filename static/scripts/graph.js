@@ -14,12 +14,12 @@ visualize a graph from .graphml-file
 
 function visualize() {
 
-  $('#graphName').attr("disabled", true);
-  $('#loadGraphml').attr("disabled", true);
+  // $('#graphName').attr("disabled", true);
+  // $('#loadGraphml').attr("disabled", true);
 
   nodeVal = document.getElementById('values').value;
 
-  $('#gfiles').attr("disabled", true);
+  // $('#gfiles').attr("disabled", true);
   // get nodes and edges
   nodeValuesNum = getNodesAndEdges();
 
@@ -615,8 +615,8 @@ function addNodesAndEdges(){
 function calculateLayout(){
 
   // calculate layout and legend only once
-  if(firstTime){
-      firstTime = false;
+  // if(firstTime){
+      // firstTime = false;
 
       cy.layout({
       name: 'dagre',
@@ -630,7 +630,7 @@ function calculateLayout(){
 
       oldMin = nodesMin;
       oldMax = nodesMax;
-  }
+  // }
 }
 
 //show legend
@@ -698,6 +698,7 @@ function activateNodeShapeChange(){
   change node shape of nodes with given attribute
 */
 function changeNodeShapes(){
+  console.log(usedShapeAttributes);
   var shapeAttribute = document.getElementById('nodeShapesAttr').value;
   var shape = document.getElementById('nodeShapes').value;
 
@@ -737,7 +738,7 @@ function changeNodeShapes(){
   if(isEmpty(usedShapeAttributes)){
     usedShapeAttributes[shapeAttribute] = shape;
      shapeNode = cytoscape({
-        container: document.getElementById('legend'),
+        container: document.getElementById('legendNodes'),
         layout: {
           name: 'preset'
         },
@@ -770,7 +771,6 @@ function changeNodeShapes(){
             });
    ycoord = 50;
   } 
-
   // test if shape has been used for another attribute
   else if(Object.keys(usedShapes).includes(shape)){
     if(usedShapes[shape] == shapeAttribute) return;

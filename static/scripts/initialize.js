@@ -14,56 +14,62 @@ var getDrpDwnFiles = true;
 /* 
 create a drop dpwn menu for graphml-files
 */
-function getFilesList(){
-  if(getDrpDwnFiles){
-    var drpFiles = document.getElementById("gfiles");      
-      removeOptions(drpFiles);
+// function getFilesList(){
+//   if(getDrpDwnFiles){
+//     var drpFiles = document.getElementById("gfiles");      
+//       removeOptions(drpFiles);
 
-      var sele = document.createElement("OPTION"); 
-      sele.text = "Select .graphml-file";
-      sele.value = "";
-      drpFiles.add(sele);
+//       var sele = document.createElement("OPTION"); 
+//       sele.text = "Select .graphml-file";
+//       sele.value = "";
+//       drpFiles.add(sele);
 
-    $.get("/foundFiles", function(foundFiles) {
-    // put graphml files into dropdown select object
-      foundFiles.forEach( function (file){
-        filename = file.replace(/\\/g,'/')
-        file = file.replace('..', 'http://127.0.0.1:3000/static')
-        var gf = file;
-        var gfile = document.createElement("OPTION");
-        gfile.text=filename;
-        gfile.value=gf;
-        drpFiles.add(gfile);
-      });
-    });
-  }
-  getDrpDwnFiles = false;
-}
+//     $.get("/foundFiles", function(foundFiles) {
+//     // put graphml files into dropdown select object
+//       foundFiles.forEach( function (file){
+//         filename = file.replace(/\\/g,'/')
+//         file = file.replace('..', 'http://127.0.0.1:3000/static')
+//         var gf = file;
+//         var gfile = document.createElement("OPTION");
+//         gfile.text=filename;
+//         gfile.value=gf;
+//         drpFiles.add(gfile);
+//       });
+//     });
+//   }
+//   getDrpDwnFiles = false;
+// }
 
 
-function checkedBox(){
+// function checkedBox(){
 
-  var selectedFile = document.querySelector('input[name="selectedFile"]:checked').value;
-  if(selectedFile === "upload"){
-    document.getElementById('graphName').style.visibility = "visible";
-    document.getElementById('gfiles').remove();
-  }
-  else if(selectedFile === "database"){
-    document.getElementById('gfiles').style.visibility = "visible";
-    document.getElementById('graphName').remove();
-  }
-  document.getElementById('loadGraphml').style.visibility = "visible";
-  document.getElementById('loadGraphml').disabled = false;
-  document.getElementById("upload").disabled = true;
-  document.getElementById("database").disabled = true;
-  document.getElementById("start").disabled = true;
-}
+//   var selectedFile = document.querySelector('input[name="selectedFile"]:checked').value;
+//   if(selectedFile === "upload"){
+//     document.getElementById('graphName').style.visibility = "visible";
+//     document.getElementById('gfiles').remove();
+//   }
+//   // else if(selectedFile === "database"){
+//   //   document.getElementById('gfiles').style.visibility = "visible";
+//   //   document.getElementById('graphName').remove();
+//   // }
+//   document.getElementById('loadGraphml').style.visibility = "visible";
+//   document.getElementById('loadGraphml').disabled = false;
+//   document.getElementById("upload").disabled = true;
+//   // document.getElementById("database").disabled = true;
+//   // document.getElementById("start").disabled = true;
+// }
 
 /* 
 read from grphml - file and initialize cy-object
 */
 function readFile() {
-  if(document.getElementById("upload").checked){
+  console.log(usedShapeAttributes);
+  if(shapeNode){
+    shapeNode.elements().remove();
+  }
+  usedShapeAttributes = [];
+
+  // if(document.getElementById("upload").checked){
     var files = document.getElementById('graphName').files;
     if (!files.length) {
       alert('Please select a file!');
@@ -86,25 +92,25 @@ function readFile() {
       }
     };
     reader.readAsText(file);
-  }
-  else if(document.getElementById("database").checked){
-    path = document.getElementById('gfiles').value;
-    if(!path.endsWith('.graphml')){
-      alert('Please give a .graphml-file.');
-      return;
-    };
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open("GET", path, false);
-    xmlhttp.send();
-    if (xmlhttp.status==200) {
-      graphString = xmlhttp.responseText.split("\n");
-      loadFile();
-   } 
-    else{
-      alert('Invalid file path.');
-    return;
-    }
-  }
+  // }
+  // else if(document.getElementById("database").checked){
+  //   path = document.getElementById('gfiles').value;
+  //   if(!path.endsWith('.graphml')){
+  //     alert('Please give a .graphml-file.');
+  //     return;
+  //   };
+  //   var xmlhttp = new XMLHttpRequest();
+  //   xmlhttp.open("GET", path, false);
+  //   xmlhttp.send();
+  //   if (xmlhttp.status==200) {
+  //     graphString = xmlhttp.responseText.split("\n");
+  //     loadFile();
+  //  } 
+  //   else{
+  //     alert('Invalid file path.');
+  //   return;
+  //   }
+  // }
 }
 
 
@@ -173,11 +179,14 @@ function loadFile() {
 
 // initiate cytoscape graph 
 function createCyObject(){
-
+  document.getElementById('cy').innerHTLM = "";
   cy = cytoscape({
     container: document.getElementById('cy'),
     ready: function(){
           },
+    layout: {
+    name: 'dagre'
+  },
     style: [
          // style nodes
       {selector: 'node',
