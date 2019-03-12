@@ -7,6 +7,7 @@
     "bootstrap": "^4.3.1",
     "cytoscape": "^3.5.0",
     "cytoscape-dagre": "^2.2.2",
+    "file-saver": "^2.0.1",
     "font-awesome": "^4.7.0",
     "glamor": "^2.20.40",
     "joi-browser": "^13.4.0",
@@ -15,10 +16,13 @@
     "react": "^16.8.4",
     "react-cytoscapejs": "^1.1.0",
     "react-dom": "^16.8.4",
+    "react-redux": "^6.0.1",
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.1.8",
     "react-table": "^6.9.2",
     "react-toastify": "^4.5.2",
+    "redux": "^4.0.1",
+    "redux-thunk": "^2.3.0",
     "xml2js": "^0.4.19"
   },
   "scripts": {

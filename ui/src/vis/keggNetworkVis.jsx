@@ -1,10 +1,15 @@
 import _ from 'lodash';
+import Joi from 'joi-browser';
+import { saveAs } from 'file-saver';
 import React from 'react';
 import cytoscape from 'cytoscape';
 import dagre from 'cytoscape-dagre';
 import CytoscapeComponent from 'react-cytoscapejs';
 import { DynamicGrid } from '../utils/grid';
 import Graph from '../utils/graph';
+import Form from '../forms/common/form';
+
+import './styles/keggNetworkVis.css';
 
 cytoscape.use(dagre);
 
@@ -18,10 +23,84 @@ const ControlPanelButton = ({
     <button
       key={key}
       className={classes}
+      style={{
+        width: '95%',
+        margin: '1px',
+      }}
       onClick={() => onClick()}>
       {content}
     </button>
   );
+}
+
+class PngDownloadForm extends Form {
+  state = {
+    display: {
+      background: '',
+      full: '',
+      scale: '',
+      maxWidth: '',
+      maxHeight: '',
+    },
+    data: {
+      background: undefined,
+      full: undefined,
+      scale: undefined,
+      maxWidth: undefined,
+      maxHeight: undefined,
+    },
+    errors: {},
+  }
+
+  inputs = {
+    background: {
+      label: 'Background',
+    },
+    full: {
+      label: 'Full',
+    },
+    scale: {
+      label: 'Scale',
+    },
+    maxWidth: {
+      label: 'Maximum width',
+    },
+    maxHeight: {
+      label: 'Maximum height',
+    },
+  }
+
+  config = {
+    buttonLabel: 'Download',
+  }
+
+  schema = {
+    background: Joi.any(),
+    full: Joi.any(),
+    scale: Joi.any(),
+    maxWidth: Joi.any(),
+    maxHeight: Joi.any(),
+  }
+
+  async submit() {
+    const {
+      background: bg,
+      full,
+      scale,
+      maxWidth,
+      maxHeight,
+    } = this.state.data;
+    const png = await window.cy.png({
+      output: 'blob-promise',
+      bg,
+      full,
+      scale,
+      maxWidth,
+      maxHeight,
+    });
+    saveAs(png, 'network.png');
+  }
+  
 }
 
 class KeggNetworkVis extends DynamicGrid {
@@ -29,10 +108,18 @@ class KeggNetworkVis extends DynamicGrid {
     columns: '1fr 25fr',
     components: [null, null],
     graph: null,
-    layout: {
-      name: 'dagre',
+    cytoscape: {
+      cy: null,
+      layout: {
+        name: 'dagre',
+      },
+      stylesheet: [],
+      style: {
+        width: '100%',
+        height: '100%',
+        backgroundColor: 'white',
+      },
     },
-    style: [],
     currentPanel: null,
     panel: {
       edit: {
@@ -41,63 +128,73 @@ class KeggNetworkVis extends DynamicGrid {
     },
   }
 
-  panelControlButtons = {
-    settings: {
-      content: <i className="fa fa-cog"></i>,
-      component: () => <h1>Settings Panel!</h1>,
-    },
-    info: {
-      content: <i className="fa fa-info-circle"></i>,
-      component: () => <h1>Info Panel!</h1>,
-    },
-    edit: {
-      content: <i className="fa fa-edit"></i>,
-      component: ({message}) => <h1>{message}</h1>,
-    },
-    download: {
-      content: <i className="fa fa-download"></i>,
-      component: () => <h1>Download Panel!</h1>,
-    },
-    save: {
-      content: <i className="fa fa-cloud-upload"></i>,
-      component: () => <h1>Save Panel!</h1>,
-    },
-    upload: {
-      content: <i className="fa fa-upload"></i>,
-      component: () => <h1>Upload Panel!</h1>,
-    },
-    cloud: {
-      content: <i className="fa fa-cloud-download"></i>,
-      component: () => <h1>Cloud Panel!</h1>,
-    },
-    publish: {
-      content: <i className="fa fa-rocket"></i>,
-      component: () => <h1>Publish Panel!</h1>,
-    },
-    movie: {
-      content: <i className="fa fa-film"></i>,
-      component: () => <h1>Movie Panel!</h1>,
-    },
-    snapshot: {
-      content: <i className="fa fa-camera-retro"></i>,
-      component: () => <h1>Snapshot Panel!</h1>,
-    },
-    notes: {
-      content: <i className="fa fa-comment"></i>,
-      component: () => <h1>Notes Panel!</h1>,
-    },
-    permissions: {
-      content: <i className="fa fa-key"></i>,
-      component: () => <h1>Permissions Panel!</h1>,
-    },
-    fork: {
-      content: <i className="fa fa-code-fork"></i>,
-      component: () => <h1>Fork Panel!</h1>,
-    },
-    del: {
-      content: <i className="fa fa-trash"></i>,
-      component: () => <h1>Deletion Panel!</h1>,
-    },
+  get panelControlButtons() {
+    return {
+      settings: {
+        content: <i className="fa fa-cog"></i>,
+        component: () => <h1>Settings Panel!</h1>,
+      },
+      info: {
+        content: <i className="fa fa-info-circle"></i>,
+        component: () => <h1>Info Panel!</h1>,
+      },
+      legend: {
+        content: <i className="fa fa-map"></i>,
+        component: () => <h1>Legend Panel!</h1>,
+      },
+      edit: {
+        content: <i className="fa fa-edit"></i>,
+        component: ({message}) => <h1>{message}</h1>,
+      },
+      data: {
+        content: <i className="fa fa-table"></i>,
+        component: () => <h1>Data Panel!</h1>,
+      },
+      download: {
+        content: <i className="fa fa-download"></i>,
+        component: () => <PngDownloadForm />,
+      },
+      save: {
+        content: <i className="fa fa-cloud-upload"></i>,
+        component: () => <h1>Save Panel!</h1>,
+      },
+      upload: {
+        content: <i className="fa fa-upload"></i>,
+        component: () => <h1>Upload Panel!</h1>,
+      },
+      cloud: {
+        content: <i className="fa fa-cloud-download"></i>,
+        component: () => <h1>Cloud Panel!</h1>,
+      },
+      publish: {
+        content: <i className="fa fa-rocket"></i>,
+        component: () => <h1>Publish Panel!</h1>,
+      },
+      movie: {
+        content: <i className="fa fa-film"></i>,
+        component: () => <h1>Movie Panel!</h1>,
+      },
+      snapshot: {
+        content: <i className="fa fa-camera-retro"></i>,
+        component: () => <h1>Snapshot Panel!</h1>,
+      },
+      notes: {
+        content: <i className="fa fa-comment"></i>,
+        component: () => <h1>Notes Panel!</h1>,
+      },
+      permissions: {
+        content: <i className="fa fa-key"></i>,
+        component: () => <h1>Permissions Panel!</h1>,
+      },
+      fork: {
+        content: <i className="fa fa-code-fork"></i>,
+        component: () => <h1>Fork Panel!</h1>,
+      },
+      del: {
+        content: <i className="fa fa-trash"></i>,
+        component: () => <h1>Deletion Panel!</h1>,
+      },
+    }
   }
 
   panelControlButton(key, content) {
@@ -121,8 +218,28 @@ class KeggNetworkVis extends DynamicGrid {
 
   constructor(props) {
     super(props);
-    const searchParams = new URLSearchParams(props.location.search);
-    this.graphmlSeed = decodeURI(searchParams.get('graphml'));
+    this.graphmlSeed = props.location.state.graphmlSeed;
+  }
+
+  get cy() {
+    return {
+      init: (cy) => {
+        this.nodeCxttabHandler(cy);
+        window.cy = cy; 
+      },
+      update: (cy) => {
+        cy.json(window.cy.json());
+        this.nodeCxttabHandler(cy);
+        window.cy = cy;
+      }
+    }
+  }
+
+  nodeCxttabHandler(cy) {
+    cy.on('cxttap', 'node', function(e) {
+      const node = e.target;
+      console.log( 'tapped ' + node.id() );
+    });
   }
 
   async componentDidMount() {
@@ -132,18 +249,15 @@ class KeggNetworkVis extends DynamicGrid {
     const edges = graph.getEdgesForVisualization('e_interaction');
     const elements = nodes.concat(edges);
     const style = this.getStyle(nodesMin, nodesMax);
+    const cytoscape = { ...this.state.cytoscape };
     const components = [
       this.panelControl,
       <CytoscapeComponent 
+        layout={cytoscape.layout}
+        style={cytoscape.style}
         elements={elements}
-        layout={this.state.layout}
         stylesheet={style}
-        style={{
-          width: '100%',
-          height: '100%',
-          backgroundColor: 'white',
-        }}
-        cy={cy => this.cy = cy}
+        cy={(cy) => this.cy.init(cy)}
       />
     ];
     this.setState({ graph, style, components });
@@ -162,15 +276,8 @@ class KeggNetworkVis extends DynamicGrid {
     const components = [
       this.panelControl,
       <CytoscapeComponent
-        cy={(cy) => {
-          cy.json(this.cy.json());
-          this.cy = cy;
-        }}
-        style={{
-          width: '100%',
-          height: '100%',
-          backgroundColor: 'white',
-        }}
+        cy={(cy) => this.cy.update(cy)}
+        style={this.state.cytoscape.style}
       />
     ];
     this.setState({
@@ -181,27 +288,23 @@ class KeggNetworkVis extends DynamicGrid {
   }
 
   expandPanel(panel) {
+    const cytoscapeComponent = (
+      <CytoscapeComponent
+        cy={(cy) => this.cy.update(cy)}
+        style={this.state.cytoscape.style}
+      />
+    );
     const { component: PanelComponent } = this.panelControlButtons[panel];
     const panelState = this.state.panel[panel];
     const components = [
       this.panelControl,
       PanelComponent ? PanelComponent(panelState) : null,
-      <CytoscapeComponent
-        cy={(cy) => {
-          cy.json(this.cy.json());
-          this.cy = cy;
-        }}
-        style={{
-          width: '100%',
-          height: '100%',
-          backgroundColor: 'white',
-        }}
-      />
+      cytoscapeComponent,
     ];
     this.setState({
       components,
-      currentPanel: panel,
       columns: '1fr 5fr 20fr',
+      currentPanel: panel,
     });
   }
 
@@ -358,6 +461,5 @@ class KeggNetworkVis extends DynamicGrid {
     ];
   }
 };
-
 
 export default KeggNetworkVis;

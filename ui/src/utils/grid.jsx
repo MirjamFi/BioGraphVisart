@@ -49,7 +49,12 @@ class DynamicGrid extends Component {
     return (
       <div className={`Grid ${name}-Grid ${classes}`} {...style}>
         {components.map((component, index) => (
-          <div key={`${name}-Grid-Element-${index}`}>{component}</div>
+          <div 
+            key={`${name}-Grid-Element-${index}`}
+            id={`${name}-Grid-Element-${index}`}
+          >
+            {component}
+          </div>
         ))}
       </div>    
     );

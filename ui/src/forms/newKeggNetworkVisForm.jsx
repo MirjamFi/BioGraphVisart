@@ -32,8 +32,7 @@ class NewKeggNetworkVisForm extends Form {
     const { file } = this.state.data;
     const reader = new FileReader();
     reader.onload = ({ target }) => {
-      const path = encodeURI(`/vis/new?graphml=${target.result}`);
-      this.props.history.push(path);
+      this.props.history.push('/vis', { graphmlSeed: target.result });
     };
     reader.readAsText(file);
   }
