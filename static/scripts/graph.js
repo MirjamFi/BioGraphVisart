@@ -324,6 +324,7 @@ function addNodesAndEdges(){
         }}
       ]
   });
+  cy.nodes().noOverlap({ padding: 5 })
   if(! noAttr){
   // calculate label position for legend and style legend
     var fontSize = 10;
