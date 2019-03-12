@@ -407,32 +407,40 @@ function showLegend(){
 
 //show meta-information of nodes by mouseover
 function showMetaInfo(){
+  if(! noAttr){
   cy.elements('node').qtip({       // show node attibute value by mouseover
-    show: {   
-      event: 'mouseover', 
-      solo: true,
-    },
-    content: {text : function(){
-      if(!isNaN(parseFloat(this.data('val')))){
-        return '<b>'+nodeVal +'</b>: ' + parseFloat(this.data('val')).toFixed(2) +
-        '<br>' + '<b>gene name</b>: ' + this.data('genename'); } //numbers
-      else{
-        return '<b>'+nodeVal +'</b>: '+ this.data('val') +
-        '<br>' + '<b>gene name</b>: ' + this.data('genename');          //bools
-      }
-    }},
-    position: {
-      my: 'top center',
-      at: 'bottom center'
-    },
-    style: {
-      classes: 'qtip-bootstrap',
-      tip: {
-        width: 8,
-        height: 8
-      }
-    },
-    });
+      show: {   
+        event: 'mouseover', 
+        solo: true,
+      },
+      content: {text : function(){
+        if(!isNaN(parseFloat(this.data('val')))&&this.data('genename')){
+          return '<b>'+nodeVal +'</b>: ' + parseFloat(this.data('val')).toFixed(2) +
+          '<br>' + '<b>gene name</b>: ' + this.data('genename'); } //numbers
+        else if(!isNaN(parseFloat(this.data('val')))&& !this.data('genename')){
+          return '<b>'+nodeVal +'</b>: ' + parseFloat(this.data('val')).toFixed(2);
+        }
+        else if(this.data('genename')){
+          return '<b>'+nodeVal +'</b>: '+ this.data('val') +
+          '<br>' + '<b>gene name</b>: ' + this.data('genename');          //bools
+        }
+        else{
+          return '<b>'+nodeVal +'</b>: '+ this.data('val');
+        }
+      }},
+      position: {
+        my: 'top center',
+        at: 'bottom center'
+      },
+      style: {
+        classes: 'qtip-bootstrap',
+        tip: {
+          width: 8,
+          height: 8
+        }
+      },
+      });
+  }
 }
 
 /* helper functions */
