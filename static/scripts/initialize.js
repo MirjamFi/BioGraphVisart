@@ -170,7 +170,6 @@ function loadFile() {
     drp.parentNode.removeChild(drp);
     drpShapes.parentNode.removeChild(drpShapes);
     drpShape.parentNode.removeChild(drpShape);
-    console.log(drpShapes);
     visualize();
   };   
   loadGraphCount ++; 
