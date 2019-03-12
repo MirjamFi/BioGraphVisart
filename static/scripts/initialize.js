@@ -10,59 +10,27 @@ var cy;
 var firstShape = true;
 var usedShapeAttributes = [];
 var getDrpDwnFiles = true;
-
-/* 
-create a drop dpwn menu for graphml-files
-*/
-// function getFilesList(){
-//   if(getDrpDwnFiles){
-//     var drpFiles = document.getElementById("gfiles");      
-//       removeOptions(drpFiles);
-
-//       var sele = document.createElement("OPTION"); 
-//       sele.text = "Select .graphml-file";
-//       sele.value = "";
-//       drpFiles.add(sele);
-
-//     $.get("/foundFiles", function(foundFiles) {
-//     // put graphml files into dropdown select object
-//       foundFiles.forEach( function (file){
-//         filename = file.replace(/\\/g,'/')
-//         file = file.replace('..', 'http://127.0.0.1:3000/static')
-//         var gf = file;
-//         var gfile = document.createElement("OPTION");
-//         gfile.text=filename;
-//         gfile.value=gf;
-//         drpFiles.add(gfile);
-//       });
-//     });
-//   }
-//   getDrpDwnFiles = false;
-// }
-
-
-// function checkedBox(){
-
-//   var selectedFile = document.querySelector('input[name="selectedFile"]:checked').value;
-//   if(selectedFile === "upload"){
-//     document.getElementById('graphName').style.visibility = "visible";
-//     document.getElementById('gfiles').remove();
-//   }
-//   // else if(selectedFile === "database"){
-//   //   document.getElementById('gfiles').style.visibility = "visible";
-//   //   document.getElementById('graphName').remove();
-//   // }
-//   document.getElementById('loadGraphml').style.visibility = "visible";
-//   document.getElementById('loadGraphml').disabled = false;
-//   document.getElementById("upload").disabled = true;
-//   // document.getElementById("database").disabled = true;
-//   // document.getElementById("start").disabled = true;
-// }
+var noAttr = false;
 
 /* 
 read from grphml - file and initialize cy-object
 */
 function readFile() {
+  var myNode = document.getElementById("dataPart");
+  var domValues = document.getElementById("values");
+  if(domValues){  
+    domValues.parentNode.removeChild(domValues);}
+    var domNodeShapesAttr = document.getElementById("nodeShapesAttr");
+  if(domNodeShapesAttr){
+    domNodeShapesAttr.parentNode.removeChild(domNodeShapesAttr);}
+    var domNodeShapes = document.getElementById("nodeShapes");
+  if(domNodeShapes)
+    {domNodeShapes.parentNode.removeChild(domNodeShapes);}
+  var domResetLayout = document.getElementById("resetLayout");
+  if(domResetLayout)
+    {domResetLayout.parentNode.removeChild(domResetLayout);}
+
+  noAttr = false;
   if(shapeNode){
     shapeNode.elements().remove();
   }
@@ -71,7 +39,6 @@ function readFile() {
   nodesMax = 1;
   firstTime = true;
 
-  // if(document.getElementById("upload").checked){
     var files = document.getElementById('graphName').files;
     if (!files.length) {
       alert('Please select a file!');
@@ -94,48 +61,47 @@ function readFile() {
       }
     };
     reader.readAsText(file);
-  // }
-  // else if(document.getElementById("database").checked){
-  //   path = document.getElementById('gfiles').value;
-  //   if(!path.endsWith('.graphml')){
-  //     alert('Please give a .graphml-file.');
-  //     return;
-  //   };
-  //   var xmlhttp = new XMLHttpRequest();
-  //   xmlhttp.open("GET", path, false);
-  //   xmlhttp.send();
-  //   if (xmlhttp.status==200) {
-  //     graphString = xmlhttp.responseText.split("\n");
-  //     loadFile();
-  //  } 
-  //   else{
-  //     alert('Invalid file path.');
-  //   return;
-  //   }
-  // }
 }
 
 
+
 function loadFile() {
+
   // put node atttributes into dropdown select object
-  var drp = document.getElementById("values");      // node attributes
+  var drp = document.createElement("select");
+  drp.id = "values";
+  drp.name = "values";
+  drp.onchange = visualize;
+  // node attributes
+  document.getElementById("dataPart").appendChild(drp);
   drp.style.visibility = "visible";
-  removeOptions(drp);
-  var drpShapes = document.getElementById("nodeShapesAttr");
-  removeOptions(drpShapes);
+
+
+  var sele = document.createElement("OPTION");
+  sele.value =  "";
+  sele.text = "Choose node's attribute";
+  drp.add(sele);
+
+
+  var drpShapes = document.createElement("select");
+  drpShapes.id = "nodeShapesAttr";
+  drpShapes.name = "nodeShapesAttr";
+  document.getElementById("dataPart").appendChild(drpShapes);
+  drpShapes.style.visibility = "hidden";
 
   var sele = document.createElement("OPTION");    
   sele.text = "Choose node's attribute";
   sele.value = "";
-  drp.add(sele);
-  
-  var seleShapes = document.createElement("OPTION");  // shape attributes
-  seleShapes.text = "Choose shape's attribute";
-  seleShapes.value = "";
-  drpShapes.add(seleShapes);
+  drpShapes.add(sele);
 
-  var drpShape = document.getElementById("nodeShapes"); // shapes
-  removeOptions(drpShape);
+ // shapes
+  var drpShape = document.createElement("select");
+  drpShape.id = "nodeShapes";
+  drpShape.name = "nodeShapes";
+  document.getElementById("dataPart").appendChild(drpShape);
+  drpShape.style.visibility = "hidden";
+  drpShape.onchange = changeNodeShapes;
+
   var seleShape = document.createElement("OPTION");
   seleShape.text = "Choose shape";
   seleShape.value = "";
@@ -151,6 +117,8 @@ function loadFile() {
     drpShape.add(optnShape);
   })
 
+  var noOptn = true;
+  var noDrpShapes = true;
   for (var i = 0; i <= graphString.length - 1; i++) {
     if(graphString[i].includes("for=\"node\"") && 
       (graphString[i].includes("attr.type=\"double\"") || 
@@ -160,6 +128,7 @@ function loadFile() {
       optn.text=nodeattr;
       optn.value=nodeattr;
       drp.add(optn);
+      noOptn = false;
 
       if(graphString[i].includes("attr.type=\"boolean\"")){
         var nodeattrShape = graphString[i].split("attr.name=")[1].split(" ")[0].replace(/"/g, "");
@@ -167,12 +136,29 @@ function loadFile() {
         optnShape.text=nodeattrShape;
         optnShape.value=nodeattrShape;
         drpShapes.add(optnShape);
+        noDrpShapes = false;
       }
     };
     if(graphString[i].includes("<node id=\"n0\">")){
       break;
     };
   };
-  loadGraphCount ++;  
+  var resetButton = document.createElement("button");
+  resetButton.id = "resetLayout";
+  var t = document.createTextNode("Reset layout");
+  resetButton.appendChild(t);
+  resetButton.text = "Reset layout";
+  resetButton.onclick = resetLayout;
+  resetButton.style.visibility = "hidden";
+  document.getElementById("dataPart").appendChild(resetButton);
 
+  if(noOptn && noDrpShapes){
+    noAttr = true;
+    drp.parentNode.removeChild(drp);
+    drpShapes.parentNode.removeChild(drpShapes);
+    drpShape.parentNode.removeChild(drpShape);
+    console.log(drpShapes);
+    visualize();
+  };   
+  loadGraphCount ++; 
 };
