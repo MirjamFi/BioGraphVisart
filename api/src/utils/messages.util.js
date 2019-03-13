@@ -1,6 +1,7 @@
 const INTERNAL_SERVER_ERROR = ['Internal server error.', 500];
 const INVALID_PAYLOAD = ['Invalid payload.', 400];
 const INVALID_TOKEN = ['Invalid token.', 401];
+const RESOURCE_NOT_FOUND = ['Resource not found.', 404];
 
 const send = (msg, res) => {
   const [message, status] = msg;
@@ -13,4 +14,5 @@ module.exports = {
   INTERNAL_SERVER_ERROR,
   INVALID_PAYLOAD,
   INVALID_TOKEN,
+  RESOURCE_NOT_FOUND,
 };

@@ -24,4 +24,12 @@ for graphml in $DISCRETE_SCORE_EXAMPLES/*.graphml; do
   curl -X GET \
        -H "Content-Type: application/xml" \
        -d @$graphml http://$HOST:$PORT/png > $PNGPATH/discrete_scores/$(basename $graphml).png
-done
+done 
+
+curl -s -X GET http://$HOST:$PORT/vis/notanid123
+
+CYJSON=$SCRIPTPATH/data/cytoscape/json/network.json 
+curl -s -X POST \
+     -H "Content-Type: application/json" \
+     -d @$CYJSON \
+	 http://$HOST:$PORT/vis

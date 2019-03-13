@@ -37,7 +37,11 @@ ENV CHROME_DEVEL_SANDBOX=/usr/local/sbin/chrome-devel-sandbox
 RUN wget -O /usr/local/bin/dumb-init https://github.com/Yelp/dumb-init/releases/download/v1.2.2/dumb-init_1.2.2_amd64 \
     && chmod +x /usr/local/bin/dumb-init
 
+RUN apt-get update \
+    && apt-get install -y git \
+    && git clone https://github.com/sebwink/wait-for-it
+
 USER app
 
-ENTRYPOINT ["dumb-init", "--"]
+ENTRYPOINT ["dumb-init", "--", "./wait-for-it/wait-for-it.sh", "--timeout=0", "mongodb:27017", "--"]
 CMD ["node", "src/main.js"]
