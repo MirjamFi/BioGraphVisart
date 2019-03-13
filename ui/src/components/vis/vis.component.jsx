@@ -5,7 +5,7 @@ import dagre from 'cytoscape-dagre';
 import CytoscapeComponent from 'react-cytoscapejs';
 import { DynamicGrid } from '../utils/grid';
 import Graph from '../../utils/graph';
-import ExportPanel from './panels/exportPanel';
+import ExportPanel from '../utils/cytoscape/export/exportPanel';
 
 import store from '../../store';
 import * as actions from '../../actions/vis.actions';
@@ -36,7 +36,11 @@ const ControlPanelButton = ({
 
 class Vis extends DynamicGrid {
   state = {
-    columns: '1fr 25fr',
+    grid: {
+      gridTemplateColumns: '1fr 25fr',
+      width: '100%',
+      height: '92%',
+    },
     components: [null, null],
     graph: null,
     cytoscape: {
@@ -85,8 +89,10 @@ class Vis extends DynamicGrid {
         content: <i className="fa fa-download"></i>,
         component: () => (
           <ExportPanel 
-            defaultName="network.png"
-            cyPath="vis"
+            pngDefaultName="network.png"
+            jsonDefaultName="network.json"
+            store={store}
+            cyPath="vis.cy"
           />
         ),
       },
@@ -226,7 +232,9 @@ class Vis extends DynamicGrid {
     ];
     this.setState({
       components,
-      columns: '1fr 25fr',
+      grid: {
+        gridTemplateColumns: '1fr 25fr',
+      },
       currentPanel: null,
     });
   }
@@ -244,7 +252,9 @@ class Vis extends DynamicGrid {
     ];
     this.setState({
       components,
-      columns: '1fr 5fr 20fr',
+      grid: {
+        gridTemplateColumns: '1fr 5fr 20fr',
+      },
       currentPanel: panel,
     });
   }

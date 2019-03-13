@@ -1,11 +1,8 @@
-import _ from 'lodash';
 import Joi from 'joi-browser';
-import { saveAs } from 'file-saver';
-import Form from '../../forms/common/form';
 
-import store from '../../../../store';
+import CyExport from './cyExport';
 
-class PngExport extends Form {
+class PngExport extends CyExport {
   state = {
     display: {
       background: '',
@@ -23,6 +20,8 @@ class PngExport extends Form {
     },
     errors: {},
   }
+
+  defaultName = 'network.png';
 
   inputs = {
     background: {
@@ -42,10 +41,6 @@ class PngExport extends Form {
     },
   }
 
-  config = {
-    buttonLabel: 'Download',
-  }
-
   schema = {
     background: Joi.any(),
     full: Joi.any(),
@@ -54,30 +49,16 @@ class PngExport extends Form {
     maxHeight: Joi.any(),
   }
 
-  constructor(props) {
-    super(props);
-    this.defaultName = props.defaultName || 'network.png';
-    this.cyPath = props.cyPath;
-  }
-
-  async submit() {
-    const {
-      background: bg,
-      full,
-      scale,
-      maxWidth,
-      maxHeight,
-    } = this.state.data;
-    const { cy } = _.get(store.getState(), this.cyPath);
-    const png = await cy.png({
+  async export() {
+    const { data } = this.state;
+    return this.cy.png({
       output: 'blob-promise',
-      bg,
-      full,
-      scale,
-      maxWidth,
-      maxHeight,
+      bg: data.background,
+      full: data.full,
+      scale: data.scale,
+      maxWidth: data.maxWidth,
+      maxHeight: data.maxHeight,
     });
-    saveAs(png, this.defaultName);
   }
 }
 

@@ -28,26 +28,23 @@ class StaticGrid extends Component {
 
 class DynamicGrid extends Component {
   state = {
-    gap: '1px',
-    classes: '',
-    columns: '',
-    rows: '',
+    grid: {
+      gridGap: '1px',
+      gridTemplateColumns: '',
+      gridTemplateRows: '',
+      width: '100%',
+      height: '100%',
+    },
+    gridClasses: '',
     components: [],
   }
 
   render() {
-    const { gap, classes, columns, rows, components } = this.state;
     const { name } = this.constructor;
-    const style = css({
-      display: 'grid',
-      gridGap: gap,
-      gridTemplateColumns: columns,
-      gridTemplateRows: rows,
-      width: '100vw',
-      height: '90vh',
-    });
+    const { grid, gridClasses, components } = this.state;
+    grid.display = 'grid';
     return (
-      <div className={`Grid ${name}-Grid ${classes}`} {...style}>
+      <div className={`Grid ${name}-Grid ${gridClasses}`} {...css(grid)}>
         {components.map((component, index) => (
           <div 
             key={`${name}-Grid-Element-${index}`}
