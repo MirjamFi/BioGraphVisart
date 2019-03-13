@@ -1,10 +1,11 @@
+import _ from 'lodash';
 import Joi from 'joi-browser';
 import { saveAs } from 'file-saver';
-import Form from '../../../../forms/common/form';
+import Form from '../../forms/common/form';
 
 import store from '../../../../store';
 
-class PngDownload extends Form {
+class PngExport extends Form {
   state = {
     display: {
       background: '',
@@ -55,7 +56,8 @@ class PngDownload extends Form {
 
   constructor(props) {
     super(props);
-    this.defaultName = props.defaultName;
+    this.defaultName = props.defaultName || 'network.png';
+    this.cyPath = props.cyPath;
   }
 
   async submit() {
@@ -66,7 +68,7 @@ class PngDownload extends Form {
       maxWidth,
       maxHeight,
     } = this.state.data;
-    const { cy } = store.getState().vis;
+    const { cy } = _.get(store.getState(), this.cyPath);
     const png = await cy.png({
       output: 'blob-promise',
       bg,
@@ -75,9 +77,8 @@ class PngDownload extends Form {
       maxWidth,
       maxHeight,
     });
-    saveAs(png, this.defaultName || 'network.png');
+    saveAs(png, this.defaultName);
   }
-  
 }
 
-export default PngDownload;
+export default PngExport;

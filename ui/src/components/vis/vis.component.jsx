@@ -3,9 +3,9 @@ import React from 'react';
 import cytoscape from 'cytoscape';
 import dagre from 'cytoscape-dagre';
 import CytoscapeComponent from 'react-cytoscapejs';
-import { DynamicGrid } from '../../utils/grid';
+import { DynamicGrid } from '../utils/grid';
 import Graph from '../../utils/graph';
-import PngDownload from './panels/download/pngDownload';
+import ExportPanel from './panels/exportPanel';
 
 import store from '../../store';
 import * as actions from '../../actions/vis.actions';
@@ -34,7 +34,7 @@ const ControlPanelButton = ({
   );
 }
 
-class KeggNetworkVis extends DynamicGrid {
+class Vis extends DynamicGrid {
   state = {
     columns: '1fr 25fr',
     components: [null, null],
@@ -81,9 +81,14 @@ class KeggNetworkVis extends DynamicGrid {
         content: <i className="fa fa-table"></i>,
         component: () => <h1>Data Panel!</h1>,
       },
-      download: {
+      export: {
         content: <i className="fa fa-download"></i>,
-        component: () => <PngDownload defaultName="network.png" />,
+        component: () => (
+          <ExportPanel 
+            defaultName="network.png"
+            cyPath="vis"
+          />
+        ),
       },
       save: {
         content: <i className="fa fa-cloud-upload"></i>,
@@ -155,14 +160,19 @@ class KeggNetworkVis extends DynamicGrid {
   get cy() {
     return {
       init: (cy) => {
-        this.registerCyEventHandlers(cy);
+        this.cy.registerEventHandlers(cy);
         store.dispatch(actions.updateCy(cy)); 
       },
       update: (cy) => {
         const { cy: prevCy } = store.getState().vis;
         cy.json(prevCy.json());
-        this.registerCyEventHandlers(cy);
+        this.cy.registerEventHandlers(cy);
         store.dispatch(actions.updateCy(cy)); 
+      },
+      registerEventHandlers: (cy) => {
+        for (const registerEventHandler of _.values(this.cyEvents)) {
+          registerEventHandler(cy);
+        }
       }
     }
   }
@@ -174,12 +184,6 @@ class KeggNetworkVis extends DynamicGrid {
         console.log( 'tapped ' + node.id() );
       });
     },
-  }
-
-  registerCyEventHandlers(cy) {
-    for (const registerEventHandler of _.values(this.cyEvents)) {
-      registerEventHandler(cy);
-    }
   }
 
   async componentWillMount() {
@@ -399,4 +403,4 @@ class KeggNetworkVis extends DynamicGrid {
   }
 };
 
-export default KeggNetworkVis;
+export default Vis;

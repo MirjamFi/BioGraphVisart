@@ -1,6 +1,6 @@
 import React from 'react';
 import Grid from '../utils/grid';
-import NewKeggNetworkVisForm from '../forms/newKeggNetworkVisForm';
+import NewKeggNetworkVisForm from '../utils/forms/newKeggNetworkVisForm';
 
 class NewKeggNetworkVisPage extends Grid {
   columns = '1fr 3fr 1fr';

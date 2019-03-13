@@ -5,9 +5,9 @@ import { ToastContainer } from 'react-toastify';
 
 import store from './store';
 
-import Navbar from './navbar';
-import HomePage from './pages/homePage';
-import NewKeggNetworkVisPage from './pages/newKeggNetworkVisPage';
+import Navbar from './components/navbar';
+import HomePage from './components/pages/homePage';
+import NewKeggNetworkVisPage from './components/pages/newKeggNetworkVisPage';
 import Vis from './components/vis/vis.component';
 /*
 import LoginPage from './pages/loginPage';
