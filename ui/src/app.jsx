@@ -8,7 +8,7 @@ import store from './store';
 import Navbar from './navbar';
 import HomePage from './pages/homePage';
 import NewKeggNetworkVisPage from './pages/newKeggNetworkVisPage';
-import KeggNetworkVisPage from './pages/keggNetworkVisPage';
+import Vis from './components/vis/vis.component';
 /*
 import LoginPage from './pages/loginPage';
 import RegisterPage from './pages/registerPage';
@@ -36,7 +36,7 @@ class App extends Component {
         <ToastContainer />
         <Switch>
           <Route path="/new" exact component={NewKeggNetworkVisPage} />
-          <Route path="/vis" exact component={KeggNetworkVisPage} />
+          <Route path="/vis" exact component={Vis} />
           <Route path="/home" exact component={HomePage} />
           <Redirect from="/" to="/home" />
           <Redirect to="/home" />

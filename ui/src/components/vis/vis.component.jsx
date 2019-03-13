@@ -1,15 +1,16 @@
 import _ from 'lodash';
-import Joi from 'joi-browser';
-import { saveAs } from 'file-saver';
 import React from 'react';
 import cytoscape from 'cytoscape';
 import dagre from 'cytoscape-dagre';
 import CytoscapeComponent from 'react-cytoscapejs';
-import { DynamicGrid } from '../utils/grid';
-import Graph from '../utils/graph';
-import Form from '../forms/common/form';
+import { DynamicGrid } from '../../utils/grid';
+import Graph from '../../utils/graph';
+import PngDownload from './panels/download/pngDownload';
 
-import './styles/keggNetworkVis.css';
+import store from '../../store';
+import * as actions from '../../actions/vis.actions';
+
+import './styles/vis.css';
 
 cytoscape.use(dagre);
 
@@ -31,76 +32,6 @@ const ControlPanelButton = ({
       {content}
     </button>
   );
-}
-
-class PngDownloadForm extends Form {
-  state = {
-    display: {
-      background: '',
-      full: '',
-      scale: '',
-      maxWidth: '',
-      maxHeight: '',
-    },
-    data: {
-      background: undefined,
-      full: undefined,
-      scale: undefined,
-      maxWidth: undefined,
-      maxHeight: undefined,
-    },
-    errors: {},
-  }
-
-  inputs = {
-    background: {
-      label: 'Background',
-    },
-    full: {
-      label: 'Full',
-    },
-    scale: {
-      label: 'Scale',
-    },
-    maxWidth: {
-      label: 'Maximum width',
-    },
-    maxHeight: {
-      label: 'Maximum height',
-    },
-  }
-
-  config = {
-    buttonLabel: 'Download',
-  }
-
-  schema = {
-    background: Joi.any(),
-    full: Joi.any(),
-    scale: Joi.any(),
-    maxWidth: Joi.any(),
-    maxHeight: Joi.any(),
-  }
-
-  async submit() {
-    const {
-      background: bg,
-      full,
-      scale,
-      maxWidth,
-      maxHeight,
-    } = this.state.data;
-    const png = await window.cy.png({
-      output: 'blob-promise',
-      bg,
-      full,
-      scale,
-      maxWidth,
-      maxHeight,
-    });
-    saveAs(png, 'network.png');
-  }
-  
 }
 
 class KeggNetworkVis extends DynamicGrid {
@@ -152,7 +83,7 @@ class KeggNetworkVis extends DynamicGrid {
       },
       download: {
         content: <i className="fa fa-download"></i>,
-        component: () => <PngDownloadForm />,
+        component: () => <PngDownload defaultName="network.png" />,
       },
       save: {
         content: <i className="fa fa-cloud-upload"></i>,
@@ -224,25 +155,34 @@ class KeggNetworkVis extends DynamicGrid {
   get cy() {
     return {
       init: (cy) => {
-        this.nodeCxttabHandler(cy);
-        window.cy = cy; 
+        this.registerCyEventHandlers(cy);
+        store.dispatch(actions.updateCy(cy)); 
       },
       update: (cy) => {
-        cy.json(window.cy.json());
-        this.nodeCxttabHandler(cy);
-        window.cy = cy;
+        const { cy: prevCy } = store.getState().vis;
+        cy.json(prevCy.json());
+        this.registerCyEventHandlers(cy);
+        store.dispatch(actions.updateCy(cy)); 
       }
     }
   }
 
-  nodeCxttabHandler(cy) {
-    cy.on('cxttap', 'node', function(e) {
-      const node = e.target;
-      console.log( 'tapped ' + node.id() );
-    });
+  cyEvents = {
+    nodeOnCxttab: (cy) => {
+      cy.on('cxttap', 'node', function(e) {
+        const node = e.target;
+        console.log( 'tapped ' + node.id() );
+      });
+    },
   }
 
-  async componentDidMount() {
+  registerCyEventHandlers(cy) {
+    for (const registerEventHandler of _.values(this.cyEvents)) {
+      registerEventHandler(cy);
+    }
+  }
+
+  async componentWillMount() {
     const graph = await Graph.fromGraphML(this.graphmlSeed);
     const [nodesMin, nodesMax] = graph.getNodeAttrRange('v_deregnet_score');
     const nodes = graph.getNodesForVisualization('v_deregnet_score', 'v_symbol');
@@ -288,18 +228,15 @@ class KeggNetworkVis extends DynamicGrid {
   }
 
   expandPanel(panel) {
-    const cytoscapeComponent = (
-      <CytoscapeComponent
-        cy={(cy) => this.cy.update(cy)}
-        style={this.state.cytoscape.style}
-      />
-    );
     const { component: PanelComponent } = this.panelControlButtons[panel];
     const panelState = this.state.panel[panel];
     const components = [
       this.panelControl,
       PanelComponent ? PanelComponent(panelState) : null,
-      cytoscapeComponent,
+      <CytoscapeComponent
+        cy={(cy) => this.cy.update(cy)}
+        style={this.state.cytoscape.style}
+      />
     ];
     this.setState({
       components,

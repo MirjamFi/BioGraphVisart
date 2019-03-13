@@ -51,7 +51,7 @@ class Navbar extends Component {
           <button 
             className="navbar-brand btn btn-link"
           >
-          {"  "}BioGraphVis
+          {"  "}BioGraphVisArt
           </button>
         </NavLink>
         <div className="collapse navbar-collapse" id="navbarNav">

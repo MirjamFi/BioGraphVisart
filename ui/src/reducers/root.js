@@ -1,3 +1,8 @@
-const rootReducer = () => [];
+import { combineReducers } from 'redux';
+import vis from './vis.reducer';
 
-export default rootReducer;
+const reducers = {
+  vis,
+}
+
+export default combineReducers(reducers);
