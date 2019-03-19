@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 
 import store from './store';
-
+import route from './utils/routing';
 import Navbar from './components/navbar';
 import HomePage from './components/pages/homePage';
 import NewKeggNetworkVisPage from './components/pages/newKeggNetworkVisPage';
@@ -35,11 +35,11 @@ class App extends Component {
         <Navbar user={undefined} />
         <ToastContainer />
         <Switch>
-          <Route path="/new" exact component={NewKeggNetworkVisPage} />
-          <Route path="/vis" exact component={Vis} />
-          <Route path="/home" exact component={HomePage} />
-          <Redirect from="/" to="/home" />
-          <Redirect to="/home" />
+          <Route path={route('new')} exact component={NewKeggNetworkVisPage} />
+          <Route path={route('vis')} exact component={Vis} />
+          <Route path={route('home')} exact component={HomePage} />
+          <Redirect from={route('')} to={route('home')} />
+          <Redirect to={route('home')} />
         </Switch>
       </Provider>
     );

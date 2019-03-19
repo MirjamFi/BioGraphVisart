@@ -1,4 +1,7 @@
 import Joi from 'joi-browser';
+
+import route from '../../../utils/routing';
+
 import Form from './common/form';
 
 class NewKeggNetworkVisForm extends Form {
@@ -32,7 +35,7 @@ class NewKeggNetworkVisForm extends Form {
     const { file } = this.state.data;
     const reader = new FileReader();
     reader.onload = ({ target }) => {
-      this.props.history.push('/vis', { graphmlSeed: target.result });
+      this.props.history.push(route('vis'), { graphmlSeed: target.result });
     };
     reader.readAsText(file);
   }

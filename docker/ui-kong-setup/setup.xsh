@@ -28,8 +28,7 @@ def registerDeregnetUiServiceRoute():
              --data 'paths[]=/vis/ui' \
              --data 'methods[]=GET' \
              --data 'methods[]=POST' \
-             --data 'methods[]=DELETE' \
-             --data 'methods[]=PUT'
+             --data 'methods[]=DELETE'
     )
 
 if __name__ == '__main__':

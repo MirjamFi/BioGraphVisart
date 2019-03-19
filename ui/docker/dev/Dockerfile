@@ -9,6 +9,8 @@ WORKDIR /app
 COPY src .
 COPY public .
 COPY package.json .
+COPY config .
+COPY scripts .
 
 RUN npm install 
 

@@ -9,3 +9,5 @@ services:
     volumes:
       - '../../src:/app/src'
       - '../../public:/app/public'
+      - '../../config:/app/config'
+      - '../../scripts:/app/scripts'
