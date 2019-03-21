@@ -20,6 +20,7 @@ import RegisterLoginPage from './pages/registerLoginPage';
 import 'react-toastify/dist/ReactToastify.css';
 
 class App extends Component {
+  
   /*
   componentDidMount() {
     try {
@@ -35,11 +36,11 @@ class App extends Component {
         <Navbar user={undefined} />
         <ToastContainer />
         <Switch>
-          <Route path={route('new')} exact component={NewKeggNetworkVisPage} />
-          <Route path={route('vis')} exact component={Vis} />
-          <Route path={route('home')} exact component={HomePage} />
-          <Redirect from={route('')} to={route('home')} />
-          <Redirect to={route('home')} />
+          <Route path={route('/new')} exact component={NewKeggNetworkVisPage} />
+          <Route path={route('/vis')} exact component={Vis} />
+          <Route path={route('/home')} exact component={HomePage} />
+          <Redirect from={route('/')} to={route('/home')} />
+          <Redirect to={route('/home')} />
         </Switch>
       </Provider>
     );

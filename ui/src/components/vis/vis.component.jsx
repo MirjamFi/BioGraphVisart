@@ -38,8 +38,8 @@ class Vis extends DynamicGrid {
   state = {
     grid: {
       gridTemplateColumns: '1fr 25fr',
-      width: '100%',
-      height: '92%',
+      width: '100vw',
+      height: '90vh',
     },
     components: [null, null],
     graph: null,
@@ -98,7 +98,7 @@ class Vis extends DynamicGrid {
       },
       save: {
         content: <i className="fa fa-cloud-upload"></i>,
-        component: () => <h1>Save Panel!</h1>,
+        component: () => <button>Save</button>,
       },
       upload: {
         content: <i className="fa fa-upload"></i>,
@@ -169,28 +169,33 @@ class Vis extends DynamicGrid {
         this.cy.registerEventHandlers(cy);
         store.dispatch(actions.updateCy(cy)); 
       },
+      
       update: (cy) => {
         const { cy: prevCy } = store.getState().vis;
-        cy.json(prevCy.json());
-        this.cy.registerEventHandlers(cy);
-        store.dispatch(actions.updateCy(cy)); 
+        if (cy !== prevCy) {
+          cy.json(prevCy.json());
+          this.cy.registerEventHandlers(cy);
+          store.dispatch(actions.updateCy(cy));
+        }
       },
+
       registerEventHandlers: (cy) => {
-        for (const registerEventHandler of _.values(this.cyEvents)) {
+        for (const registerEventHandler of _.values(this.cy.events)) {
           registerEventHandler(cy);
         }
+      },
+
+      events: {
+        nodeOnCxttab: (cy) => {
+          cy.on('cxttap', 'node', function(e) {
+            const node = e.target;
+            console.log( 'tapped ' + node.id() );
+          });
+        },
       }
     }
   }
 
-  cyEvents = {
-    nodeOnCxttab: (cy) => {
-      cy.on('cxttap', 'node', function(e) {
-        const node = e.target;
-        console.log( 'tapped ' + node.id() );
-      });
-    },
-  }
 
   async componentWillMount() {
     const graph = await Graph.fromGraphML(this.graphmlSeed);
@@ -230,11 +235,11 @@ class Vis extends DynamicGrid {
         style={this.state.cytoscape.style}
       />
     ];
+    const grid = { ...this.state.grid };
+    grid.gridTemplateColumns = '1fr 25fr';
     this.setState({
       components,
-      grid: {
-        gridTemplateColumns: '1fr 25fr',
-      },
+      grid,
       currentPanel: null,
     });
   }
@@ -250,11 +255,11 @@ class Vis extends DynamicGrid {
         style={this.state.cytoscape.style}
       />
     ];
+    const grid = { ...this.state.grid };
+    grid.gridTemplateColumns = '1fr 5fr 20fr';
     this.setState({
       components,
-      grid: {
-        gridTemplateColumns: '1fr 5fr 20fr',
-      },
+      grid,
       currentPanel: panel,
     });
   }

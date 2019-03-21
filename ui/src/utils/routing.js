@@ -1,5 +1,7 @@
-import { PUBLIC_URL } from '../config';
+import { PUBLIC_PATH } from '../config';
 
-const route = (path) => `${PUBLIC_URL}${path}`;
+const ROUTE_PREFIX = PUBLIC_PATH === '/' ? '' : PUBLIC_PATH;
+
+const route = (path) => `${ROUTE_PREFIX}${path}`;
 
 export default route;

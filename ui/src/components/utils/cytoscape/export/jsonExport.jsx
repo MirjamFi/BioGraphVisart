@@ -28,7 +28,6 @@ class JsonExport extends CyExport {
   async export() {
     const { flatEles } = this.state.data;
     const json = this.cy.json(flatEles);
-    console.log(json);
     return new Blob(
       [JSON.stringify(json, null, 2)],
       { type : 'application/json' },

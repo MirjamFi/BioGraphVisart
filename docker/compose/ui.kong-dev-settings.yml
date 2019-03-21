@@ -3,7 +3,6 @@ services:
   vis-ui:
     environment:
       PUBLIC_URL: /vis/ui
-      PUBLIC: localhost:2999/vis/ui
     volumes:
       - '../../ui/src:/app/src'
       - '../../ui/public:/app/public'

@@ -9,8 +9,9 @@ const fs = require('fs');
 
 const protocol = process.env.HTTPS === 'true' ? 'https' : 'http';
 const host = process.env.HOST || '0.0.0.0';
-const publicPath = process.env.PUBLIC_PATH || '/';
-// const publicDomain = process.env.PUBLIC || 'localhost:3000';
+const publicPath = '/';
+const publicUrl = process.env.PUBLIC_URL || '/';
+// const sockPath = publicUrl === '/' ? '/' : `${publicUrl}socket`;
 
 module.exports = function(proxy, allowedHost) {
   return {
@@ -36,7 +37,7 @@ module.exports = function(proxy, allowedHost) {
     compress: true,
     // Silence WebpackDevServer's own logs since they're generally not useful.
     // It will still show compile warnings and errors with this setting.
-    clientLogLevel: 'none',
+    clientLogLevel: 'info',
     // By default WebpackDevServer serves physical files from current directory
     // in addition to all the virtual build products that it serves from memory.
     // This is confusing because those files won’t automatically be available in
@@ -60,6 +61,7 @@ module.exports = function(proxy, allowedHost) {
     // in the Webpack development configuration. Note that only changes
     // to CSS are currently hot reloaded. JS changes will refresh the browser.
     hot: true,
+    // sockPath: sockPath,
     // It is important to tell WebpackDevServer to use the same "root" path
     // as we specified in the config. In development, we always serve from /.
     publicPath: publicPath,

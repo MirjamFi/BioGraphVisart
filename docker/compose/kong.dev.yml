@@ -2,5 +2,5 @@ version: "3.5"
 services:
   kong:
     ports:
-      - '2999:8000/tcp'
+      - '8000:8000/tcp'
       - '8001:8001/tcp'

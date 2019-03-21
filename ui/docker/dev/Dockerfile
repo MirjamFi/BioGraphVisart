@@ -6,11 +6,11 @@ RUN apt-get update \
 
 WORKDIR /app
 
-COPY src .
-COPY public .
+COPY src src
+COPY public public
 COPY package.json .
-COPY config .
-COPY scripts .
+COPY config config
+COPY scripts scripts
 
 RUN npm install 
 

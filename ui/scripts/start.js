@@ -11,8 +11,14 @@ process.on('unhandledRejection', err => {
   throw err;
 });
 
+// fix socket path
+// const socketPrefix = `${process.env.PUBLIC_URL || ''}/`;
+// require('../config/sockjs-prefix-modification')(socketPrefix).fixWebpackDevServer();
+
 // Ensure environment variables are read.
 require('../config/env');
+
+
 
 
 const fs = require('fs');

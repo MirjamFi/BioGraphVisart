@@ -19,13 +19,13 @@ class Navbar extends Component {
       <React.Fragment>
      	 	<NavLink
      	    className="nav-item nav-link"
-          to={route('new')} 
+          to={route('/new')} 
      	 	>
      	    New
 				</NavLink>
      	 	<NavLink
      	    className="nav-item nav-link"
-          to={route('visualizations')} 
+          to={route('/visualizations')} 
      	 	>
      	    Your Visualizations
 				</NavLink>
@@ -46,7 +46,7 @@ class Navbar extends Component {
       <nav className="navbar navbar-default navbar-expand-lg navbar-light">
         <NavLink 
           className="nav-item nav-link"
-          to={route('')}
+          to={route('/')}
         >
           <button 
             className="navbar-brand btn btn-link"
