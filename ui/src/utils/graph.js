@@ -1,12 +1,19 @@
 const xml2js = require('xml2js');
 
 class Graph {
-  constructor(data) {
+  constructor(data = null) {
     this.data = data;
   }
 
+  get empty() {
+    return this.data === null;
+  }
+
   get nodedata() {
-    return this.data.graphml.graph[0].node;
+    if (this.data) {
+      return this.data.graphml.graph[0].node;
+    } 
+    return [];
   }
 
   get nodes() {
@@ -44,7 +51,10 @@ class Graph {
   }
 
   get edgedata() {
-    return this.data.graphml.graph[0].edge;
+    if (this.data) {
+      return this.data.graphml.graph[0].edge;
+    }
+    return [];
   }
 
   get edges() {

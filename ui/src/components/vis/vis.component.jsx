@@ -1,9 +1,9 @@
 import _ from 'lodash';
-import React from 'react';
+import React, { Component } from 'react';
 import cytoscape from 'cytoscape';
 import dagre from 'cytoscape-dagre';
 import CytoscapeComponent from 'react-cytoscapejs';
-import { DynamicGrid } from '../utils/grid';
+import { FunctionalGrid } from '../utils/grid';
 import Graph from '../../utils/graph';
 import ExportPanel from '../utils/cytoscape/export/exportPanel';
 
@@ -28,13 +28,13 @@ const ControlPanelButton = ({
         width: '95%',
         margin: '1px',
       }}
-      onClick={() => onClick()}>
+      onClick={onClick}>
       {content}
     </button>
   );
 }
 
-class Vis extends DynamicGrid {
+class Vis extends Component {
   state = {
     grid: {
       gridTemplateColumns: '1fr 25fr',
@@ -43,6 +43,7 @@ class Vis extends DynamicGrid {
     },
     components: [null, null],
     graph: null,
+    resetCytoscape: true,
     cytoscape: {
       cy: null,
       layout: {
@@ -79,7 +80,18 @@ class Vis extends DynamicGrid {
       },
       edit: {
         content: <i className="fa fa-edit"></i>,
-        component: ({message}) => <h1>{message}</h1>,
+        component: ({message}) => (
+          <React.Fragment>
+            <h1>{message}</h1>
+            <button 
+              onClick={() => {
+                console.log('RESET');
+                // this.setState({ resetCytoscape: true })
+              }} >
+              Reset 
+            </button>
+          </React.Fragment>
+        ),
       },
       data: {
         content: <i className="fa fa-table"></i>,
@@ -160,23 +172,24 @@ class Vis extends DynamicGrid {
 
   constructor(props) {
     super(props);
-    this.graphmlSeed = props.location.state.graphmlSeed;
+    if (this.props.location.state) {
+      this.graphmlSeed = props.location.state.graphmlSeed;
+    }
   }
 
   get cy() {
     return {
       init: (cy) => {
         this.cy.registerEventHandlers(cy);
-        store.dispatch(actions.updateCy(cy)); 
+        store.dispatch(actions.updateCy(cy));
       },
-      
+
       update: (cy) => {
         const { cy: prevCy } = store.getState().vis;
         if (cy !== prevCy) {
           cy.json(prevCy.json());
-          this.cy.registerEventHandlers(cy);
-          store.dispatch(actions.updateCy(cy));
-        }
+          this.cy.init(cy);
+        } 
       },
 
       registerEventHandlers: (cy) => {
@@ -192,30 +205,48 @@ class Vis extends DynamicGrid {
             console.log( 'tapped ' + node.id() );
           });
         },
+      },
+
+      component: () => {
+        const { graph, resetCytoscape, cytoscape } = this.state;
+        if (graph === null) {
+          return null;
+        }
+        if (resetCytoscape) {
+          const [nodesMin, nodesMax] = graph.getNodeAttrRange('v_deregnet_score');
+          const nodes = graph.getNodesForVisualization('v_deregnet_score', 'v_symbol');
+          const edges = graph.getEdgesForVisualization('e_interaction');
+          const elements = nodes.concat(edges);
+          const stylesheet = this.getStyle(nodesMin, nodesMax);
+          return (
+            <CytoscapeComponent
+              cy={(cy) => this.cy.init(cy)}
+              style={cytoscape.style}
+              elements={elements}
+              stylesheet={stylesheet}
+              layout={cytoscape.layout}
+            />
+          );
+        } else {
+          return (
+            <CytoscapeComponent 
+              cy={(cy) => this.cy.update(cy)}
+              style={cytoscape.style}
+            />
+          );
+        }
       }
     }
   }
 
-
   async componentWillMount() {
-    const graph = await Graph.fromGraphML(this.graphmlSeed);
-    const [nodesMin, nodesMax] = graph.getNodeAttrRange('v_deregnet_score');
-    const nodes = graph.getNodesForVisualization('v_deregnet_score', 'v_symbol');
-    const edges = graph.getEdgesForVisualization('e_interaction');
-    const elements = nodes.concat(edges);
-    const style = this.getStyle(nodesMin, nodesMax);
-    const cytoscape = { ...this.state.cytoscape };
-    const components = [
-      this.panelControl,
-      <CytoscapeComponent 
-        layout={cytoscape.layout}
-        style={cytoscape.style}
-        elements={elements}
-        stylesheet={style}
-        cy={(cy) => this.cy.init(cy)}
-      />
-    ];
-    this.setState({ graph, style, components });
+    let graph;
+    if (this.graphmlSeed) {
+      graph = await Graph.fromGraphML(this.graphmlSeed);
+    } else {
+      graph = new Graph();
+    }
+    this.setState({ graph });
   }
 
   clickPanelControlButton(panel) {
@@ -228,43 +259,47 @@ class Vis extends DynamicGrid {
   }
 
   collapsePanel() {
-    const components = [
-      this.panelControl,
-      <CytoscapeComponent
-        cy={(cy) => this.cy.update(cy)}
-        style={this.state.cytoscape.style}
-      />
-    ];
     const grid = { ...this.state.grid };
     grid.gridTemplateColumns = '1fr 25fr';
     this.setState({
-      components,
       grid,
       currentPanel: null,
+      resetCytoscape: false,
     });
   }
 
   expandPanel(panel) {
-    const { component: PanelComponent } = this.panelControlButtons[panel];
-    const panelState = this.state.panel[panel];
-    const components = [
-      this.panelControl,
-      PanelComponent ? PanelComponent(panelState) : null,
-      <CytoscapeComponent
-        cy={(cy) => this.cy.update(cy)}
-        style={this.state.cytoscape.style}
-      />
-    ];
     const grid = { ...this.state.grid };
     grid.gridTemplateColumns = '1fr 5fr 20fr';
     this.setState({
-      components,
       grid,
       currentPanel: panel,
+      resetCytoscape: false,
     });
   }
 
+  render() {
+    const { currentPanel, grid } = this.state;
+    const components = [this.panelControl];
+    if (currentPanel !== null) {
+      const { component: PanelComponent } = this.panelControlButtons[currentPanel];
+      const panelState = this.state.panel[currentPanel];
+      components.push(PanelComponent ? PanelComponent(panelState) : null);
+    }
+    components.push(this.cy.component())
+    return (
+      <FunctionalGrid 
+        name="Vis"
+        grid={grid}
+        components={components}
+      />
+    );
+  }
+
   getStyle(nodesMin, nodesMax) {
+    if (nodesMin === undefined || nodesMax === undefined) {
+      return {};
+    }
     return [ // style nodes
       {
         selector: 'node',

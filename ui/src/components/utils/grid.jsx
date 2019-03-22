@@ -58,6 +58,32 @@ class DynamicGrid extends Component {
   }
 };
 
+export const FunctionalGrid = ({
+  name,
+  grid,
+  components,
+  classes,
+}) => {
+  const style = css({
+    width: '100%',
+    height: '100%',
+    ...grid,
+    display: 'grid',
+  });
+  return (
+    <div className={`Grid ${name}-Grid ${classes}`} {...style} >
+      {components.map((component, index) => (
+        <div 
+          key={`${name}-Grid-Element-${index}`}
+          id={`${name}-Grid-Element-${index}`}
+        >
+          {component}
+        </div>
+      ))}
+    </div>    
+  );
+}
+
 const Grid = StaticGrid;
 
 export { DynamicGrid };
