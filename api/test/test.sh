@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 HOST=${GRAPHVIS_HOST:-localhost}
-PORT=${GRAPHVIS_PORT:-3001}
-ROOT=${GRAPHVIS_PATH:-"/"}
+PORT=${GRAPHVIS_PORT:-8000}
+ROOT=${GRAPHVIS_PATH:-"/vis/api"}
 
 SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 

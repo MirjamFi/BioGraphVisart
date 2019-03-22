@@ -22,14 +22,39 @@ router.post('/', async (req, res) => {
   }
 });
 
+router.put('/:id', async (req, res) => {
+  try {
+    const response = await vis.put(req.params.id, req.body)
+    if (response) {
+      res.status(201);
+      res.json(response);
+    } else {
+      messages.send(messages.INVALID_PAYLOAD, res);
+    }
+  } catch (error) {
+    console.log(error);
+    messages.send(messages.INTERNAL_SERVER_ERROR, res);
+  }
+});
+
 router.get('/:id', async (req, res) => {
   try {
-    const response = await vis.get(req.params.id);
+    const response = await vis.getById(req.params.id);
     if (response) {
       res.json(response);
     } else {
       messages.send(messages.RESOURCE_NOT_FOUND, res);
     }
+  } catch (error) {
+    console.log(error);
+    messages.send(messages.INTERNAL_SERVER_ERROR, res);
+  }
+});
+
+router.get('/', async (req, res) => {
+  try {
+    const response = await vis.get();
+    res.json(response);
   } catch (error) {
     console.log(error);
     messages.send(messages.INTERNAL_SERVER_ERROR, res);

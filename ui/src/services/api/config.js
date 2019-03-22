@@ -1,5 +1,5 @@
 import route from '../../utils/routing';
 
 export default {
-  root: route('/api'),
+  root: `http://localhost:8000/vis/api`,
 };

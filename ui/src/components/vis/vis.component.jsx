@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
+import { toast } from 'react-toastify';
 import cytoscape from 'cytoscape';
 import dagre from 'cytoscape-dagre';
 import CytoscapeComponent from 'react-cytoscapejs';
@@ -7,8 +8,11 @@ import { FunctionalGrid } from '../utils/grid';
 import Graph from '../../utils/graph';
 import ExportPanel from '../utils/cytoscape/export/exportPanel';
 
+import route from '../../utils/routing';
 import store from '../../store';
 import * as actions from '../../actions/vis.actions';
+import * as api from '../../services/api/vis';
+
 
 import './styles/vis.css';
 
@@ -43,9 +47,9 @@ class Vis extends Component {
     },
     components: [null, null],
     graph: null,
+    cyJson: null,
     resetCytoscape: true,
     cytoscape: {
-      cy: null,
       layout: {
         name: 'dagre',
       },
@@ -110,7 +114,34 @@ class Vis extends Component {
       },
       save: {
         content: <i className="fa fa-cloud-upload"></i>,
-        component: () => <button>Save</button>,
+        component: () => (
+          <React.Fragment>
+            <button onClick={async () => {
+              try {
+                const data = store.getState().vis.cy.json();
+                await api.putVis(this.visId, data);
+              } catch (error) {
+                console.log(error);
+                toast.error('API ERROR!');
+              }
+            }}
+            >
+              Save 
+            </button>
+            <button onClick={async () => {
+              try {
+                const data = store.getState().vis.cy.json();
+                await api.postVis(data);
+              } catch (error) {
+                console.log(error);
+                toast.error('API ERROR!');
+              }
+            }}
+            >
+              Save As
+            </button>
+          </React.Fragment>
+        ),
       },
       upload: {
         content: <i className="fa fa-upload"></i>,
@@ -172,7 +203,13 @@ class Vis extends Component {
 
   constructor(props) {
     super(props);
-    if (this.props.location.state) {
+    const { pathname } = props.location;
+    const visId = pathname.replace(route('/vis'), '').replace('/', '');
+    if (visId !== '') {
+      this.visId = visId;
+    }
+
+    if (props.location.state) {
       this.graphmlSeed = props.location.state.graphmlSeed;
     }
   }
@@ -208,9 +245,21 @@ class Vis extends Component {
       },
 
       component: () => {
-        const { graph, resetCytoscape, cytoscape } = this.state;
+        const { graph, cyJson, resetCytoscape, cytoscape } = this.state;
         if (graph === null) {
-          return null;
+          if (cyJson !== null) {
+            return (
+              <CytoscapeComponent
+                cy={(cy) => {
+                  cy.json(cyJson);
+                  this.cy.init(cy);
+                }}
+                style={cytoscape.style}
+              />
+            );
+          } else {
+            return null
+          }
         }
         if (resetCytoscape) {
           const [nodesMin, nodesMax] = graph.getNodeAttrRange('v_deregnet_score');
@@ -241,7 +290,17 @@ class Vis extends Component {
 
   async componentWillMount() {
     let graph;
-    if (this.graphmlSeed) {
+    if (this.visId) {
+      try {
+        const { data } = await api.getVis(this.visId);
+        console.log(data.data.data);
+        this.setState({ cyJson: data.data.data, resetCytoscape: false });
+      } catch (error) {
+        console.log(error);
+        toast.error('API Error!');
+        graph = new Graph();
+      }
+    } else if (this.graphmlSeed) {
       graph = await Graph.fromGraphML(this.graphmlSeed);
     } else {
       graph = new Graph();
