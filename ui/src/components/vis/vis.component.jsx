@@ -13,8 +13,48 @@ import store from '../../store';
 import * as actions from '../../actions/vis.actions';
 import * as api from '../../services/api/vis';
 
+import Joi from 'joi-browser';
+import Form from '../utils/forms/common/form';
 
 import './styles/vis.css';
+
+class LoadGraphMlForm extends Form {
+  state = {
+    display: {
+      file: '',
+    },
+    data: {
+      file: null,
+    },
+    errors: {},
+  }
+
+  inputs = {
+    file: {
+      label: 'Choose a GraphML file',
+      autoFocus: true,
+      type: 'file',
+    },
+  }
+
+  config = {
+    buttonLabel: 'Load',
+  }
+
+  schema = {
+    file: Joi.string().regex(/.*\.(graphml|xml)$/),
+  }
+
+  async submit() {
+    const { file } = this.state.data;
+    const reader = new FileReader();
+    reader.onload = ({ target }) => {
+      this.props.history.push(route('/viewer'), { graphmlSeed: target.result });
+    };
+    reader.readAsText(file);
+  }
+}
+
 
 cytoscape.use(dagre);
 
@@ -38,7 +78,7 @@ const ControlPanelButton = ({
   );
 }
 
-class Vis extends Component {
+class Viewer extends Component {
   state = {
     grid: {
       gridTemplateColumns: '1fr 25fr',
@@ -145,7 +185,7 @@ class Vis extends Component {
       },
       upload: {
         content: <i className="fa fa-upload"></i>,
-        component: () => <h1>Upload Panel!</h1>,
+        component: () => <LoadGraphMlForm history={this.props.history} />,
       },
       cloud: {
         content: <i className="fa fa-cloud-download"></i>,
@@ -154,26 +194,6 @@ class Vis extends Component {
       publish: {
         content: <i className="fa fa-rocket"></i>,
         component: () => <h1>Publish Panel!</h1>,
-      },
-      movie: {
-        content: <i className="fa fa-film"></i>,
-        component: () => <h1>Movie Panel!</h1>,
-      },
-      snapshot: {
-        content: <i className="fa fa-camera-retro"></i>,
-        component: () => <h1>Snapshot Panel!</h1>,
-      },
-      notes: {
-        content: <i className="fa fa-comment"></i>,
-        component: () => <h1>Notes Panel!</h1>,
-      },
-      permissions: {
-        content: <i className="fa fa-key"></i>,
-        component: () => <h1>Permissions Panel!</h1>,
-      },
-      fork: {
-        content: <i className="fa fa-code-fork"></i>,
-        component: () => <h1>Fork Panel!</h1>,
       },
       del: {
         content: <i className="fa fa-trash"></i>,
@@ -204,7 +224,7 @@ class Vis extends Component {
   constructor(props) {
     super(props);
     const { pathname } = props.location;
-    const visId = pathname.replace(route('/vis'), '').replace('/', '');
+    const visId = pathname.replace(route('/viewer'), '').replace('/', '');
     if (visId !== '') {
       this.visId = visId;
     }
@@ -348,7 +368,7 @@ class Vis extends Component {
     components.push(this.cy.component())
     return (
       <FunctionalGrid 
-        name="Vis"
+        name="Viewer"
         grid={grid}
         components={components}
       />
@@ -512,4 +532,4 @@ class Vis extends Component {
   }
 };
 
-export default Vis;
+export default Viewer;

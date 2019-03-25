@@ -7,6 +7,7 @@ const initialState = {
     cy: null,
   },
 };
+
 const middleware = [thunk];
 
 const store = createStore(rootReducer, initialState, applyMiddleware(...middleware));
