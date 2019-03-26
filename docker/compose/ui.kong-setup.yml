@@ -2,5 +2,5 @@ version: "3.5"
 services:
   vis-ui-kong-setup:
     image: sebwink/vis-ui-kong-setup 
-    build:
-      context: ../ui-kong-setup
+    #build:
+    #  context: ../ui-kong-setup
