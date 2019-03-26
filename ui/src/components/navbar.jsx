@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 
-import route from '../utils/routing';
-/*
-import search from './utils/search';
-import logout from './utils/logout';
-*/
+import routes from '../routes';
 
 import './styles/navbar.css';
 
@@ -19,13 +15,13 @@ class Navbar extends Component {
       <React.Fragment>
      	 	<NavLink
      	    className="nav-item nav-link"
-          to={route('/new')} 
+          to={routes.viewer} 
      	 	>
-     	    New
+     	    Viewer
 				</NavLink>
      	 	<NavLink
      	    className="nav-item nav-link"
-          to={route('/visualizations')} 
+          to={routes.visTable} 
      	 	>
      	    Your Visualizations
 				</NavLink>
@@ -46,7 +42,7 @@ class Navbar extends Component {
       <nav className="navbar navbar-default navbar-expand-lg navbar-light">
         <NavLink 
           className="nav-item nav-link"
-          to={route('/')}
+          to={routes.home}
         >
           <button 
             className="navbar-brand btn btn-link"

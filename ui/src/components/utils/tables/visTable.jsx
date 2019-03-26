@@ -1,33 +1,34 @@
 import React, { Component } from 'react';
 import ReactTable from 'react-table';
 
-import route from '../../../utils/routing';
+import routes from '../../../routes';
 import * as api from '../../../services/api/vis';
 
 class VisTable extends Component {
   columns = [
-    { Header: 'Id', accessor: 'id' },
     { 
-      Header: 'Show',
-      Cell: ({ row }) => (
-        <button
-          className="btn btn-primary"
-          onClick={() => {
-            this.props.history.push(route(`/vis/${row.id}`));
-          }}
-        >
-          View
-        </button>
-      ),
+      Header: 'Id',
+      accessor: 'id',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
     },
     {
-      Header: 'Delete',
       Cell: ({ row }) => (
-        <button className="btn btn-danger">
-          <i className="fa fa-trash-o"></i>
-        </button>
+        <React.Fragment>
+          <button
+            className="btn btn-primary"
+            onClick={() => {
+              this.props.history.push(`${routes.viewer}/${row.id}`);
+            }}
+          >
+            View
+          </button>
+          <button className="btn btn-danger m-2">
+            <i className="fa fa-trash-o"></i>
+          </button>
+        </React.Fragment>
       ),
-    }
+      maxWidth: 200,
+    },
   ]
 
   state = {
