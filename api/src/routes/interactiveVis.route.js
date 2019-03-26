@@ -1,32 +1,58 @@
 const { Router } = require('express');
 const bodyParser = require('body-parser');
-const  { createCyto } = require('../controllers/interactiveVis.controller');
+const vis = require('../controllers/interactiveVis.controller');
 const messages = require('../utils/messages.util');
+const path = require("path");
 
 
 const interactiveVis = Router();
 
 interactiveVis.use(bodyParser.text({ type: 'application/xml' }));
-
-interactiveVis.get('/', async (req, res) => {
-  try {
-    const img = await createCyto(req.body);
-    res.end(JSON.stringify(img));
-  } catch (error) {
-    console.log(error);
-    messages.send(messages.INTERNAL_SERVER_ERROR);
-  }
-});
+interactiveVis.use(bodyParser.text({ type: 'application/html' }));
 
 interactiveVis.post('/', async (req, res) => {
   try {
-    const img = await createCyto(req.body);
-    res.end(JSON.stringify(img));
+    const response = await vis.post(req.body)
+
+    if (response) {
+      res.status(201);
+      res.json(response);
+    } else {
+      messages.send(messages.INVALID_PAYLOAD, res);
+    }
   } catch (error) {
     console.log(error);
-    messages.send(messages.INTERNAL_SERVER_ERROR);
+    messages.send(messages.INTERNAL_SERVER_ERROR, res);
   }
 });
+
+interactiveVis.get('/:id', async (req, res) => {
+  try {
+    const response = await vis.getById(req.params.id);
+    if (response) {
+      res.json(response);
+    } else {
+      messages.send(messages.RESOURCE_NOT_FOUND, res);
+    }
+  } catch (error) {
+    console.log(error);
+    messages.send(messages.INTERNAL_SERVER_ERROR, res);
+  }
+});
+
+interactiveVis.get('/', async (req, res) => {
+  try {
+    const response = await vis.get();
+    // const cyto = await vis.createCyto();
+    console.log(response[1]["data"]);
+    res.render(path.resolve(__dirname +'/../templates/subgraphVisualization.html'), {cyto:response[1]["data"]});
+    // res.json(cyto);
+  } catch (error) {
+    console.log(error);
+    messages.send(messages.INTERNAL_SERVER_ERROR, res);
+  }
+});
+
 
 module.exports = {
   interactiveVis

@@ -2,6 +2,8 @@ const fs = require('fs');
 const path = require('path');
 const cytosnap = require('cytosnap');
 const { Graph } = require('../utils/graph.util');
+const uuidv4 = require('uuid/v4');
+const Vis = require('../models/vis.model');
 
 cytosnap.use(['cytoscape-dagre']);
 
@@ -210,12 +212,7 @@ const createCyto = async (
   return cyto(nodes, edges, nodesMin, nodesMax, valueAttr);
 };
 
-module.exports = {
-  createCyto
-};
-
-
-/*const postVis = async (data) => {
+const postVis = async (data) => {
   const id = uuidv4()
   let vis;
   try {
@@ -234,29 +231,14 @@ module.exports = {
   }
 }
 
-const putVis = async (id, data) => {
-  const vis = await Vis.updateOne({ id }, { data });
-  if (!vis) {
-    return vis;
-  }
-  return {
-    id,
-    message: 'Visualization successfully updated.',
-  }
-}
-
-const getVisById = async (id) => {
-  return Vis.findOne({ id });
-}
-
 const getVis = async () => {
   return Vis.find();
 }
 
-
 module.exports = {
-  getById: getVisById,
-  get: getVis,
-  put: putVis,
-  post: postVis,
-}*/
+  createCyto: createCyto,
+  post:postVis,
+  get:getVis
+};
+
+
