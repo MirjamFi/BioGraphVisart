@@ -42,9 +42,9 @@ down:
 	docker volume prune -f
 
 plugin:
-	docker-compose $(HOOKUP_DEVELOPMENT) up
+	docker-compose --project-directory $(COMPOSE) $(HOOKUP_DEVELOPMENT) up
 
 unplug:
 	#docker-compose $(KONG_TEARDOWN_DEVELOPMENT) up
 	#docker-compose $(KONG_TEARDOWN_DEVELOPMENT) down 
-	docker-compose $(HOOKUP_DEVELOPMENT) down
+	docker-compose --project-directory $(COMPOSE) $(HOOKUP_DEVELOPMENT) down
