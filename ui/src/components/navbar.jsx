@@ -2,13 +2,37 @@ import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 
 import routes from '../routes';
+import { AUTH_PATH } from '../config';
 
 import './styles/navbar.css';
 
 class Navbar extends Component {
-
   renderIfNo(user) {
     if (user) {
+      return null;
+    }
+    return (
+      <React.Fragment>
+        <a
+          href={`https://${window.location.hostname}${AUTH_PATH}/login`}
+          className="btn btn-primary m-2"
+          role="button"
+        >
+          Login
+        </a>
+        <a
+          href={`https://${window.location.hostname}${AUTH_PATH}/register`}
+          className="btn btn-primary m-2"
+          role="button"
+        >
+          Register
+        </a>
+      </React.Fragment>
+    );
+  }
+
+  renderIf(user) {
+    if (!user) {
       return null;
     }
     return (
@@ -25,15 +49,15 @@ class Navbar extends Component {
      	 	>
      	    Your Visualizations
 				</NavLink>
+        <a 
+          href={`https://${window.location.hostname}${AUTH_PATH}/logout`}
+          className="btn btn-warning m-4"
+          role="button"
+        >
+          Log out 
+        </a>
       </React.Fragment>
     );
-  }
-
-  renderIf(user) {
-    if (!user) {
-      return null;
-    }
-    return null
   }
 
   render() {
@@ -47,7 +71,7 @@ class Navbar extends Component {
           <button 
             className="navbar-brand btn btn-link"
           >
-          {"  "}BioGraphVisArt
+          {"  "}BioGraphExplorer
           </button>
         </NavLink>
         <div className="collapse navbar-collapse" id="navbarNav">

@@ -1,0 +1,6 @@
+version: "3.5"
+services:
+  biograph-explorer-ui-kong-teardown:
+    image: biograph/explorer-ui-kong-teardown 
+    build:
+      context: ../kong-teardown 

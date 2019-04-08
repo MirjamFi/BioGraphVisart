@@ -19,6 +19,9 @@ UI_KONG_SETUP=-f $(COMPOSE)/ui.kong-setup.yml
 
 DEVELOPMENT=$(POSTGRES_DEV) $(KONG_DEV) $(MONGODB_DEV) $(API_DEV) $(API_KONG_SETUP) $(UI_DEV) $(UI_KONG_SETUP)
 
+HOOKUP_DEVELOPMENT=$(API_DEV) $(API_KONG_SETUP) $(UI_DEV) $(UI_KONG_SETUP)
+
+
 vis-api:
 	docker-compose $(API_BASE) build $@
 
@@ -38,10 +41,10 @@ down:
 	docker-compose $(DEVELOPMENT) down
 	docker volume prune -f
 
-hookup:
-	docker-compose $(HOOKUP_DEVELOPMENT) up
+plugin:
+	docker-compose --project-directory $(COMPOSE) $(HOOKUP_DEVELOPMENT) up
 
 unplug:
-	docker-compose $(KONG_TEARDOWN_DEVELOPMENT) up
-	docker-compose $(KONG_TEARDOWN_DEVELOPMENT) down 
-	docker-compose $(HOOKUP_DEVELOPMENT) down
+	#docker-compose $(KONG_TEARDOWN_DEVELOPMENT) up
+	#docker-compose $(KONG_TEARDOWN_DEVELOPMENT) down 
+	docker-compose --project-directory $(COMPOSE) $(HOOKUP_DEVELOPMENT) down

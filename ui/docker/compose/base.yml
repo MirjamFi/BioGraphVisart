@@ -1,4 +1,6 @@
 version: "3.5"
 services:
-  vis-ui:
-    image: biograph/vis-ui
+  biograph-explorer-ui:
+    image: biograph/explorer-ui
+    environment:
+      PUBLIC_URL: /vis/ui
