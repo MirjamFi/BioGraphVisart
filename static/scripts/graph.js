@@ -393,7 +393,8 @@ function calculateLayout(){
       // Padding on fit
       padding: 30
         }).run();
-      $('#download').removeAttr('disabled');
+      $('#downloadPNG').removeAttr('disabled');
+      $('#downloadSVG').removeAttr('disabled');
 
       oldMin = nodesMin;
       oldMax = nodesMax;
@@ -603,7 +604,7 @@ function changeNodeShapes(){
 /* 
   download png of graph
 */
-/*function downloadPNG(){
+function downloadPNG(){
   outputName = document.getElementById('outputName').value;
   var png64 = cy.png();
   $('#downloadPNG').attr('href', png64);
@@ -616,7 +617,7 @@ function changeNodeShapes(){
     download.download = path.replace(".graphml", "_") + '_' + nodeVal + '.png';
   }
   download.click();
-}*/
+}
 
 
 function downloadSVG(){
