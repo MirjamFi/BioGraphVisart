@@ -8,9 +8,9 @@ visualize a graph from .graphml-file
 
 function visualize() {
 
-  // if(isJson){
-  //   nodeVal = "val";
-  // }
+  if(isJson){
+     nodeVal = Object.keys(cy.nodes()[0].data()).filter(attr => attr != "id").filter(attr => attr != "symbol");
+   }
   if(!isJson){
     if(!noAttr){
       nodeVal = document.getElementById('values').value;
@@ -31,7 +31,12 @@ function visualize() {
 
       calculateLayout();
   }
+  $('#downloadPNG').removeAttr('disabled');
+  $('#downloadSVG').removeAttr('disabled');
+  $('#downloadJSON').removeAttr('disabled');
 
+  oldMin = nodesMin;
+  oldMax = nodesMax;
 
   showLegend();
 
@@ -393,25 +398,14 @@ function addNodesAndEdges(){
 //calculate graph layout (only once)
 function calculateLayout(){
 
-  // calculate layout and legend only once
-  // if(firstTime){
-      // firstTime = false;
+  cy.layout({
+  name: 'dagre',
+    // Whether to fit the network view after when done
+  fit: true,
 
-      cy.layout({
-      name: 'dagre',
-        // Whether to fit the network view after when done
-      fit: true,
-
-      // Padding on fit
-      padding: 30
-        }).run();
-      $('#downloadPNG').removeAttr('disabled');
-      $('#downloadSVG').removeAttr('disabled');
-      $('#downloadJSON').removeAttr('disabled');
-
-      oldMin = nodesMin;
-      oldMax = nodesMax;
-  // }
+  // Padding on fit
+  padding: 30
+    }).run();
 }
 
 //show legend
