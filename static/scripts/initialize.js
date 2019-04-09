@@ -77,7 +77,7 @@ function readJson(file) {
       });
       cy.json(jsonString);
 
-      // get color attributes name; if none, no need for legend node
+      // get color attributes name; if none, no need for legend node; for some reason the legend node's background is not stored in the json file, so new generation
       var val = Object.keys(cy.nodes()[0].data()).filter(attr => attr != "id").filter(attr => attr != "symbol");
       if(val.length>0){
         // legend node
