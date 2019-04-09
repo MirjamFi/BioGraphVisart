@@ -28,8 +28,10 @@ function visualize() {
     };
     // add nodes and edges to graph
     addNodesAndEdges();
+
+      calculateLayout();
   }
-  calculateLayout();
+
 
   showLegend();
 
