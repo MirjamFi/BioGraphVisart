@@ -33,7 +33,7 @@ read from json - file and initialize cy-object
 function readJson(file) {
   isJson = true;
   // if it is not the first graph read, delete all selectable options
-  var myNode = document.getElementById("dataPart2");
+  var myNode = document.getElementById("configPart");
   var domValues = document.getElementById("values");
   if(domValues){  
     domValues.parentNode.removeChild(domValues);}
@@ -43,9 +43,7 @@ function readJson(file) {
     var domNodeShapes = document.getElementById("nodeShapes");
   if(domNodeShapes)
     {domNodeShapes.parentNode.removeChild(domNodeShapes);}
-  var domResetLayout = document.getElementById("resetLayout");
-  if(domResetLayout)
-    {domResetLayout.parentNode.removeChild(domResetLayout);}
+  myNode = document.getElementById("legend");
 
   // does no have attribute for coloring/shape?
   noAttr = false;
@@ -163,9 +161,7 @@ function readFile(file) {
     var domNodeShapes = document.getElementById("nodeShapes");
   if(domNodeShapes)
     {domNodeShapes.parentNode.removeChild(domNodeShapes);}
-  var domResetLayout = document.getElementById("resetLayout");
-  if(domResetLayout)
-    {domResetLayout.parentNode.removeChild(domResetLayout);}
+
 
   // does no have attribute for coloring/shape?
   noAttr = false;
@@ -281,18 +277,6 @@ function loadFile() {
       };
     };
   }
-  // create button to reset layout
-  var resetButton = document.createElement("button");
-  resetButton.id = "resetLayout";
-  var t = document.createTextNode("Reset layout");
-  resetButton.appendChild(t);
-  resetButton.text = "Reset layout";
-  resetButton.onclick = resetLayout;
-  resetButton.style.visibility = "hidden";
-  let newParagraph  = document.createElement('p');
-  resetButton.className = "butn";
-  // document.getElementById("downloadPart").appendChild(newParagraph);
-  document.getElementById("legend").appendChild(resetButton);
 
   // if no attributes found for coloring/shape, remove dropdown menus and visualize
   if(noOptn && noDrpShapes){

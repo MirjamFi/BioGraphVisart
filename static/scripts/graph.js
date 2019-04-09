@@ -40,7 +40,6 @@ function visualize() {
 
   showLegend();
 
-  document.getElementById('resetLayout').style.visibility = "visible";
   document.getElementById('downloadPart').style.visibility = "visible";
 
   showMetaInfo();
