@@ -8,9 +8,9 @@ visualize a graph from .graphml-file
 
 function visualize() {
 
-  if(isJson){
-    nodeVal = "val";
-  }
+  // if(isJson){
+  //   nodeVal = "val";
+  // }
   if(!isJson){
     if(!noAttr){
       nodeVal = document.getElementById('values').value;
@@ -74,17 +74,17 @@ function getNodesAndEdges(){
         if(!isNaN(parseFloat(val))){
           attrID = graphString[i].split(" ")[7].split("\"")[1];
           currVal = {};
-          currVal.val = parseFloat(val);
-          currVal.attr = attributesTypes[attrID];;
+          currVal[nodeVal] = parseFloat(val);
+          currVal.attr = attributesTypes[attrID];
           nodeValuesNum.push(currVal);
         }
         else if(val === "false" || val === "true"){
           currVal = {};
-          currVal.val = val;
+          currVal[nodeVal] = val;
           currVal.attr = "boolean";
           nodeValuesNum.push(currVal);
         }
-        curNode.val = currVal.val;
+        curNode[nodeVal] = currVal[nodeVal];
       }
       if(graphString[i].includes("v_gene_name")){       // get gene names
         var genename = graphString[i].split("\>")[1].split("\<")[0];
@@ -227,8 +227,6 @@ function getTextWidth(text, font) {
 
 //add nodes and edges to cy-object (update if attribute has changed)
 function addNodesAndEdges(){
-
-  // cy.add(nodes.concat(edges));
   cy = cytoscape({
     container: document.getElementById('cy'),
     ready: function(){
@@ -254,43 +252,43 @@ function addNodesAndEdges(){
           "font-size" : 10,
           //"color":"black"
       }},
-      {selector: 'node[!val]',
+      {selector: 'node[!'+nodeVal+']',
         style: {
           'background-color': 'white',
           'color':'black'
       }},
       // attributes with numbers
-      {selector: 'node[val < "0"]',
+      {selector: 'node['+nodeVal+' < "0"]',
         style: {
-          'background-color': 'mapData(val,'+ nodesMin+', 0, #006cf0, white)',
+          'background-color': 'mapData('+nodeVal+','+ nodesMin+', 0, #006cf0, white)',
           'color': 'black'
       }},
-      {selector: 'node[val <='+0.5*nodesMin+']',
+      {selector: 'node['+nodeVal+' <='+0.5*nodesMin+']',
         style: {
           'color': 'white'
       }},
-      {selector: 'node[val > "0"]',
+      {selector: 'node['+nodeVal+' > "0"]',
         style: {
-          'background-color': 'mapData(val, 0,'+ nodesMax+', white, #d50000)',
+          'background-color': 'mapData('+nodeVal+', 0,'+ nodesMax+', white, #d50000)',
           'color': 'black'
       }},
-      {selector: 'node[val >='+0.5*nodesMax+']',
+      {selector: 'node['+nodeVal+' >='+0.5*nodesMax+']',
         style: {
           'color': 'white'
       }},
-      {selector: 'node[val = "0"]',
+      {selector: 'node['+nodeVal+' = "0"]',
         style: {
           'background-color': 'white',
           'color':'black'
       }},
 
       // attributes with boolean
-      {selector: 'node[val = "false"]',
+      {selector: 'node['+nodeVal+' = "false"]',
         style: {
           'background-color': '#006cf0',
           'color':'white'
       }},
-      {selector: 'node[val = "true"]',
+      {selector: 'node['+nodeVal+' = "true"]',
         style: {
           'background-color': '#d50000',
           'color':'white'
@@ -384,7 +382,7 @@ function addNodesAndEdges(){
     for(n=0; n < nodes.length; n++){
       cy.batch(function(){
       cy.$('node[id =\''  + nodes[n].data.id + '\']')
-        .data('val', nodes[n].data.val)
+        .data(nodeVal, nodes[n].data[nodeVal])
       });
     }
   }
@@ -429,18 +427,18 @@ function showMetaInfo(){
         solo: true,
       },
       content: {text : function(){
-        if(!isNaN(parseFloat(this.data('val')))&&this.data('genename')){
-          return '<b>'+nodeVal +'</b>: ' + parseFloat(this.data('val')).toFixed(2) +
+        if(!isNaN(parseFloat(this.data()[nodeVal]))&&this.data('genename')){
+          return '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2) +
           '<br>' + '<b>gene name</b>: ' + this.data('genename'); } //numbers
-        else if(!isNaN(parseFloat(this.data('val')))&& !this.data('genename')){
-          return '<b>'+nodeVal +'</b>: ' + parseFloat(this.data('val')).toFixed(2);
+        else if(!isNaN(parseFloat(this.data()[nodeVal]))&& !this.data('genename')){
+          return '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2);
         }
         else if(this.data('genename')){
-          return '<b>'+nodeVal +'</b>: '+ this.data('val') +
+          return '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal] +
           '<br>' + '<b>gene name</b>: ' + this.data('genename');          //bools
         }
         else{
-          return '<b>'+nodeVal +'</b>: '+ this.data('val');
+          return '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal];
         }
       }},
       position: {
@@ -644,7 +642,6 @@ function downloadSVG(){
 }
 
 function downloadJSON(){
-  console.log(cy);
   outputName = document.getElementById('outputName').value;
   var json = JSON.stringify(cy.json());
   $('#downloadJSON').attr('href', json);
