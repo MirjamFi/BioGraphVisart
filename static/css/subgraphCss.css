@@ -47,15 +47,6 @@ input:hover{
     border-radius: 3px;
 }
 
-.datapart{
-  width: 400px;
-  float: left;
-}
-
-.datapart2{
- margin-left: 10%;
-}
-
 #cy {
       width: 79%;
       height: 79%;

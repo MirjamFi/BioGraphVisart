@@ -37,23 +37,16 @@
 		}
 	</script>
 	<h1 align="center">Subgraph Visualization</h1>
-	<p id="description" >Load a .graphml-file and select node value to generate a subgraph, you can download as .svg/.png/.json. OR load a .json-file of a previously generate subgraph, you can edit and download again.</p>
+	<p id="description" >Load a <b>.graphml</b>-file and select node value to generate a subgraph, you can download as .svg/.png/.json. Or load a <b>.json</b>-file of a previously generate subgraph, you can edit and download again.</p>
 
 	<div  class="datapart" id="dataPart">
-		<input type="file" accept=".graphml" id="graphName" name="file" />
+		<input type="file" accept=".graphml,.json" id="fileName" name="file" />
 
-		<button class= 'butn' onclick="readFile()" id="loadGraphml" >Load .graphml</button>
+		<button class= 'butn' onclick="isJsonFile()" id="loadGraphml" >Load file</button>
 		<p></p>
 
 	</div> 
-	<div class="datapart2" id="dataPart2">
-		
-		<input type="file" accept=".json" id="jsonName" name="file" />
 
-		<button class= 'butn' onclick="readJson()" id="loadJson" >Load .json</button>
-		<p></p>
-
-	</div>
 	<div id="configPart">
 		
 	</div>
