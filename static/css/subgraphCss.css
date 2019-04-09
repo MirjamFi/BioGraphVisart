@@ -52,7 +52,7 @@ input:hover{
       height: 79%;
       position: absolute;
       top: 300px;
-      left: 200px;
+      left: 150px;
   }
 
 
@@ -61,7 +61,7 @@ input:hover{
     top: 300px;
     left: 10px;
     font-size: 11px;
-    width: 180px;
+    width: 130px;
     height: 200px;
 }
 #legendNodes {
