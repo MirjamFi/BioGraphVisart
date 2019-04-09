@@ -21,50 +21,11 @@
 
 	<script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/icons.js"></script>
 	<script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/graph.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="http://127.0.0.1:3000/static/css/subgraphCss.css">
 	   	
 	
 </head>
-
-<style>
-			body {
-				font-family: helvetica neue, helvetica, liberation sans, arial, sans-serif;
-				font-size: 14px;
-			}
-			#cy {
-		        width: 79%;
-		        height: 79%;
-		        position: absolute;
-		        top: 300px;
-		        left: 200px;
-		    }
-		    #legend {
-		        position: absolute;
-		        top: 280px;
-		        left: 10px;
-		        font-size: 11px;
-		        width: 180px;
-		        height: 200px;
-		    }
-		   	#legendNodes {
-		        position: absolute;
-		        top: 200px;
-		        left: 10px;
-		        font-size: 11px;
-		        width: 180px;
-		        height: 200px;
-		    }
-			}
-			h1 {
-				opacity: 0.5;
-				font-size: 1em;
-				font-weight: bold;
-			}
-			button {
-			    text-align: center;
-			    display: inline-block;
-			    font-size: 14px;
-			}
-</style>
 
 
 <body>
@@ -76,26 +37,25 @@
 		}
 	</script>
 	<h1 align="center">Subgraph Visualization</h1>
-	<p id="description" >Load a .graphml-file and select node value to generate a subgraph, you can download as .svg/.png/.json.</p>
+	<p id="description" >Load a .graphml-file and select node value to generate a subgraph, you can download as .svg/.png/.json. OR load a .json-file of a previously generate subgraph, you can edit and download again.</p>
 
-	<div id="dataPart">
-		
+	<div  class="datapart" id="dataPart">
 		<input type="file" accept=".graphml" id="graphName" name="file" />
 
-		<button onclick="readFile()" id="loadGraphml" >Load .graphml</button>
+		<button class= 'butn' onclick="readFile()" id="loadGraphml" >Load .graphml</button>
 		<p></p>
 
-	</div>
-
-	<p id="description" >OR load a .json-file of a previously generate subgraph, you can edit and download again.</p>
-
-	<div id="dataPart2">
+	</div> 
+	<div class="datapart2" id="dataPart2">
 		
 		<input type="file" accept=".json" id="jsonName" name="file" />
 
-		<button onclick="readJson()" id="loadJson" >Load .json</button>
+		<button class= 'butn' onclick="readJson()" id="loadJson" >Load .json</button>
 		<p></p>
 
+	</div>
+	<div id="configPart">
+		
 	</div>
 	<p></p>
 
@@ -103,9 +63,9 @@
 
 	<div id="downloadPart" style="visibility: hidden">
 		<input name="outputFile" type="text" maxlength="512" id="outputName" value="File name"/>
-		<button id="downloadPNG" onclick="downloadPNG()" disabled="disabled">Download .png</button>
-		<button id="downloadSVG" onclick="downloadSVG()" disabled="disabled">Download .svg</button>
-		<button id="downloadJSON" onclick="downloadJSON()" disabled="disabled">Download .json</button>
+		<button class= 'butn' id="downloadPNG" onclick="downloadPNG()" disabled="disabled">Download .png</button>
+		<button class= 'butn' id="downloadSVG" onclick="downloadSVG()" disabled="disabled">Download .svg</button>
+		<button class= 'butn' id="downloadJSON" onclick="downloadJSON()" disabled="disabled">Download .json</button>
 	</div>
 	<div align="left" id="legend" style="visibility: hidden">
 		<table id="arrows">
