@@ -291,8 +291,8 @@ function loadFile() {
   resetButton.style.visibility = "hidden";
   let newParagraph  = document.createElement('p');
   resetButton.className = "butn";
-  document.getElementById("downloadPart").appendChild(newParagraph);
-  document.getElementById("downloadPart").appendChild(resetButton);
+  // document.getElementById("downloadPart").appendChild(newParagraph);
+  document.getElementById("legend").appendChild(resetButton);
 
   // if no attributes found for coloring/shape, remove dropdown menus and visualize
   if(noOptn && noDrpShapes){
