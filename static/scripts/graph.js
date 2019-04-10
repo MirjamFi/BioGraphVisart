@@ -12,12 +12,13 @@ function visualize() {
     // get correct node attribute used for coloring
      nodeVal = Object.keys(cy.nodes()[0].data()).filter(attr => attr != "id").filter(attr => attr != "symbol");
    }
+
+   //create cytoscape object; not necessary for json
   if(!isJson){
     if(!noAttr){
       nodeVal = document.getElementById('values').value;
     }
 
-    // $('#gfiles').attr("disabled", true);
     // get nodes and edges
     nodeValuesNum = getNodesAndEdges();
 
@@ -30,7 +31,7 @@ function visualize() {
     // add nodes and edges to graph
     addNodesAndEdges();
 
-      calculateLayout();
+    calculateLayout();
   }
   $('#downloadPNG').removeAttr('disabled');
   $('#downloadSVG').removeAttr('disabled');
@@ -112,6 +113,13 @@ function getNodesAndEdges(){
       if(graphString[i].includes("e_interaction")){     // get edges interaction type
         var interact = regExp.exec(graphString[i])[1]; 
         curEdge.interaction = interact;
+        // splitInteraction = interact.split(/[\s]+/);
+        // console.log(splitInteraction)
+        // var interactShort = ""
+        // for(var s in splitInteraction){
+        //   interactShort = interactShort+splitInteraction[s].charAt(0).toUpperCase();
+        // }
+        // curEdge.interactionShort = interactShort;
       }
       curEdge.id = curEdge.id +'_'+ curEdge.interaction;
       edges.push({data: curEdge} );
@@ -253,7 +261,7 @@ function addNodesAndEdges(){
           'border-color' : 'black',
           'border-style' : 'solid',
           'border-width' : '2',
-          label: 'data(symbol)',
+          'label': 'data(symbol)',
           "text-valign" : "center",
           "text-halign" : "center",
           "font-size" : 10,
@@ -318,38 +326,90 @@ function addNodesAndEdges(){
       // style edges
       {selector: 'edge',
         style: {
-          'target-arrow-shape': 'triangle',
+          // 'target-arrow-shape': 'triangle',
           'arrow-scale' : 2,
-          'curve-style' : 'bezier'
+          'curve-style' : 'bezier',
+          // 'label':'data(interactionShort)',
+          'font-size':16,
+          'text-rotation':'autorotate',
+          'font-weight':800
+          
+        }},
+        {selector: 'edge[interaction = \'activaion\']',
+          style: {
+            'target-arrow-shape': 'triangle',
+        }},
+        {selector: 'edge[interaction = \'expression\']',
+          style: {
+            'target-arrow-shape': 'triangle',
+        }},
+        {selector: 'edge[interaction = \'inhibition\']',
+          style: {
+            'target-arrow-shape': 'tee',
+        }},
+        {selector: 'edge[interaction = \'repression\']',
+          style: {
+            'target-arrow-shape': 'tee',
+        }},
+        {selector: 'edge[interaction = \'binding/association\']',
+          style: {
+            // 'target-arrow-shape': '',
+        }},
+        {selector: 'edge[interaction = \'dissociation\']',
+          style: {
+            // 'target-arrow-shape': '',
         }},
       {selector: 'edge[interaction = \'compound\']',
         style: {
-          'target-arrow-shape': 'triangle-backcurve',
-        }},
-      {selector: 'edge[interaction = \'activaion\']',
-        style: {
-          'target-arrow-shape': 'triangle',
-        }},
-      {selector: 'edge[interaction = \'expression\']',
-        style: {
-          'target-arrow-shape': 'triangle-backcurve',
-        }},
-      {selector: 'edge[interaction = \'phosphorylation\']',
-        style: {
           'target-arrow-shape': 'diamond',
-        }},
-      {selector: 'edge[interaction = \'inhibition\']',
-        style: {
-          'target-arrow-shape': 'tee',
         }},
       {selector: 'edge[interaction = \'indirect effect\']',
         style: {
-          'target-arrow-shape': 'circle',
+          'line-style': 'dotted',
+          'target-arrow-shape': 'triangle'
         }},
-              {selector: 'edge[interaction = \'state change\']',
+      {selector: 'edge[interaction = \'missing interaction\']',
         style: {
-          'target-arrow-shape': 'square',
-        }}
+          'line-style': 'dashed',
+          'target-arrow-shape': 'triangle'
+        }},
+        {selector: 'edge[interaction = \'state change\']',
+          style: {
+            'target-arrow-shape': 'square',
+        }},
+
+      {selector: 'edge[interaction = \'phosphorylation\']',
+        style: {
+          'target-arrow-shape': 'triangle-backcurve',
+          'target-label':'+p',
+          'target-text-offset':20
+        }},
+      {selector: 'edge[interaction = \'dephosphorylation\']',
+          style: {
+            'target-arrow-shape': 'triangle-backcurve',
+            'target-label':'-p',
+          'target-text-offset':20
+        }},
+      {selector: 'edge[interaction = \'glycosylation\']',
+          style: {
+           'target-arrow-shape': 'triangle-backcurve',
+           'target-label':'+g',
+          'target-text-offset':20
+        }},      
+      {selector: 'edge[interaction = \'ubiquitination\']',
+          style: {
+            'target-arrow-shape': 'triangle-backcurve',
+            'target-label':'+u',
+          'target-text-offset':20
+        }},
+      {selector: 'edge[interaction = \'methylation\']',
+          style: {
+            'target-arrow-shape': 'triangle-backcurve',
+            'target-label':'+m',
+          'target-text-offset':20
+        }},
+
+
       ]
   });
   cy.nodes().noOverlap({ padding: 5 })
