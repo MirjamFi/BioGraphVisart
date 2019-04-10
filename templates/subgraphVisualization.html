@@ -21,50 +21,11 @@
 
 	<script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/icons.js"></script>
 	<script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/graph.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="http://127.0.0.1:3000/static/css/subgraphCss.css">
 	   	
 	
 </head>
-
-<style>
-			body {
-				font-family: helvetica neue, helvetica, liberation sans, arial, sans-serif;
-				font-size: 14px;
-			}
-			#cy {
-		        width: 79%;
-		        height: 79%;
-		        position: absolute;
-		        top: 250px;
-		        left: 200px;
-		    }
-		    #legend {
-		        position: absolute;
-		        top: 280px;
-		        left: 10px;
-		        font-size: 11px;
-		        width: 180px;
-		        height: 200px;
-		    }
-		   	#legendNodes {
-		        position: absolute;
-		        top: 200px;
-		        left: 10px;
-		        font-size: 11px;
-		        width: 180px;
-		        height: 200px;
-		    }
-			}
-			h1 {
-				opacity: 0.5;
-				font-size: 1em;
-				font-weight: bold;
-			}
-			button {
-			    text-align: center;
-			    display: inline-block;
-			    font-size: 14px;
-			}
-</style>
 
 
 <body>
@@ -75,60 +36,89 @@
 		  alert('The File APIs are not fully supported in this browser.');
 		}
 	</script>
-	<h1 align="center">Subgraph Visualization</h1>
+	<h1 align="center">BioGraphVisart</h1>
+	<p id="description" >Load a <b>.graphml</b>-file and select node value to generate a subgraph, you can download as .svg/.png/.json.<br> Or load a <b>.json</b>-file of a previously generate subgraph, you can edit and download again.</p>
 
-	<p id="description" >Load a .graphml-file and select node value to generate a subgraph, you can download as .svg.</p>
+	<div  class="datapart" id="dataPart">
+		<input type="file" accept=".graphml,.json" id="fileName" name="file" />
 
-	<div id="dataPart">
-		
-		<input type="file" accept=".graphml" id="graphName" name="file" />
-
-		<button onclick="readFile()" id="loadGraphml" >Load .graphml</button>
+		<button class= 'butn' onclick="isJsonFile()" id="loadGraphml" >Load file</button>
 		<p></p>
 
-	</div>
+	</div> 
 
+	<div id="configPart">
+		
+	</div>
 	<p></p>
 
 
 
 	<div id="downloadPart" style="visibility: hidden">
 		<input name="outputFile" type="text" maxlength="512" id="outputName" value="File name"/>
-		<button id="download" onclick="downloadSVG()" disabled="disabled">Download</button>
+		<button class= 'butn' id="downloadPNG" onclick="downloadPNG()" disabled="disabled">Download .png</button>
+		<button class= 'butn' id="downloadSVG" onclick="downloadSVG()" disabled="disabled">Download .svg</button>
+		<button class= 'butn' id="downloadJSON" onclick="downloadJSON()" disabled="disabled">Download .json</button>
 	</div>
+	<p></p>
 	<div align="left" id="legend" style="visibility: hidden">
-		<table id="arrows">
+		<table >
 			<tr>
 				<td>
-					<span style="font-size:15px" ><b>Interactions</b></span>
+					<span style="font-size:15px" ><b>Interactions</b></span> 
+				</td>
+				<td>
+					<small><a href="https://www.kegg.jp/kegg/xml/docs/" target="_blank">kegg.jp</a></small>
 				</td>
 			</tr>
+		</table>
+		<table id="arrows">
 		  <tr>
-		    <td>Activation</td>
-		    <td><img width="25" height="20" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+CjxzdmcgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJ4TWlkWU1pZCBtZWV0IiB2aWV3Qm94PSIyODYuMTM3ODk5ODMyODkwNyAyOTEuMjgxNTM4MDM2ODQ4OCAyMzUuNzI3MjcyNzI3MjcyNTggODQiIHdpZHRoPSIyMjQuNzMiIGhlaWdodD0iODAiPjxkZWZzPjxwYXRoIGQ9Ik00OTYuODcgMzMyLjI4TDI5NC4xNCAzMzIuMjgiIGlkPSJmM3p4R3pjMUs4Ij48L3BhdGg+PHBhdGggZD0iTTQ2OS4zNyAzNTIuMjhMNDE5Ljg3IDM3Mi4yOEw0MTkuODcgMzMyLjI4TDQxOS44NyAyOTIuMjhMNDY5LjM3IDMxMi4yOEw1MTguODcgMzMyLjI4TDQ2OS4zNyAzNTIuMjhaIiBpZD0iYjVWZTRKUGxHIj48L3BhdGg+PC9kZWZzPjxnPjxnPjx1c2UgeGxpbms6aHJlZj0iI2YzenhHemMxSzgiIG9wYWNpdHk9IjEiIGZpbGw9IiMwMDAwMDAiIGZpbGwtb3BhY2l0eT0iMSI+PC91c2U+PGc+PHVzZSB4bGluazpocmVmPSIjZjN6eEd6YzFLOCIgb3BhY2l0eT0iMSIgZmlsbC1vcGFjaXR5PSIwIiBzdHJva2U9IiMwMDAwMDAiIHN0cm9rZS13aWR0aD0iMTYiIHN0cm9rZS1vcGFjaXR5PSIxIj48L3VzZT48L2c+PC9nPjxnPjx1c2UgeGxpbms6aHJlZj0iI2I1VmU0SlBsRyIgb3BhY2l0eT0iMSIgZmlsbD0iIzAwMDAwMCIgZmlsbC1vcGFjaXR5PSIxIj48L3VzZT48L2c+PC9nPjwvc3ZnPg==" alt="" style=""></td>
+		    <td>Activation, Expression</td>
+		    <td><img width="40" height="30" src="http://127.0.0.1:3000/static/legends/activation_expression.svg" alt="" style=""></td>
 		  </tr>
 		  <tr>
-		  	<td>Inhibition</td> 
-		  	<td><img  width="22" height="20" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+CjxzdmcgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJ4TWlkWU1pZCBtZWV0IiB2aWV3Qm94PSIyODYuMTM3ODk5ODMyODkwNyAyNTMuMjgxNTM4MDM2ODQ4ODEgMjE4LjcyNzI3MjcyNzI3MjYzIDE2MCIgd2lkdGg9IjIwMi43MyIgaGVpZ2h0PSIxMzAiPjxkZWZzPjxwYXRoIGQ9Ik00OTYuODcgMzMzLjI4TDI5NC4xNCAzMzMuMjgiIGlkPSJjcTVKSjNHa24iPjwvcGF0aD48cGF0aCBkPSJNNDgxLjg3IDM5OC4yOEw0ODEuODcgMjY4LjI4TDQ4MS44NyAzOTguMjhaIiBpZD0iYXhyM3RiS1FCIj48L3BhdGg+PC9kZWZzPjxnPjxnPjx1c2UgeGxpbms6aHJlZj0iI2NxNUpKM0drbiIgb3BhY2l0eT0iMSIgZmlsbD0iIzAwMDAwMCIgZmlsbC1vcGFjaXR5PSIxIj48L3VzZT48Zz48dXNlIHhsaW5rOmhyZWY9IiNjcTVKSjNHa24iIG9wYWNpdHk9IjEiIGZpbGwtb3BhY2l0eT0iMCIgc3Ryb2tlPSIjMDAwMDAwIiBzdHJva2Utd2lkdGg9IjE2IiBzdHJva2Utb3BhY2l0eT0iMSI+PC91c2U+PC9nPjwvZz48Zz48Zz48dXNlIHhsaW5rOmhyZWY9IiNheHIzdGJLUUIiIG9wYWNpdHk9IjEiIGZpbGwtb3BhY2l0eT0iMCIgc3Ryb2tlPSIjMDAwMDAwIiBzdHJva2Utd2lkdGg9IjMwIiBzdHJva2Utb3BhY2l0eT0iMSI+PC91c2U+PC9nPjwvZz48L2c+PC9zdmc+" alt=""></td> 
+		  	<td>Inhibition, Repression</td> 
+		  	<td><img width="40" height="30" src="http://127.0.0.1:3000/static/legends/inhibition_repression.svg" alt="" style=""></td>
 		  </tr>
 		  <tr>
-		  	<td>Compound</td>
-		  	<td><img width="25" height="20" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+CjxzdmcgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJ4TWlkWU1pZCBtZWV0IiB2aWV3Qm94PSIyODYuMTM3ODk5ODMyODkwNyAyOTEuMjgxNTM4MDM2ODQ4OCAyMzUuNzI3MjcyNzI3MjcyNTggODQiIHdpZHRoPSIyMjQuNzMiIGhlaWdodD0iODAiPjxkZWZzPjxwYXRoIGQ9Ik00OTYuODcgMzMyLjI4TDI5NC4xNCAzMzIuMjgiIGlkPSJmM3p4R3pjMUs4Ij48L3BhdGg+PHBhdGggZD0iTTQ2OS4zNyAzNTIuMjhMNDE5Ljg3IDM3Mi4yOEw0NTMuODcgMzMyLjI4TDQxOS44NyAyOTIuMjhMNDY5LjM3IDMxMi4yOEw1MTguODcgMzMyLjI4TDQ2OS4zNyAzNTIuMjhaIiBpZD0iYUlWTzdBdkdqIj48L3BhdGg+PC9kZWZzPjxnPjxnPjx1c2UgeGxpbms6aHJlZj0iI2YzenhHemMxSzgiIG9wYWNpdHk9IjEiIGZpbGw9IiMwMDAwMDAiIGZpbGwtb3BhY2l0eT0iMSI+PC91c2U+PGc+PHVzZSB4bGluazpocmVmPSIjZjN6eEd6YzFLOCIgb3BhY2l0eT0iMSIgZmlsbC1vcGFjaXR5PSIwIiBzdHJva2U9IiMwMDAwMDAiIHN0cm9rZS13aWR0aD0iMTYiIHN0cm9rZS1vcGFjaXR5PSIxIj48L3VzZT48L2c+PC9nPjxnPjx1c2UgeGxpbms6aHJlZj0iI2FJVk83QXZHaiIgb3BhY2l0eT0iMSIgZmlsbD0iIzAwMDAwMCIgZmlsbC1vcGFjaXR5PSIxIj48L3VzZT48L2c+PC9nPjwvc3ZnPg==" alt=""></td>
+		    <td>Compound</td>
+		    <td><img width="40" height="30" src="http://127.0.0.1:3000/static/legends/compound.svg" alt=""></td>
 		  </tr>
-		  <tr>
-		  	<td>Expression</td>
-		  	 <td><img width="25" height="20" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+CjxzdmcgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJ4TWlkWU1pZCBtZWV0IiB2aWV3Qm94PSIyODYuMTM3ODk5ODMyODkwNyAyOTEuMjgxNTM4MDM2ODQ4OCAyMzUuNzI3MjcyNzI3MjcyNTggODQiIHdpZHRoPSIyMjQuNzMiIGhlaWdodD0iODAiPjxkZWZzPjxwYXRoIGQ9Ik00OTYuODcgMzMyLjI4TDI5NC4xNCAzMzIuMjgiIGlkPSJmM3p4R3pjMUs4Ij48L3BhdGg+PHBhdGggZD0iTTQ2OS4zNyAzNTIuMjhMNDE5Ljg3IDM3Mi4yOEw0NTMuODcgMzMyLjI4TDQxOS44NyAyOTIuMjhMNDY5LjM3IDMxMi4yOEw1MTguODcgMzMyLjI4TDQ2OS4zNyAzNTIuMjhaIiBpZD0iYUlWTzdBdkdqIj48L3BhdGg+PC9kZWZzPjxnPjxnPjx1c2UgeGxpbms6aHJlZj0iI2YzenhHemMxSzgiIG9wYWNpdHk9IjEiIGZpbGw9IiMwMDAwMDAiIGZpbGwtb3BhY2l0eT0iMSI+PC91c2U+PGc+PHVzZSB4bGluazpocmVmPSIjZjN6eEd6YzFLOCIgb3BhY2l0eT0iMSIgZmlsbC1vcGFjaXR5PSIwIiBzdHJva2U9IiMwMDAwMDAiIHN0cm9rZS13aWR0aD0iMTYiIHN0cm9rZS1vcGFjaXR5PSIxIj48L3VzZT48L2c+PC9nPjxnPjx1c2UgeGxpbms6aHJlZj0iI2FJVk83QXZHaiIgb3BhY2l0eT0iMSIgZmlsbD0iIzAwMDAwMCIgZmlsbC1vcGFjaXR5PSIxIj48L3VzZT48L2c+PC9nPjwvc3ZnPg==" alt=""></td>
-		  </tr>
-		  <tr>
-		    <td>Phosphorylation</td>
-		    <td><img width="25" height="20" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+CjxzdmcgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJ4TWlkWU1pZCBtZWV0IiB2aWV3Qm94PSI0NS41NTgxODk2ODc5NjMwOCAzMTAuNzI1NTEwNTY0MzU5MSAzMDQuOTc4MDQyMTk2MDk2NSA2My45NjE4MjQ1NzM5Mzg4ODQiIHdpZHRoPSIyOTMuOTgiIGhlaWdodD0iNTkuNDYiPjxkZWZzPjxwYXRoIGQ9Ik0yNTYuMjkgMzQxLjk4TDUzLjU2IDM0MS45OCIgaWQ9ImExdWFZQTNiVUsiPjwvcGF0aD48cGF0aCBkPSJNMzAxLjE2IDMyNy4xNUwzNDcuNTIgMzQyLjA3TDI1NC43NiAzNDEuOTRMMTYyLjAxIDM0MS44MUwyMDguNCAzMjcuMDJMMjU0LjggMzEyLjIzTDMwMS4xNiAzMjcuMTVaIiBpZD0iYjEzd0szd05wcSI+PC9wYXRoPjxwYXRoIGQ9Ik0yMDguNCAzNTYuODNMMTYyLjAzIDM0MS45OEwyNTQuNzggMzQxLjk4TDM0Ny41NCAzNDEuOThMMzAxLjE2IDM1Ni44M0wyNTQuNzggMzcxLjY5TDIwOC40IDM1Ni44M1oiIGlkPSJkOHJLb2RIWHAiPjwvcGF0aD48L2RlZnM+PGc+PGc+PHVzZSB4bGluazpocmVmPSIjYTF1YVlBM2JVSyIgb3BhY2l0eT0iMSIgZmlsbD0iIzAwMDAwMCIgZmlsbC1vcGFjaXR5PSIxIj48L3VzZT48Zz48dXNlIHhsaW5rOmhyZWY9IiNhMXVhWUEzYlVLIiBvcGFjaXR5PSIxIiBmaWxsLW9wYWNpdHk9IjAiIHN0cm9rZT0iIzAwMDAwMCIgc3Ryb2tlLXdpZHRoPSIxNiIgc3Ryb2tlLW9wYWNpdHk9IjEiPjwvdXNlPjwvZz48L2c+PGc+PHVzZSB4bGluazpocmVmPSIjYjEzd0szd05wcSIgb3BhY2l0eT0iMSIgZmlsbD0iIzAwMDAwMCIgZmlsbC1vcGFjaXR5PSIxIj48L3VzZT48L2c+PGc+PHVzZSB4bGluazpocmVmPSIjZDhyS29kSFhwIiBvcGFjaXR5PSIxIiBmaWxsPSIjMDAwMDAwIiBmaWxsLW9wYWNpdHk9IjEiPjwvdXNlPjwvZz48L2c+PC9zdmc+" alt=""></td>
-		  </tr>
-		              <td>Indirect effect</td>
-            <td><img width="25" height="20" src="data:image/png;base64,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" alt=""></td>
+		  <td>Indirect effect</td>
+            <td><img width="40" height="30" src="http://127.0.0.1:3000/static/legends/indirect_effect.svg" alt=""></td>
           </tr>
           <tr>
             <td>State change</td>
-              <td><img width="23" height="10" src= "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPkAAABbCAYAAACxmyN1AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAuIwAALiMBeKU/dgAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAFISURBVHic7d0xCsJAEEDRUXIvj5XzeTItUkchzernPZh+YPlMuTNw3T4zL/Pbcz99PiBB5BAncogTOcSJHOJEDnEihziRQ5zIIU7kECdyiBM5xIkc4kQOcSKHOJFDnMghTuQQJ3KIEznEiRziRA5xIoc4kUOcyCFO5BAncogTOcSJHOJEDnHbHN+bwhXP1QvwnUsOcSKHOJFDnMghTuQQJ3KIEznEiRziRA5xIoc4kUOcyCFO5BAncogTOcSJHOJEDnEihziRQ5zIIU7kECdyiBM5xIkc4raZua1egr+1z8xj9RJ85pJDnMghTuQQJ3KIEznEiRziRA5xIoc4kUOcyCFO5BAncogTOcSJHOJEDnEihziRQ5zIIU7kECdyiBM5xIkc4kQOcSKHOJFDnMghTuQQJ3KIEznEiRziRA5xIoc4kUOcyCHuDSeJbD5C52r9AAAAAElFTkSuQmCC" alt=""></td>
+              <td><img width="40" height="30" src= "http://127.0.0.1:3000/static/legends/state_change.svg" alt=""></td>
+          </tr>
+          <tr>
+            <td>Missing interaction</td>
+              <td><img width="40" height="30" src= "http://127.0.0.1:3000/static/legends/missing_interaction.svg" alt=""></td>
+          </tr>
+          <tr>
+            <td>Phosphorylation</td>
+              <td><img width="40" height="30" src= "http://127.0.0.1:3000/static/legends/phosphorylation.svg" alt=""></td>
+          </tr>
+          <tr>
+            <td>Dephosphorylation</td>
+              <td><img width="40" height="30" src= "http://127.0.0.1:3000/static/legends/dephosphorylation.svg" alt=""></td>
+          </tr>
+          <tr>
+            <td>Glycosylation</td>
+              <td><img width="40" height="30" src= "http://127.0.0.1:3000/static/legends/glycosylation.svg" alt=""></td>
+          </tr>
+          <tr>
+            <td>Methylation</td>
+              <td><img width="40" height="30" src= "http://127.0.0.1:3000/static/legends/methylation.svg" alt=""></td>
+          </tr>
+          <tr>
+            <td>Ubiquination</td>
+              <td><img width="40" height="30" src= "http://127.0.0.1:3000/static/legends/ubiquination.svg" alt=""></td>
+          </tr>
+          <tr>
+            <td>Binding/association, dissociation</td>
+              <td><img width="40" height="30" src= "http://127.0.0.1:3000/static/legends/binding_association_dissociation.svg" alt=""></td>
           </tr>
 		  <tr></tr>	
 		 <!-- <tr>
@@ -151,7 +141,7 @@
 		  	<td><img width="25" height="20" src='data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNS4wLjIsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4KCjxzdmcKICAgeG1sbnM6ZGM9Imh0dHA6Ly9wdXJsLm9yZy9kYy9lbGVtZW50cy8xLjEvIgogICB4bWxuczpjYz0iaHR0cDovL2NyZWF0aXZlY29tbW9ucy5vcmcvbnMjIgogICB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiCiAgIHhtbG5zOnN2Zz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciCiAgIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICAgeG1sbnM6c29kaXBvZGk9Imh0dHA6Ly9zb2RpcG9kaS5zb3VyY2Vmb3JnZS5uZXQvRFREL3NvZGlwb2RpLTAuZHRkIgogICB4bWxuczppbmtzY2FwZT0iaHR0cDovL3d3dy5pbmtzY2FwZS5vcmcvbmFtZXNwYWNlcy9pbmtzY2FwZSIKICAgdmVyc2lvbj0iMS4xIgogICBpZD0iTGF5ZXJfMSIKICAgeD0iMHB4IgogICB5PSIwcHgiCiAgIHdpZHRoPSIyNDkuMjM1cHgiCiAgIGhlaWdodD0iMjQ5LjIzNnB4IgogICB2aWV3Qm94PSIwIDAgMjQ5LjIzNSAyNDkuMjM2IgogICBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCAyNDkuMjM1IDI0OS4yMzYiCiAgIHhtbDpzcGFjZT0icHJlc2VydmUiCiAgIHNvZGlwb2RpOmRvY25hbWU9ImdlbmVfaWNvbi5zdmciCiAgIGlua3NjYXBlOnZlcnNpb249IjAuOTIuMiA1YzNlODBkLCAyMDE3LTA4LTA2Ij48bWV0YWRhdGEKICAgICBpZD0ibWV0YWRhdGExNSI+PHJkZjpSREY+PGNjOldvcmsKICAgICAgICAgcmRmOmFib3V0PSIiPjxkYzpmb3JtYXQ+aW1hZ2Uvc3ZnK3htbDwvZGM6Zm9ybWF0PjxkYzp0eXBlCiAgICAgICAgICAgcmRmOnJlc291cmNlPSJodHRwOi8vcHVybC5vcmcvZGMvZGNtaXR5cGUvU3RpbGxJbWFnZSIgLz48ZGM6dGl0bGU+PC9kYzp0aXRsZT48L2NjOldvcms+PC9yZGY6UkRGPjwvbWV0YWRhdGE+PGRlZnMKICAgICBpZD0iZGVmczEzIiAvPjxzb2RpcG9kaTpuYW1lZHZpZXcKICAgICBwYWdlY29sb3I9IiNmZmZmZmYiCiAgICAgYm9yZGVyY29sb3I9IiM2NjY2NjYiCiAgICAgYm9yZGVyb3BhY2l0eT0iMSIKICAgICBvYmplY3R0b2xlcmFuY2U9IjEwIgogICAgIGdyaWR0b2xlcmFuY2U9IjEwIgogICAgIGd1aWRldG9sZXJhbmNlPSIxMCIKICAgICBpbmtzY2FwZTpwYWdlb3BhY2l0eT0iMCIKICAgICBpbmtzY2FwZTpwYWdlc2hhZG93PSIyIgogICAgIGlua3NjYXBlOndpbmRvdy13aWR0aD0iMTMzOCIKICAgICBpbmtzY2FwZTp3aW5kb3ctaGVpZ2h0PSI3MzMiCiAgICAgaWQ9Im5hbWVkdmlldzExIgogICAgIHNob3dncmlkPSJmYWxzZSIKICAgICBpbmtzY2FwZTp6b29tPSIwLjk0Njg5Mzc0IgogICAgIGlua3NjYXBlOmN4PSIxMjQuNjE3NSIKICAgICBpbmtzY2FwZTpjeT0iMTI0LjYxOCIKICAgICBpbmtzY2FwZTp3aW5kb3cteD0iODQiCiAgICAgaW5rc2NhcGU6d2luZG93LXk9IjIiCiAgICAgaW5rc2NhcGU6d2luZG93LW1heGltaXplZD0iMCIKICAgICBpbmtzY2FwZTpjdXJyZW50LWxheWVyPSJMYXllcl8xIiAvPjxnCiAgICAgaWQ9Imc4IgogICAgIHN0eWxlPSJmaWxsOiMwMDAwMDA7ZmlsbC1vcGFjaXR5OjEiPjxnCiAgICAgICBpZD0iZzYiCiAgICAgICBzdHlsZT0iZmlsbDojMDAwMDAwO2ZpbGwtb3BhY2l0eToxIj48cGF0aAogICAgICAgICBmaWxsPSIjRkJGQkZCIgogICAgICAgICBkPSJNMjI1LjE1Miw3NS4wNjVjLTMuNzI4LTAuODMzLTcuNzA4LDEuNzI1LTguNDg0LDUuMTk5Yy0wLjIxNSwwLjgyMi0wLjk5OSwzLjUxNi0yLjg3Niw3LjE0MSAgICBsLTUwLjI3OS01MC4yNzhjNC4xMjktMi4xMDQsNy4wMTYtMi43NzIsNy4wOTMtMi43OTRjOS4xODQtMi4xNTQsNS45MDgtMTYuMDMtMy4yODgtMTMuODU2ICAgIGMtMC41NjksMC4xMzktNTYuMzI0LDE0LjY5NC00Ny4xNjQsOTQuMjhjLTMuNjYtMC4yMzgtNy4zMDgtMC4zNTQtMTAuODg5LTAuMzU0Yy02NS4wMDYsMC04OS44OCw0MC44NTUtOTAuOTAxLDQyLjU3NiAgICBjLTQuODYzLDguMTk3LDcuNDUxLDE1LjA5NiwxMi4yMTYsNy4zMDhjMC4zNzctMC42MTcsMi4zMjgtMy42ODgsNi4yNTEtNy44MzRsNTcuNjg0LDU3LjcwM2MtNC4xMSwzLjg4Ny03LjE4OCw1Ljg1Mi03Ljc3MSw2LjIxICAgIGMtOC4wOTEsNC44MTctMC44NjUsMTYuOTY4LDcuMjM4LDEyLjI2MmMxLjkzOC0xLjE2LDQ3LjE0OS0yOC45MTEsNDIuMjI1LTEwMS44MjVjNTguMjk3LDYuNzY4LDg4LjM5Ni0yMi44MzgsOTQuMzAzLTQ3LjIyMSAgICBDMjMxLjM5Niw3OS43MTQsMjI4LjkyNyw3NS44NjcsMjI1LjE1Miw3NS4wNjV6IE0xMjAuOTM0LDE2MC42MzZsLTMwLjU5Ny0zMC42MDRjOS43NjMtMS40NzksMjAuNjQtMS43NzMsMzEuNDcxLTAuODc1ICAgIEMxMjIuNzI4LDE0MC4xNTcsMTIyLjQzMiwxNTAuNzMyLDEyMC45MzQsMTYwLjYzNnogTTczLjM0LDEzMy44MTFsNDMuNjE3LDQzLjg2OWMtNC4zNjcsMTIuOTMtOS42NjgsMjEuNjE0LTEzLjM5OSwyNS45NjUgICAgTDQ3LjM4LDE0Ny4yNzJDNTcuMDg5LDEzOS4zOTEsNjkuNjc4LDEzNS40NTQsNzMuMzQsMTMzLjgxMXogTTEzMy43NzIsODcuMTg3bDI5Ljg1OSwyOS45NjkgICAgYy04Ljc5NSwwLjg0MS0xOC42NDEsMC41NDYtMjguOTU0LTAuODQyQzEzMy4yNTYsMTA1LjgyMiwxMzIuOTQ4LDk2LjAzMSwxMzMuNzcyLDg3LjE4N3ogTTE4MC44MjcsMTEzLjczMWwtNDMuODEzLTQzLjQ1MyAgICBjMy4xOS0xMC4zMTQsNy43NzMtMTcuNDc3LDEzLjg4Mi0yMy45MTlsNTMuOTE1LDUzLjEyN2wtMC41NzMsMC43MTJDMTk1LjY1OCwxMDguNTA2LDE4NC40ODcsMTEzLjExMSwxODAuODI3LDExMy43MzF6IgogICAgICAgICBpZD0icGF0aDQiCiAgICAgICAgIHN0eWxlPSJmaWxsOiMwMDAwMDA7ZmlsbC1vcGFjaXR5OjEiIC8+PC9nPjwvZz48L3N2Zz4='></td>-->
 		  </tr>
 		</table>
-		<p></p>
+		<button class= 'butn' id="resetLayout" onclick="resetLayout()">Reset layout</button>
 		<div id="legendNodes"></div>
 	</div>
 	
