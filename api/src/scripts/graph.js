@@ -194,7 +194,6 @@ function legendsRange(nodeValuesNum){
       nodesMax = "true";
     }
   }
-  
   else if(isEmpty(nodeValuesNum)){
     nodesMin = "false";
     nodesMax = "true";
@@ -226,8 +225,6 @@ function getTextWidth(text, font) {
 
 //add nodes and edges to cy-object (update if attribute has changed)
 function addNodesAndEdges(){
-  console.log(nodes)
-  // cy.add(nodes.concat(edges));
   cy = cytoscape({
     container: document.getElementById('cy'),
     ready: function(){
@@ -255,17 +252,6 @@ function addNodesAndEdges(){
       }},
 
             // attributes with boolean
-      {selector: 'node[val = "false"]',
-        style: {
-          'background-color': '#006cf0',
-          'color':'white'
-      }},
-      {selector: 'node[val = "true"]',
-        style: {
-          'background-color': '#d50000',
-          'color':'white'
-      }},
-
       {selector: 'node[val = "0"]',
         style: {
           'background-color': 'white',
@@ -294,6 +280,17 @@ function addNodesAndEdges(){
       {selector: 'node[val >='+0.5*nodesMax+']',
         style: {
           'color': 'white'
+      }},
+
+      {selector: 'node[val = "false"]',
+        style: {
+          'background-color': '#006cf0',
+          'color':'white'
+      }},
+            {selector: 'node[val = "true"]',
+        style: {
+          'background-color': '#d50000',
+          'color':'white'
       }},
 
       // style edges
@@ -383,6 +380,7 @@ function addNodesAndEdges(){
         }}
       ]
   });
+
   cy.nodes().noOverlap({ padding: 5 })
   if(! noAttr){
   // calculate label position for legend and style legend
@@ -440,10 +438,6 @@ function addNodesAndEdges(){
 //calculate graph layout (only once)
 function calculateLayout(){
 
-  // calculate layout and legend only once
-  // if(firstTime){
-      // firstTime = false;
-
       cy.layout({
       name: 'dagre',
         // Whether to fit the network view after when done
@@ -456,7 +450,6 @@ function calculateLayout(){
 
       oldMin = nodesMin;
       oldMax = nodesMax;
-  // }
 }
 
 //show legend
