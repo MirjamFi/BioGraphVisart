@@ -295,37 +295,87 @@ function addNodesAndEdges(){
       // style edges
       {selector: 'edge',
         style: {
-          'target-arrow-shape': 'triangle',
+          // 'target-arrow-shape': 'triangle',
           'arrow-scale' : 2,
-          'curve-style' : 'bezier'
+          'curve-style' : 'bezier',
+          // 'label':'data(interactionShort)',
+          'font-size':16,
+          'text-rotation':'autorotate',
+          'font-weight':800
+          
+        }},
+        {selector: 'edge[interaction = \'activaion\']',
+          style: {
+            'target-arrow-shape': 'triangle',
+        }},
+        {selector: 'edge[interaction = \'expression\']',
+          style: {
+            'target-arrow-shape': 'triangle',
+        }},
+        {selector: 'edge[interaction = \'inhibition\']',
+          style: {
+            'target-arrow-shape': 'tee',
+        }},
+        {selector: 'edge[interaction = \'repression\']',
+          style: {
+            'target-arrow-shape': 'tee',
+        }},
+        {selector: 'edge[interaction = \'binding/association\']',
+          style: {
+            // 'target-arrow-shape': '',
+        }},
+        {selector: 'edge[interaction = \'dissociation\']',
+          style: {
+            // 'target-arrow-shape': '',
         }},
       {selector: 'edge[interaction = \'compound\']',
         style: {
-          'target-arrow-shape': 'triangle-backcurve',
-        }},
-      {selector: 'edge[interaction = \'activaion\']',
-        style: {
-          'target-arrow-shape': 'triangle',
-        }},
-      {selector: 'edge[interaction = \'expression\']',
-        style: {
-          'target-arrow-shape': 'triangle-backcurve',
-        }},
-      {selector: 'edge[interaction = \'phosphorylation\']',
-        style: {
           'target-arrow-shape': 'diamond',
-        }},
-      {selector: 'edge[interaction = \'inhibition\']',
-        style: {
-          'target-arrow-shape': 'tee',
         }},
       {selector: 'edge[interaction = \'indirect effect\']',
         style: {
-          'target-arrow-shape': 'circle',
+          'line-style': 'dotted',
+          'target-arrow-shape': 'triangle'
         }},
-              {selector: 'edge[interaction = \'state change\']',
+      {selector: 'edge[interaction = \'missing interaction\']',
         style: {
-          'target-arrow-shape': 'square',
+          'line-style': 'dashed',
+          'target-arrow-shape': 'triangle'
+        }},
+        {selector: 'edge[interaction = \'state change\']',
+          style: {
+            'target-arrow-shape': 'square',
+        }},
+
+      {selector: 'edge[interaction = \'phosphorylation\']',
+        style: {
+          'target-arrow-shape': 'triangle-backcurve',
+          'target-label':'+p',
+          'target-text-offset':20
+        }},
+      {selector: 'edge[interaction = \'dephosphorylation\']',
+          style: {
+            'target-arrow-shape': 'triangle-backcurve',
+            'target-label':'-p',
+          'target-text-offset':20
+        }},
+      {selector: 'edge[interaction = \'glycosylation\']',
+          style: {
+           'target-arrow-shape': 'triangle-backcurve',
+           'target-label':'+g',
+          'target-text-offset':20
+        }},      
+      {selector: 'edge[interaction = \'ubiquitination\']',
+          style: {
+            'target-arrow-shape': 'triangle-backcurve',
+            'target-label':'+u',
+          'target-text-offset':20
+        }},
+      {selector: 'edge[interaction = \'methylation\']',
+          style: {
+            'target-arrow-shape': 'triangle-backcurve',
+            'target-label':'+m',
+          'target-text-offset':20
         }}
       ]
   });
