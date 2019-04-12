@@ -43,10 +43,7 @@ interactiveVis.get('/:id', async (req, res) => {
 interactiveVis.get('/', async (req, res) => {
   try {
     const response = await vis.get();
-    // const cyto = await vis.createCyto();
-    console.log(response[1]["data"]);
     res.render(path.resolve(__dirname +'/../templates/subgraphVisualization.html'), {cyto:response[1]["data"]});
-    // res.json(cyto);
   } catch (error) {
     console.log(error);
     messages.send(messages.INTERNAL_SERVER_ERROR, res);
