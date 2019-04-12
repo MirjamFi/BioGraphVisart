@@ -18,7 +18,7 @@ read from grphml - file and initialize cy-object
 function readFile(graphXML) {
 
   // if it is not the first graph read, delete all selectable options
-  var myNode = document.getElementById("dataPart");
+  var myNode = document.getElementById("configPart");
   var domValues = document.getElementById("values");
   if(domValues){  
     domValues.parentNode.removeChild(domValues);}
@@ -28,9 +28,6 @@ function readFile(graphXML) {
     var domNodeShapes = document.getElementById("nodeShapes");
   if(domNodeShapes)
     {domNodeShapes.parentNode.removeChild(domNodeShapes);}
-  var domResetLayout = document.getElementById("resetLayout");
-  if(domResetLayout)
-    {domResetLayout.parentNode.removeChild(domResetLayout);}
 
   // does no have attribute for coloring/shape?
   noAttr = false;
@@ -57,7 +54,7 @@ function loadFile() {
   drp.name = "values";
   drp.onchange = visualize;
   drp.style.visibility = "visible";
-  document.getElementById("dataPart").appendChild(drp);
+  document.getElementById("configPart").appendChild(drp);
   // node attributes
   var sele = document.createElement("OPTION");
   sele.value =  "";
@@ -68,7 +65,7 @@ function loadFile() {
   var drpShapes = document.createElement("select");
   drpShapes.id = "nodeShapesAttr";
   drpShapes.name = "nodeShapesAttr";
-  document.getElementById("dataPart").appendChild(drpShapes);
+  document.getElementById("configPart").appendChild(drpShapes);
   drpShapes.style.visibility = "hidden";
 
   var seleShapeAttr = document.createElement("OPTION");    
@@ -80,7 +77,7 @@ function loadFile() {
   var drpShape = document.createElement("select");
   drpShape.id = "nodeShapes";
   drpShape.name = "nodeShapes";
-  document.getElementById("dataPart").appendChild(drpShape);
+  document.getElementById("configPart").appendChild(drpShape);
   drpShape.style.visibility = "hidden";
   drpShape.onchange = changeNodeShapes;
 
@@ -129,16 +126,6 @@ function loadFile() {
       break;
     };
   };
-
-  // create button to reset layout
-  var resetButton = document.createElement("button");
-  resetButton.id = "resetLayout";
-  var t = document.createTextNode("Reset layout");
-  resetButton.appendChild(t);
-  resetButton.text = "Reset layout";
-  resetButton.onclick = resetLayout;
-  resetButton.style.visibility = "hidden";
-  document.getElementById("dataPart").appendChild(resetButton);
 
   // if no attributes found for coloring/shape, remove dropdown menus and visualize
   if(noOptn && noDrpShapes){

@@ -30,7 +30,10 @@ function visualize() {
 
   showLegend();
 
-  document.getElementById('resetLayout').style.visibility = "visible";
+  $('#downloadPNG').removeAttr('disabled');
+  $('#downloadSVG').removeAttr('disabled');
+  $('#downloadJSON').removeAttr('disabled');
+
   document.getElementById('downloadPart').style.visibility = "visible";
 
   showMetaInfo();
@@ -223,7 +226,7 @@ function getTextWidth(text, font) {
 
 //add nodes and edges to cy-object (update if attribute has changed)
 function addNodesAndEdges(){
-
+  console.log(nodes)
   // cy.add(nodes.concat(edges));
   cy = cytoscape({
     container: document.getElementById('cy'),
@@ -250,37 +253,8 @@ function addNodesAndEdges(){
           "font-size" : 10,
           //"color":"black"
       }},
-      {selector: 'node[!val]',
-        style: {
-          'background-color': 'white',
-          'color':'black'
-      }},
-      // attributes with numbers
-      {selector: 'node[val <0]',
-        style: {
-          'background-color': 'mapData(val,'+ nodesMin+', 0, #006cf0, white)',
-          'color': 'black'
-      }},
-      {selector: 'node[val <='+0.5*nodesMin+']',
-        style: {
-          'color': 'white'
-      }},
-      {selector: 'node[val >0]',
-        style: {
-          'background-color': 'mapData(val, 0,'+ nodesMax+', white, #d50000)',
-          'color': 'black'
-      }},
-      {selector: 'node[val >='+0.5*nodesMax+']',
-        style: {
-          'color': 'white'
-      }},
-      {selector: 'node[val = 0]',
-        style: {
-          'background-color': 'white',
-          'color':'black'
-      }},
 
-      // attributes with boolean
+            // attributes with boolean
       {selector: 'node[val = "false"]',
         style: {
           'background-color': '#006cf0',
@@ -290,6 +264,36 @@ function addNodesAndEdges(){
         style: {
           'background-color': '#d50000',
           'color':'white'
+      }},
+
+      {selector: 'node[val = "0"]',
+        style: {
+          'background-color': 'white',
+          'color':'black'
+      }},
+      {selector: 'node[!val]',
+        style: {
+          'background-color': 'white',
+          'color':'black'
+      }},
+      // attributes with numbers
+      {selector: 'node[val <"0"]',
+        style: {
+          'background-color': 'mapData(val,'+ nodesMin+', 0, #006cf0, white)',
+          'color': 'black'
+      }},
+      {selector: 'node[val <='+0.5*nodesMin+']',
+        style: {
+          'color': 'white'
+      }},
+      {selector: 'node[val >"0"]',
+        style: {
+          'background-color': 'mapData(val, 0,'+ nodesMax+', white, #d50000)',
+          'color': 'black'
+      }},
+      {selector: 'node[val >='+0.5*nodesMax+']',
+        style: {
+          'color': 'white'
       }},
 
       // style edges
@@ -658,9 +662,9 @@ function changeNodeShapes(){
 /* 
   download png of graph
 */
-/*function downloadPNG(){
+function downloadPNG(){
   outputName = document.getElementById('outputName').value;
-  var png64 = cy.png();
+  var png64 = cy.png({"maxWidth": 7000,"maxHeight": 7000});
   $('#downloadPNG').attr('href', png64);
   var download = document.createElement('a');
   download.href = 'data:image/png;base64;'+png64;
@@ -668,10 +672,10 @@ function changeNodeShapes(){
     download.download = outputName + '.png';
   }
   else{
-    download.download = path.replace(".graphml", "_") + '_' + nodeVal + '.png';
+    alert("Download: Please give a file name.")
   }
   download.click();
-}*/
+}
 
 
 function downloadSVG(){
@@ -683,6 +687,21 @@ function downloadSVG(){
   else{
      alert("Download: Please give a file name.")
   }  
+}
+
+function downloadJSON(){
+  outputName = document.getElementById('outputName').value;
+  var json = JSON.stringify(cy.json());
+  $('#downloadJSON').attr('href', json);
+  var download = document.createElement('a');
+  download.href = 'data:text/json;charset=utf-8,'+encodeURIComponent(json);
+  if(outputName != "File name"){
+    download.download = outputName + '.json';
+  }
+  else{
+    alert("Download: Please give a file name.")
+  }
+  download.click();
 }
 
 
