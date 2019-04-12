@@ -21,50 +21,11 @@
 
 	<script type="text/javascript" src="/icons.js"></script>
 	<script type="text/javascript" src="/graph.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="/css/subgraphCss.css">
 	   	
 	
 </head>
-
-<style>
-			body {
-				font-family: helvetica neue, helvetica, liberation sans, arial, sans-serif;
-				font-size: 14px;
-			}
-			#cy {
-		        width: 79%;
-		        height: 79%;
-		        position: absolute;
-		        top: 250px;
-		        left: 200px;
-		    }
-		    #legend {
-		        position: absolute;
-		        top: 280px;
-		        left: 10px;
-		        font-size: 11px;
-		        width: 180px;
-		        height: 200px;
-		    }
-		   	#legendNodes {
-		        position: absolute;
-		        top: 200px;
-		        left: 10px;
-		        font-size: 11px;
-		        width: 180px;
-		        height: 200px;
-		    }
-			}
-			h1 {
-				opacity: 0.5;
-				font-size: 1em;
-				font-weight: bold;
-			}
-			button {
-			    text-align: center;
-			    display: inline-block;
-			    font-size: 14px;
-			}
-</style>
 
 
 <body>
@@ -75,11 +36,16 @@
 		  alert('The File APIs are not fully supported in this browser.');
 		}
 	</script>
-	<h1 align="center">Subgraph Visualization</h1>
+	<h1 align="center">BioGraphVisart</h1>
 
-	<p id="description" >Load a .graphml-file and select node value to generate a subgraph, you can download as .svg.</p>
+	<p id="description" >Load a <b>.graphml</b>-file and select node value to generate a subgraph, you can download as .svg/.png/.json.<br> Or load a <b>.json</b>-file of a previously generate subgraph, you can edit and download again.</p>
 
 	<div id="dataPart">
+		
+		<p></p>
+
+	</div>
+	<div id="configPart">
 		<script type="text/javascript">
 			var img = "{{ cyto }}";
 
@@ -90,8 +56,7 @@
 			var decodedString = dom.body.textContent;
 			readFile(decodedString);
 		</script>
-		<p></p>
-
+		
 	</div>
 
 	<p></p>
@@ -100,7 +65,9 @@
 
 	<div id="downloadPart" style="visibility: hidden">
 		<input name="outputFile" type="text" maxlength="512" id="outputName" value="File name"/>
-		<button id="download" onclick="downloadSVG()" disabled="disabled">Download</button>
+		<button class= 'butn' id="downloadPNG" onclick="downloadPNG()" disabled="disabled">Download .png</button>
+		<button class= 'butn' id="downloadSVG" onclick="downloadSVG()" disabled="disabled">Download .svg</button>
+		<button class= 'butn' id="downloadJSON" onclick="downloadJSON()" disabled="disabled">Download .json</button>
 	</div>
 	<div align="left" id="legend" style="visibility: hidden">
 		<table >
@@ -116,50 +83,50 @@
 		<table id="arrows">
 		  <tr>
 		    <td>Activation, Expression</td>
-		    <td><img width="40" height="30" src="http://127.0.0.1:3001/static/images/activation_expression.svg" alt="" style=""></td>
+		    <td><img width="40" height="30" src="/images/activation_expression.svg" alt="" style=""></td>
 		  </tr>
 		  <tr>
 		  	<td>Inhibition, Repression</td> 
-		  	<td><img width="40" height="30" src="http://127.0.0.1:3001/static/images/inhibition_repression.svg" alt="" style=""></td>
+		  	<td><img width="40" height="30" src="images/inhibition_repression.svg" alt="" style=""></td>
 		  </tr>
 		  <tr>
 		    <td>Compound</td>
-		    <td><img width="40" height="30" src="http://127.0.0.1:3001/static/images/compound.svg" alt=""></td>
+		    <td><img width="40" height="30" src="/images/compound.svg" alt=""></td>
 		  </tr>
 		  <td>Indirect effect</td>
-            <td><img width="40" height="30" src="http://127.0.0.1:3001/static/images/indirect_effect.svg" alt=""></td>
+            <td><img width="40" height="30" src="/images/indirect_effect.svg" alt=""></td>
           </tr>
           <tr>
             <td>State change</td>
-              <td><img width="40" height="30" src= "http://127.0.0.1:3001/static/images/state_change.svg" alt=""></td>
+              <td><img width="40" height="30" src= "/images/state_change.svg" alt=""></td>
           </tr>
           <tr>
             <td>Missing interaction</td>
-              <td><img width="40" height="30" src= "http://127.0.0.1:3001/static/images/missing_interaction.svg" alt=""></td>
+              <td><img width="40" height="30" src= "/images/missing_interaction.svg" alt=""></td>
           </tr>
           <tr>
             <td>Phosphorylation</td>
-              <td><img width="40" height="30" src= "http://127.0.0.1:3001/static/images/phosphorylation.svg" alt=""></td>
+              <td><img width="40" height="30" src= "/images/phosphorylation.svg" alt=""></td>
           </tr>
           <tr>
             <td>Dephosphorylation</td>
-              <td><img width="40" height="30" src= "http://127.0.0.1:3001/static/images/dephosphorylation.svg" alt=""></td>
+              <td><img width="40" height="30" src= "/images/dephosphorylation.svg" alt=""></td>
           </tr>
           <tr>
             <td>Glycosylation</td>
-              <td><img width="40" height="30" src= "http://127.0.0.1:3001/static/images/glycosylation.svg" alt=""></td>
+              <td><img width="40" height="30" src= "/images/glycosylation.svg" alt=""></td>
           </tr>
           <tr>
             <td>Methylation</td>
-              <td><img width="40" height="30" src= "http://127.0.0.1:3001/static/images/methylation.svg" alt=""></td>
+              <td><img width="40" height="30" src= "/images/methylation.svg" alt=""></td>
           </tr>
           <tr>
             <td>Ubiquination</td>
-              <td><img width="40" height="30" src= "http://127.0.0.1:3001/static/images/ubiquination.svg" alt=""></td>
+              <td><img width="40" height="30" src= "/images/ubiquination.svg" alt=""></td>
           </tr>
           <tr>
             <td>Binding/association, dissociation</td>
-              <td><img width="40" height="30" src= "http://127.0.0.1:3001/static/images/binding_association_dissociation.svg" alt=""></td>
+              <td><img width="40" height="30" src= "/images/binding_association_dissociation.svg" alt=""></td>
           </tr>
 		  <tr></tr>	
 		 <!-- <tr>
@@ -184,6 +151,7 @@
 		</table>
 		<p></p>
 		<div id="legendNodes"></div>
+		<button class= 'butn' id="resetLayout" onclick="resetLayout()">Reset layout</button>
 	</div>
 	
 	<div align="left" id="cy"></div>
