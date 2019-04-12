@@ -55,9 +55,7 @@ function getNodesAndEdges(){
 
   for (var i = 0; i <= graphString.length - 1; i++) {
     if(graphString[i].includes("attr.type=")){
-      //var curAttr = {};
       attributesTypes[graphString[i].split(" ")[3].split("\"")[1]] = graphString[i].split(" ")[6].split("\"")[1];
-      //attributesTypes.push(curAttr);
     }
     if(graphString[i].includes("node id")){   // get node id
       var curNode = {};
@@ -65,7 +63,7 @@ function getNodesAndEdges(){
         curNode.id = graphString[i].split("\"")[5];
       }
       else{
-              curNode.id = graphString[i].split("\"")[1]  ;
+        curNode.id = graphString[i].split("\"")[1]  ;
       }
       nodes.push({data: curNode});
     }
@@ -79,17 +77,17 @@ function getNodesAndEdges(){
         if(!isNaN(parseFloat(val))){
           attrID = graphString[i].split(" ")[7].split("\"")[1];
           currVal = {};
-          currVal.val = parseFloat(val);
+          currVal[nodeVal] = parseFloat(val);
           currVal.attr = attributesTypes[attrID];;
           nodeValuesNum.push(currVal);
         }
         else if(val === "false" || val === "true"){
           currVal = {};
-          currVal.val = val;
+          currVal[nodeVal] = val;
           currVal.attr = "boolean";
           nodeValuesNum.push(currVal);
         }
-        curNode.val = currVal.val;
+        curNode[nodeVal] = currVal[nodeVal];
       }
       if(graphString[i].includes("v_gene_name")){       // get gene names
         var genename = graphString[i].split("\>")[1].split("\<")[0];
@@ -252,42 +250,43 @@ function addNodesAndEdges(){
       }},
 
             // attributes with boolean
-      {selector: 'node[val = "0"]',
-        style: {
-          'background-color': 'white',
-          'color':'black'
-      }},
-      {selector: 'node[!val]',
+     {selector: 'node[!'+nodeVal+']',
         style: {
           'background-color': 'white',
           'color':'black'
       }},
       // attributes with numbers
-      {selector: 'node[val <"0"]',
+      {selector: 'node['+nodeVal+' < "0"]',
         style: {
-          'background-color': 'mapData(val,'+ nodesMin+', 0, #006cf0, white)',
+          'background-color': 'mapData('+nodeVal+','+ nodesMin+', 0, #006cf0, white)',
           'color': 'black'
       }},
-      {selector: 'node[val <='+0.5*nodesMin+']',
+      {selector: 'node['+nodeVal+' <='+0.5*nodesMin+']',
         style: {
           'color': 'white'
       }},
-      {selector: 'node[val >"0"]',
+      {selector: 'node['+nodeVal+' > "0"]',
         style: {
-          'background-color': 'mapData(val, 0,'+ nodesMax+', white, #d50000)',
+          'background-color': 'mapData('+nodeVal+', 0,'+ nodesMax+', white, #d50000)',
           'color': 'black'
       }},
-      {selector: 'node[val >='+0.5*nodesMax+']',
+      {selector: 'node['+nodeVal+' >='+0.5*nodesMax+']',
         style: {
           'color': 'white'
+      }},
+      {selector: 'node['+nodeVal+' = "0"]',
+        style: {
+          'background-color': 'white',
+          'color':'black'
       }},
 
-      {selector: 'node[val = "false"]',
+      // attributes with boolean
+      {selector: 'node['+nodeVal+' = "false"]',
         style: {
           'background-color': '#006cf0',
           'color':'white'
       }},
-            {selector: 'node[val = "true"]',
+      {selector: 'node['+nodeVal+' = "true"]',
         style: {
           'background-color': '#d50000',
           'color':'white'
@@ -429,7 +428,7 @@ function addNodesAndEdges(){
     for(n=0; n < nodes.length; n++){
       cy.batch(function(){
       cy.$('node[id =\''  + nodes[n].data.id + '\']')
-        .data('val', nodes[n].data.val)
+        .data(nodeVal, nodes[n].data[nodeVal])
       });
     }
   }
@@ -467,18 +466,18 @@ function showMetaInfo(){
         solo: true,
       },
       content: {text : function(){
-        if(!isNaN(parseFloat(this.data('val')))&&this.data('genename')){
-          return '<b>'+nodeVal +'</b>: ' + parseFloat(this.data('val')).toFixed(2) +
+        if(!isNaN(parseFloat(this.data()[nodeVal]))&&this.data('genename')){
+          return '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2) +
           '<br>' + '<b>gene name</b>: ' + this.data('genename'); } //numbers
-        else if(!isNaN(parseFloat(this.data('val')))&& !this.data('genename')){
-          return '<b>'+nodeVal +'</b>: ' + parseFloat(this.data('val')).toFixed(2);
+        else if(!isNaN(parseFloat(this.data()[nodeVal]))&& !this.data('genename')){
+          return '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2);
         }
         else if(this.data('genename')){
-          return '<b>'+nodeVal +'</b>: '+ this.data('val') +
+          return '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal] +
           '<br>' + '<b>gene name</b>: ' + this.data('genename');          //bools
         }
         else{
-          return '<b>'+nodeVal +'</b>: '+ this.data('val');
+          return '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal];
         }
       }},
       position: {
