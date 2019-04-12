@@ -30,7 +30,8 @@ interactiveVis.get('/:id', async (req, res) => {
   try {
     const response = await vis.getById(req.params.id);
     if (response) {
-      res.json(response);
+      res.render(path.resolve(__dirname +'/../templates/subgraphVisualization.html'), {cyto:response["data"]});
+      //res.json(response);
     } else {
       messages.send(messages.RESOURCE_NOT_FOUND, res);
     }
