@@ -31,7 +31,20 @@ interactiveVis.get('/:id', async (req, res) => {
     const response = await vis.getById(req.params.id);
     if (response) {
       res.render(path.resolve(__dirname +'/../templates/subgraphVisualization.html'), {cyto:response["data"]});
-      //res.json(response);
+    } else {
+      messages.send(messages.RESOURCE_NOT_FOUND, res);
+    }
+  } catch (error) {
+    console.log(error);
+    messages.send(messages.INTERNAL_SERVER_ERROR, res);
+  }
+});
+
+interactiveVis.get('/json/:id', async (req, res) => {
+  try {
+    const response = await vis.getById(req.params.id);
+    if (response) {
+      res.render(path.resolve(__dirname +'/../templates/subgraphVisualization.html'), {json:response["data"]});
     } else {
       messages.send(messages.RESOURCE_NOT_FOUND, res);
     }

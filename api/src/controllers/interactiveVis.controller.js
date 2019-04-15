@@ -41,7 +41,7 @@ const cyto = async (nodes, edges, nodesMin, nodesMax, valueAttr) => {
       {
         selector: 'node[val < "0"]',
         style: {
-          'background-color': `mapData(val, ${nodesMin}, "0", #006cf0, white)`,
+          'background-color': `mapData(val, ${nodesMin}, 0, #006cf0, white)`,
           color: 'black',
         },
       },
@@ -54,7 +54,7 @@ const cyto = async (nodes, edges, nodesMin, nodesMax, valueAttr) => {
       {
         selector: 'node[val > "0"]',
         style: {
-          'background-color': `mapData(val, "0", ${nodesMax}, white, #d50000)`,
+          'background-color': `mapData(val, 0, ${nodesMax}, white, #d50000)`,
           color: 'black',
         },
       },

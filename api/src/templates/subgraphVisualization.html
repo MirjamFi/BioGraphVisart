@@ -41,15 +41,6 @@
 	<p id="description" >Load a <b>.graphml</b>-file and select node value to generate a subgraph, you can download as .svg/.png/.json.<br> Or load a <b>.json</b>-file of a previously generate subgraph, you can edit and download again.</p>
 
 	<div id="configPart">
-		<script type="text/javascript">
-			var img = "{{ cyto }}";
-			var parser = new DOMParser;
-			var dom = parser.parseFromString(
-			     img,
-			    'text/html');
-			var decodedString = dom.body.textContent;
-			readFile(decodedString);
-		</script>
 		
 	</div>
 
@@ -131,7 +122,38 @@
 	</div>
 	
 	<div align="left" id="cy"></div>
-
+		<script type="text/javascript">
+			var img = "{{ cyto }}";
+			if(img){
+				var parser = new DOMParser;
+				var dom = parser.parseFromString(
+				     img,
+				    'text/html');
+				var decodedString = dom.body.textContent;
+				readFile(decodedString);
+			}
+			var jsonFile = "{{ json }}"
+			if(jsonFile){
+				// var parser = new DOMParser;
+				// var dom = parser.parseFromString(
+				//      jsonFile,
+				//     'text/html');
+				// var decodedString = dom.body.textContent;
+				// console.log(JSON.parse(JSON.stringify(decodedString)));
+				jsonFile = jsonFile.replace(/&lt;/g, "<");
+				jsonFile = jsonFile.replace(/&gt;/g, ">");
+				jsonFile = jsonFile.replace(/&lt;&#x3D;/g, "<=");
+				jsonFile = jsonFile.replace(/&gt;&#x3D;/g, ">=");
+				jsonFile = jsonFile.replace(/&quot;/g,'"');
+				jsonFile = jsonFile.replace(/&#x3D;/g,'=').replace(/\n/g, "\\n")
+                .replace(/\r/g, "\\r")
+                .replace(/\t/g, "\\t")
+                .replace(/\f/g, "\\f");;
+				console.log(jsonFile);
+				console.log(JSON.parse(jsonFile));
+				readJson(JSON.parse(jsonFile));
+			}
+		</script>
 </body>
 
 </html>
