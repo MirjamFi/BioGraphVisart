@@ -5,13 +5,19 @@
 /*
 visualize a graph from .graphml-file
 */
+var nodeValRaw;
 
 function visualize() {
-
   // $('#graphName').attr("disabled", true);
   // $('#loadGraphml').attr("disabled", true);
   if(!noAttr){
-    nodeVal = document.getElementById('values').value;
+    nodeValRaw = document.getElementById('values').value;
+    let nodeValSplit = nodeValRaw.split("(");
+    let nodeValJoin = nodeValSplit.join("_");
+    nodeValSplit = nodeValJoin.split(")");
+    nodeValJoin = nodeValSplit.join("");
+    nodeValSplit = nodeValJoin.split("-");
+    nodeVal = nodeValSplit.join("_");
   }
   // $('#gfiles').attr("disabled", true);
   // get nodes and edges
@@ -25,7 +31,6 @@ function visualize() {
   };
   // add nodes and edges to graph
   addNodesAndEdges();
-
   calculateLayout();
 
   showLegend();
@@ -72,13 +77,13 @@ function getNodesAndEdges(){
         var symbol = regExp.exec(graphString[i])[1];
         curNode.symbol = symbol;
       }
-      if(graphString[i].includes("\"v_"+nodeVal+"\"\>")){
+      if(graphString[i].includes("\"v_"+nodeValRaw+"\"\>")){
         var val = regExp.exec(graphString[i])[1]; // if availabe get node value
         if(!isNaN(parseFloat(val))){
           attrID = graphString[i].split(" ")[7].split("\"")[1];
           currVal = {};
           currVal[nodeVal] = parseFloat(val);
-          currVal.attr = attributesTypes[attrID];;
+          currVal.attr = attributesTypes[attrID];
           nodeValuesNum.push(currVal);
         }
         else if(val === "false" || val === "true"){
@@ -242,14 +247,14 @@ function addNodesAndEdges(){
           'border-color' : 'black',
           'border-style' : 'solid',
           'border-width' : '2',
-          label: 'data(symbol)',
+          'label': 'data(symbol)',
           "text-valign" : "center",
           "text-halign" : "center",
           "font-size" : 10,
-          //"color":"black"
+          "color":"black"
       }},
 
-            // attributes with boolean
+      // attributes with boolean
      {selector: 'node[!'+nodeVal+']',
         style: {
           'background-color': 'white',
@@ -379,7 +384,6 @@ function addNodesAndEdges(){
         }}
       ]
   });
-
   cy.nodes().noOverlap({ padding: 5 })
   if(! noAttr){
   // calculate label position for legend and style legend
@@ -466,18 +470,19 @@ function showMetaInfo(){
         solo: true,
       },
       content: {text : function(){
-        if(!isNaN(parseFloat(this.data()[nodeVal]))&&this.data('genename')){
-          return '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2) +
+        var nodeValMeta = nodeVal.split("\\").join("");
+        if(!isNaN(parseFloat(this.data()[nodeValMeta]))&&this.data('genename')){
+          return '<b>'+nodeValMeta +'</b>: ' + parseFloat(this.data()[nodeValMeta]).toFixed(2) +
           '<br>' + '<b>gene name</b>: ' + this.data('genename'); } //numbers
-        else if(!isNaN(parseFloat(this.data()[nodeVal]))&& !this.data('genename')){
-          return '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2);
+        else if(!isNaN(parseFloat(this.data()[nodeValMeta]))&& !this.data('genename')){
+          return '<b>'+nodeValMeta +'</b>: ' + parseFloat(this.data()[nodeValMeta]).toFixed(2);
         }
         else if(this.data('genename')){
-          return '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal] +
+          return '<b>'+nodeValMeta +'</b>: '+ this.data()[nodeValMeta] +
           '<br>' + '<b>gene name</b>: ' + this.data('genename');          //bools
         }
         else{
-          return '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal];
+          return '<b>'+nodeValMeta +'</b>: '+ this.data()[nodeValMeta];
         }
       }},
       position: {
