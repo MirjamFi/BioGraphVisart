@@ -72,12 +72,72 @@ function readJson(jsonString) {
     ready: function(){
     },
   });
-  console.log(jsonString)
-  cy.json(JSON.parse(jsonString));
-  console.log(cy.elements())
+  for(var i = 0; i < jsonString.style.length; i++){
+    selector = jsonString.style[i].selector;
+    if(selector.includes("activation")){
+      jsonString.style[i].selector = 'edge[interaction = "activation"]';
+    }
+    else if(selector.includes("expression")){
+      jsonString.style[i].selector = 'edge[interaction = "expression"]';
+    }
+    else if(selector.includes("inhibition")){
+      jsonString.style[i].selector = 'edge[interaction = "inhibition"]';
+    }
+    else if(selector.includes("repression")){
+      jsonString.style[i].selector = 'edge[interaction = "repression"]';
+    }
+    else if(selector.includes("compound")){
+      jsonString.style[i].selector = 'edge[interaction = "compound"]';
+    }
+    else if(selector.includes("indirect effect")){
+      jsonString.style[i].selector = 'edge[interaction = "indirect effect"]';
+    }
+    else if(selector.includes("state change")){
+      jsonString.style[i].selector = 'edge[interaction = "state change"]';
+    }
+    else if(selector.includes("missing interaction")){
+      jsonString.style[i].selector = 'edge[interaction = "missing interaction"]';
+    }
+    else if(selector.includes("phosphorylation")){
+      jsonString.style[i].selector = 'edge[interaction = "phosphorylation"]';
+    }
+    else if(selector.includes("dephosphorylation")){
+      jsonString.style[i].selector = 'edge[interaction = "dephosphorylation"]';
+    }
+    else if(selector.includes("glycosylation")){
+      jsonString.style[i].selector = 'edge[interaction = "glycosylation"]';
+    }
+    else if(selector.includes("methylation")){
+      jsonString.style[i].selector = 'edge[interaction = "methylation"]';
+    }
+    else if(selector.includes("ubiquitination")){
+      jsonString.style[i].selector = 'edge[interaction = "ubiquitination"]';
+    }
+    else if(selector.includes("binding")){
+      jsonString.style[i].selector = 'edge[interaction = \"binding/association\"]';
+    }
+    else if(selector.includes("dissociation")){
+      jsonString.style[i].selector = 'edge[interaction = "dissociation"]';
+    }    
+    else if(selector.includes("true")){
+      jsonString.style[i].selector = 'node['+nodeVal+' = \"true\"]';
+    }
+    else if(selector.includes("false")){
+      jsonString.style[i].selector = 'node['+nodeVal+' = \"false\"]';
+    }
+  }
+  // jsonString.replace("activation", "\"activation\"")
+  cy.json(jsonString);
+  console.log(cy.nodes());
   // get color attributes name; if none, no need for legend node; for some reason the legend node's background is not stored in the json file, so new generation
-  var val = Object.keys(cy.nodes()[0].data()).filter(attr => attr != "id").filter(attr => attr != "symbol");
-  if(val.length>0){
+  for(var i = 0; i < cy.nodes().length; i++){
+    let attributesList = Object.keys(cy.nodes()[i].data()).filter(attr => attr != "id").filter(attr => attr != "symbol").filter(attr => attr != "genename");
+    if(attributesList.length > 0){
+      var val = attributesList[0];
+      nodeVal = val
+    }
+  } 
+  if(val){
     // legend node
     var legendPosition = cy.nodes('node[id = "l1"]').position();
     cy.remove('node[id = "l1"]');

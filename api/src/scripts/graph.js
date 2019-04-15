@@ -8,41 +8,44 @@ visualize a graph from .graphml-file
 var nodeValRaw;
 
 function visualize() {
-  // $('#graphName').attr("disabled", true);
-  // $('#loadGraphml').attr("disabled", true);
-  if(!noAttr){
-    nodeValRaw = document.getElementById('values').value;
-    let nodeValSplit = nodeValRaw.split("(");
-    let nodeValJoin = nodeValSplit.join("_");
-    nodeValSplit = nodeValJoin.split(")");
-    nodeValJoin = nodeValSplit.join("");
-    nodeValSplit = nodeValJoin.split("-");
-    nodeVal = nodeValSplit.join("_");
+   if(!isJson){
+    if(!noAttr){
+      nodeValRaw = document.getElementById('values').value;
+      let nodeValSplit = nodeValRaw.split("(");
+      let nodeValJoin = nodeValSplit.join("_");
+      nodeValSplit = nodeValJoin.split(")");
+      nodeValJoin = nodeValSplit.join("");
+      nodeValSplit = nodeValJoin.split("-");
+      nodeVal = nodeValSplit.join("_");
+    }
+
+    // get nodes and edges
+    nodeValuesNum = getNodesAndEdges();
+
+    nodeValuesNum = transform01toTF(nodeValuesNum);
+
+    if(!noAttr){
+      // set min and max for legend
+      legendsRange(nodeValuesNum);
+    };
+    // add nodes and edges to graph
+    addNodesAndEdges();
+
+    calculateLayout();
   }
-  // $('#gfiles').attr("disabled", true);
-  // get nodes and edges
-  nodeValuesNum = getNodesAndEdges();
-
-  nodeValuesNum = transform01toTF(nodeValuesNum);
-
-  if(!noAttr){
-    // set min and max for legend
-    legendsRange(nodeValuesNum);
-  };
-  // add nodes and edges to graph
-  addNodesAndEdges();
-  calculateLayout();
-
-  showLegend();
-
   $('#downloadPNG').removeAttr('disabled');
   $('#downloadSVG').removeAttr('disabled');
   $('#downloadJSON').removeAttr('disabled');
 
+  oldMin = nodesMin;
+  oldMax = nodesMax;
+
+  showLegend();
+
   document.getElementById('downloadPart').style.visibility = "visible";
 
   showMetaInfo();
-  if(! noAttr){
+  if(! noAttr && !isJson){
     activateNodeShapeChange();
   }
 }
@@ -227,6 +230,7 @@ function getTextWidth(text, font) {
 }
 
 //add nodes and edges to cy-object (update if attribute has changed)
+
 function addNodesAndEdges(){
   cy = cytoscape({
     container: document.getElementById('cy'),
@@ -243,7 +247,7 @@ function addNodesAndEdges(){
           width: 50,
           height: 50,
           shape: 'ellipse',
-          'background-color': 'white',
+          // 'background-color': 'white',
           'border-color' : 'black',
           'border-style' : 'solid',
           'border-width' : '2',
@@ -251,7 +255,7 @@ function addNodesAndEdges(){
           "text-valign" : "center",
           "text-halign" : "center",
           "font-size" : 10,
-          "color":"black"
+          // "color":"black"
       }},
 
       // attributes with boolean
@@ -286,12 +290,12 @@ function addNodesAndEdges(){
       }},
 
       // attributes with boolean
-      {selector: 'node['+nodeVal+' = "false"]',
+      {selector: 'node['+nodeVal+' = \"false\"]',
         style: {
           'background-color': '#006cf0',
           'color':'white'
       }},
-      {selector: 'node['+nodeVal+' = "true"]',
+      {selector: 'node['+nodeVal+' = \"true\"]',
         style: {
           'background-color': '#d50000',
           'color':'white'
@@ -309,74 +313,73 @@ function addNodesAndEdges(){
           'font-weight':800
           
         }},
-        {selector: 'edge[interaction = \'activaion\']',
+        {selector: 'edge[interaction = \"activation\"]',
           style: {
             'target-arrow-shape': 'triangle',
         }},
-        {selector: 'edge[interaction = \'expression\']',
+        {selector: 'edge[interaction = \"expression\"]',
           style: {
             'target-arrow-shape': 'triangle',
         }},
-        {selector: 'edge[interaction = \'inhibition\']',
+        {selector: 'edge[interaction = \"inhibition\"]',
           style: {
             'target-arrow-shape': 'tee',
         }},
-        {selector: 'edge[interaction = \'repression\']',
+        {selector: 'edge[interaction = \"repression\"]',
           style: {
             'target-arrow-shape': 'tee',
         }},
-        {selector: 'edge[interaction = \'binding/association\']',
+        {selector: 'edge[interaction = \"binding/association\"]',
           style: {
             // 'target-arrow-shape': '',
         }},
-        {selector: 'edge[interaction = \'dissociation\']',
+        {selector: 'edge[interaction = \"dissociation+"]',
           style: {
             // 'target-arrow-shape': '',
         }},
-      {selector: 'edge[interaction = \'compound\']',
+      {selector: 'edge[interaction = \"compound\"]',
         style: {
           'target-arrow-shape': 'diamond',
         }},
-      {selector: 'edge[interaction = \'indirect effect\']',
+      {selector: 'edge[interaction = \"indirect effect\"]',
         style: {
           'line-style': 'dotted',
           'target-arrow-shape': 'triangle'
         }},
-      {selector: 'edge[interaction = \'missing interaction\']',
+      {selector: 'edge[interaction = \"missing interaction\"]',
         style: {
           'line-style': 'dashed',
           'target-arrow-shape': 'triangle'
         }},
-        {selector: 'edge[interaction = \'state change\']',
+        {selector: 'edge[interaction = \"state change\"]',
           style: {
             'target-arrow-shape': 'square',
         }},
-
-      {selector: 'edge[interaction = \'phosphorylation\']',
+      {selector: 'edge[interaction = \"phosphorylation\"]',
         style: {
           'target-arrow-shape': 'triangle-backcurve',
           'target-label':'+p',
           'target-text-offset':20
         }},
-      {selector: 'edge[interaction = \'dephosphorylation\']',
+      {selector: 'edge[interaction = \"dephosphorylation\"]',
           style: {
             'target-arrow-shape': 'triangle-backcurve',
             'target-label':'-p',
           'target-text-offset':20
         }},
-      {selector: 'edge[interaction = \'glycosylation\']',
+      {selector: 'edge[interaction = \"glycosylation\"]',
           style: {
            'target-arrow-shape': 'triangle-backcurve',
            'target-label':'+g',
           'target-text-offset':20
         }},      
-      {selector: 'edge[interaction = \'ubiquitination\']',
+      {selector: 'edge[interaction = \"ubiquitination\"]',
           style: {
             'target-arrow-shape': 'triangle-backcurve',
             'target-label':'+u',
           'target-text-offset':20
         }},
-      {selector: 'edge[interaction = \'methylation\']',
+      {selector: 'edge[interaction = \"methylation\"]',
           style: {
             'target-arrow-shape': 'triangle-backcurve',
             'target-label':'+m',
@@ -385,7 +388,7 @@ function addNodesAndEdges(){
       ]
   });
   cy.nodes().noOverlap({ padding: 5 })
-  if(! noAttr){
+  if(! noAttr ){
   // calculate label position for legend and style legend
     var fontSize = 10;
     var labelVal = nodeVal;
@@ -463,40 +466,40 @@ function showLegend(){
 
 //show meta-information of nodes by mouseover
 function showMetaInfo(){
-  if(! noAttr){
-  cy.elements('node').qtip({       // show node attibute value by mouseover
-      show: {   
-        event: 'mouseover', 
-        solo: true,
+  if(! noAttr || isJson){
+    cy.elements('node').qtip({       // show node attibute value by mouseover
+        show: {   
+          event: 'mouseover', 
+          solo: true,
+        },
+        content: {text : function(){
+          var nodeValMeta = nodeVal.split("\\").join("");
+          if(!isNaN(parseFloat(this.data()[nodeValMeta]))&&this.data('genename')){
+            return '<b>'+nodeValMeta +'</b>: ' + parseFloat(this.data()[nodeValMeta]).toFixed(2) +
+            '<br>' + '<b>gene name</b>: ' + this.data('genename'); } //numbers
+          else if(!isNaN(parseFloat(this.data()[nodeValMeta]))&& !this.data('genename')){
+            return '<b>'+nodeValMeta +'</b>: ' + parseFloat(this.data()[nodeValMeta]).toFixed(2);
+          }
+          else if(this.data('genename')){
+            return '<b>'+nodeValMeta +'</b>: '+ this.data()[nodeValMeta] +
+            '<br>' + '<b>gene name</b>: ' + this.data('genename');          //bools
+          }
+          else{
+            return '<b>'+nodeValMeta +'</b>: '+ this.data()[nodeValMeta];
+          }
+        }},
+        position: {
+          my: 'top center',
+          at: 'bottom center'
+        },
+        style: {
+          classes: 'qtip-bootstrap',
+          tip: {
+            width: 8,
+            height: 8
+        }
       },
-      content: {text : function(){
-        var nodeValMeta = nodeVal.split("\\").join("");
-        if(!isNaN(parseFloat(this.data()[nodeValMeta]))&&this.data('genename')){
-          return '<b>'+nodeValMeta +'</b>: ' + parseFloat(this.data()[nodeValMeta]).toFixed(2) +
-          '<br>' + '<b>gene name</b>: ' + this.data('genename'); } //numbers
-        else if(!isNaN(parseFloat(this.data()[nodeValMeta]))&& !this.data('genename')){
-          return '<b>'+nodeValMeta +'</b>: ' + parseFloat(this.data()[nodeValMeta]).toFixed(2);
-        }
-        else if(this.data('genename')){
-          return '<b>'+nodeValMeta +'</b>: '+ this.data()[nodeValMeta] +
-          '<br>' + '<b>gene name</b>: ' + this.data('genename');          //bools
-        }
-        else{
-          return '<b>'+nodeValMeta +'</b>: '+ this.data()[nodeValMeta];
-        }
-      }},
-      position: {
-        my: 'top center',
-        at: 'bottom center'
-      },
-      style: {
-        classes: 'qtip-bootstrap',
-        tip: {
-          width: 8,
-          height: 8
-        }
-      },
-      });
+    });
   }
 }
 
@@ -689,6 +692,7 @@ function downloadSVG(){
 function downloadJSON(){
   outputName = document.getElementById('outputName').value;
   var json = JSON.stringify(cy.json());
+  json = json.replace(/\\"/g, "");
   $('#downloadJSON').attr('href', json);
   var download = document.createElement('a');
   download.href = 'data:text/json;charset=utf-8,'+encodeURIComponent(json);

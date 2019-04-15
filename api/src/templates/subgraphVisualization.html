@@ -134,23 +134,19 @@
 			}
 			var jsonFile = "{{ json }}"
 			if(jsonFile){
-				// var parser = new DOMParser;
-				// var dom = parser.parseFromString(
-				//      jsonFile,
-				//     'text/html');
-				// var decodedString = dom.body.textContent;
-				// console.log(JSON.parse(JSON.stringify(decodedString)));
 				jsonFile = jsonFile.replace(/&lt;/g, "<");
 				jsonFile = jsonFile.replace(/&gt;/g, ">");
 				jsonFile = jsonFile.replace(/&lt;&#x3D;/g, "<=");
 				jsonFile = jsonFile.replace(/&gt;&#x3D;/g, ">=");
 				jsonFile = jsonFile.replace(/&quot;/g,'"');
-				jsonFile = jsonFile.replace(/&#x3D;/g,'=').replace(/\n/g, "\\n")
+				jsonFile = jsonFile.replace(/&#x3D;/g,'=')
+				.replace(/\n/g, "\\n")
                 .replace(/\r/g, "\\r")
                 .replace(/\t/g, "\\t")
-                .replace(/\f/g, "\\f");;
-				console.log(jsonFile);
-				console.log(JSON.parse(jsonFile));
+                .replace(/\f/g, "\\f")
+                .replace(/"0"/g, 0)
+                .replace(/"false"/g, false)
+                .replace(/"true"/g, true)
 				readJson(JSON.parse(jsonFile));
 			}
 		</script>
