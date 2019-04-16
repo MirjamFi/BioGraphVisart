@@ -126,17 +126,20 @@ function readJson(jsonString) {
       jsonString.style[i].selector = 'node['+nodeVal+' = \"false\"]';
     }
   }
-  // jsonString.replace("activation", "\"activation\"")
-  cy.json(jsonString);
-  console.log(cy.nodes());
-  // get color attributes name; if none, no need for legend node; for some reason the legend node's background is not stored in the json file, so new generation
-  for(var i = 0; i < cy.nodes().length; i++){
-    let attributesList = Object.keys(cy.nodes()[i].data()).filter(attr => attr != "id").filter(attr => attr != "symbol").filter(attr => attr != "genename");
+  for(var i = 0; i < jsonString.elements.nodes.length; i++){
+    let attributesList = Object.keys(jsonString.elements.nodes[i].data).filter(attr => attr != "id").filter(attr => attr != "symbol").filter(attr => attr != "genename");
     if(attributesList.length > 0){
       var val = attributesList[0];
       nodeVal = val
     }
   } 
+  // jsonString.replace("activation", "\"activation\"")
+  cy.json(jsonString);
+
+  cy.$('node['+nodeVal+'="false"]').style('background-color', '#006cf0').style('color','white');
+  cy.$('node['+nodeVal+' = "true"]').style('background-color', '#d50000').style('color','white');
+  // get color attributes name; if none, no need for legend node; for some reason the legend node's background is not stored in the json file, so new generation
+
   if(val){
     // legend node
     var legendPosition = cy.nodes('node[id = "l1"]').position();

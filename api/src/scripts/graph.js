@@ -247,7 +247,7 @@ function addNodesAndEdges(){
           width: 50,
           height: 50,
           shape: 'ellipse',
-          // 'background-color': 'white',
+          'background-color': 'white',
           'border-color' : 'black',
           'border-style' : 'solid',
           'border-width' : '2',
@@ -255,7 +255,7 @@ function addNodesAndEdges(){
           "text-valign" : "center",
           "text-halign" : "center",
           "font-size" : 10,
-          // "color":"black"
+          "color":"black"
       }},
 
       // attributes with boolean
