@@ -75,10 +75,78 @@ function readJson(file) {
         ready: function(){
         },
       });
+      for(var i = 0; i < jsonString.style.length; i++){
+        selector = jsonString.style[i].selector;
+        if(selector.includes("activation")){
+          jsonString.style[i].selector = 'edge[interaction = "activation"]';
+        }
+        else if(selector.includes("expression")){
+          jsonString.style[i].selector = 'edge[interaction = "expression"]';
+        }
+        else if(selector.includes("inhibition")){
+          jsonString.style[i].selector = 'edge[interaction = "inhibition"]';
+        }
+        else if(selector.includes("repression")){
+          jsonString.style[i].selector = 'edge[interaction = "repression"]';
+        }
+        else if(selector.includes("compound")){
+          jsonString.style[i].selector = 'edge[interaction = "compound"]';
+        }
+        else if(selector.includes("indirect effect")){
+          jsonString.style[i].selector = 'edge[interaction = "indirect effect"]';
+        }
+        else if(selector.includes("state change")){
+          jsonString.style[i].selector = 'edge[interaction = "state change"]';
+        }
+        else if(selector.includes("missing interaction")){
+          jsonString.style[i].selector = 'edge[interaction = "missing interaction"]';
+        }
+        else if(selector.includes("phosphorylation")){
+          jsonString.style[i].selector = 'edge[interaction = "phosphorylation"]';
+        }
+        else if(selector.includes("dephosphorylation")){
+          jsonString.style[i].selector = 'edge[interaction = "dephosphorylation"]';
+        }
+        else if(selector.includes("glycosylation")){
+          jsonString.style[i].selector = 'edge[interaction = "glycosylation"]';
+        }
+        else if(selector.includes("methylation")){
+          jsonString.style[i].selector = 'edge[interaction = "methylation"]';
+        }
+        else if(selector.includes("ubiquitination")){
+          jsonString.style[i].selector = 'edge[interaction = "ubiquitination"]';
+        }
+        else if(selector.includes("binding")){
+          jsonString.style[i].selector = 'edge[interaction = \"binding/association\"]';
+        }
+        else if(selector.includes("dissociation")){
+          jsonString.style[i].selector = 'edge[interaction = "dissociation"]';
+        }    
+        else if(selector.includes("true")){
+          jsonString.style[i].selector = 'node['+nodeVal+' = \"true\"]';
+        }
+        else if(selector.includes("false")){
+          jsonString.style[i].selector = 'node['+nodeVal+' = \"false\"]';
+        }
+      }
       cy.json(jsonString);
 
+      var val;
       // get color attributes name; if none, no need for legend node; for some reason the legend node's background is not stored in the json file, so new generation
-      var val = Object.keys(cy.nodes()[0].data()).filter(attr => attr != "id").filter(attr => attr != "symbol");
+      for(var i = 0; i < jsonString.elements.nodes.length; i++){
+        Object.keys(jsonString.elements.nodes[i].data).forEach(function(key) {
+          let keyVal = jsonString.elements.nodes[i].data[key]//.filter(attr => attr == "true" || typeof(attr) =="numeric")//.filter(attr => attr != "symbol").filter(attr => attr != "genename");
+          if(keyVal == "true" || keyVal=="false" || !isNaN(parseFloat(keyVal))){
+            val = key;
+            nodeVal = val;
+          }
+        });
+      }    
+
+      cy.$('node['+nodeVal+'="false"]').style('background-color', '#006cf0').style('color','white');
+      cy.$('node['+nodeVal+' = "true"]').style('background-color', '#d50000').style('color','white');
+
+      
       if(val.length>0){
         // legend node
         var legendPosition = cy.nodes('node[id = "l1"]').position();
@@ -100,6 +168,7 @@ function readJson(file) {
         .style('border-width',1)
         .style('text-valign' , 'bottom')
         .style('text-max-width', 200)
+
 
         // get min and max for legend node
         var nodeVals = jsonString.elements.nodes.map(function(el){return el.data[val]}).filter(Number);

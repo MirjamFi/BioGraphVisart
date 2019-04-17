@@ -8,11 +8,6 @@ visualize a graph from .graphml-file
 
 function visualize() {
 
-  if(isJson){
-    // get correct node attribute used for coloring
-     nodeVal = Object.keys(cy.nodes()[0].data()).filter(attr => attr != "id").filter(attr => attr != "symbol");
-   }
-
    //create cytoscape object; not necessary for json
   if(!isJson){
     if(!noAttr){
