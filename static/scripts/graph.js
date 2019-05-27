@@ -53,6 +53,8 @@ function getNodesAndEdges(){
   nodeValuesNum = [];
   attributesTypes = {};
 
+  var prevId = "";
+  var pos = 0;
 
   var regExp = /\>([^)]+)\</; // get symbol name between > <
 
@@ -107,17 +109,26 @@ function getNodesAndEdges(){
     if(!isEmpty(curEdge)){
       if(graphString[i].includes("e_interaction")){     // get edges interaction type
         var interact = regExp.exec(graphString[i])[1]; 
+
+        if(prevId == curEdge.id){                       // multiple edges between two nodes
+          if(!Array.isArray(edges[pos-1].data.interaction)){
+            curEdge.interaction=[edges[pos-1].data.interaction, interact]
+            edges.splice(pos-1,1)
+            pos = pos -1
+          }
+          else{
+            edges[pos-1].data.interaction.push(interact)
+            continue;
+          }
+        }
+      else{
         curEdge.interaction = interact;
-        // splitInteraction = interact.split(/[\s]+/);
-        // console.log(splitInteraction)
-        // var interactShort = ""
-        // for(var s in splitInteraction){
-        //   interactShort = interactShort+splitInteraction[s].charAt(0).toUpperCase();
-        // }
-        // curEdge.interactionShort = interactShort;
       }
-      curEdge.id = curEdge.id +'_'+ curEdge.interaction;
       edges.push({data: curEdge} );
+
+      prevId = curEdge.id;
+      pos = pos +1;
+      }
     }
   }
   if(! noAttr){
@@ -327,10 +338,11 @@ function addNodesAndEdges(){
           // 'label':'data(interactionShort)',
           'font-size':16,
           'text-rotation':'autorotate',
-          'font-weight':800
+          'font-weight':800,
+          'target-arrow-shape' : 'vee'
           
         }},
-        {selector: 'edge[interaction = \'activaion\']',
+        {selector: 'edge[interaction = \'activation\']',
           style: {
             'target-arrow-shape': 'triangle',
         }},
@@ -348,15 +360,15 @@ function addNodesAndEdges(){
         }},
         {selector: 'edge[interaction = \'binding/association\']',
           style: {
-            // 'target-arrow-shape': '',
+            'target-arrow-shape': 'triangle-cross',
         }},
         {selector: 'edge[interaction = \'dissociation\']',
           style: {
-            // 'target-arrow-shape': '',
+            'target-arrow-shape': 'triangle-cross',
         }},
       {selector: 'edge[interaction = \'compound\']',
         style: {
-          'target-arrow-shape': 'diamond',
+          'target-arrow-shape': 'circle',
         }},
       {selector: 'edge[interaction = \'indirect effect\']',
         style: {
@@ -402,8 +414,7 @@ function addNodesAndEdges(){
             'target-arrow-shape': 'triangle-backcurve',
             'target-label':'+m',
           'target-text-offset':20
-        }},
-
+        }}
 
       ]
   });
@@ -454,7 +465,7 @@ function addNodesAndEdges(){
 function calculateLayout(){
 
   cy.layout({
-  name: 'dagre',
+    name:'dagre',
     // Whether to fit the network view after when done
   fit: true,
 
@@ -472,39 +483,59 @@ function showLegend(){
 //show meta-information of nodes by mouseover
 function showMetaInfo(){
   if(! noAttr || isJson){
-  cy.elements('node').qtip({       // show node attibute value by mouseover
-      show: {   
-        event: 'mouseover', 
-        solo: true,
-      },
-      content: {text : function(){
-        if(!isNaN(parseFloat(this.data()[nodeVal]))&&this.data('genename')){
-          return '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2) +
-          '<br>' + '<b>gene name</b>: ' + this.data('genename'); } //numbers
-        else if(!isNaN(parseFloat(this.data()[nodeVal]))&& !this.data('genename')){
-          return '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2);
-        }
-        else if(this.data('genename')){
-          return '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal] +
-          '<br>' + '<b>gene name</b>: ' + this.data('genename');          //bools
-        }
-        else{
-          return '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal];
-        }
-      }},
-      position: {
-        my: 'top center',
-        at: 'bottom center'
-      },
-      style: {
-        classes: 'qtip-bootstrap',
-        tip: {
-          width: 8,
-          height: 8
-        }
-      },
-      });
+    cy.elements('node').qtip({       // show node attibute value by mouseover
+        show: {   
+          event: 'mouseover', 
+          solo: true,
+        },
+        content: {text : function(){
+          if(!isNaN(parseFloat(this.data()[nodeVal]))&&this.data('genename')){
+            return '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2) +
+            '<br>' + '<b>gene name</b>: ' + this.data('genename'); } //numbers
+          else if(!isNaN(parseFloat(this.data()[nodeVal]))&& !this.data('genename')){
+            return '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2);
+          }
+          else if(this.data('genename')){
+            return '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal] +
+            '<br>' + '<b>gene name</b>: ' + this.data('genename');          //bools
+          }
+          else{
+            return '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal];
+          }
+        }},
+        position: {
+          my: 'top center',
+          at: 'bottom center'
+        },
+        style: {
+          classes: 'qtip-bootstrap',
+          tip: {
+            width: 8,
+            height: 8
+          }
+        },
+        });
   }
+      cy.elements('edge').qtip({       // show node attibute value by mouseover
+        show: {   
+          event: 'mouseover', 
+          solo: true,
+        },
+        content: {text : function(){
+            return '<b>'+this.data()['interaction'] +'</b> ' 
+        }},
+        position: {
+          my: 'top center',
+          at: 'bottom center'
+        },
+        style: {
+          classes: 'qtip-bootstrap',
+          tip: {
+            width: 8,
+            height: 8
+          }
+        },
+        });
 }
 
 /* helper functions */
