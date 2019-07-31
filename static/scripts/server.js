@@ -13,17 +13,15 @@ app.get('/',function(req,res){
   res.sendFile(path.resolve('../../templates/subgraphVisualization.html'));
 });
 
-app.listen(3000);
-
-app.get("/foundFiles", function(req, res) {
+app.get("/foundGraphs", function(req, res) {
     if(foundFiles.length == 0){
-        var startPath = '../data/';
+        var startPath = '../graphs/';
         var filter = '.graphml';
-
         fromDir(startPath, filter, foundFiles);
     }   
     res.send(foundFiles);}
 )
+
 
 function fromDir(startPath, filter){
     if (!fs.existsSync(startPath)){
@@ -45,5 +43,10 @@ function fromDir(startPath, filter){
     };
     return foundFiles
 }
+
+
+app.listen(3000);
+
+
 
 console.log("Server running at http://localhost:3000/");
