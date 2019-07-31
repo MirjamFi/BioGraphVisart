@@ -12,8 +12,31 @@ var usedShapeAttributes = [];
 var getDrpDwnFiles = true;
 var noAttr = false;
 var isJson = false;
+var collapsed = false;
+var expandGraphs = [];
+var clicked = false;
+var clickedNode;
+var clickedNodesPosition;
 
 function isJsonFile(){
+	$.get("/foundGraphs", function(foundGraphs) {
+	    // store all graphs used for expansion in object with gene symbol as key taken from file name
+	      foundGraphs.forEach( function (expandGraph){
+	        var expandFilename = expandGraph.replace(/\\/g,'/')
+	        expandFilename = expandFilename.split('/')[2].split('.')[0];
+	        expandPath = expandGraph.replace('..', 'http://127.0.0.1:3000/static')
+	        var gf = file;
+		    var xmlhttp = new XMLHttpRequest();
+		    xmlhttp.open("GET", expandPath, false);
+		    xmlhttp.send();
+		    if (xmlhttp.status==200) {
+		      var expandGraphString = xmlhttp.responseText.split("\n");
+		      expandGraphs[expandFilename] = expandGraphString;
+		   } 
+	      });
+	    });
+	
+
   var file = document.getElementById('fileName').files[0];
   if(file["name"].endsWith("json")){
     readJson(file);
@@ -33,6 +56,9 @@ remove old buttons
 function cleanSelections(){
     // if it is not the first graph read, delete all selectable options
   var myNode = document.getElementById("configPart");
+  document.getElementById('KEGGpaths').innerHTML = "";
+  document.getElementById('keggpathways').firstChild.data = "Show KEGG Pathways";
+  document.getElementById('KEGGpaths').style.visibility = "hidden";
   var domValues = document.getElementById("values");
   if(domValues){  
     domValues.parentNode.removeChild(domValues);}
@@ -241,7 +267,7 @@ function readFile(file) {
   reader.onloadend = function(evt) {
     if (evt.target.readyState == FileReader.DONE) { // DONE == 2
       var arrayBuffer = evt.target.result;
-      graphString = arrayBuffer.split('\n');;
+      graphString = arrayBuffer.split('\n');
       loadFile();
     }
   };
@@ -256,7 +282,7 @@ function loadFile() {
   var drp = document.createElement("select");
   drp.id = "values";
   drp.name = "values";
-  drp.onchange = visualize;
+  drp.onchange = function(){visualize(graphString)};
   drp.style.visibility = "visible";
   document.getElementById("configPart").appendChild(drp);
   // node attributes
@@ -339,7 +365,7 @@ function loadFile() {
     drp.parentNode.removeChild(drp);
     drpShapes.parentNode.removeChild(drpShapes);
     drpShape.parentNode.removeChild(drpShape);
-    visualize();
+    visualize(graphString);
   };   
   loadGraphCount ++; 
 };
