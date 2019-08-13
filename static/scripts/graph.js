@@ -51,6 +51,13 @@ function visualize(graphString) {
   
   document.getElementById('KEGGpathsButton').style.visibility ="visible";
   document.getElementById('KEGGpaths').style.visibility ="visible";
+
+    // set background layer to hoghlight pathways
+  layer = cy.cyCanvas({
+          zIndex: -1,
+        });
+  canvas = layer.getCanvas();
+  ctx = canvas.getContext('2d');
 }
 
 //get information of nodes ande edges
@@ -256,35 +263,6 @@ function getTextWidth(text, font) {
     var metrics = context.measureText(text);
     return metrics.width;
 }
-
-/*
-	collapse all node except tapped node
-*/
-// function collapseNodes(node, centerid){
-// 	var ins = node.incomers();
-// 	var outs = node.outgoers();
-// 	for(var i = 0; i < ins.length; i++){
-// 		if(ins[i].visible() && ins[i].data().id != centerid){
-// 		ins[i].style('visibility', 'hidden')
-// 		collapseNodes(cy.getElementById(ins[i].data().id), centerid)
-// 		}
-// 	}
-// 	for(var i = 0; i < outs.length; i++){
-// 		if(outs[i].visible()&& outs[i].data().id != centerid){
-// 			outs[i].style('visibility', 'hidden')
-// 			collapseNodes(cy.getElementById(outs[i].data().id), centerid)
-// 		}
-// 	}
-
-// }
-
-// /*
-// 	expand all nodes 
-// */
-// function expandNodes(){
-// 	cy.nodes().style("visibility", "visible");
-// 	cy.edges().style("visibility", "visible");
-// }
 
 //add nodes and edges to cy-object (update if attribute has changed)
 function addNodesAndEdges(){
@@ -545,7 +523,7 @@ function calculateLayout(){
 		cy.layout({
 		    name:'dagre',
 		    // Whether to fit the network view after when done
-		  fit: true,
+		  //fit: true,
 		  // dagre algo options, uses default value on undefined
   // nodeSep: 50, // the separation between adjacent nodes in the same rank
   // edgeSep: 50, // the separation between adjacent edges in the same rank
@@ -563,12 +541,12 @@ function calculateLayout(){
   // animationDuration: 500, // duration of animation in ms if enabled
   // animationEasing: undefined, // easing of animation if enabled
   // boundingBox: undefined, // constrain layout bounds; { x1, y1, x2, y2 } or { x1, y1, w, h }
-  transform: function( clickedNodeID, clickedNodesPosition ){ return clickedNodesPosition; }, // a function that applies a transform to the final node position
+  // transform: function( clickedNodeID, clickedNodesPosition ){ return clickedNodesPosition; }, // a function that applies a transform to the final node position
   // ready: function(){}, // on layoutready
   // stop: function(){}, // on layoutstop
 
 		  // Padding on fit
-		  padding: 10
+		  // padding: 10
 		    }).run();
 	// }
   
@@ -666,9 +644,7 @@ function activateNodeShapeChange(){
   document.getElementById('nodeShapes').setAttribute('style','visibility:visible');
 }
 
-/*
-  change node shape of nodes with given attribute
-*/
+// change node shape of nodes with given attribute
 function changeNodeShapes(){
   var shapeAttribute = document.getElementById('nodeShapesAttr').value;
   var shape = document.getElementById('nodeShapes').value;
@@ -797,9 +773,7 @@ function changeNodeShapes(){
   }
 }
 
-/*
-	get pathways of selected gene from kegg using entrez id
-*/
+// get pathways of selected gene from kegg using entrez id
 function getPathwaysFromKEGG(name){ 
 	var responsetxt;
 	var xhr = new XMLHttpRequest();
@@ -814,19 +788,23 @@ function getPathwaysFromKEGG(name){
 }
 
 /*
-	generate a checkbox menu for the 10 m0 most common pathways of all genes in the graph
+	generate a checkbox menu for the 10 most common pathways of all genes in the graph
 */
 var colorschemePaths = []
 var allPaths = []
-var pathchecked = false;
+var layer;
+var canvas;
+var ctx;
 
 function listKEGGPathways(){
+  //swap button "Hide"/"show"
 	if(document.getElementById('keggpathways').firstChild.data == "Show KEGG Pathways"){
 		document.getElementById('keggpathways').firstChild.data  = "Hide KEGG Pathways";
 
 		if(document.getElementById('KEGGpaths').style.visibility == "hidden"){
 			document.getElementById('KEGGpaths').style.visibility="visible";
 		}
+    //get pathways from KEGG, show loader while doing so
 		else{
 			document.getElementById('loader').style.visibility = "visible";
 			setTimeout(function(){
@@ -872,20 +850,21 @@ function listKEGGPathways(){
 					    }
 					}
 				}
+        // only get top 5 of pathways (most genes in)
 				var props = Object.keys(pathsCount).map(function(key) {
-				  return { key: key, value: this[key] };
-				}, pathsCount);
+				  return { key: key, value: this[key] };}, pathsCount);
 				props.sort(function(p1, p2) { return p2.value - p1.value; });
-				var topTen = props.slice(0, 10);
+				var topFive = props.slice(0, 5);
 
+        //show table of pathways
 				var tbody = document.getElementById("KEGGpaths");
 				var htmlString ="<form> <h3>KEGG Pathways:</h3><br>";
-				var colors = ["#7f3b08","#542788","#e08214","#b2abd2","#fee0b6","#d8daeb","#fdb863","#8073ac","#b35806","#2d004b"]
+				var colors = ["#66c2a5","#fc8d62","#8da0cb","#e78ac3","#a6d854"]
 
-				for (var i = 0; i < topTen.length; i++) {
-					colorschemePaths[topTen[i].key] = colors[i];
-					var tr = "<b style='color:"+colors[i]+"'><label><input type='checkbox' value='"+topTen[i].key+"' onclick='highlightKEGGpaths(this)''>";
-				    tr += topTen[i].key + " </label><br><br>";
+				for (var i = 0; i < topFive.length; i++) {
+					colorschemePaths[topFive[i].key] = colors[i];
+					var tr = "<b style='color:"+colors[i]+"'><label><input type='checkbox' value='"+topFive[i].key+"' onclick='highlightKEGGpaths(this)''>";
+				    tr += topFive[i].key + " </label><br><br>";
 				    htmlString += tr;
 				}
 				htmlString +="</form>"
@@ -894,38 +873,252 @@ function listKEGGPathways(){
 				},10);
 		}
 	}
+  //Hide table, switch button to show
 	else {
 		document.getElementById('keggpathways').firstChild.data  = "Show KEGG Pathways";
 		document.getElementById('KEGGpaths').style.visibility = "hidden";
 		document.getElementById('loader').style.visibility = "hidden";
 		$('input:checkbox').prop('checked', false);
-		cy.$("node").style('border-width', '1').style('border-color', 'black');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 	}
 
 }
 
+//calculate distance between two nodes
+Math.getDistance = function( x1, y1, x2, y2 ) {
+  var   xs = x2 - x1,
+    ys = y2 - y1;   
+  xs *= xs;
+  ys *= ys;
+  return Math.sqrt( xs + ys );
+};
+
+//remove elment by value from array
+function removeA(arr) {
+    var what, a = arguments, L = a.length, ax;
+    while (L > 1 && arr.length) {
+        what = a[--L];
+        while ((ax= arr.indexOf(what)) !== -1) {
+            arr.splice(ax, 1);
+        }
+    }
+    return arr;
+}
+
+/*
+  get neighbored nodes in same pathway for each node
+*/
+function getNeighbors(cp, cy){
+  var g = 0;
+  var nearest_groups = {};
+  for(var i = 0; i < cp.length-1; i++){
+    var position = cy.$("node[entrezID ='"+cp[i]+"']").renderedPosition();
+    for(var j = 1; j < cp.length; j++){
+      let pos_m = cy.$("node[entrezID ='"+cp[j]+"']").renderedPosition()
+      let dist = Math.getDistance(position['x'], position['y'], pos_m['x'], pos_m['y']);
+      if(dist < (0.16501650165016502*cy.width()) && dist > 0){
+        nearest_groups[g] = new Set()
+        nearest_groups[g].add(cp[i]);
+        nearest_groups[g].add(cp[j]);
+      }
+    }
+    g += 1;
+  }
+  return nearest_groups;
+}
+
+/*
+  merge groups if they intersect
+*/
+function mergeNodeGroups(nearest_groups, cp_copy){
+  var merged_nodes={};
+  var m = 0;
+  var nearest_groups_values = Object.values(nearest_groups);
+  for(let group1 of nearest_groups_values){
+
+    var new_group = new Set();
+    for(let group2 of nearest_groups_values){
+      if(group1 == group2){
+        continue;
+      }
+      else{
+        for(let elem of group1){
+          if(group2.has(elem)){
+            for(let elem2 of group2){
+              new_group.add(elem2);
+              cp_copy = removeA(cp_copy, elem2);
+            }
+            continue;
+          }
+          else{   
+            new_group.add(elem);
+            cp_copy = removeA(cp_copy, elem);
+          }
+        }
+      }
+    }
+
+    var cur_group = Array.from(new_group);
+    var added = false;
+
+    if(Object.keys(merged_nodes).length == 0){
+      merged_nodes[m] = new Set();
+      merged_nodes[m]= new_group;
+    }
+    else{
+      for(let k of Object.keys(merged_nodes)){
+        if(cur_group.some(x=> merged_nodes[k].has(x))){
+          for(let n of cur_group){
+            merged_nodes[k].add(n);
+          }
+          added = true;
+          break;
+        }
+      }
+      if(!added){
+        m += 1;
+        merged_nodes[m] = new Set();
+        for(let n of cur_group){
+          merged_nodes[m].add(n);
+        }
+      }
+    }
+  }
+  for(let single of cp_copy){
+    m+=1;
+    merged_nodes[m]=new Set([single]);
+  }
+
+  // check again if groups can be further uninionized
+  var merged_nodes_new = {};
+  var new_ind = 0;
+  merged_nodes_new[new_ind] = new Set();
+  for(let k of Object.keys(merged_nodes)){
+    let intersection = new Set([...merged_nodes[k]].filter(x => merged_nodes_new[new_ind].has(x)));
+    if(intersection.size > 0){
+      var union = new Set([...merged_nodes[k], ...merged_nodes_new[new_ind]]);
+      merged_nodes_new[new_ind] = new Set([...union]);
+    }
+    else{
+      if(!merged_nodes_new[new_ind].size == 0){
+        new_ind += 1;
+        merged_nodes_new[new_ind] = merged_nodes[k];          
+      }
+      else{
+        merged_nodes_new[new_ind] = merged_nodes[k];
+      }
+    }
+  }
+  return merged_nodes_new;
+}
+
+// Pass the checkbox name to the function
+function getCheckedBoxes(chkboxName) {
+  var checkboxes = chkboxName;
+  var checkboxesChecked = [];
+  // loop over them all
+  for (var i=0; i<checkboxes.length; i++) {
+     // And stick the checked ones onto an array...
+     if (checkboxes[i].checked) {
+        checkboxesChecked.push(checkboxes[i].value);
+     }
+  }
+  // Return the array if it is non-empty, or null
+  return checkboxesChecked.length > 0 ? checkboxesChecked : null;
+}
+
 function highlightKEGGpaths(checkedPath){
-	$('input:checkbox').not(checkedPath).prop('checked', false);
-	var cp = allPaths[checkedPath.value];
-	cy.$("node[entrezID !='"+entId+"']").style('border-width', '1').style('border-color', 'black');
-	for(var i in cp){
-		var entId = cp[i];
-		if (checkedPath.checked && !pathchecked){
-			cy.$("node[entrezID ='"+entId+"']").style('border-width', '10').style('border-color', colorschemePaths[checkedPath.value]);	
-		}
-		else if(!checkedPath.checked){
-			cy.$("node[entrezID ='"+entId+"']").style('border-width', '1').style('border-color', 'black');
-		}
-		else if(checkedPath.checked && pathchecked){
-			cy.$("node[entrezID ='"+entId+"']").style('border-width', '10').style('border-color', colorschemePaths[checkedPath.value]);
-		}
-	}
-	if (checkedPath.checked){
-		pathchecked = true;
-	}
-	else if(!checkedPath.checked){
-		pathchecked = false;
-	}
+  ctx.clearRect(0,0,canvas.width, canvas.height);
+  var allCheckedPaths = getCheckedBoxes($('input:checkbox'));
+  for(var path of allCheckedPaths){
+  	var cp = [... allPaths[path]];
+    //get neighbored nodes in same pathway for each node
+    var nearest_groups = getNeighbors(cp, cy);
+
+    // merge group of neighboring nodes if they intersect
+    var merged_nodes = mergeNodeGroups(nearest_groups, cp);
+    //mark connected nodes in pathway
+    ctx.globalAlpha = 0.6;
+    for(var grouped_nodes of Object.values(merged_nodes)){
+      var centroid_x = 0;
+      var centroid_y = 0;
+      var max_dist_x = 0;
+      var max_dist_y = 0;
+      var max_dist = 0;
+      // multiple nodes in one rectangle
+      if(grouped_nodes.size > 1){
+        for(let n of grouped_nodes){
+          var position = cy.$("node[entrezID ='"+n+"']").renderedPosition();
+          centroid_x=centroid_x+position['x'];
+          centroid_y=centroid_y+position['y'];
+          for(let m of grouped_nodes){
+            let pos_m = cy.$("node[entrezID ='"+m+"']").renderedPosition()
+            let dist_x = Math.abs(position['x'] -  pos_m['x']);
+            if(dist_x > max_dist_x){
+              max_dist_x = dist_x
+            }
+            let dist_y = Math.abs(position['y'] -  pos_m['y']);
+            if(dist_y > max_dist_y){
+              max_dist_y = dist_y
+            }
+            let dist = Math.getDistance(position['x'], position['y'], pos_m['x'], pos_m['y']);
+            if(dist > max_dist){
+              max_dist = dist;
+            }
+          }
+        }
+        var renderedWidth = cy.$("node[entrezID ='"+[...grouped_nodes][0]+"']").renderedWidth();
+        max_dist_x = max_dist_x + renderedWidth;
+        max_dist_y = max_dist_y + renderedWidth;
+
+        // if nodes lay on one line, set sides to node width
+        if(max_dist_x==0){
+          max_dist_x = renderedWidth;
+        }
+        if(max_dist_y==0){
+          max_dist_y = renderedWidth;
+        }
+        var zoomfactor = 1.5;
+
+        centroid = {"x":((centroid_x/grouped_nodes.size)/zoomfactor)-(max_dist_x*0.5), "y":((centroid_y/grouped_nodes.size)/zoomfactor)-(max_dist_y*0.5)}
+        // if (path.checked){
+        ctx.beginPath();
+        ctx.rect(centroid['x'], centroid['y'], max_dist_x, max_dist_y);
+        ctx.fillStyle =colorschemePaths[path];
+        ctx.fill();
+        ctx.closePath();
+        // }
+        // if(!path.checked){
+        //   ctx.clearRect(centroid['x'], centroid['y'], max_dist_x, max_dist_y);
+        // }
+      }
+
+      // single node in square
+      else if(grouped_nodes.size == 1){
+        var k = [...grouped_nodes][0];
+        var position = cy.$("node[entrezID ='"+k+"']").renderedPosition();
+        var zoomfactor = 1.5;
+        var side = (cy.$("node[entrezID ='"+k+"']").renderedWidth()/Math.sqrt(2))*1.2;
+        
+      	// if(path.checked){
+        ctx.beginPath();
+        ctx.rect((position['x']/zoomfactor)-(0.5*side), position['y']/zoomfactor-(0.5*side), side, side);
+        ctx.fillStyle =colorschemePaths[path];
+        ctx.fill();
+        ctx.closePath();
+      	// }
+        // if(!path.checked){
+        //   ctx.clearRect((position['x']/zoomfactor)-(0.5*side), position['y']/zoomfactor-(0.5*side), side, side);
+        // }
+      }
+    }
+  	if (checkedPath.checked){
+  		pathchecked = true;
+  	}
+  	else if(!checkedPath.checked){
+  		pathchecked = false;
+  	}
+  }
 }
 /* 
   download png of graph
