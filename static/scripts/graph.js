@@ -863,7 +863,7 @@ function listKEGGPathways(){
 
 				for (var i = 0; i < topFive.length; i++) {
 					colorschemePaths[topFive[i].key] = colors[i];
-					var tr = "<b style='color:"+colors[i]+"'><label><input type='checkbox' value='"+topFive[i].key+"' onclick='highlightKEGGpaths(this)''>";
+					var tr = "<b style='color:"+colors[i]+"'><label><input type='checkbox' value='"+topFive[i].key+"' onclick='highlightKEGGpaths()''>";
 				    tr += topFive[i].key + " </label><br><br>";
 				    htmlString += tr;
 				}
@@ -879,7 +879,10 @@ function listKEGGPathways(){
 		document.getElementById('KEGGpaths').style.visibility = "hidden";
 		document.getElementById('loader').style.visibility = "hidden";
 		$('input:checkbox').prop('checked', false);
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    layer.resetTransform(ctx);
+    ctx.clearRect(0,0,canvas.width, canvas.height);          
+    layer.setTransform(ctx);
+    ctx.save();
 	}
 
 }
@@ -905,9 +908,7 @@ function removeA(arr) {
     return arr;
 }
 
-/*
-  get neighbored nodes in same pathway for each node
-*/
+// get neighbored nodes in same pathway for each node
 function getNeighbors(cp, cy){
   var g = 0;
   var nearest_groups = {};
@@ -927,9 +928,7 @@ function getNeighbors(cp, cy){
   return nearest_groups;
 }
 
-/*
-  merge groups if they intersect
-*/
+// merge groups if they intersect
 function mergeNodeGroups(nearest_groups, cp_copy){
   var merged_nodes={};
   var m = 0;
@@ -1027,98 +1026,93 @@ function getCheckedBoxes(chkboxName) {
   return checkboxesChecked.length > 0 ? checkboxesChecked : null;
 }
 
-function highlightKEGGpaths(checkedPath){
-  ctx.clearRect(0,0,canvas.width, canvas.height);
-  var allCheckedPaths = getCheckedBoxes($('input:checkbox'));
-  for(var path of allCheckedPaths){
-  	var cp = [... allPaths[path]];
-    //get neighbored nodes in same pathway for each node
-    var nearest_groups = getNeighbors(cp, cy);
+// draw a rectangle at given position with given sidelengths and colored by pathway
+function drawRect(position, side_x, side_y, path){
+    ctx.beginPath();
+    ctx.rect(position['x']-(0.5*side_x), position['y']-(0.5*side_y), side_x, side_y);
+    ctx.fillStyle =colorschemePaths[path];
+    ctx.fill();
+    ctx.closePath();
+}
 
-    // merge group of neighboring nodes if they intersect
-    var merged_nodes = mergeNodeGroups(nearest_groups, cp);
-    //mark connected nodes in pathway
-    ctx.globalAlpha = 0.6;
-    for(var grouped_nodes of Object.values(merged_nodes)){
-      var centroid_x = 0;
-      var centroid_y = 0;
-      var max_dist_x = 0;
-      var max_dist_y = 0;
-      var max_dist = 0;
-      // multiple nodes in one rectangle
-      if(grouped_nodes.size > 1){
-        for(let n of grouped_nodes){
-          var position = cy.$("node[entrezID ='"+n+"']").renderedPosition();
-          centroid_x=centroid_x+position['x'];
-          centroid_y=centroid_y+position['y'];
-          for(let m of grouped_nodes){
-            let pos_m = cy.$("node[entrezID ='"+m+"']").renderedPosition()
-            let dist_x = Math.abs(position['x'] -  pos_m['x']);
-            if(dist_x > max_dist_x){
-              max_dist_x = dist_x
+// draw rectangles highlighting the selected pathways
+function drawPathwayRectangles(){
+  var allCheckedPaths = getCheckedBoxes($('input:checkbox'));
+  if(allCheckedPaths){
+    for(var path of allCheckedPaths){
+        var cp = [... allPaths[path]];
+        //get neighbored nodes in same pathway for each node
+        var nearest_groups = getNeighbors(cp, cy);
+
+        // merge group of neighboring nodes if they intersect
+        var merged_nodes = mergeNodeGroups(nearest_groups, cp);
+        //mark connected nodes in pathway
+        ctx.globalAlpha = 0.6;
+        for(var grouped_nodes of Object.values(merged_nodes)){
+          var centroid_x = 0;
+          var centroid_y = 0;
+          var max_dist_x = 0;
+          var max_dist_y = 0;
+          // multiple nodes in one rectangle
+          if(grouped_nodes.size > 1){
+            for(let n of grouped_nodes){
+              var position = cy.$("node[entrezID ='"+n+"']").position();
+              centroid_x=centroid_x+position['x'];
+              centroid_y=centroid_y+position['y'];
+              for(let m of grouped_nodes){
+                let pos_m = cy.$("node[entrezID ='"+m+"']").position()
+                let dist_x = Math.abs(position['x'] -  pos_m['x']);
+                if(dist_x > max_dist_x){
+                  max_dist_x = dist_x
+                }
+                let dist_y = Math.abs(position['y'] -  pos_m['y']);
+                if(dist_y > max_dist_y){
+                  max_dist_y = dist_y
+                }
+              }
             }
-            let dist_y = Math.abs(position['y'] -  pos_m['y']);
-            if(dist_y > max_dist_y){
-              max_dist_y = dist_y
+            var renderedWidth = cy.$("node[entrezID ='"+[...grouped_nodes][0]+"']").width();
+            max_dist_x = (max_dist_x + renderedWidth)*1.1;
+            max_dist_y = (max_dist_y + renderedWidth)*1.1;
+
+            // if nodes lay on one line, set sides to node width
+            if(max_dist_x==0){
+              max_dist_x = renderedWidth;
             }
-            let dist = Math.getDistance(position['x'], position['y'], pos_m['x'], pos_m['y']);
-            if(dist > max_dist){
-              max_dist = dist;
+            if(max_dist_y==0){
+              max_dist_y = renderedWidth;
             }
+
+            centroid = {"x":(centroid_x/grouped_nodes.size), "y":(centroid_y/grouped_nodes.size)};
+            drawRect(centroid, max_dist_x, max_dist_y, path)           
+          }
+
+          // single node in square
+          else if(grouped_nodes.size == 1){
+            var k = [...grouped_nodes][0];
+            var position = cy.$("node[entrezID ='"+k+"']").position();
+            var side = (cy.$("node[entrezID ='"+k+"']").width()/Math.sqrt(2))*1.5;
+            drawRect(position, side, side, path);
           }
         }
-        var renderedWidth = cy.$("node[entrezID ='"+[...grouped_nodes][0]+"']").renderedWidth();
-        max_dist_x = max_dist_x + renderedWidth;
-        max_dist_y = max_dist_y + renderedWidth;
-
-        // if nodes lay on one line, set sides to node width
-        if(max_dist_x==0){
-          max_dist_x = renderedWidth;
-        }
-        if(max_dist_y==0){
-          max_dist_y = renderedWidth;
-        }
-        var zoomfactor = 1.5;
-
-        centroid = {"x":((centroid_x/grouped_nodes.size)/zoomfactor)-(max_dist_x*0.5), "y":((centroid_y/grouped_nodes.size)/zoomfactor)-(max_dist_y*0.5)}
-        // if (path.checked){
-        ctx.beginPath();
-        ctx.rect(centroid['x'], centroid['y'], max_dist_x, max_dist_y);
-        ctx.fillStyle =colorschemePaths[path];
-        ctx.fill();
-        ctx.closePath();
-        // }
-        // if(!path.checked){
-        //   ctx.clearRect(centroid['x'], centroid['y'], max_dist_x, max_dist_y);
-        // }
-      }
-
-      // single node in square
-      else if(grouped_nodes.size == 1){
-        var k = [...grouped_nodes][0];
-        var position = cy.$("node[entrezID ='"+k+"']").renderedPosition();
-        var zoomfactor = 1.5;
-        var side = (cy.$("node[entrezID ='"+k+"']").renderedWidth()/Math.sqrt(2))*1.2;
-        
-      	// if(path.checked){
-        ctx.beginPath();
-        ctx.rect((position['x']/zoomfactor)-(0.5*side), position['y']/zoomfactor-(0.5*side), side, side);
-        ctx.fillStyle =colorschemePaths[path];
-        ctx.fill();
-        ctx.closePath();
-      	// }
-        // if(!path.checked){
-        //   ctx.clearRect((position['x']/zoomfactor)-(0.5*side), position['y']/zoomfactor-(0.5*side), side, side);
-        // }
       }
     }
-  	if (checkedPath.checked){
-  		pathchecked = true;
-  	}
-  	else if(!checkedPath.checked){
-  		pathchecked = false;
-  	}
-  }
+}
+
+/*
+  to highlight a selected KEGG pathway, draw a rectangle around nodes contained in the pathway. Nodes that are close to each other on screen are in the same rectangle.
+*/
+function highlightKEGGpaths(){
+  ctx.clearRect(0,0,canvas.width, canvas.height);
+  cy.on("render cyCanvas.resize", evt => {
+          layer.resetTransform(ctx);
+          ctx.clearRect(0,0,canvas.width, canvas.height);          
+          layer.setTransform(ctx);
+          ctx.save();
+      drawPathwayRectangles();
+    ctx.restore();
+  });
+  cy.zoom(cy.zoom()*1.000000000000001);
 }
 /* 
   download png of graph
