@@ -95,6 +95,10 @@ function getNodesAndEdges(graphString){
         var symbol = regExp.exec(graphString[i])[1];
         curNode.symbol = symbol;
       }
+      if(graphString[i].includes("v_name\"\>")){  // get symbol of node
+        var nodename = regExp.exec(graphString[i])[1];
+        curNode.nodename = nodename;
+      }
       if(graphString[i].includes("\"v_"+nodeVal+"\"\>")){
         var val = regExp.exec(graphString[i])[1]; // if availabe get node value
         if(!isNaN(parseFloat(val))){
@@ -273,6 +277,7 @@ function getTextWidth(text, font) {
 
 //add nodes and edges to cy-object (update if attribute has changed)
 function addNodesAndEdges(){
+  console.log(nodes);
   cy = cytoscape({
     container: document.getElementById('cy'),
     ready: function(){
@@ -292,11 +297,10 @@ function addNodesAndEdges(){
           'border-color' : 'black',
           'border-style' : 'solid',
           'border-width' : '2',
-          'label': 'data(symbol)',
+          // 'label': 'data(symbol)',
           "text-valign" : "center",
           "text-halign" : "center",
           "font-size" : 10,
-          //"color":"black"
       }},
       {selector: 'node[!'+nodeVal+']',
         style: {
@@ -357,10 +361,8 @@ function addNodesAndEdges(){
       // style edges
       {selector: 'edge',
         style: {
-          // 'target-arrow-shape': 'triangle',
           'arrow-scale' : 2,
           'curve-style' : 'bezier',
-          // 'label':'data(interactionShort)',
           'font-size':16,
           'text-rotation':'autorotate',
           'font-weight':800,
@@ -443,32 +445,38 @@ function addNodesAndEdges(){
 
       ]
   });
+  if(nodes.every(function(x){return(x.data["symbol"])})){
+    for(n=0; n < nodes.length; n++){
+      cy.batch(function(){
+      cy.$('node[id =\''  + nodes[n].data.id + '\']').style("label",nodes[n].data.symbol);
+      });
+    }
+  }
+  else{
+    for(n=0; n < nodes.length; n++){
+      cy.batch(function(){
+      cy.$('node[id =\''  + nodes[n].data.id + '\']').style("label",nodes[n].data.nodename);
+      });
+    }
+  }
+
 	// on click collapse all other nodes and expand extra nodes for clicked node
 	cy.on('tap', 'node', function(evt){
 		clickedNode = evt.target;
 		if(!collapsed){
 			if(expandGraphs[evt.target.data().symbol]){
 			  collapsed = true;
-			  // collapseNodes(evt.target, evt.target.data().id);
 			  clickedNodesPosition = cy.$(evt.target).position();
 			  visualize(expandGraphs[evt.target.data().symbol]);
-			  document.getElementById('KEGGpaths').style.visibility ="hidden";
-			  document.getElementById('keggpathways').firstChild.data  = "Show KEGG Pathways"
-			  $('input:checkbox').prop('checked', false);
-			  cy.$("node").style('border-width', '1').style('border-color', 'black');
 			}
 		}
 		else if(collapsed){
 		 	collapsed = false;
 		 	visualize(graphString);
-		 	document.getElementById('KEGGpaths').style.visibility ="hidden";
-			document.getElementById('keggpathways').firstChild.data  = "Show KEGG Pathways"
-			$('input:checkbox').prop('checked', false);
-			cy.$("node").style('border-width', '1').style('border-color', 'black');
 		 }
 		
 	}); // on tap
-  cy.nodes().noOverlap({ padding: 5 })
+  cy.nodes().noOverlap({ padding: 5 });
   if(! noAttr){
   // calculate label position for legend and style legend
     var fontSize = 10;
@@ -846,7 +854,6 @@ function listKEGGPathways(){
     layer.setTransform(ctx);
     ctx.save();
 	}
-
 }
 
 //calculate distance between two nodes
@@ -875,9 +882,29 @@ function getNeighbors(cp, cy){
   var g = 0;
   var nearest_groups = {};
   for(var i = 0; i < cp.length-1; i++){
-    var position = cy.$("node[entrezID ='"+cp[i]+"']").renderedPosition();
+    let renderedPos_i_id = cy.$("node[entrezID ='"+cp[i]+"']").renderedPosition();
+    let renderedPos_i = cy.$("node[entrez ='"+cp[i]+"']").renderedPosition();
+    if(renderedPos_i_id){
+      var position = renderedPos_i_id;
+    }
+    else if(renderedPos_i){
+      var position = renderedPos_i;
+    }
+    else{
+      continue;
+    }
     for(var j = 1; j < cp.length; j++){
-      let pos_m = cy.$("node[entrezID ='"+cp[j]+"']").renderedPosition()
+      let renderedPos_j_id = cy.$("node[entrezID ='"+cp[j]+"']").renderedPosition();
+      let renderedPos_j = cy.$("node[entrez ='"+cp[j]+"']").renderedPosition();
+      if(renderedPos_j_id){
+        var pos_m = renderedPos_j_id;
+      }
+      else if(renderedPos_j){
+        var pos_m = renderedPos_j;
+      }
+      else{
+        continue;
+      }
       let dist = Math.getDistance(position['x'], position['y'], pos_m['x'], pos_m['y']);
       if(dist < (0.16501650165016502*cy.width()) && dist > 0){
         nearest_groups[g] = new Set()
@@ -1052,9 +1079,18 @@ function drawPathwayRectangles(){
           // single node in square
           else if(grouped_nodes.size == 1){
             var k = [...grouped_nodes][0];
-            var position = cy.$("node[entrezID ='"+k+"']").position();
-            var side = (cy.$("node[entrezID ='"+k+"']").width()/Math.sqrt(2))*1.7;
-            drawRect(position, side, side, path);
+            let renderedPos_id = cy.$("node[entrezID ='"+k+"']").position();
+            let renderedPos = cy.$("node[entrez ='"+k+"']").position();
+            if(renderedPos_id){
+              var position = renderedPos_id;
+              var side = (cy.$("node[entrezID ='"+k+"']").width()/Math.sqrt(2))*1.7;
+              drawRect(position, side, side, path);
+            }
+            else if(renderedPos){
+              var position = renderedPos;
+              var side = (cy.$("node[entrez ='"+k+"']").width()/Math.sqrt(2))*1.7;
+              drawRect(position, side, side, path);
+            }
           }
         }
       }
