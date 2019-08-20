@@ -3,13 +3,13 @@
 1. Disable Cross-Origin Restrictions in your Browser! Easiest is to start Google Chrome in the terminal using 
 
 	##### for OSX 
-open -n -a /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --args --user-data-dir="/tmp/chrome_dev_test" --disable-web-security
+	open -n -a /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --args --user-data-dir="/tmp/chrome_dev_test" --disable-web-security
 
 	##### for Windows10 
-C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --disable-web-security --disable-gpu --user-data-dir=~/chromeTemp
+	C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --disable-web-security --disable-gpu --user-data-dir=~/chromeTemp
 
 	##### Linux
-google-chrome --disable-web-security
+	google-chrome --disable-web-security
 
 
 
