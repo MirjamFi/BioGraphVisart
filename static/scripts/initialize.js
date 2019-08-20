@@ -17,6 +17,11 @@ var expandGraphs = [];
 var clicked = false;
 var clickedNode;
 var clickedNodesPosition;
+var colorschemePaths;
+var allPaths;
+var layer;
+var canvas;
+var ctx;
 
 function isJsonFile(){
 	$.get("/foundGraphs", function(foundGraphs) {
@@ -59,6 +64,13 @@ function cleanSelections(){
   document.getElementById('KEGGpaths').innerHTML = "";
   document.getElementById('keggpathways').firstChild.data = "Show KEGG Pathways";
   document.getElementById('KEGGpaths').style.visibility = "hidden";
+  allPaths = null;
+  if(layer){
+    layer.resetTransform(ctx);
+    ctx.clearRect(0,0,canvas.width, canvas.height);          
+    layer.setTransform(ctx);
+    ctx.save();
+  }
   var domValues = document.getElementById("values");
   if(domValues){  
     domValues.parentNode.removeChild(domValues);}

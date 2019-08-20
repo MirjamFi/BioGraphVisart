@@ -7,7 +7,7 @@ visualize a graph from .graphml-file
 */
 
 function visualize(graphString) {
-	
+   
    //create cytoscape object; not necessary for json
   if(!isJson){
     if(!noAttr && !clicked){
@@ -18,8 +18,8 @@ function visualize(graphString) {
     var nodesAndEdges = getNodesAndEdges(graphString);
     nodes = nodesAndEdges[0];
     edges = nodesAndEdges[1]; 
-	nodeValuesNum = nodesAndEdges[2];
-	attributesTypes = nodesAndEdges[3];
+  	nodeValuesNum = nodesAndEdges[2];
+  	attributesTypes = nodesAndEdges[3];
 
     nodeValuesNum = transform01toTF(nodeValuesNum);
 
@@ -58,6 +58,13 @@ function visualize(graphString) {
         });
   canvas = layer.getCanvas();
   ctx = canvas.getContext('2d');
+  var b = $.extend( [], document.getElementById('keggpathways').firstChild.data ).join("");
+  if(b == "Hide KEGG Pathways" && allPaths){
+    highlightKEGGpaths();
+  }
+  else if(b == "Show KEGG Pathways" && allPaths){
+    document.getElementById('KEGGpaths').style.visibility ="hidden";
+  }
 }
 
 //get information of nodes ande edges
@@ -506,53 +513,9 @@ function addNodesAndEdges(){
 
 //calculate graph layout (only once)
 function calculateLayout(){
-	// var clickedNodeID = cy.$("node[symbol='"+clickedNode.data().symbol+"']").data().id;
-	// if(collapsed){
-		// cy.$("node[symbol!='"+clickedNode.data().symbol+"']").layout({
-		// 		    name:'dagre',
-		// 		    // Whether to fit the network view after when done
-		// 		  fit: true,
-
-		// 		  // Padding on fit
-		// 		  padding: 30
-		// 		    }).run();
-		// 	  cy.$("node[symbol='"+clickedNode.data().symbol+"']").position(clickedNodesPosition);
-		// 	  console.log(clickedNodesPosition, cy.$("node[symbol='"+clickedNode.data().symbol+"']").position());
-	// }
-	// else{
 		cy.layout({
 		    name:'dagre',
-		    // Whether to fit the network view after when done
-		  //fit: true,
-		  // dagre algo options, uses default value on undefined
-  // nodeSep: 50, // the separation between adjacent nodes in the same rank
-  // edgeSep: 50, // the separation between adjacent edges in the same rank
-  // rankSep: 100, // the separation between each rank in the layout
-  // rankDir: 'TB', // 'TB' for top to bottom flow, 'LR' for left to right,
-  // ranker: 'network-simplex', // Type of algorithm to assign a rank to each node in the input graph. Possible values: 'network-simplex', 'tight-tree' or 'longest-path'
-  // minLen: function( edge ){ return 1; }, // number of ranks to keep between the source and target of the edge
-  // edgeWeight: function( edge ){ return 1; }, // higher weight edges are generally made shorter and straighter than lower weight edges
-
-  // general layout options
-  // spacingFactor: undefined, // Applies a multiplicative factor (>0) to expand or compress the overall area that the nodes take up
-  // nodeDimensionsIncludeLabels: true, // whether labels should be included in determining the space used by a node
-  // animate: false, // whether to transition the node positions
-  // animateFilter: function( node, i ){ return true; }, // whether to animate specific nodes when animation is on; non-animated nodes immediately go to their final positions
-  // animationDuration: 500, // duration of animation in ms if enabled
-  // animationEasing: undefined, // easing of animation if enabled
-  // boundingBox: undefined, // constrain layout bounds; { x1, y1, x2, y2 } or { x1, y1, w, h }
-  // transform: function( clickedNodeID, clickedNodesPosition ){ return clickedNodesPosition; }, // a function that applies a transform to the final node position
-  // ready: function(){}, // on layoutready
-  // stop: function(){}, // on layoutstop
-
-		  // Padding on fit
-		  // padding: 10
 		    }).run();
-	// }
-  
- //  	if(collapsed){
- //  		
-	// }
 }
 
 //show legend
@@ -790,11 +753,7 @@ function getPathwaysFromKEGG(name){
 /*
 	generate a checkbox menu for the 10 most common pathways of all genes in the graph
 */
-var colorschemePaths = []
-var allPaths = []
-var layer;
-var canvas;
-var ctx;
+
 
 function listKEGGPathways(){
   //swap button "Hide"/"show"
@@ -806,9 +765,12 @@ function listKEGGPathways(){
 		}
     //get pathways from KEGG, show loader while doing so
 		else{
+      document.getElementById('KEGGpaths').style.visibility="visible";
 			document.getElementById('loader').style.visibility = "visible";
 			setTimeout(function(){
 				var pathsCount = [];
+        allPaths = [];
+        colorschemePaths = [];
 				for(var n in nodes){
 					if(nodes[n]["data"]["symbol"]!="legend"){
 						var	entrezID = nodes[n]["data"]["entrezID"].toString();
@@ -1091,7 +1053,7 @@ function drawPathwayRectangles(){
           else if(grouped_nodes.size == 1){
             var k = [...grouped_nodes][0];
             var position = cy.$("node[entrezID ='"+k+"']").position();
-            var side = (cy.$("node[entrezID ='"+k+"']").width()/Math.sqrt(2))*1.5;
+            var side = (cy.$("node[entrezID ='"+k+"']").width()/Math.sqrt(2))*1.7;
             drawRect(position, side, side, path);
           }
         }
