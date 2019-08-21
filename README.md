@@ -1,26 +1,58 @@
-# SubgraphVisualization
+# BioGraphVisart
+This is a web-based tool to visualize *.graphml*-files, especially with biological background. It is written in javascript based on [nodejs](nodejs.org) and [cytoscape.js](http://js.cytoscape.org).
 
-1. Disable Cross-Origin Restrictions in your Browser! Easiest is to start Google Chrome in the terminal using 
+**Nodes** are usually genes but can be something different with restricted options of visualisation and additional formation.
+The **labels** of the nodes are taken from the node attribute *\<data key="v\_symbol"\>...\</data\>* (if gene symbols available) or *\<data key="v\_name"\>...\</data\>* (otherwise).
 
-	##### for OSX 
-	open -n -a /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --args --user-data-dir="/tmp/chrome_dev_test" --disable-web-security
+**Edges** are interactions between genes taken from the edge attribute *\<data key="e_interaction"\>...\</data\>*. Edge arrows representation depends on the interaction type (see [kegg.js](https://www.kegg.jp/kegg/xml/docs/)) and is shown in the table ***Interactions***. Default edge arrow is 'vee'.
 
-	##### for Windows10 
-	C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --disable-web-security --disable-gpu --user-data-dir=~/chromeTemp
+Nodes are **color**ed by numeric or boolean attribute values you can select from the drop-down menu *Choose node's attribute*. If no such attributes are available the nodes are white. The **legend node** in the graph displays the selected attribute's name and the value range (blue: low values/false, red: high values/true, white: 0 or undefined).
 
-	##### Linux
-	google-chrome --disable-web-security
+In addition, the **node shape** can be changed according to boolean node attributes. Select the attribute from the second drop-down menu *Choose node's attribute* and select the shape from *Choose shape* drop-down menu. If the attribute is true for a node, the shape is changed accordingly.
+
+The generated graph can be **download**ed as *png, svg* or *json*. A file name can be given (without file ending) but it is not necessary. If no file name given, the graph is stored as *\<filename\>\_\<attribute\>\<png,svg,json\>*. The *json*-file can be used to save the current status of the graph and can be loaded back in again for further interactive visualization instead of loading the native *.graphml*.
+
+Moving the mouse over a node displays the attributes value, over an edge it displays the interaction type (important if there are multiple interactions for one edge). The nodes can be draged and moved around. You can zoom in and out using the mouse wheel/touch pad and also reset the layout (button *Reset layout*).
+
+If the nodes have the EntrezID as attribute (*\<data key="v\_entrez"\>...\</data\>* or *\<data key="v\_entrezID"\>...\</data\>*), clicking on the button *Show KEGG pathways* the ***human*** pathways the displayed genes/nodes are in are collected from [KEGG](https://www.genome.jp/kegg/) and the five pathways in which most of the displayed genes are in are listed. These pathways can be selected and the contained genes are highlighted by accordingly colored rectangles. Nodes that are close to each other are assembled in the same rectangle. Depending on the zoom this might cause that nodes are contained that shoul not. Zooming in helps to clearify nodes in question. Highlighted pathways can of course be hidden again. 
+
+At any time the node color attribute can be changed without changing the displayed graph. 
+
+You can also simply load another *.graphml* without reloading the page.
+ 
+![](https://github.com/MirjamFi/SubgraphVisualization/blob/master/Example.png)
 
 
+### How to start it
 
-2. Run in terminal in /static/scripts: node server.js 
+1. Disable Cross-Origin Restrictions in your Browser!  
+##### Google Chrome:
+Start Google Chrome in the terminal using 
 
-3. Server running at http://localhost:3000/ (Open in Browser)
+	###### for OSX 
+		open -n -a /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --args --user-data-dir="/tmp/chrome_dev_test" --disable-web-security
 
-Select a .graphml-file and select attribute for node coloring to generate a subgraph or select a .json of a previous generated graph. You can download graphs as .png/.svg/.json. A file name can be given (without file ending) but it is not necessary. If no file name given, the graph is stored as \<file name\>\_\<attribute\>.
+	###### for Windows10 
+		C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --disable-web-security --disable-gpu --user-data-dir=~/chromeTemp
 
-The label of the nodes is taken from the node attribute \<data key="v\_symbol"\>...\</data\> (if gene symbols available) or \<data key="v\_name"\>...\</data\> (otherwise).
+	###### Linux
+		google-chrome --disable-web-security
 
-To show the (human) KEGG pathways the nodes are in, the nodes must have the EntrezID as attribute (\<data key="v\_entrez"\>...\</data\> or \<data key="v\_entrezID"\>...\</data\>).
+	##### Safari
+	Go to *Safari -> Preferences -> Advanced*
 
-###### Works for Chrome 
+	Tick *Show Develop Menu* in menu bar
+
+	In the Develop Menu tick *Disable Cross-Origin Restrictions* and tick *Disable local file restrictions*
+
+2. Run terminal in *SubgraphVisualization-master/static/scripts*: 
+		
+		node server.js 
+
+3. Open in browser
+
+		http://localhost:3000/
+
+Select a .graphml-file and select attribute for node coloring to generate a subgraph or select a .json of a previous generated graph.
+
+
