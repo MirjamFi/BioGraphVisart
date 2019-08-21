@@ -26,27 +26,28 @@ You can also simply load another *.graphml* without reloading the page.
 ### How to start it
 
 1. Disable Cross-Origin Restrictions in your Browser!  
-##### Google Chrome:
-Start Google Chrome in the terminal using 
 
-	###### for OSX 
-	
-		open -n -a /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --args --user-data-dir="/tmp/chrome_dev_test" --disable-web-security
+	- **Google Chrome**:
+		* Start Google Chrome in the terminal using 
 
-	###### for Windows10 
-	
-		C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --disable-web-security --disable-gpu --user-data-dir=~/chromeTemp
+	 		OSX 
+	 
+	 			open -n -a /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --args --user-data-dir="/tmp/chrome_dev_test" --disable-web-security
+	 		Windows10
+		
+				C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --disable-web-security --disable-gpu --user-data-dir=~/chromeTemp
 
-	###### Linux
-	
-		google-chrome --disable-web-security
+			Linux
+		
+				google-chrome --disable-web-security
 
-	##### Safari
-	Go to *Safari -> Preferences -> Advanced*
+	- **Safari**
+		* Go to *Safari -> Preferences -> Advanced*
 
-	Tick *Show Develop Menu* in menu bar
+		* Tick *Show Develop Menu* in menu bar
 
-	In the Develop Menu tick *Disable Cross-Origin Restrictions* and tick *Disable local file restrictions*
+		* In the Develop Menu tick *Disable Cross-Origin Restrictions* and tick *Disable local file restrictions*
+
 
 2. Run terminal in *SubgraphVisualization-master/static/scripts*: 
 		
@@ -56,6 +57,6 @@ Start Google Chrome in the terminal using
 
 		http://localhost:3000/
 
-Select a .graphml-file and select attribute for node coloring to generate a subgraph or select a .json of a previous generated graph.
+4. Select a .graphml-file and select attribute for node coloring to generate a subgraph or select a .json of a previous generated graph.
 
 
