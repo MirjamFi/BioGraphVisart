@@ -1,7 +1,7 @@
 # BioGraphVisart
 This is a web-based tool to visualize *.graphml*-files, especially with biological background. It is written in javascript based on [nodejs](nodejs.org) and [cytoscape.js](http://js.cytoscape.org).
 
-**Nodes** are usually genes but can be something different with restricted options of visualisation and additional formation.
+**Nodes** are usually genes but can be something different with restricted options of visualisation and additional information.
 The **labels** of the nodes are taken from the node attribute *\<data key="v\_symbol"\>...\</data\>* (if gene symbols available) or *\<data key="v\_name"\>...\</data\>* (otherwise).
 
 **Edges** are interactions between genes taken from the edge attribute *\<data key="e_interaction"\>...\</data\>*. Edge arrows representation depends on the interaction type (see [kegg.js](https://www.kegg.jp/kegg/xml/docs/)) and is shown in the table ***Interactions***. Default edge arrow is 'vee'.
