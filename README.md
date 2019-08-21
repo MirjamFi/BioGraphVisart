@@ -21,6 +21,6 @@ Select a .graphml-file and select attribute for node coloring to generate a subg
 
 The label of the nodes is taken from the node attribute \<data key="v\_symbol"\>...\</data\> (if gene symbols available) or \<data key="v\_name"\>...\</data\> (otherwise).
 
-To show the KEGG pathways the nodes are in, the nodes must have the EntrezID as attribute (\<data key="v\_entrez"\>...\</data\> or \<data key="v\_entrezID"\>...\</data\>).
+To show the (human) KEGG pathways the nodes are in, the nodes must have the EntrezID as attribute (\<data key="v\_entrez"\>...\</data\> or \<data key="v\_entrezID"\>...\</data\>).
 
 ###### Works for Chrome 
