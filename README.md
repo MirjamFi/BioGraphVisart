@@ -1,5 +1,5 @@
 # BioGraphVisart
-This is a web-based tool to visualize *.graphml*-files, especially with biological background. It is written in javascript based on [nodejs](nodejs.org) and [cytoscape.js](http://js.cytoscape.org).
+This is a web-based tool to interactively visualize *.graphml*-files, especially with biological background. It is written in javascript based on [nodejs](nodejs.org) and [cytoscape.js](http://js.cytoscape.org).
 
 **Nodes** are usually genes but can be something different with restricted options of visualisation and additional information.
 The **labels** of the nodes are taken from the node attribute *\<data key="v\_symbol"\>...\</data\>* (if gene symbols available) or *\<data key="v\_name"\>...\</data\>* (otherwise).
