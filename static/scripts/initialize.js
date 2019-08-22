@@ -183,8 +183,20 @@ function readJson(file) {
 
       cy.$('node['+nodeVal+'="false"]').style('background-color', '#006cf0').style('color','white');
       cy.$('node['+nodeVal+' = "true"]').style('background-color', '#d50000').style('color','white');
-
-      
+      if(cy.nodes().every(function(x){return(x["_private"].data["symbol"])})){
+        for(n=0; n < cy.nodes().length; n++){
+          cy.batch(function(){
+          cy.$('node[id =\''  + cy.nodes()[n]["_private"].data.id + '\']').style("label",cy.nodes()[n]["_private"].data.symbol);
+          });
+        }
+      }
+      else{
+        for(n=0; n < cy.nodes().length; n++){
+          cy.batch(function(){
+          cy.$('node[id =\''  + cy.nodes()[n]["_private"].data.id + '\']').style("label",cy.nodes()[n]["_private"].data.nodename);
+          });
+        }
+      }
       if(val.length>0){
         // legend node
         var legendPosition = cy.nodes('node[id = "l1"]').position();
