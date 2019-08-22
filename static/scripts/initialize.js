@@ -75,11 +75,14 @@ function cleanSelections(){
   if(domValues){  
     domValues.parentNode.removeChild(domValues);}
     var domNodeShapesAttr = document.getElementById("nodeShapesAttr");
+    var domLayout = document.getElementById("selectlayout");
   if(domNodeShapesAttr){
     domNodeShapesAttr.parentNode.removeChild(domNodeShapesAttr);}
     var domNodeShapes = document.getElementById("nodeShapes");
   if(domNodeShapes)
     {domNodeShapes.parentNode.removeChild(domNodeShapes);}
+  if(domLayout)
+    {domLayout.parentNode.removeChild(domLayout);}
 }
 /* 
 read from json - file and initialize cy-object
@@ -348,7 +351,30 @@ function loadFile() {
     optnShape.text=nodeShape;
     optnShape.value=nodeShape;
     drpShape.add(optnShape);
-  })
+  });
+
+  // layout dropdown
+  var drpLayout = document.createElement("select");
+  drpLayout.id = "selectlayout";
+  drpLayout.name = "selectlayout";
+  document.getElementById("configPart").appendChild(drpLayout);
+  drpLayout.style.visibility = "hidden";
+  drpLayout.onchange = changeLayout;
+
+  var seleLayout = document.createElement("OPTION");
+  seleLayout.text = "Select Layout";
+  seleLayout.value = "";
+  drpLayout.add(seleLayout);
+
+  const layoutArray = ["dagre (default)", "klay", "breadthfirst", "cose-bilkent", "grid"];
+
+  layoutArray.forEach(function(s){
+    var graphLayout = s;
+    var optnLayout = document.createElement("OPTION");
+    optnLayout.text=graphLayout;
+    optnLayout.value=graphLayout;
+    drpLayout.add(optnLayout);
+  });
 
   // no attributes for node coloring/shape
   var noOptn = true;

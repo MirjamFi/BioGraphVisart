@@ -277,7 +277,6 @@ function getTextWidth(text, font) {
 
 //add nodes and edges to cy-object (update if attribute has changed)
 function addNodesAndEdges(){
-  console.log(nodes);
   cy = cytoscape({
     container: document.getElementById('cy'),
     ready: function(){
@@ -613,6 +612,7 @@ function removeOptions(selectbox){
 function activateNodeShapeChange(){
   document.getElementById('nodeShapesAttr').setAttribute('style','visibility:visible');
   document.getElementById('nodeShapes').setAttribute('style','visibility:visible');
+  document.getElementById('selectlayout').setAttribute('style','visibility:visible');
 }
 
 // change node shape of nodes with given attribute
@@ -744,6 +744,56 @@ function changeNodeShapes(){
   }
 }
 
+function changeLayout(){
+  var selectedLayout = document.getElementById('selectlayout').value;
+  if(selectedLayout == "klay"){
+    var options = {
+      animate: true, // Whether to transition the node positions
+      klay: {
+        aspectRatio: 1.49, // The aimed aspect ratio of the drawing, that is the quotient of width by height
+        compactComponents: true, // Tries to further compact components (disconnected sub-graphs).
+        nodeLayering:'LONGEST_PATH', // Strategy for node layering.
+        /* NETWORK_SIMPLEX This algorithm tries to minimize the length of edges. This is the most computationally intensive algorithm. 
+        The number of iterations after which it aborts if it hasn't found a result yet can be set with the Maximal Iterations option.
+        LONGEST_PATH A very simple algorithm that distributes nodes along their longest path to a sink node.
+        INTERACTIVE Distributes the nodes into layers by comparing their positions before the layout algorithm was started. The idea is that the relative horizontal order of nodes as it was before layout was applied is not changed. This of course requires valid positions for all nodes to have been set on the input graph before calling the layout algorithm. The interactive node layering algorithm uses the Interactive Reference Point option to determine which reference point of nodes are used to compare positions. */
+        thoroughness: 10 // How much effort should be spent to produce a nice layout..
+      },
+    };
+    cy.layout({
+      name:'klay',
+      options
+    }).run();
+  }
+  else if(selectedLayout == "breadthfirst"){
+    cy.layout({
+        name: "breadthfirst",
+        spacingFactor: 0.5,
+        animate: true
+      }).run();
+  }
+  else if(selectedLayout == "dagre (default)"){
+    cy.layout({
+        name: "dagre",
+        animate: true
+      }).run();
+  }
+  else if(selectedLayout == "cose-bilkent"){
+    cy.layout({
+        name: "cose-bilkent",
+        // Gravity range (constant)
+        gravityRange: 1.3,
+        animate: true
+      }).run();
+  }
+  else if(selectedLayout == "grid"){
+    cy.layout({
+        name: "grid",
+        animate: true,
+        avoidOverlapPadding: 5
+      }).run();
+  }
+}
 // get pathways of selected gene from kegg using entrez id
 function getPathwaysFromKEGG(name){ 
 	var responsetxt;
