@@ -8,6 +8,8 @@ The **labels** of the nodes are taken from the node attribute *\<data key="v\_sy
 
 Nodes are **color**ed by numeric or boolean attribute values you can select from the drop-down menu *Select Coloring Attribute*. If no such attributes are available the nodes are white. The **legend node** in the graph displays the selected attribute's name and the value range (blue: low values/false, red: high values/true, white: 0 or undefined).
 
+The default **layout** is [dagre](https://github.com/cytoscape/cytoscape.js-dagre), but you can also select [klay](https://github.com/cytoscape/cytoscape.js-klay),[bbreadthfirst](https://github.com/cytoscape/cytoscape.js/tree/master/documentation/demos/images-breadthfirst-layout), [cose-bilkent](), and [grid](https://github.com/cytoscape/cytoscape.js-cose-bilkent). There is not one optimal layout for all types of graphs so try it.
+
 In addition, the **node shape** can be changed according to boolean node attributes. Select the attribute from the second drop-down menu *Select Shape Attribute* and select the shape from *Select Shape* drop-down menu. If the attribute is true for a node, the shape is changed accordingly.
 
 The generated graph can be **download**ed as *png, svg* or *json*. A file name can be given (without file ending) but it is not necessary. If no file name given, the graph is stored as *\<filename\>\_\<attribute\>\<png,svg,json\>*. The *json*-file can be used to save the current status of the graph and can be loaded back in again for further interactive visualization instead of loading the native *.graphml*.
