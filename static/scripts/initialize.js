@@ -1,16 +1,18 @@
 var nodes, edges, path, tracer, nodeVal, outputName, nodeAttributes, 
  graphString, oldMin, oldMax, nodeShapeAttr, shapeNode, ycoord;
+ // no attributes for node coloring/shape
+  var noOptn = true;
+  var noDrpShapes = true;
 var firstTime = true;
 var loadGraphCount = 0;
 var legendDrawn = false;
 var svg;
-var  nodesMin = -1;
+var nodesMin = -1;
 var nodesMax = 1;
 var cy;
 var firstShape = true;
 var usedShapeAttributes = [];
 var getDrpDwnFiles = true;
-var noAttr = false;
 var isJson = false;
 var collapsed = false;
 var expandGraphs = [];
@@ -91,8 +93,6 @@ function readJson(file) {
   isJson = true;
 
   cleanSelections();
-  // does no have attribute for coloring/shape?
-  noAttr = false;
 
   if(shapeNode){
     shapeNode.elements().remove();
@@ -275,9 +275,6 @@ function readFile(file) {
   isJson = false;
   cleanSelections();
 
-  // does no have attribute for coloring/shape?
-  noAttr = false;
-
   if(shapeNode){
     shapeNode.elements().remove();
   }
@@ -309,7 +306,6 @@ function loadFile() {
   var drp = document.createElement("select");
   drp.id = "values";
   drp.name = "values";
-  drp.onchange = function(){visualize(graphString)};
   drp.style.visibility = "visible";
   document.getElementById("configPart").appendChild(drp);
   // node attributes
@@ -317,6 +313,31 @@ function loadFile() {
   sele.value =  "";
   sele.text = "Select Coloring Attribute";
   drp.add(sele);
+  drp.onchange = function(){visualize(graphString)};
+
+
+  // layout dropdown
+  var drpLayout = document.createElement("select");
+  drpLayout.id = "selectlayout";
+  drpLayout.name = "selectlayout";
+  document.getElementById("configPart").appendChild(drpLayout);
+  drpLayout.style.visibility = "hidden";
+  drpLayout.onchange = changeLayout;
+
+  var seleLayout = document.createElement("OPTION");
+  seleLayout.text = "Select Layout";
+  seleLayout.value = "";
+  drpLayout.add(seleLayout);
+
+  const layoutArray = ["dagre (default)", "klay", "breadthfirst", "cose-bilkent", "grid"];
+
+  layoutArray.forEach(function(s){
+    var graphLayout = s;
+    var optnLayout = document.createElement("OPTION");
+    optnLayout.text=graphLayout;
+    optnLayout.value=graphLayout;
+    drpLayout.add(optnLayout);
+  });
 
   // attributes for changing node shape in dropdown
   var drpShapes = document.createElement("select");
@@ -324,6 +345,7 @@ function loadFile() {
   drpShapes.name = "nodeShapesAttr";
   document.getElementById("configPart").appendChild(drpShapes);
   drpShapes.style.visibility = "hidden";
+  drpShapes.onchange=activateShapes;
 
   var seleShapeAttr = document.createElement("OPTION");    
   seleShapeAttr.text = "Select Shape Attribute";
@@ -353,33 +375,6 @@ function loadFile() {
     drpShape.add(optnShape);
   });
 
-  // layout dropdown
-  var drpLayout = document.createElement("select");
-  drpLayout.id = "selectlayout";
-  drpLayout.name = "selectlayout";
-  document.getElementById("configPart").appendChild(drpLayout);
-  drpLayout.style.visibility = "hidden";
-  drpLayout.onchange = changeLayout;
-
-  var seleLayout = document.createElement("OPTION");
-  seleLayout.text = "Select Layout";
-  seleLayout.value = "";
-  drpLayout.add(seleLayout);
-
-  const layoutArray = ["dagre (default)", "klay", "breadthfirst", "cose-bilkent", "grid"];
-
-  layoutArray.forEach(function(s){
-    var graphLayout = s;
-    var optnLayout = document.createElement("OPTION");
-    optnLayout.text=graphLayout;
-    optnLayout.value=graphLayout;
-    drpLayout.add(optnLayout);
-  });
-
-  // no attributes for node coloring/shape
-  var noOptn = true;
-  var noDrpShapes = true;
-
   if(! isJson){
     // get attributes for coloring -> double/boolean and shape -> boolean
     for (var i = 0; i <= graphString.length - 1; i++) {
@@ -408,14 +403,17 @@ function loadFile() {
       };
     };
   }
-
   // if no attributes found for coloring/shape, remove dropdown menus and visualize
   if(noOptn && noDrpShapes){
-    noAttr = true;
     drp.parentNode.removeChild(drp);
     drpShapes.parentNode.removeChild(drpShapes);
     drpShape.parentNode.removeChild(drpShape);
     visualize(graphString);
-  };   
+  }   
+  else if(noDrpShapes){
+    drpShapes.parentNode.removeChild(drpShapes);
+    drpShape.parentNode.removeChild(drpShape);
+    // visualize(graphString);
+  }
   loadGraphCount ++; 
 };

@@ -10,7 +10,7 @@ function visualize(graphString) {
    
    //create cytoscape object; not necessary for json
   if(!isJson){
-    if(!noAttr && !clicked){
+    if(!noOptn && !clicked){
       nodeVal = document.getElementById('values').value;
     }
 
@@ -23,7 +23,7 @@ function visualize(graphString) {
 
     nodeValuesNum = transform01toTF(nodeValuesNum);
 
-    if(!noAttr){
+    if(!noOptn){
       // set min and max for legend
       legendsRange(nodeValuesNum);
     };
@@ -45,7 +45,9 @@ function visualize(graphString) {
 	  document.getElementById('downloadPart').style.visibility = "visible";
 	}
   showMetaInfo();
-  if(! noAttr && !isJson){
+  document.getElementById('selectlayout').setAttribute('style','visibility:visible');
+
+  if(! noDrpShapes && !isJson){
     activateNodeShapeChange();
   }
   
@@ -160,7 +162,7 @@ function getNodesAndEdges(graphString){
       }
     }
   }
-  if(! noAttr){
+  if(! noOptn){
     var legendNode = {};
     legendNode.id = "l1";
     legendNode.symbol = "legend";
@@ -476,7 +478,7 @@ function addNodesAndEdges(){
 		
 	}); // on tap
   cy.nodes().noOverlap({ padding: 5 });
-  if(! noAttr){
+  if(! noOptn){
   // calculate label position for legend and style legend
     var fontSize = 10;
     var labelVal = nodeVal;
@@ -533,7 +535,7 @@ function showLegend(){
 
 //show meta-information of nodes by mouseover
 function showMetaInfo(){
-  if(! noAttr || isJson){
+  if(! noOptn || isJson){
     cy.elements('node').qtip({       // show node attibute value by mouseover
         show: {   
           event: 'mouseover', 
@@ -611,10 +613,11 @@ function removeOptions(selectbox){
 // show drop downs for nodes' shapes attribute and shape itself
 function activateNodeShapeChange(){
   document.getElementById('nodeShapesAttr').setAttribute('style','visibility:visible');
-  document.getElementById('nodeShapes').setAttribute('style','visibility:visible');
-  document.getElementById('selectlayout').setAttribute('style','visibility:visible');
 }
 
+function activateShapes(){
+  document.getElementById('nodeShapes').setAttribute('style','visibility:visible');
+}
 // change node shape of nodes with given attribute
 function changeNodeShapes(){
   var shapeAttribute = document.getElementById('nodeShapesAttr').value;
