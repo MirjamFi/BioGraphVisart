@@ -300,7 +300,7 @@ function loadFile() {
   // node attributes
   var sele = document.createElement("OPTION");
   sele.value =  "";
-  sele.text = "Choose node's attribute";
+  sele.text = "Select Coloring Attribute";
   drp.add(sele);
 
   // attributes for changing node shape in dropdown
@@ -311,7 +311,7 @@ function loadFile() {
   drpShapes.style.visibility = "hidden";
 
   var seleShapeAttr = document.createElement("OPTION");    
-  seleShapeAttr.text = "Choose node's attribute";
+  seleShapeAttr.text = "Select Shape Attribute";
   seleShapeAttr.value = "";
   drpShapes.add(seleShapeAttr);
 
@@ -324,7 +324,7 @@ function loadFile() {
   drpShape.onchange = changeNodeShapes;
 
   var seleShape = document.createElement("OPTION");
-  seleShape.text = "Choose shape";
+  seleShape.text = "Select Shape";
   seleShape.value = "";
   drpShape.add(seleShape);
 

@@ -6,9 +6,9 @@ The **labels** of the nodes are taken from the node attribute *\<data key="v\_sy
 
 **Edges** are interactions between genes taken from the edge attribute *\<data key="e_interaction"\>...\</data\>*. Edge arrows representation depends on the interaction type (see [kegg.js](https://www.kegg.jp/kegg/xml/docs/)) and is shown in the table ***Interactions***. Default edge arrow is 'vee'.
 
-Nodes are **color**ed by numeric or boolean attribute values you can select from the drop-down menu *Choose node's attribute*. If no such attributes are available the nodes are white. The **legend node** in the graph displays the selected attribute's name and the value range (blue: low values/false, red: high values/true, white: 0 or undefined).
+Nodes are **color**ed by numeric or boolean attribute values you can select from the drop-down menu *Select Coloring Attribute*. If no such attributes are available the nodes are white. The **legend node** in the graph displays the selected attribute's name and the value range (blue: low values/false, red: high values/true, white: 0 or undefined).
 
-In addition, the **node shape** can be changed according to boolean node attributes. Select the attribute from the second drop-down menu *Choose node's attribute* and select the shape from *Choose shape* drop-down menu. If the attribute is true for a node, the shape is changed accordingly.
+In addition, the **node shape** can be changed according to boolean node attributes. Select the attribute from the second drop-down menu *Select Shape Attribute* and select the shape from *Select Shape* drop-down menu. If the attribute is true for a node, the shape is changed accordingly.
 
 The generated graph can be **download**ed as *png, svg* or *json*. A file name can be given (without file ending) but it is not necessary. If no file name given, the graph is stored as *\<filename\>\_\<attribute\>\<png,svg,json\>*. The *json*-file can be used to save the current status of the graph and can be loaded back in again for further interactive visualization instead of loading the native *.graphml*.
 
