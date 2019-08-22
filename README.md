@@ -50,7 +50,7 @@ You need to have [nodejs](nodejs.org) installed.
 		* In the Develop Menu tick *Disable Cross-Origin Restrictions* and tick *Disable local file restrictions*
 
 
-2. Run terminal in *SubgraphVisualization-master/static/scripts*: 
+2. Run terminal in *BioGraphVisart-master/static/scripts*: 
 		
 		node server.js 
 
