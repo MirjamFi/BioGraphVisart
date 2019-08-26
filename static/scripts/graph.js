@@ -1169,11 +1169,13 @@ function highlightKEGGpaths(){
   download png of graph
 */
 function downloadPNG(){
+  console.log("png");
   outputName = document.getElementById('outputName').value;
   var png64 = cy.png();
   $('#downloadPNG').attr('href', png64);
   var download = document.createElement('a');
   download.href = 'data:image/png;base64;'+png64;
+  document.body.appendChild(download); // required for firefox
   if(outputName != "File name"){
     download.download = outputName + '.png';
   }
@@ -1186,13 +1188,24 @@ function downloadPNG(){
 function downloadSVG(){
   outputName = document.getElementById('outputName').value;
   var svgContent = cy.svg({scale: 1, full: true});
+  var svgBlob = new Blob([svgContent], {type:"image/svg+xml;charset=utf-8"});
+  var svgUrl = URL.createObjectURL(svgBlob);
+  var downloadLink = document.createElement("a");
+    downloadLink.href = svgUrl;
   if(outputName != "File name"){
-    saveAs(new Blob([svgContent], {type:"image/svg+xml;charset=utf-8"}), outputName +".svg");
+   
+    downloadLink.download = outputName +".svg";
+   
+
   }
   else{
-     saveAs(new Blob([svgContent], {type:"image/svg+xml;charset=utf-8"}), path.replace(".graphml", "_") + '_' + nodeVal + ".svg");
-  }  
+    downloadLink.download = path.replace(".graphml", "_") + '_' + nodeVal + ".svg";
+  } 
+  document.body.appendChild(downloadLink);
+  downloadLink.click(); 
 }
+
+
 
 function downloadJSON(){
   outputName = document.getElementById('outputName').value;
@@ -1200,6 +1213,7 @@ function downloadJSON(){
   $('#downloadJSON').attr('href', json);
   var download = document.createElement('a');
   download.href = 'data:text/json;charset=utf-8,'+encodeURIComponent(json);
+  document.body.appendChild(download); // required for firefox
   if(outputName != "File name"){
     download.download = outputName + '.json';
   }
@@ -1209,6 +1223,15 @@ function downloadJSON(){
   download.click();
 }
 
+ // function downloadObjectAsJson(exportObj, exportName){
+ //    var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObj));
+ //    var downloadAnchorNode = document.createElement('a');
+ //    downloadAnchorNode.setAttribute("href",     dataStr);
+ //    downloadAnchorNode.setAttribute("download", exportName + ".json");
+ //    document.body.appendChild(downloadAnchorNode); // required for firefox
+ //    downloadAnchorNode.click();
+ //    downloadAnchorNode.remove();
+ //  }
 /*
 reset view (zoom, position)
 */
