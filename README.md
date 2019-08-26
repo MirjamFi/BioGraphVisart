@@ -51,7 +51,8 @@ You need to have [nodejs](nodejs.org) installed.
 
 		* In the Develop Menu tick *Disable Cross-Origin Restrictions* and tick *Disable local file restrictions*
 
-
+	- **Firefox**
+		* install the Firefox Add-on [*cors-plugin*](https://addons.mozilla.org/en-US/firefox/addon/cors-plugin/) and activate it.
 2. Run terminal in *BioGraphVisart-master/static/scripts*: 
 		
 		node server.js 
