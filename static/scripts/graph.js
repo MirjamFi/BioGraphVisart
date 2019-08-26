@@ -30,7 +30,6 @@ function visualize(graphString) {
     // add nodes and edges to graph
     addNodesAndEdges();
 
-    calculateLayout();
   }
   if(!clicked){
 	  $('#downloadPNG').removeAttr('disabled');
@@ -284,9 +283,9 @@ function addNodesAndEdges(){
     ready: function(){
           },
     elements: nodes.concat(edges),
-    layout: {
-    name: 'dagre'
-  },
+  //   layout: {
+  //   name: 'dagre'
+  // },
     style: [
          // style nodes
       {selector: 'node',
@@ -446,6 +445,7 @@ function addNodesAndEdges(){
 
       ]
   });
+  changeLayout();
   if(nodes.every(function(x){return(x.data["symbol"])})){
     for(n=0; n < nodes.length; n++){
       cy.batch(function(){
@@ -518,13 +518,6 @@ function addNodesAndEdges(){
       });
     }
   }
-}
-
-//calculate graph layout (only once)
-function calculateLayout(){
-		cy.layout({
-		    name:'dagre',
-		    }).run();
 }
 
 //show legend
@@ -747,11 +740,16 @@ function changeNodeShapes(){
   }
 }
 
+var prevLayout = "";
 function changeLayout(){
+  var animateLayout = true;
   var selectedLayout = document.getElementById('selectlayout').value;
+  if(prevLayout == selectedLayout){
+    animateLayout = false;
+  }
   if(selectedLayout == "klay"){
     var options = {
-      animate: true, // Whether to transition the node positions
+      animate: animateLayout, // Whether to transition the node positions
       klay: {
         aspectRatio: 1.49, // The aimed aspect ratio of the drawing, that is the quotient of width by height
         compactComponents: true, // Tries to further compact components (disconnected sub-graphs).
@@ -772,13 +770,13 @@ function changeLayout(){
     cy.layout({
         name: "breadthfirst",
         spacingFactor: 0.5,
-        animate: true
+        animate: animateLayout
       }).run();
   }
   else if(selectedLayout == "dagre (default)"){
     cy.layout({
         name: "dagre",
-        animate: true
+        animate: animateLayout
       }).run();
   }
   else if(selectedLayout == "cose-bilkent"){
@@ -792,10 +790,18 @@ function changeLayout(){
   else if(selectedLayout == "grid"){
     cy.layout({
         name: "grid",
-        animate: true,
+        animate: animateLayout,
         avoidOverlapPadding: 5
       }).run();
   }
+  else{
+    cy.layout({
+        name: "dagre",
+        animate: animateLayout
+      }).run();
+    document.getElementById('selectlayout').value = "dagre (default)";
+  }
+  prevLayout = JSON.parse(JSON.stringify(selectedLayout));
 }
 // get pathways of selected gene from kegg using entrez id
 function getPathwaysFromKEGG(name){ 
@@ -1222,21 +1228,3 @@ function downloadJSON(){
   }
   download.click();
 }
-
- // function downloadObjectAsJson(exportObj, exportName){
- //    var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObj));
- //    var downloadAnchorNode = document.createElement('a');
- //    downloadAnchorNode.setAttribute("href",     dataStr);
- //    downloadAnchorNode.setAttribute("download", exportName + ".json");
- //    document.body.appendChild(downloadAnchorNode); // required for firefox
- //    downloadAnchorNode.click();
- //    downloadAnchorNode.remove();
- //  }
-/*
-reset view (zoom, position)
-*/
-function resetLayout(){
-  cy.layout({
-      name: 'dagre',
-    }).run();
-};
