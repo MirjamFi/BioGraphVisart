@@ -12,7 +12,7 @@ The default **layout** is [dagre](https://github.com/cytoscape/cytoscape.js-dagr
 
 In addition, the **node shape** can be changed according to boolean node attributes. Select the attribute from the second drop-down menu *Select Shape Attribute* and select the shape from *Select Shape* drop-down menu. If the attribute is true for a node, the shape is changed accordingly.
 
-The generated graph can be **download**ed as *png, svg* or *json*. A file name can be given (without file ending) but it is not necessary. If no file name given, the graph is stored as *\<filename\>\_\<attribute\>\<png,svg,json\>*. The *json*-file can be used to save the current status of the graph and can be loaded back in again for further interactive visualization instead of loading the native *.graphml*.
+The generated graph can be **download**ed as *png, svg* or *json*. The complete page can be downloaded as *.pdf*. A file name can be given (without file ending) but it is not necessary. If no file name given, the graph is stored as *\<filename\>\_\<attribute\>\<png,svg,json\>*. The *json*-file can be used to save the current status of the graph and can be loaded back in again for further interactive visualization instead of loading the native *.graphml*.
 
 Moving the mouse over a node displays the attributes value, over an edge it displays the interaction type (important if there are multiple interactions for one edge). The nodes can be draged and moved around. You can zoom in and out using the mouse wheel/touch pad and also reset the layout (button *Reset layout*).
 
