@@ -32,9 +32,11 @@ function visualize(graphString) {
 
   }
   if(!clicked){
+    $('#downloadPDF').removeAttr('disabled');
 	  $('#downloadPNG').removeAttr('disabled');
 	  $('#downloadSVG').removeAttr('disabled');
 	  $('#downloadJSON').removeAttr('disabled');
+    $('#downloadPDF').removeAttr('disabled');
 
 	  oldMin = nodesMin;
 	  oldMax = nodesMax;
@@ -820,8 +822,6 @@ function getPathwaysFromKEGG(name){
 /*
 	generate a checkbox menu for the 10 most common pathways of all genes in the graph
 */
-
-
 function listKEGGPathways(){
   //swap button "Hide"/"show"
 	if(document.getElementById('keggpathways').firstChild.data == "Show KEGG Pathways"){
@@ -1075,9 +1075,9 @@ function getCheckedBoxes(chkboxName) {
 }
 
 // draw a rectangle at given position with given sidelengths and colored by pathway
-function drawRect(position, side_x, side_y, path){
+function drawRect(position, nodeWidth, side_x, side_y, path){
     ctx.beginPath();
-    ctx.rect(position['x']-(0.5*side_x), position['y']-(0.5*side_y), side_x, side_y);
+    ctx.rect(position['x']-(0.5*nodeWidth), position['y']-(0.5*nodeWidth), side_x, side_y);
     ctx.fillStyle =colorschemePaths[path];
     ctx.fill();
     ctx.closePath();
@@ -1097,31 +1097,45 @@ function drawPathwayRectangles(){
         //mark connected nodes in pathway
         ctx.globalAlpha = 0.6;
         for(var grouped_nodes of Object.values(merged_nodes)){
-          var centroid_x = 0;
-          var centroid_y = 0;
+          // var centroid_x = 0;
+          // var centroid_y = 0;
           var max_dist_x = 0;
           var max_dist_y = 0;
+          var most_x=100000;
+          var most_y=100000;
           // multiple nodes in one rectangle
           if(grouped_nodes.size > 1){
             for(let n of grouped_nodes){
               var position = cy.$("node[entrezID ='"+n+"']").position();
-              centroid_x=centroid_x+position['x'];
-              centroid_y=centroid_y+position['y'];
+              // centroid_x=centroid_x+position['x'];
+              // centroid_y=centroid_y+position['y'];
               for(let m of grouped_nodes){
                 let pos_m = cy.$("node[entrezID ='"+m+"']").position()
                 let dist_x = Math.abs(position['x'] -  pos_m['x']);
-                if(dist_x > max_dist_x){
+                if(dist_x >= max_dist_x){
                   max_dist_x = dist_x
+                  if(position['x'] <= pos_m['x'] && position['x'] < most_x){
+                    most_x = position['x'];
+                  }
+                  else if(position['x'] > pos_m['x'] && pos_m['x'] < most_x){
+                    most_x = pos_m['x'];
+                  }
                 }
                 let dist_y = Math.abs(position['y'] -  pos_m['y']);
-                if(dist_y > max_dist_y){
+                if(dist_y >= max_dist_y){
                   max_dist_y = dist_y
+                  if(position['y'] <= pos_m['y'] && position['y'] < most_y){
+                    most_y = position['y'];
+                  }
+                  else if(position['y'] > pos_m['y'] && pos_m['y'] < most_y){
+                    most_y = pos_m['y'];
+                  }
                 }
               }
             }
             var renderedWidth = cy.$("node[entrezID ='"+[...grouped_nodes][0]+"']").width();
-            max_dist_x = (max_dist_x + renderedWidth)*1.1;
-            max_dist_y = (max_dist_y + renderedWidth)*1.1;
+            max_dist_x = (max_dist_x + renderedWidth);
+            max_dist_y = (max_dist_y + renderedWidth);
 
             // if nodes lay on one line, set sides to node width
             if(max_dist_x==0){
@@ -1130,9 +1144,8 @@ function drawPathwayRectangles(){
             if(max_dist_y==0){
               max_dist_y = renderedWidth;
             }
-
-            centroid = {"x":(centroid_x/grouped_nodes.size), "y":(centroid_y/grouped_nodes.size)};
-            drawRect(centroid, max_dist_x, max_dist_y, path)           
+            centroid = {"x": most_x, "y":most_y}//{"x":(centroid_x/grouped_nodes.size), "y":(centroid_y/grouped_nodes.size)};
+            drawRect(centroid, renderedWidth, max_dist_x, max_dist_y, path)           
           }
 
           // single node in square
@@ -1143,12 +1156,12 @@ function drawPathwayRectangles(){
             if(renderedPos_id){
               var position = renderedPos_id;
               var side = (cy.$("node[entrezID ='"+k+"']").width()/Math.sqrt(2))*1.7;
-              drawRect(position, side, side, path);
+              drawRect(position, side, side, side, path);
             }
             else if(renderedPos){
               var position = renderedPos;
               var side = (cy.$("node[entrez ='"+k+"']").width()/Math.sqrt(2))*1.7;
-              drawRect(position, side, side, path);
+              drawRect(position, side, side, side, path);
             }
           }
         }
@@ -1171,23 +1184,28 @@ function highlightKEGGpaths(){
   });
   cy.zoom(cy.zoom()*1.000000000000001);
 }
+
 /* 
-  download png of graph
+  download of graph
 */
-function downloadPNG(){
-  console.log("png");
+
+function downloadName(ext){
   outputName = document.getElementById('outputName').value;
+  if(outputName != "Download File name"){
+    return outputName + ext;
+  }
+  else{
+    return path.replace(".graphml", "_") + '_' + nodeVal + ext;
+  }
+}
+
+function downloadPNG(){
   var png64 = cy.png();
   $('#downloadPNG').attr('href', png64);
   var download = document.createElement('a');
   download.href = 'data:image/png;base64;'+png64;
   document.body.appendChild(download); // required for firefox
-  if(outputName != "File name"){
-    download.download = outputName + '.png';
-  }
-  else{
-    download.download = path.replace(".graphml", "_") + '_' + nodeVal + '.png';
-  }
+  download.download = downloadName('.png')
   download.click();
 }
 
@@ -1197,21 +1215,11 @@ function downloadSVG(){
   var svgBlob = new Blob([svgContent], {type:"image/svg+xml;charset=utf-8"});
   var svgUrl = URL.createObjectURL(svgBlob);
   var downloadLink = document.createElement("a");
-    downloadLink.href = svgUrl;
-  if(outputName != "File name"){
-   
-    downloadLink.download = outputName +".svg";
-   
-
-  }
-  else{
-    downloadLink.download = path.replace(".graphml", "_") + '_' + nodeVal + ".svg";
-  } 
+  downloadLink.href = svgUrl;
+  downloadLink.download =  downloadName(".svg");
   document.body.appendChild(downloadLink);
   downloadLink.click(); 
 }
-
-
 
 function downloadJSON(){
   outputName = document.getElementById('outputName').value;
@@ -1220,11 +1228,9 @@ function downloadJSON(){
   var download = document.createElement('a');
   download.href = 'data:text/json;charset=utf-8,'+encodeURIComponent(json);
   document.body.appendChild(download); // required for firefox
-  if(outputName != "File name"){
-    download.download = outputName + '.json';
-  }
-  else{
-    download.download = path.replace(".graphml", "_") + '_' + nodeVal + '.json';
-  }
+  download.download = downloadName('.json');
   download.click();
 }
+
+
+
