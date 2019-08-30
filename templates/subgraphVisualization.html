@@ -9,9 +9,8 @@
 	
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/qtip2/3.0.3/basic/jquery.qtip.css">
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.debug.js" integrity="sha384-THVO/sM0mFD9h7dfSndI6TS0PgAGavwKvB5hAxRRvc0o9cPLohB0wb/PTA7LdUHs" crossorigin="anonymous"></script>
+  	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.debug.js" integrity="sha384-THVO/sM0mFD9h7dfSndI6TS0PgAGavwKvB5hAxRRvc0o9cPLohB0wb/PTA7LdUHs" crossorigin="anonymous"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/canvg/dist/browser/canvg.min.js"></script>
 
 
 
@@ -68,6 +67,7 @@
 
 	<div id="downloadPart" style="visibility: hidden">
 		<input name="outputFile" type="text" maxlength="512" id="outputName" value="Download File name"/>
+		<button  class= 'butn' id="downloadPDF" onClick=downloadPDF() disabled="disabled" id="downloadPDF">.pdf</button>
 		<button class= 'butn' id="downloadPNG" onclick="downloadPNG()" disabled="disabled">.png</button>
 		<button class= 'butn' id="downloadSVG" onclick="downloadSVG()" disabled="disabled">.svg</button>
 		<button class= 'butn' id="downloadJSON" onclick="downloadJSON()" disabled="disabled">.json</button>

@@ -1232,5 +1232,32 @@ function downloadJSON(){
   download.click();
 }
 
+function downloadPDF () {
+    const domElement = document.getElementById('everything');
+    var divHeight = $('#cy').height();
+    var divWidth = $('#cy').width();
+    var ratio = divHeight / divWidth;
+  
+    var doc = new jsPDF("l", "mm", "a4");
+    var width = doc.internal.pageSize.getWidth()-20;
+    var height = ratio * width;
 
+    html2canvas($("#everything").get(0), { onclone: (document) => {
+      document.getElementById('downloadPart').style.visibility = 'hidden' 
+      document.getElementById('resetLayout').style.visibility = 'hidden'
+      document.getElementById('description').style.visibility = 'hidden'
+      document.getElementById('loadGraphml').style.visibility = 'hidden'
+      document.getElementById('keggpathways').style.visibility = 'hidden'
+      if(!noDrpShapes){
+        document.getElementById('nodeShapesAttr').style.visibility = 'hidden'
+        document.getElementById('nodeShapes').style.visibility = 'hidden'
+      }
+    }}).then(function(canvas){
+    var imgData = canvas.toDataURL('image/png');
+
+    doc.addImage(imgData, 'PNG', 0, 0, width, height); 
+ 
+    doc.save(downloadName('.pdf'));
+  });
+}
 
