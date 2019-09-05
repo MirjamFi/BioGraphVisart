@@ -61,11 +61,11 @@ input:hover{
 }
 
 #cy {
-      width: 79%;
+      width: 70%;
       height: 79%;
       position: absolute;
       top: 300px;
-      left: 150px;
+      left: 185px;
   }
 
 
@@ -74,15 +74,39 @@ input:hover{
     top: 250px;
     left: 10px;
     font-size: 11px;
-    width: 130px;
-    height: 200px;
+    width: 180px;
+    height: 490px;
 }
 #legendNodes {
     position: absolute;
-    top: 500px;
+    top: 520px;
     left: 10px;
     font-size: 11px;
     width: 180px;
     height: 200px;
 }
 
+#KEGGpathsButton{
+  position: absolute;
+  top: 300px;
+  left:85%;
+}
+#KEGGpaths{
+  position: absolute;
+  top: 320px;
+  left:86%;
+}
+.loader {
+    border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    animation: spin 5s linear infinite;
+    margin: 0 auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+} 
