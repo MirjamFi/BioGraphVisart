@@ -87,19 +87,18 @@ const cyto = async (nodes, edges, nodesMin, nodesMax, valueAttr) => {
         },
       },
       
-      // style edges
+       // style edges
       {selector: 'edge',
         style: {
-          // 'target-arrow-shape': 'triangle',
           'arrow-scale' : 2,
           'curve-style' : 'bezier',
-          // 'label':'data(interactionShort)',
           'font-size':16,
           'text-rotation':'autorotate',
-          'font-weight':800
+          'font-weight':800,
+          'target-arrow-shape' : 'vee'
           
         }},
-        {selector: 'edge[interaction = \'activaion\']',
+        {selector: 'edge[interaction = \'activation\']',
           style: {
             'target-arrow-shape': 'triangle',
         }},
@@ -117,15 +116,15 @@ const cyto = async (nodes, edges, nodesMin, nodesMax, valueAttr) => {
         }},
         {selector: 'edge[interaction = \'binding/association\']',
           style: {
-            // 'target-arrow-shape': '',
+            'target-arrow-shape': 'triangle-cross',
         }},
         {selector: 'edge[interaction = \'dissociation\']',
           style: {
-            // 'target-arrow-shape': '',
+            'target-arrow-shape': 'triangle-cross',
         }},
-      {selector: 'edge[interaction = \'compound\']',
-        style: {
-          'target-arrow-shape': 'diamond',
+        {selector: 'edge[interaction = \'compound\']',
+          style: {
+            'target-arrow-shape': 'circle',
         }},
       {selector: 'edge[interaction = \'indirect effect\']',
         style: {
@@ -144,31 +143,31 @@ const cyto = async (nodes, edges, nodesMin, nodesMax, valueAttr) => {
 
       {selector: 'edge[interaction = \'phosphorylation\']',
         style: {
-          'target-arrow-shape': 'triangle-backcurve',
+          'target-arrow-shape': 'diamond',
           'target-label':'+p',
           'target-text-offset':20
         }},
       {selector: 'edge[interaction = \'dephosphorylation\']',
           style: {
-            'target-arrow-shape': 'triangle-backcurve',
+            'target-arrow-shape': 'diamond',
             'target-label':'-p',
           'target-text-offset':20
         }},
       {selector: 'edge[interaction = \'glycosylation\']',
           style: {
-           'target-arrow-shape': 'triangle-backcurve',
+           'target-arrow-shape': 'diamond',
            'target-label':'+g',
           'target-text-offset':20
         }},      
       {selector: 'edge[interaction = \'ubiquitination\']',
           style: {
-            'target-arrow-shape': 'triangle-backcurve',
+            'target-arrow-shape': 'diamond',
             'target-label':'+u',
           'target-text-offset':20
         }},
       {selector: 'edge[interaction = \'methylation\']',
           style: {
-            'target-arrow-shape': 'triangle-backcurve',
+            'target-arrow-shape': 'diamond',
             'target-label':'+m',
           'target-text-offset':20
         }},
