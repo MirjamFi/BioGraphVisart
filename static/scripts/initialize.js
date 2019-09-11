@@ -62,6 +62,7 @@ remove old buttons
 */
 function cleanSelections(){
     // if it is not the first graph read, delete all selectable options
+  usedShapeAttributes = [];
   var myNode = document.getElementById("configPart");
   document.getElementById('KEGGpaths').innerHTML = "";
   document.getElementById('keggpathways').firstChild.data = "Show KEGG Pathways";
