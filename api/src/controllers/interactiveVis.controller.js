@@ -2,6 +2,8 @@ const fs = require('fs');
 const path = require('path');
 const cytosnap = require('cytosnap');
 const { Graph } = require('../utils/graph.util');
+const uuidv4 = require('uuid/v4');
+const Vis = require('../models/vis.model');
 
 cytosnap.use(['cytoscape-dagre']);
 
@@ -37,7 +39,7 @@ const cyto = async (nodes, edges, nodesMin, nodesMax, valueAttr) => {
       },
       // attributes with numbers
       {
-        selector: 'node[val < 0]',
+        selector: 'node[val < "0"]',
         style: {
           'background-color': `mapData(val, ${nodesMin}, 0, #006cf0, white)`,
           color: 'black',
@@ -50,7 +52,7 @@ const cyto = async (nodes, edges, nodesMin, nodesMax, valueAttr) => {
         },
       },
       {
-        selector: 'node[val > 0]',
+        selector: 'node[val > "0"]',
         style: {
           'background-color': `mapData(val, 0, ${nodesMax}, white, #d50000)`,
           color: 'black',
@@ -63,7 +65,7 @@ const cyto = async (nodes, edges, nodesMin, nodesMax, valueAttr) => {
         },
       },
       {
-        selector: 'node[val = 0]',
+        selector: 'node[val = "0"]',
         style: {
           'background-color': 'white',
           color: 'black',
@@ -84,64 +86,91 @@ const cyto = async (nodes, edges, nodesMin, nodesMax, valueAttr) => {
           color: 'white',
         },
       },
-      // style edges
-      {
-        selector: 'edge',
+      
+       // style edges
+      {selector: 'edge',
         style: {
-          'target-arrow-shape': 'triangle',
-          'arrow-scale': 2,
-          'curve-style': 'bezier',
-        },
-      },
-      {
-        selector: 'edge[interaction = \'compound\']',
+          'arrow-scale' : 2,
+          'curve-style' : 'bezier',
+          'font-size':16,
+          'text-rotation':'autorotate',
+          'font-weight':800,
+          'target-arrow-shape' : 'vee'
+          
+        }},
+        {selector: 'edge[interaction = \'activation\']',
+          style: {
+            'target-arrow-shape': 'triangle',
+        }},
+        {selector: 'edge[interaction = \'expression\']',
+          style: {
+            'target-arrow-shape': 'triangle',
+        }},
+        {selector: 'edge[interaction = \'inhibition\']',
+          style: {
+            'target-arrow-shape': 'tee',
+        }},
+        {selector: 'edge[interaction = \'repression\']',
+          style: {
+            'target-arrow-shape': 'tee',
+        }},
+        {selector: 'edge[interaction = \'binding/association\']',
+          style: {
+            'target-arrow-shape': 'triangle-cross',
+        }},
+        {selector: 'edge[interaction = \'dissociation\']',
+          style: {
+            'target-arrow-shape': 'triangle-cross',
+        }},
+        {selector: 'edge[interaction = \'compound\']',
+          style: {
+            'target-arrow-shape': 'circle',
+        }},
+      {selector: 'edge[interaction = \'indirect effect\']',
         style: {
-          'target-arrow-shape': 'triangle-backcurve',
-        },
-      },
-      {
-        selector: 'edge[interaction = \'activation\']',
+          'line-style': 'dotted',
+          'target-arrow-shape': 'triangle'
+        }},
+      {selector: 'edge[interaction = \'missing interaction\']',
         style: {
-          'target-arrow-shape': 'triangle',
-        },
-      },
-      {
-        selector: 'edge[interaction = \'expression\']',
-        style: {
-          'target-arrow-shape': 'triangle-backcurve',
-        },
-      },
-      {
-        selector: 'edge[interaction = \'phosphorylation\']',
+          'line-style': 'dashed',
+          'target-arrow-shape': 'triangle'
+        }},
+        {selector: 'edge[interaction = \'state change\']',
+          style: {
+            'target-arrow-shape': 'square',
+        }},
+
+      {selector: 'edge[interaction = \'phosphorylation\']',
         style: {
           'target-arrow-shape': 'diamond',
-        },
-      },
-      {
-        selector: 'edge[interaction = \'inhibition\']',
-        style: {
-          'target-arrow-shape': 'tee',
-        },
-      },
-      {
-        selector: 'edge[interaction = \'indirect effect\']',
-        style: {
-          'target-arrow-shape': 'circle',
-        },
-      },
-      {
-        selector: 'edge[interaction = \'state change\']',
-        style: {
-          'target-arrow-shape': 'square',
-        },
-      },
-      {
-        selector: 'node[val < 0]',
-        style: {
-          'background-color': `mapData(val, ${nodesMin}, 0, #006cf0, white)`,
-          color: 'black',
-        },
-      },
+          'target-label':'+p',
+          'target-text-offset':20
+        }},
+      {selector: 'edge[interaction = \'dephosphorylation\']',
+          style: {
+            'target-arrow-shape': 'diamond',
+            'target-label':'-p',
+          'target-text-offset':20
+        }},
+      {selector: 'edge[interaction = \'glycosylation\']',
+          style: {
+           'target-arrow-shape': 'diamond',
+           'target-label':'+g',
+          'target-text-offset':20
+        }},      
+      {selector: 'edge[interaction = \'ubiquitination\']',
+          style: {
+            'target-arrow-shape': 'diamond',
+            'target-label':'+u',
+          'target-text-offset':20
+        }},
+      {selector: 'edge[interaction = \'methylation\']',
+          style: {
+            'target-arrow-shape': 'diamond',
+            'target-label':'+m',
+          'target-text-offset':20
+        }},
       {
         selector: `node[val <= ${0.5 * nodesMin}]`,
         style: {
@@ -210,12 +239,7 @@ const createCyto = async (
   return cyto(nodes, edges, nodesMin, nodesMax, valueAttr);
 };
 
-module.exports = {
-  createCyto
-};
-
-
-/*const postVis = async (data) => {
+const postVis = async (data) => {
   const id = uuidv4()
   let vis;
   try {
@@ -234,29 +258,19 @@ module.exports = {
   }
 }
 
-const putVis = async (id, data) => {
-  const vis = await Vis.updateOne({ id }, { data });
-  if (!vis) {
-    return vis;
-  }
-  return {
-    id,
-    message: 'Visualization successfully updated.',
-  }
+const getVis = async () => {
+  return Vis.find();
 }
 
 const getVisById = async (id) => {
   return Vis.findOne({ id });
 }
 
-const getVis = async () => {
-  return Vis.find();
-}
-
-
 module.exports = {
+  createCyto: createCyto,
+  post:postVis,
+  get:getVis,
   getById: getVisById,
-  get: getVis,
-  put: putVis,
-  post: postVis,
-}*/
+};
+
+

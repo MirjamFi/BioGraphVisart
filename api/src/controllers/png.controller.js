@@ -101,57 +101,90 @@ const cytoSnapToPng = async (nodes, edges, nodesMin, nodesMax, valueAttr) => {
           color: 'white',
         },
       },
-      // style edges
-      {
-        selector: 'edge',
+       // style edges
+      {selector: 'edge',
         style: {
-          'target-arrow-shape': 'triangle',
-          'arrow-scale': 2,
-          'curve-style': 'bezier',
-        },
-      },
-      {
-        selector: 'edge[interaction = \'compound\']',
+          'arrow-scale' : 2,
+          'curve-style' : 'bezier',
+          'font-size':16,
+          'text-rotation':'autorotate',
+          'font-weight':800,
+          'target-arrow-shape' : 'vee'
+          
+        }},
+        {selector: 'edge[interaction = \'activation\']',
+          style: {
+            'target-arrow-shape': 'triangle',
+        }},
+        {selector: 'edge[interaction = \'expression\']',
+          style: {
+            'target-arrow-shape': 'triangle',
+        }},
+        {selector: 'edge[interaction = \'inhibition\']',
+          style: {
+            'target-arrow-shape': 'tee',
+        }},
+        {selector: 'edge[interaction = \'repression\']',
+          style: {
+            'target-arrow-shape': 'tee',
+        }},
+        {selector: 'edge[interaction = \'binding/association\']',
+          style: {
+            'target-arrow-shape': 'triangle-cross',
+        }},
+        {selector: 'edge[interaction = \'dissociation\']',
+          style: {
+            'target-arrow-shape': 'triangle-cross',
+        }},
+        {selector: 'edge[interaction = \'compound\']',
+          style: {
+            'target-arrow-shape': 'circle',
+        }},
+      {selector: 'edge[interaction = \'indirect effect\']',
         style: {
-          'target-arrow-shape': 'triangle-backcurve',
-        },
-      },
-      {
-        selector: 'edge[interaction = \'activation\']',
+          'line-style': 'dotted',
+          'target-arrow-shape': 'triangle'
+        }},
+      {selector: 'edge[interaction = \'missing interaction\']',
         style: {
-          'target-arrow-shape': 'triangle',
-        },
-      },
-      {
-        selector: 'edge[interaction = \'expression\']',
-        style: {
-          'target-arrow-shape': 'triangle-backcurve',
-        },
-      },
-      {
-        selector: 'edge[interaction = \'phosphorylation\']',
+          'line-style': 'dashed',
+          'target-arrow-shape': 'triangle'
+        }},
+        {selector: 'edge[interaction = \'state change\']',
+          style: {
+            'target-arrow-shape': 'square',
+        }},
+
+      {selector: 'edge[interaction = \'phosphorylation\']',
         style: {
           'target-arrow-shape': 'diamond',
-        },
-      },
-      {
-        selector: 'edge[interaction = \'inhibition\']',
-        style: {
-          'target-arrow-shape': 'tee',
-        },
-      },
-      {
-        selector: 'edge[interaction = \'indirect effect\']',
-        style: {
-          'target-arrow-shape': 'circle',
-        },
-      },
-      {
-        selector: 'edge[interaction = \'state change\']',
-        style: {
-          'target-arrow-shape': 'square',
-        },
-      },
+          'target-label':'+p',
+          'target-text-offset':20
+        }},
+      {selector: 'edge[interaction = \'dephosphorylation\']',
+          style: {
+            'target-arrow-shape': 'diamond',
+            'target-label':'-p',
+          'target-text-offset':20
+        }},
+      {selector: 'edge[interaction = \'glycosylation\']',
+          style: {
+           'target-arrow-shape': 'diamond',
+           'target-label':'+g',
+          'target-text-offset':20
+        }},      
+      {selector: 'edge[interaction = \'ubiquitination\']',
+          style: {
+            'target-arrow-shape': 'diamond',
+            'target-label':'+u',
+          'target-text-offset':20
+        }},
+      {selector: 'edge[interaction = \'methylation\']',
+          style: {
+            'target-arrow-shape': 'diamond',
+            'target-label':'+m',
+          'target-text-offset':20
+        }},
       {
         selector: 'node[val < 0]',
         style: {
