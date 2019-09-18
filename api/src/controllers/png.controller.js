@@ -28,7 +28,11 @@ const NODE_COLOR_LEGEND_BACKGROUND = fs.readFileSync(
 
 
 const cytoSnapToPng = async (nodes, edges, nodesMin, nodesMax, valueAttr) => {
-  const snap = cytosnap();
+  const snap = cytosnap({
+    puppeteer: {
+      executablePath: '/usr/bin/chromium-browser',
+    },
+  });
   await snap.start();
   const img = await snap.shot({
     elements: nodes.concat(edges),
