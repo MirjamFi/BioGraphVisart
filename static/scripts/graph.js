@@ -881,7 +881,7 @@ function listKEGGPathways(){
         // only get top 5 of pathways (most genes in)
 				var props = Object.keys(pathsCount).map(function(key) {
 				  return { key: key, value: this[key] };}, pathsCount);
-				props.sort(function(p1, p2) { return p2.value - p1.value; });
+				props = props.sort(function(p1, p2) { return p2.value - p1.value; });
 				var topFive = props.slice(0, 5);
 
         //show table of pathways
