@@ -36,7 +36,6 @@ function visualize(graphString) {
 	  $('#downloadPNG').removeAttr('disabled');
 	  $('#downloadSVG').removeAttr('disabled');
 	  $('#downloadJSON').removeAttr('disabled');
-    $('#downloadPDF').removeAttr('disabled');
 
 	  oldMin = nodesMin;
 	  oldMax = nodesMax;
@@ -982,29 +981,15 @@ function mergeNodeGroups(nearest_groups, cp_copy){
   var m = 0;
   var nearest_groups_values = Object.values(nearest_groups);
   for(let group1 of nearest_groups_values){
-
     var new_group = new Set();
     for(let group2 of nearest_groups_values){
-      if(group1 == group2){
-        continue;
-      }
-      else{
-        for(let elem of group1){
-          if(group2.has(elem)){
-            for(let elem2 of group2){
-              new_group.add(elem2);
-              cp_copy = removeA(cp_copy, elem2);
-            }
-            continue;
-          }
-          else{   
-            new_group.add(elem);
-            cp_copy = removeA(cp_copy, elem);
-          }
-        }
+      let intersection = new Set([...group1].filter(x => group2.has(x)));
+      if(intersection.size > 0){
+        let union = new Set([...group1, ...group2]);
+        new_group = new Set([...new_group, ...union]);
+        cp_copy = new Set([...cp_copy].filter(x => !union.has(x)));
       }
     }
-
     var cur_group = Array.from(new_group);
     var added = false;
 
@@ -1015,19 +1000,14 @@ function mergeNodeGroups(nearest_groups, cp_copy){
     else{
       for(let k of Object.keys(merged_nodes)){
         if(cur_group.some(x=> merged_nodes[k].has(x))){
-          for(let n of cur_group){
-            merged_nodes[k].add(n);
-          }
+          merged_nodes[k] = new Set([...merged_nodes[k], ...cur_group]);
           added = true;
           break;
         }
       }
       if(!added){
         m += 1;
-        merged_nodes[m] = new Set();
-        for(let n of cur_group){
-          merged_nodes[m].add(n);
-        }
+        merged_nodes[m] = new Set([...cur_group]);
       }
     }
   }
