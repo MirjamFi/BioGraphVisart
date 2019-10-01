@@ -585,6 +585,54 @@ function showMetaInfo(){
         });
 }
 
+// optional merging of multiple edges between two nodes
+function mergeEdges(){
+  // do not merge edges
+  if(!document.getElementById("mergeEdges").checked) {
+    loopEdges:
+    for(var i = 0; i<cy.edges().length;i++){
+      var e = cy.edges()[i].data();
+      // find multiple edges
+      if(typeof e.interaction != "string"){
+        // hide merged edge
+        cy.edges('edge[id = "'+e.id+'"]').style('display', 'none');
+        loopInteraction:
+        for(var interact of e.interaction){
+          loopId:
+          for(var j = i; j < cy.edges().length; j++){
+            // single edge is already contained
+            if(cy.edges()[j].data().id == e.id+'_'+interact){
+              //show single edge
+              cy.edges('edge[id = "'+e.id+'_'+interact+'"]').style('display', 'element');
+              continue loopInteraction;
+            }
+          }
+          // add single edge to graph
+          cy.add({
+            group: 'edges',
+            data: { id:e.id+'_'+interact, source:e.source, target:e.target, interaction:interact },
+          });
+        }
+      }
+    }
+  }
+  // merge edge
+  else if(document.getElementById("mergeEdges").checked){
+    for(var i = 0; i < cy.edges().length; i++){
+      var edge = cy.edges()[i]
+      // show merged edges
+      if(edge.hidden()){
+        edge.style('display', 'element');
+      }
+      // hide single edges
+      else{
+        if(edge.data().id.includes(edge.data().interaction)){
+          edge.style('display', 'none');
+        }
+      }
+    }
+  }
+}
 /* helper functions */
 // test if object is empty
 function isEmpty(obj) {
