@@ -1094,7 +1094,7 @@ function getCheckedBoxes(chkboxName) {
   // loop over them all
   for (var i=0; i<checkboxes.length; i++) {
      // And stick the checked ones onto an array...
-     if (checkboxes[i].checked) {
+     if (checkboxes[i].checked && checkboxes[i].value != "on") {
         checkboxesChecked.push(checkboxes[i].value);
      }
   }
