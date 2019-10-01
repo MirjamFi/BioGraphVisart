@@ -615,6 +615,7 @@ function mergeEdges(){
         }
       }
     }
+    showMetaInfo();
   }
   // merge edge
   else if(document.getElementById("mergeEdges").checked){
