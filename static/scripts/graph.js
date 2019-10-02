@@ -465,12 +465,14 @@ function addNodesAndEdges(){
 		clickedNode = evt.target;
 		if(!collapsed){
       var neighboringgraphml = getGraphforGene(evt.target.data().symbol);
-		  collapsed = true;
 		  clickedNodesPosition = cy.$(evt.target).position();
-		  visualize(neighboringgraphml.split("\n"));
-      cy.elements('node[nodename = "'+ evt.target.data().symbol+'"] ').style('width', 50).style('height', 50).style('border-width', 10)
-      // cy.elements('node[nodename = "'+ evt.target.data().symbol+'"] ').neighborhood().style('background-color', 'green')
-      // console.log(cy.elements('node[nodename = "'+ evt.target.data().symbol+'"] ').neighborhood())
+      if(neighboringgraphml){
+        collapsed = true;
+  		  visualize(neighboringgraphml.split("\n"));
+        cy.elements('node[nodename = "'+ evt.target.data().symbol+'"] ').style('border-width', 5).style('font-weight', 'bold')
+        // cy.elements('node[nodename = "'+ evt.target.data().symbol+'"] ').neighborhood().style('background-color', 'green')
+        // console.log(cy.elements('node[nodename = "'+ evt.target.data().symbol+'"] ').neighborhood())
+      }
 		}
 		else if(collapsed){
 		 	collapsed = false;
