@@ -83,9 +83,7 @@ function getNodesAndEdges(graphString){
 
   for (var i = 0; i <= graphString.length - 1; i++) {
     if(graphString[i].includes("attr.type=")){
-      //var curAttr = {};
-      attributesTypes[graphString[i].split(" ")[3].split("\"")[1]] = graphString[i].split(" ")[6].split("\"")[1];
-      //attributesTypes.push(curAttr);
+      attributesTypes[graphString[i].split("\"")[1]] = graphString[i].split("\"")[7];
     }
     if(graphString[i].includes("node id")){   // get node id
       var curNode = {};
@@ -466,11 +464,13 @@ function addNodesAndEdges(){
 	cy.on('tap', 'node', function(evt){
 		clickedNode = evt.target;
 		if(!collapsed){
-			if(expandGraphs[evt.target.data().symbol]){
-			  collapsed = true;
-			  clickedNodesPosition = cy.$(evt.target).position();
-			  visualize(expandGraphs[evt.target.data().symbol]);
-			}
+      var neighboringgraphml = getGraphforGene(evt.target.data().symbol);
+		  collapsed = true;
+		  clickedNodesPosition = cy.$(evt.target).position();
+		  visualize(neighboringgraphml.split("\n"));
+      cy.elements('node[nodename = "'+ evt.target.data().symbol+'"] ').style('width', 50).style('height', 50).style('border-width', 10)
+      // cy.elements('node[nodename = "'+ evt.target.data().symbol+'"] ').neighborhood().style('background-color', 'green')
+      // console.log(cy.elements('node[nodename = "'+ evt.target.data().symbol+'"] ').neighborhood())
 		}
 		else if(collapsed){
 		 	collapsed = false;
@@ -853,9 +853,34 @@ function changeLayout(){
   }
   prevLayout = JSON.parse(JSON.stringify(selectedLayout));
 }
+
+// get graph for gene from Thorsten's database
+function getGraphforGene(name){ 
+  var listofGenes;
+  var reqListofGenes = new XMLHttpRequest();
+  reqListofGenes.open('GET', 'http://abidocker:48080/sbml4j/networkInventory/2d25f4b9-8dd5-4bc3-9d04-9af418302244/filterOptions', false);
+  reqListofGenes.setRequestHeader('user', 'user')
+  reqListofGenes.onload = function () {
+    listofGenes = JSON.parse(reqListofGenes.responseText).nodeSymbols;
+   }
+  reqListofGenes.send(document);
+  if(listofGenes.includes(name)){
+    var responsetxt;
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'http://abidocker:48080/sbml4j/context?baseNetworkUUID=2d25f4b9-8dd5-4bc3-9d04-9af418302244&gene='+name+'&minSize=1&maxSize=1&format=graphml', false);
+    xhr.setRequestHeader('user', 'user')
+
+    xhr.onload = function () {
+      responsetxt = xhr.responseText;
+     }
+    xhr.send(document);
+    return responsetxt;
+  }
+
+}
+
 // get pathways of selected gene from kegg using entrez id
 function getPathwaysFromKEGG(name){ 
-	var responsetxt;
 	var xhr = new XMLHttpRequest();
 	xhr.open('GET', "http://rest.kegg.jp/get/hsa:" + name, false);
 	
