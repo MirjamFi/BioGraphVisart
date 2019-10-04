@@ -861,6 +861,7 @@ function getPathwaysFromKEGG(name){
 	
 	xhr.onload = function () {
 		paths = xhr.responseText;
+		console.log(paths)
 	 }
 
 	xhr.send(document);
