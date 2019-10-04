@@ -857,7 +857,7 @@ function changeLayout(){
 function getPathwaysFromKEGG(name){ 
 	var responsetxt;
 	var xhr = new XMLHttpRequest();
-	xhr.open('GET', "http://rest.kegg.jp/get/hsa:" + name, false);
+	xhr.open('GET', "https://www.kegg.jp/entry/hsa:" + name, false);
 	
 	xhr.onload = function () {
 		paths = xhr.responseText;
