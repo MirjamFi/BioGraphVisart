@@ -1268,6 +1268,7 @@ function downloadPDF () {
     var height = ratio * width;
 
     html2canvas($("#everything").get(0), { onclone: (document) => {
+    	document.getElementById('nav').style.visibility = 'hidden'
       document.getElementById('downloadPart').style.visibility = 'hidden' 
       document.getElementById('resetLayout').style.visibility = 'hidden'
       document.getElementById('description').style.visibility = 'hidden'
