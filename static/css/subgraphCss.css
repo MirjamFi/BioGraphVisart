@@ -10,7 +10,7 @@ a{
 .topnav{
   position: relative;
   width: 100%;
-  background-color: #e3e3e3;
+  background-color: #BDBDBD;
   overflow: hidden;
 }
 /* Style the links inside the navigation bar */
@@ -64,12 +64,12 @@ h1 {
 
 .butn {
   cursor: pointer;
-  background: #f9f9f9;
-  background-image: -webkit-linear-gradient(top, #f9f9f9, #e3e3e3);
-  background-image: -moz-linear-gradient(top, #f9f9f9, #e3e3e3);
-  background-image: -ms-linear-gradient(top, #f9f9f9, #e3e3e3);
-  background-image: -o-linear-gradient(top, #f9f9f9, #e3e3e3);
-  background-image: linear-gradient(to bottom, #f9f9f9, #e3e3e3);
+  background: #e3e3e3;
+  background-image: -webkit-linear-gradient(top, #f9f9f9, #BDBDBD);
+  background-image: -moz-linear-gradient(top, #f9f9f9, #BDBDBD);
+  background-image: -ms-linear-gradient(top, #f9f9f9, #BDBDBD);
+  background-image: -o-linear-gradient(top, #f9f9f9, #BDBDBD);
+  background-image: linear-gradient(to bottom, #f9f9f9, #BDBDBD);
   -webkit-border-radius: 28;
   -moz-border-radius: 28;
   border-radius: 28px;
@@ -97,7 +97,7 @@ select {
 
 input {
     cursor: pointer;
-    background-color: #e3e3e3;
+    background-color: #BDBDBD;
     color: black;
     padding: 5px 8px;
 }
@@ -109,11 +109,14 @@ input:hover{
 }
 
 #cy {
-      width: 75%;
-      height: 79%;
+      width: 71.5%;
+      /*height: 75%;*/
       position: absolute;
       top: 300px;
-      left: 185px;
+      left: 190px;
+      bottom: 15px;
+      background-color:none;
+      /*border: solid #BDBDBD;*/
   }
 
 
