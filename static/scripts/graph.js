@@ -857,25 +857,16 @@ function changeLayout(){
 function getPathwaysFromKEGG(name){ 
 	var responsetxt;
 	var xhr = new XMLHttpRequest();
-	if(window.location.href == "http://localhost:3000/"){
-		xhr.open('GET', "http://rest.kegg.jp/get/hsa:" + name, false);
-		xhr.onload = function () {
-			paths = xhr.responseText;
-		 }
-
-		xhr.send(document);
-		return paths;
+	xhr.open('GET', "https://www.kegg.jp/entry/hsa:" + name, false);
+	xhr.onload = function () {
+	if (xhr.readyState === xhr.DONE) {
+    if (xhr.status === 200) {
+		paths = xhr.responseText;
+	}}
 	}
-	else{
-		console.log("https://www.kegg.jp/entry/hsa:" + name)
-		xhr.open('GET', "https://www.kegg.jp/entry/hsa:" + name, false);
-		xhr.onload = function () {
-			paths = xhr.responseText;
-		 }
 
-		xhr.send(document);
-		return paths;
-	}
+	xhr.send(document);
+	return paths;
 }
 
 /*
@@ -897,16 +888,21 @@ function listKEGGPathways(){
 				var pathsCount = [];
         allPaths = [];
         colorschemePaths = [];
-				for(var n in nodes){
-					if(nodes[n]["data"]["symbol"]!="legend"){
-						var	entrezID = nodes[n]["data"]["entrezID"].toString();
-						var keggpaths = getPathwaysFromKEGG(entrezID).split("\n");
-						var i = 0;
-						var searchPattern = new RegExp(/^\s* hsa/);
-
-						while(i <= keggpaths.length - 1){
-							if(keggpaths[i].startsWith("PATHWAY")){
-								let p = keggpaths[i].split("PATHWAY")[1].trim()
+		for(var n in nodes){
+			if(nodes[n]["data"]["symbol"]!="legend"){
+				var	entrezID = nodes[n]["data"]["entrezID"].toString();
+				var keggpaths = getPathwaysFromKEGG(entrezID);
+				keggpaths = keggpaths.split("\n")
+				var line = 0;
+				while(line < keggpaths.length){
+					if(keggpaths[line].includes("<nobr>Pathway</nobr>")){
+						line++;
+						var splitarray =keggpaths[line].split("</td>")
+						for(var i = 1; i < splitarray.length-2; i=i+2){
+							let hsa = "hsa"+splitarray[i-1].split(">hsa")[1].split("</a>")[0]
+							let p = splitarray[i].split("<td>")[1]
+							p = hsa+" "+p;
+							if(p != undefined){
 								if(typeof allPaths[p] == 'undefined'){
 									allPaths[p]=[];
 								}
@@ -918,47 +914,36 @@ function listKEGGPathways(){
 									pathsCount[p]=pathsCount[p]+1;
 								}
 							}
-							else if(searchPattern.test(keggpaths[i])){
-								let p = keggpaths[i].trim();
-								if(typeof allPaths[p] == 'undefined'){
-									allPaths[p]=[];
-								}
-								allPaths[p].push(entrezID);
-								if(isNaN(pathsCount[p])){
-									pathsCount[p]=1; 
-								}
-								else{
-									pathsCount[p]=pathsCount[p]+1;
-								}
-							}
-							else if(keggpaths[i].startsWith("MODULE")){
-								break;
-							}
-							i++;
-					    }
+						}
+						break;
+					}	
+					else{
+						line++;
 					}
 				}
+			}
+		}
         // only get top 5 of pathways (most genes in)
-				var props = Object.keys(pathsCount).map(function(key) {
-				  return { key: key, value: this[key] };}, pathsCount);
-				props = props.sort(function(p1, p2) { return p2.value - p1.value; });
-				var topFive = props.slice(0, 5);
+		var props = Object.keys(pathsCount).map(function(key) {
+		  return { key: key, value: this[key] };}, pathsCount);
+		props = props.sort(function(p1, p2) { return p2.value - p1.value; });
+		var topFive = props.slice(0, 5);
 
         //show table of pathways
-				var tbody = document.getElementById("KEGGpaths");
-				var htmlString ="<form> <h3>KEGG Pathways:</h3><br>";
-				var colors = ["#66c2a5","#fc8d62","#8da0cb","#e78ac3","#a6d854"]
+		var tbody = document.getElementById("KEGGpaths");
+		var htmlString ="<form> <h3>KEGG Pathways:</h3><br>";
+		var colors = ["#66c2a5","#fc8d62","#8da0cb","#e78ac3","#a6d854"]
 
-				for (var i = 0; i < topFive.length; i++) {
-					colorschemePaths[topFive[i].key] = colors[i];
-					var tr = "<b style='color:"+colors[i]+"'><label><input type='checkbox' value='"+topFive[i].key+"' onclick='highlightKEGGpaths()''>";
-				    tr += topFive[i].key + " </label><br><br>";
-				    htmlString += tr;
-				}
-				htmlString +="</form>"
-				tbody.innerHTML = htmlString;
-				document.getElementById('loader').style.visibility = "hidden";
-				},10);
+		for (var i = 0; i < topFive.length; i++) {
+			colorschemePaths[topFive[i].key] = colors[i];
+			var tr = "<b style='color:"+colors[i]+"'><label><input type='checkbox' value='"+topFive[i].key+"' onclick='highlightKEGGpaths()''>";
+		    tr += topFive[i].key + " </label><br><br>";
+		    htmlString += tr;
+		}
+		htmlString +="</form>"
+		tbody.innerHTML = htmlString;
+		document.getElementById('loader').style.visibility = "hidden";
+		},10);
 		}
 	}
   //Hide table, switch button to show
