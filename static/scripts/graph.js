@@ -614,6 +614,10 @@ function mergeEdges(){
           });
         }
       }
+      else if(e.interaction.includes(",")){
+      	cy.edges()[i].data().interaction = e.interaction.split(",");
+      	i--;
+      }
     }
     showMetaInfo();
   }
@@ -684,7 +688,6 @@ function changeNodeShapes(){
         .selector('node[id ="'+id+'"]')        
         .style('shape', shape)
         .update();
-
     }
     i++;
   }
@@ -714,10 +717,11 @@ function changeNodeShapes(){
               shape: shape,
               'background-color': '#666666',
               label: 'data(id)',
-              'font-size': 10
+              'font-size': 10,
+              'overlay-opacity': 0,
             }
           }
-        ]
+        ],
       });
 
  
@@ -734,6 +738,8 @@ function changeNodeShapes(){
                locked: true,
             });
    ycoord = 50;
+   shapeNode.nodes().ungrabify();
+
   } 
   // test if shape has been used for another attribute
   else if(Object.keys(usedShapes).includes(shape)){
@@ -754,7 +760,6 @@ function changeNodeShapes(){
           id = graphString[i].split("\"")[1];
         } 
         else if(id != "" && graphString[i].includes('\"v_'+usedShapes[shape]+'\">true<')){
-
           cy.style()
             .selector('node[id ="'+id+'"]')        
             .style('shape', 'ellipse')
@@ -774,6 +779,7 @@ function changeNodeShapes(){
       .selector('node[id ="'+shapeAttribute+'"]')        
       .style('shape', shape)
       .update();
+
     usedShapeAttributes[shapeAttribute] = shape;
     usedShapes[shape] = shapeAttribute
   }
@@ -787,6 +793,8 @@ function changeNodeShapes(){
         .selector('node[id ="'+shapeAttribute+'"]')        
         .style('shape', shape)
         .update();
+    shapeNode.nodes().ungrabify().update();
+
   }
 }
 
