@@ -1,5 +1,5 @@
 # BioGraphVisart
-This is a web-based tool to interactively visualize *.graphml*-files, especially with biological background. It is written in javascript based on [nodejs](nodejs.org) and [cytoscape.js](http://js.cytoscape.org). It is meant for smaller graphs (up to 30 nodes) but of course bigger networks can be used with loss of clarity and comprehensibility and it takes longer calculation times.
+This is a web-based tool to interactively visualize *.graphml*-files, especially with biological background. It is written in javascript based on [cytoscape.js](http://js.cytoscape.org). It is meant for smaller graphs (up to 30 nodes) but of course bigger networks can be used with loss of clarity and comprehensibility and it takes longer calculation times.
 
 **Nodes** are usually human genes but can be something different with restricted options of visualisation and additional information.
 The **labels** of the nodes are taken from the node attribute *\<data key="v\_symbol"\>...\</data\>* (if gene symbols available) or *\<data key="v\_name"\>...\</data\>* (otherwise).
@@ -53,14 +53,9 @@ You need to have [nodejs](nodejs.org) installed.
 
 	- **Firefox**
 		* install the Firefox Add-on [*cors-plugin*](https://addons.mozilla.org/en-US/firefox/addon/cors-plugin/) and activate it.
-2. Run terminal in *BioGraphVisart-master/static/scripts*: 
-		
-		node server.js 
 
-3. Open in browser
+2. Open in browser [https://mirjamfi.github.io/BioGraphVisart/](https://mirjamfi.github.io/BioGraphVisart/)
 
-		http://localhost:3000/
-
-4. Select a .graphml-file and select attribute for node coloring to generate a subgraph or select a .json of a previous generated graph.
+3. Select a .graphml-file and select attribute for node coloring to generate a subgraph or select a .json of a previous generated graph.
 
 
