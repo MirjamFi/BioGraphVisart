@@ -857,15 +857,25 @@ function changeLayout(){
 function getPathwaysFromKEGG(name){ 
 	var responsetxt;
 	var xhr = new XMLHttpRequest();
-	xhr.open('GET', "https://www.kegg.jp/entry/hsa:" + name, false);
-	
-	xhr.onload = function () {
-		paths = xhr.responseText;
-		console.log(paths)
-	 }
+	if(window.location.href == "http://localhost:3000/"){
+		xhr.open('GET', "http://rest.kegg.jp/get/hsa:" + name, false);
+		xhr.onload = function () {
+			paths = xhr.responseText;
+		 }
 
-	xhr.send(document);
-	return paths;
+		xhr.send(document);
+		return paths;
+	}
+	else{
+		console.log("https://www.kegg.jp/entry/hsa:" + name)
+		xhr.open('GET', "https://www.kegg.jp/entry/hsa:" + name, false);
+		xhr.onload = function () {
+			paths = xhr.responseText;
+		 }
+
+		xhr.send(document);
+		return paths;
+	}
 }
 
 /*
@@ -890,7 +900,7 @@ function listKEGGPathways(){
 				for(var n in nodes){
 					if(nodes[n]["data"]["symbol"]!="legend"){
 						var	entrezID = nodes[n]["data"]["entrezID"].toString();
-						var keggpaths = getPathwaysFromKEGG(entrezID).split('\n');
+						var keggpaths = getPathwaysFromKEGG(entrezID).split("\n");
 						var i = 0;
 						var searchPattern = new RegExp(/^\s* hsa/);
 
