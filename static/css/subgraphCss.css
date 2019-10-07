@@ -3,6 +3,53 @@ body {
   font-size: 14px;
 }
 
+a{
+  text-decoration: none;
+}
+
+.topnav{
+  position: relative;
+  width: 100%;
+  background-color: #e3e3e3;
+  overflow: hidden;
+}
+/* Style the links inside the navigation bar */
+.topnav a {
+  float: left;
+  color: black;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+  background-color: #868281;
+  color: black;
+}
+
+/* Add a color to the active/current link */
+.topnav a.active {
+  background-color: #4CAF50;
+  color: white;
+}
+
+/* Right-aligned section inside the top navigation */
+.topnav-right {
+  float: right;
+}
+.topnav-centered a {
+  float: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+  font-weight: bold;
+
+}
+
 h1 {
   opacity: 1;
   font-size: 30px;
@@ -13,6 +60,7 @@ h1 {
   font-size: 18px;
   text-align: left;
 }
+
 
 .butn {
   cursor: pointer;
@@ -71,7 +119,7 @@ input:hover{
 
 #legend {
     position: absolute;
-    top: 250px;
+    top: 300px;
     left: 10px;
     font-size: 11px;
     width: 180px;
@@ -112,3 +160,9 @@ input:hover{
 } 
 
 
+
+
+/** Site footer */
+.site-footer { border-top: 1px solid #e8e8e8; padding: 30px 0; position: absolute; bottom: 0;}
+
+.footer-heading { font-size: 18px; margin-bottom: 15px; }

@@ -13,6 +13,10 @@ app.get('/',function(req,res){
   res.sendFile(path.resolve('../../templates/subgraphVisualization.html'));
 });
 
+app.get('/about',function(req,res){
+  res.sendFile(path.resolve('../../templates/about.html'));
+});
+
 app.get("/foundGraphs", function(req, res) {
     if(foundFiles.length == 0){
         var startPath = '../graphs/';
