@@ -148,7 +148,7 @@ function getNodesAndEdges(graphString){
             pos = pos -1
           }
           else{
-            edges[pos-1].data.interaction.push(interact)
+            edges[pos-1].data.interaction.push(interact);
             continue;
           }
         }
@@ -367,36 +367,43 @@ function addNodesAndEdges(){
           'font-size':16,
           'text-rotation':'autorotate',
           'font-weight':800,
-          'target-arrow-shape' : 'vee'
-          
+          'target-arrow-shape': 'triangle-backcurve',
+          'line-style':'dashed',
         }},
         {selector: 'edge[interaction = \'activation\']',
           style: {
             'target-arrow-shape': 'triangle',
+            'line-style':'solid'
         }},
         {selector: 'edge[interaction = \'expression\']',
           style: {
             'target-arrow-shape': 'triangle',
+            'line-style':'solid'
         }},
         {selector: 'edge[interaction = \'inhibition\']',
           style: {
             'target-arrow-shape': 'tee',
+            'line-style':'solid'
         }},
         {selector: 'edge[interaction = \'repression\']',
           style: {
             'target-arrow-shape': 'tee',
+            'line-style':'solid'
         }},
         {selector: 'edge[interaction = \'binding/association\']',
           style: {
             'target-arrow-shape': 'triangle-cross',
+            'line-style':'solid'
         }},
         {selector: 'edge[interaction = \'dissociation\']',
           style: {
             'target-arrow-shape': 'triangle-cross',
+            'line-style':'solid'
         }},
       	{selector: 'edge[interaction = \'compound\']',
 	        style: {
 	          'target-arrow-shape': 'circle',
+	          'line-style':'solid'
         }},
       {selector: 'edge[interaction = \'indirect effect\']',
         style: {
@@ -411,37 +418,43 @@ function addNodesAndEdges(){
         {selector: 'edge[interaction = \'state change\']',
           style: {
             'target-arrow-shape': 'square',
+            'line-style':'solid'
         }},
 
       {selector: 'edge[interaction = \'phosphorylation\']',
         style: {
           'target-arrow-shape': 'diamond',
           'target-label':'+p',
-          'target-text-offset':20
+          'target-text-offset':20,
+          'line-style':'solid'
         }},
       {selector: 'edge[interaction = \'dephosphorylation\']',
           style: {
             'target-arrow-shape': 'diamond',
             'target-label':'-p',
-          'target-text-offset':20
+          'target-text-offset':20,
+          'line-style':'solid'
         }},
       {selector: 'edge[interaction = \'glycosylation\']',
           style: {
            'target-arrow-shape': 'diamond',
            'target-label':'+g',
-          'target-text-offset':20
+          'target-text-offset':20,
+          'line-style':'solid'
         }},      
       {selector: 'edge[interaction = \'ubiquitination\']',
           style: {
             'target-arrow-shape': 'diamond',
             'target-label':'+u',
-          'target-text-offset':20
+          'target-text-offset':20,
+          'line-style':'solid'
         }},
       {selector: 'edge[interaction = \'methylation\']',
           style: {
             'target-arrow-shape': 'diamond',
             'target-label':'+m',
-          'target-text-offset':20
+          'target-text-offset':20,
+          'line-style':'solid'
         }}
 
       ]
@@ -461,7 +474,13 @@ function addNodesAndEdges(){
       });
     }
   }
-
+  for(var e =0; e < edges.length; e++){
+      cy.batch(function(){
+      	if(Array.isArray(edges[e].data.interaction) || edges[e].data.interaction.split(",").length > 1){
+      	    cy.$('edge[id =\''  + edges[e].data.id + '\']').style('target-arrow-shape', 'vee').style('line-style','solid');
+      	}
+      });
+    }
 	// on click collapse all other nodes and expand extra nodes for clicked node
 	cy.on('tap', 'node', function(evt){
 		clickedNode = evt.target;
@@ -601,21 +620,22 @@ function mergeEdges(){
           loopId:
           for(var j = i; j < cy.edges().length; j++){
             // single edge is already contained
-            if(cy.edges()[j].data().id == e.id+'_'+interact){
+            if(cy.edges()[j].data().id == e.id+'_'+interact.trim()){
               //show single edge
-              cy.edges('edge[id = "'+e.id+'_'+interact+'"]').style('display', 'element');
+              cy.edges('edge[id = "'+e.id+'_'+interact.trim()+'"]').style('display', 'element').update;
               continue loopInteraction;
             }
           }
           // add single edge to graph
           cy.add({
             group: 'edges',
-            data: { id:e.id+'_'+interact, source:e.source, target:e.target, interaction:interact },
+            data: { id:e.id+'_'+interact.trim(), source:e.source, target:e.target, interaction:interact.trim()},
           });
         }
       }
       else if(e.interaction.includes(",")){
       	cy.edges()[i].data().interaction = e.interaction.split(",");
+      	cy.edges()[i].style('target-arrow-shape', 'vee').style('line-style','solid').update;
       	i--;
       }
     }
@@ -627,7 +647,7 @@ function mergeEdges(){
       var edge = cy.edges()[i]
       // show merged edges
       if(edge.hidden()){
-        edge.style('display', 'element');
+        edge.style('display', 'element').style('target-arrow-shape', 'vee').style('line-style','solid');
       }
       // hide single edges
       else{
