@@ -21,7 +21,7 @@ app.get('/heatmap',function(req,res){
 });
 
 app.get('/foundFilesInDirectory', function(req,res){
-    var startPath = req.query.directory;
+    var startPath = '../../'+req.query.directory;
     console.log(startPath)
     if(startPath != prevdirectory){
         foundFiles = [];

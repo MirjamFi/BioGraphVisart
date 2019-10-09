@@ -159,7 +159,7 @@ function loadGraphml(sampleLeft, sampleRight) {
       let filenameSplit = sample.split("/")
       let patient = filenameSplit[filenameSplit.length-1].split('.')[0]   //name of graph
 
-      let path_sample = "http://127.0.0.1:3000/static/scripts/"+sample;    //get file
+      let path_sample = "../../"+sample;    //get file
       var xmlhttp = new XMLHttpRequest();
       xmlhttp.open("GET", path_sample, false);
       xmlhttp.send();
