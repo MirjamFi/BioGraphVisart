@@ -6,7 +6,7 @@ var http = require("http"),
 var app     = express();
 
 var foundFiles = [];
-
+var prevdirectory = "";
 app.use(express.static('../../'));
 
 app.get('/',function(req,res){
@@ -16,16 +16,21 @@ app.get('/',function(req,res){
 app.get('/about',function(req,res){
   res.sendFile(path.resolve('../../templates/about.html'));
 });
+app.get('/heatmap',function(req,res){
+  res.sendFile(path.resolve('../../templates/heatmap.html'));
+});
 
-app.get("/foundGraphs", function(req, res) {
-    if(foundFiles.length == 0){
-        var startPath = '../graphs/';
+app.get('/foundFilesInDirectory', function(req,res){
+    var startPath = req.query.directory;
+    console.log(startPath)
+    if(startPath != prevdirectory){
+        foundFiles = [];
         var filter = '.graphml';
-        fromDir(startPath, filter, foundFiles);
-    }   
-    res.send(foundFiles);}
-)
-
+        var foundFilesInDirectory = fromDir(startPath, filter);
+        prevdirectory = startPath;
+        res.send(foundFilesInDirectory);
+    }
+})
 
 function fromDir(startPath, filter){
     if (!fs.existsSync(startPath)){

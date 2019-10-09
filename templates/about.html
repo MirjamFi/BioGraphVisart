@@ -26,14 +26,29 @@
   <body>
     <header class="site-header">
 
- 	<div class="topnav">
-		<div class="topnav-centered">
-			<a class="site-title" href="/">BioGraphVisart</a>
-		</div>
-	    <div class="topnav-right">
-	    	<a class="page-link" href="/about/">About</a>
-		</div>
-	</div>
+ 	<div class="topnav" id ="nav">
+        <div class="topnav-left">
+            <a class="page-link" href="/heatmap/">Heatmap</a>
+        </div>
+        <div class="topnav-centered">
+            <a class="page-link" href="/">BioGraphVisart</a>
+        </div>
+        <div class="topnav-right">
+            <a class="page-link active" href="/about/">About</a>
+        </div>
+    </div>
+    <script>
+        // Add active class to the current button (highlight it)
+        var header = document.getElementById("nav");
+        var btns = header.getElementsByClassName("page-link");
+        for (var i = 0; i < btns.length; i++) {
+          btns[i].addEventListener("click", function() {
+          var current = document.getElementsByClassName("active");
+          current[0].className = current[0].className.replace(" active", "");
+          this.className += " active";
+          });
+        }
+    </script>
 
     <div class="page-content">
       <div class="wrapper">
