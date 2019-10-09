@@ -857,7 +857,17 @@ function changeLayout(){
 }
 
 // get graph for gene from Thorsten's database
-function getGraphforGene(name){ 
+function getGraphforGene(name){
+  var networkInventory;
+  var reqNetworks = new XMLHttpRequest();
+  reqNetworks.open('GET', 'http://abidocker:48080/sbml4j/networkInventory', false);
+  reqNetworks.setRequestHeader('user', 'user')
+  reqNetworks.onload = function () {
+    networkInventory = JSON.parse(reqNetworks.responseText);
+   }
+  reqNetworks.send(document);
+  console.log(networkInventory)
+
   var listofGenes;
   var reqListofGenes = new XMLHttpRequest();
   reqListofGenes.open('GET', 'http://abidocker:48080/sbml4j/networkInventory/2d25f4b9-8dd5-4bc3-9d04-9af418302244/filterOptions', false);
