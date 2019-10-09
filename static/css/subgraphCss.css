@@ -3,6 +3,53 @@ body {
   font-size: 14px;
 }
 
+a{
+  text-decoration: none;
+}
+
+.topnav{
+  position: relative;
+  width: 100%;
+  background-color: #BDBDBD;
+  overflow: hidden;
+}
+/* Style the links inside the navigation bar */
+.topnav a {
+  float: left;
+  color: black;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+  background-color: #868281;
+  color: black;
+}
+
+/* Add a color to the active/current link */
+.topnav a.active {
+  background-color: #4CAF50;
+  color: white;
+}
+
+/* Right-aligned section inside the top navigation */
+.topnav-right {
+  float: right;
+}
+.topnav-centered a {
+  float: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+  font-weight: bold;
+
+}
+
 h1 {
   opacity: 1;
   font-size: 30px;
@@ -14,14 +61,15 @@ h1 {
   text-align: left;
 }
 
+
 .butn {
   cursor: pointer;
-  background: #f9f9f9;
-  background-image: -webkit-linear-gradient(top, #f9f9f9, #e3e3e3);
-  background-image: -moz-linear-gradient(top, #f9f9f9, #e3e3e3);
-  background-image: -ms-linear-gradient(top, #f9f9f9, #e3e3e3);
-  background-image: -o-linear-gradient(top, #f9f9f9, #e3e3e3);
-  background-image: linear-gradient(to bottom, #f9f9f9, #e3e3e3);
+  background: #e3e3e3;
+  background-image: -webkit-linear-gradient(top, #f9f9f9, #BDBDBD);
+  background-image: -moz-linear-gradient(top, #f9f9f9, #BDBDBD);
+  background-image: -ms-linear-gradient(top, #f9f9f9, #BDBDBD);
+  background-image: -o-linear-gradient(top, #f9f9f9, #BDBDBD);
+  background-image: linear-gradient(to bottom, #f9f9f9, #BDBDBD);
   -webkit-border-radius: 28;
   -moz-border-radius: 28;
   border-radius: 28px;
@@ -49,7 +97,7 @@ select {
 
 input {
     cursor: pointer;
-    background-color: #e3e3e3;
+    background-color: #BDBDBD;
     color: black;
     padding: 5px 8px;
 }
@@ -61,17 +109,20 @@ input:hover{
 }
 
 #cy {
-      width: 75%;
-      height: 79%;
+      width: 71.5%;
+      /*height: 75%;*/
       position: absolute;
       top: 300px;
-      left: 185px;
+      left: 190px;
+      bottom: 15px;
+      background-color:none;
+      /*border: solid #BDBDBD;*/
   }
 
 
 #legend {
     position: absolute;
-    top: 250px;
+    top: 300px;
     left: 10px;
     font-size: 11px;
     width: 180px;
@@ -79,7 +130,7 @@ input:hover{
 }
 #legendNodes {
     position: absolute;
-    top: 520px;
+    top: 540px;
     left: 10px;
     font-size: 11px;
     width: 180px;
@@ -112,3 +163,9 @@ input:hover{
 } 
 
 
+
+
+/** Site footer */
+.site-footer { border-top: 1px solid #e8e8e8; padding: 30px 0; position: absolute; bottom: 0;}
+
+.footer-heading { font-size: 18px; margin-bottom: 15px; }
