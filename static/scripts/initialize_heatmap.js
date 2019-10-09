@@ -39,7 +39,13 @@ function loadDir(){
   document.getElementById("cyRight").innerHTML = "";
   document.getElementById('keggpathwaysLeft').style.visibility = "hidden";
   document.getElementById('keggpathwaysRight').style.visibility = "hidden";
-  document.getElementById('download').style.visibility = "hidden";
+  document.getElementById('downloadPartLeft').style.visibility = "hidden";
+  document.getElementById('downloadPartRight').style.visibility = "hidden";
+  document.getElementById('resetLeft').style.visibility = "hidden";
+  document.getElementById('resetRight').style.visibility = "hidden";
+    document.getElementById("leftID").innerHTML = "";
+  document.getElementById("rightID").innerHTML = "";
+
   cleanSelections();
   $.get('/foundFilesInDirectory', $("#directory")).then(function (files) {
     if(files.length == 0){
@@ -58,7 +64,6 @@ function loadDir(){
       data[file]=[];
 
       let k = 0;
-      console.log(file)
       $.get(file).then(function(graphml) {
         // get attribute information
         let keyList = $(graphml).find('key')
