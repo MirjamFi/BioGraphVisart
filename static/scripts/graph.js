@@ -18,8 +18,8 @@ function visualize(graphString) {
     var nodesAndEdges = getNodesAndEdges(graphString);
     nodes = nodesAndEdges[0];
     edges = nodesAndEdges[1]; 
-  	nodeValuesNum = nodesAndEdges[2];
-  	attributesTypes = nodesAndEdges[3];
+    nodeValuesNum = nodesAndEdges[2];
+    attributesTypes = nodesAndEdges[3];
 
     nodeValuesNum = transform01toTF(nodeValuesNum);
 
@@ -33,17 +33,17 @@ function visualize(graphString) {
   }
   if(!clicked){
     $('#downloadPDF').removeAttr('disabled');
-	  $('#downloadPNG').removeAttr('disabled');
-	  $('#downloadSVG').removeAttr('disabled');
-	  $('#downloadJSON').removeAttr('disabled');
+    $('#downloadPNG').removeAttr('disabled');
+    $('#downloadSVG').removeAttr('disabled');
+    $('#downloadJSON').removeAttr('disabled');
 
-	  oldMin = nodesMin;
-	  oldMax = nodesMax;
+    oldMin = nodesMin;
+    oldMax = nodesMax;
 
-	  showLegend();
+    showLegend();
 
-	  document.getElementById('downloadPart').style.visibility = "visible";
-	}
+    document.getElementById('downloadPart').style.visibility = "visible";
+  }
   showMetaInfo();
   document.getElementById('selectlayout').setAttribute('style','visibility:visible');
 
@@ -121,8 +121,8 @@ function getNodesAndEdges(graphString){
         curNode.genename = genename;
       }
       if(graphString[i].includes("v_entrez")){
-      	var entrezID = graphString[i].split("\>")[1].split("\<")[0];
-      	curNode.entrezID = entrezID;
+        var entrezID = graphString[i].split("\>")[1].split("\<")[0];
+        curNode.entrezID = entrezID;
       }
       
     }
@@ -146,7 +146,7 @@ function getNodesAndEdges(graphString){
             pos = pos -1
           }
           else{
-            edges[pos-1].data.interaction.push(interact)
+            edges[pos-1].data.interaction.push(interact);
             continue;
           }
         }
@@ -344,18 +344,18 @@ function addNodesAndEdges(){
       }},
 
       {selector: 'node[id = "l1"]',
-	      style:{
-	        'color': 'black',
-	        'background-height':50,
-	        'background-width':200,
-	        'background-position-y':'100%',
-	        'shape': 'rectangle',
-	        'width':200,
-	        'height':50,
-	        'border-width':1,
-	        'text-valign' : 'bottom',
-	        'text-max-width': 200
-	    }},
+        style:{
+          'color': 'black',
+          'background-height':50,
+          'background-width':200,
+          'background-position-y':'100%',
+          'shape': 'rectangle',
+          'width':200,
+          'height':50,
+          'border-width':1,
+          'text-valign' : 'bottom',
+          'text-max-width': 200
+      }},
 
       // style edges
       {selector: 'edge',
@@ -365,36 +365,43 @@ function addNodesAndEdges(){
           'font-size':16,
           'text-rotation':'autorotate',
           'font-weight':800,
-          'target-arrow-shape' : 'vee'
-          
+          'target-arrow-shape': 'triangle-backcurve',
+          'line-style':'dashed',
         }},
         {selector: 'edge[interaction = \'activation\']',
           style: {
             'target-arrow-shape': 'triangle',
+            'line-style':'solid'
         }},
         {selector: 'edge[interaction = \'expression\']',
           style: {
             'target-arrow-shape': 'triangle',
+            'line-style':'solid'
         }},
         {selector: 'edge[interaction = \'inhibition\']',
           style: {
             'target-arrow-shape': 'tee',
+            'line-style':'solid'
         }},
         {selector: 'edge[interaction = \'repression\']',
           style: {
             'target-arrow-shape': 'tee',
+            'line-style':'solid'
         }},
         {selector: 'edge[interaction = \'binding/association\']',
           style: {
             'target-arrow-shape': 'triangle-cross',
+            'line-style':'solid'
         }},
         {selector: 'edge[interaction = \'dissociation\']',
           style: {
             'target-arrow-shape': 'triangle-cross',
+            'line-style':'solid'
         }},
-      	{selector: 'edge[interaction = \'compound\']',
-	        style: {
-	          'target-arrow-shape': 'circle',
+        {selector: 'edge[interaction = \'compound\']',
+          style: {
+            'target-arrow-shape': 'circle',
+            'line-style':'solid'
         }},
       {selector: 'edge[interaction = \'indirect effect\']',
         style: {
@@ -409,37 +416,43 @@ function addNodesAndEdges(){
         {selector: 'edge[interaction = \'state change\']',
           style: {
             'target-arrow-shape': 'square',
+            'line-style':'solid'
         }},
 
       {selector: 'edge[interaction = \'phosphorylation\']',
         style: {
           'target-arrow-shape': 'diamond',
           'target-label':'+p',
-          'target-text-offset':20
+          'target-text-offset':20,
+          'line-style':'solid'
         }},
       {selector: 'edge[interaction = \'dephosphorylation\']',
           style: {
             'target-arrow-shape': 'diamond',
             'target-label':'-p',
-          'target-text-offset':20
+          'target-text-offset':20,
+          'line-style':'solid'
         }},
       {selector: 'edge[interaction = \'glycosylation\']',
           style: {
            'target-arrow-shape': 'diamond',
            'target-label':'+g',
-          'target-text-offset':20
+          'target-text-offset':20,
+          'line-style':'solid'
         }},      
       {selector: 'edge[interaction = \'ubiquitination\']',
           style: {
             'target-arrow-shape': 'diamond',
             'target-label':'+u',
-          'target-text-offset':20
+          'target-text-offset':20,
+          'line-style':'solid'
         }},
       {selector: 'edge[interaction = \'methylation\']',
           style: {
             'target-arrow-shape': 'diamond',
             'target-label':'+m',
-          'target-text-offset':20
+          'target-text-offset':20,
+          'line-style':'solid'
         }}
 
       ]
@@ -459,27 +472,29 @@ function addNodesAndEdges(){
       });
     }
   }
-
-	// on click collapse all other nodes and expand extra nodes for clicked node
-	cy.on('tap', 'node', function(evt){
-		clickedNode = evt.target;
-		if(!collapsed){
-      var neighboringgraphml = getGraphforGene(evt.target.data().symbol);
-		  clickedNodesPosition = cy.$(evt.target).position();
-      if(neighboringgraphml){
+  for(var e =0; e < edges.length; e++){
+      cy.batch(function(){
+        if(Array.isArray(edges[e].data.interaction) || edges[e].data.interaction.split(",").length > 1){
+            cy.$('edge[id =\''  + edges[e].data.id + '\']').style('target-arrow-shape', 'vee').style('line-style','solid');
+        }
+      });
+    }
+  // on click collapse all other nodes and expand extra nodes for clicked node
+  cy.on('tap', 'node', function(evt){
+    clickedNode = evt.target;
+    if(!collapsed){
+      if(expandGraphs[evt.target.data().symbol]){
         collapsed = true;
-  		  visualize(neighboringgraphml.split("\n"));
-        cy.elements('node[nodename = "'+ evt.target.data().symbol+'"] ').style('border-width', 5).style('font-weight', 'bold')
-        // cy.elements('node[nodename = "'+ evt.target.data().symbol+'"] ').neighborhood().style('background-color', 'green')
-        // console.log(cy.elements('node[nodename = "'+ evt.target.data().symbol+'"] ').neighborhood())
+        clickedNodesPosition = cy.$(evt.target).position();
+        visualize(expandGraphs[evt.target.data().symbol]);
       }
-		}
-		else if(collapsed){
-		 	collapsed = false;
-		 	visualize(graphString);
-		 }
-		
-	}); // on tap
+    }
+    else if(collapsed){
+      collapsed = false;
+      visualize(graphString);
+     }
+    
+  }); // on tap
   cy.nodes().noOverlap({ padding: 5 });
   if(! noOptn){
   // calculate label position for legend and style legend
@@ -509,8 +524,7 @@ function addNodesAndEdges(){
         .style('background-image','data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhLS0gQ3JlYXRlZCB3aXRoIElua3NjYXBlIChodHRwOi8vd3d3Lmlua3NjYXBlLm9yZy8pIC0tPgoKPHN2ZwogICB4bWxuczpvc2I9Imh0dHA6Ly93d3cub3BlbnN3YXRjaGJvb2sub3JnL3VyaS8yMDA5L29zYiIKICAgeG1sbnM6ZGM9Imh0dHA6Ly9wdXJsLm9yZy9kYy9lbGVtZW50cy8xLjEvIgogICB4bWxuczpjYz0iaHR0cDovL2NyZWF0aXZlY29tbW9ucy5vcmcvbnMjIgogICB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiCiAgIHhtbG5zOnN2Zz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciCiAgIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICAgeG1sbnM6c29kaXBvZGk9Imh0dHA6Ly9zb2RpcG9kaS5zb3VyY2Vmb3JnZS5uZXQvRFREL3NvZGlwb2RpLTAuZHRkIgogICB4bWxuczppbmtzY2FwZT0iaHR0cDovL3d3dy5pbmtzY2FwZS5vcmcvbmFtZXNwYWNlcy9pbmtzY2FwZSIKICAgd2lkdGg9IjE5OS45OTk5OG1tIgogICBoZWlnaHQ9IjUwbW0iCiAgIHZpZXdCb3g9IjAgMCAxOTkuOTk5OTggNTAiCiAgIHZlcnNpb249IjEuMSIKICAgaWQ9InN2ZzgiCiAgIGlua3NjYXBlOnZlcnNpb249IjAuOTIuMiA1YzNlODBkLCAyMDE3LTA4LTA2IgogICBzb2RpcG9kaTpkb2NuYW1lPSJsZWdlbmRfYm9vbC5zdmciPgogIDxkZWZzCiAgICAgaWQ9ImRlZnMyIj4KICAgIDxsaW5lYXJHcmFkaWVudAogICAgICAgaWQ9ImxpbmVhckdyYWRpZW50MjI3NSIKICAgICAgIG9zYjpwYWludD0ic29saWQiPgogICAgICA8c3RvcAogICAgICAgICBzdHlsZT0ic3RvcC1jb2xvcjojMDA2Y2YwO3N0b3Atb3BhY2l0eToxOyIKICAgICAgICAgb2Zmc2V0PSIwIgogICAgICAgICBpZD0ic3RvcDIyNzMiIC8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8c29kaXBvZGk6bmFtZWR2aWV3CiAgICAgaWQ9ImJhc2UiCiAgICAgcGFnZWNvbG9yPSIjZmZmZmZmIgogICAgIGJvcmRlcmNvbG9yPSIjNjY2NjY2IgogICAgIGJvcmRlcm9wYWNpdHk9IjEuMCIKICAgICBpbmtzY2FwZTpwYWdlb3BhY2l0eT0iMC4wIgogICAgIGlua3NjYXBlOnBhZ2VzaGFkb3c9IjIiCiAgICAgaW5rc2NhcGU6em9vbT0iMS4xODQ1NDk5IgogICAgIGlua3NjYXBlOmN4PSIzNzguMjAyNzQiCiAgICAgaW5rc2NhcGU6Y3k9Ijk0LjQ4ODE4OSIKICAgICBpbmtzY2FwZTpkb2N1bWVudC11bml0cz0ibW0iCiAgICAgaW5rc2NhcGU6Y3VycmVudC1sYXllcj0ibGF5ZXIxIgogICAgIHNob3dncmlkPSJmYWxzZSIKICAgICBmaXQtbWFyZ2luLXRvcD0iMCIKICAgICBmaXQtbWFyZ2luLWxlZnQ9IjAiCiAgICAgZml0LW1hcmdpbi1yaWdodD0iMCIKICAgICBmaXQtbWFyZ2luLWJvdHRvbT0iMCIKICAgICBzaG93Ym9yZGVyPSJmYWxzZSIKICAgICBpbmtzY2FwZTp3aW5kb3ctd2lkdGg9IjE0NDAiCiAgICAgaW5rc2NhcGU6d2luZG93LWhlaWdodD0iODU1IgogICAgIGlua3NjYXBlOndpbmRvdy14PSIwIgogICAgIGlua3NjYXBlOndpbmRvdy15PSIxIgogICAgIGlua3NjYXBlOndpbmRvdy1tYXhpbWl6ZWQ9IjEiIC8+CiAgPG1ldGFkYXRhCiAgICAgaWQ9Im1ldGFkYXRhNSI+CiAgICA8cmRmOlJERj4KICAgICAgPGNjOldvcmsKICAgICAgICAgcmRmOmFib3V0PSIiPgogICAgICAgIDxkYzpmb3JtYXQ+aW1hZ2Uvc3ZnK3htbDwvZGM6Zm9ybWF0PgogICAgICAgIDxkYzp0eXBlCiAgICAgICAgICAgcmRmOnJlc291cmNlPSJodHRwOi8vcHVybC5vcmcvZGMvZGNtaXR5cGUvU3RpbGxJbWFnZSIgLz4KICAgICAgICA8ZGM6dGl0bGU+PC9kYzp0aXRsZT4KICAgICAgPC9jYzpXb3JrPgogICAgPC9yZGY6UkRGPgogIDwvbWV0YWRhdGE+CiAgPGcKICAgICBpbmtzY2FwZTpsYWJlbD0iRWJlbmUgMSIKICAgICBpbmtzY2FwZTpncm91cG1vZGU9ImxheWVyIgogICAgIGlkPSJsYXllcjEiCiAgICAgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTUuMjkxNjY2NSwtOC4yMjYxOTI1KSI+CiAgICA8cmVjdAogICAgICAgc3R5bGU9Im9wYWNpdHk6MTtmaWxsOiMwMDZjZjA7ZmlsbC1vcGFjaXR5OjE7ZmlsbC1ydWxlOm5vbnplcm87c3Ryb2tlOm5vbmU7c3Ryb2tlLXdpZHRoOjAuMTg3MDg4NjU7c3Ryb2tlLW9wYWNpdHk6MSIKICAgICAgIGlkPSJyZWN0ODE1IgogICAgICAgd2lkdGg9IjEwMCIKICAgICAgIGhlaWdodD0iNTAiCiAgICAgICB4PSI1LjI5MTY2NjUiCiAgICAgICB5PSI4LjIyNjE5MjUiIC8+CiAgICA8cmVjdAogICAgICAgc3R5bGU9Im9wYWNpdHk6MTtmaWxsOiNmZjAwMDA7ZmlsbC1vcGFjaXR5OjE7ZmlsbC1ydWxlOm5vbnplcm87c3Ryb2tlOm5vbmU7c3Ryb2tlLXdpZHRoOjAuMjY0NTgzMzI7c3Ryb2tlLW9wYWNpdHk6MSIKICAgICAgIGlkPSJyZWN0MjMwNyIKICAgICAgIHdpZHRoPSIxMDAiCiAgICAgICBoZWlnaHQ9IjUwIgogICAgICAgeD0iMTA1LjI5MTY2IgogICAgICAgeT0iOC4yMjYxOTI1IiAvPgogIDwvZz4KPC9zdmc+Cg==')
     }
     cy.$('node[id = "l1"]')
-      .style('label', nodesMin+' '+' '.repeat(neededWhitespace)+ labelVal +' '+
-        ' '.repeat(neededWhitespace) + nodesMax)
+      .style('label', nodesMin+' '+' '.repeat(neededWhitespace)+ labelVal +' '+' '.repeat(neededWhitespace) + nodesMax)
   }
 
   // update node values if tracer or values change
@@ -604,18 +618,23 @@ function mergeEdges(){
           loopId:
           for(var j = i; j < cy.edges().length; j++){
             // single edge is already contained
-            if(cy.edges()[j].data().id == e.id+'_'+interact){
+            if(cy.edges()[j].data().id == e.id+'_'+interact.trim()){
               //show single edge
-              cy.edges('edge[id = "'+e.id+'_'+interact+'"]').style('display', 'element');
+              cy.edges('edge[id = "'+e.id+'_'+interact.trim()+'"]').style('display', 'element').update;
               continue loopInteraction;
             }
           }
           // add single edge to graph
           cy.add({
             group: 'edges',
-            data: { id:e.id+'_'+interact, source:e.source, target:e.target, interaction:interact },
+            data: { id:e.id+'_'+interact.trim(), source:e.source, target:e.target, interaction:interact.trim()},
           });
         }
+      }
+      else if(e.interaction.includes(",")){
+        cy.edges()[i].data().interaction = e.interaction.split(",");
+        cy.edges()[i].style('target-arrow-shape', 'vee').style('line-style','solid').update;
+        i--;
       }
     }
     showMetaInfo();
@@ -626,7 +645,7 @@ function mergeEdges(){
       var edge = cy.edges()[i]
       // show merged edges
       if(edge.hidden()){
-        edge.style('display', 'element');
+        edge.style('display', 'element').style('target-arrow-shape', 'vee').style('line-style','solid');
       }
       // hide single edges
       else{
@@ -687,7 +706,6 @@ function changeNodeShapes(){
         .selector('node[id ="'+id+'"]')        
         .style('shape', shape)
         .update();
-
     }
     i++;
   }
@@ -717,10 +735,11 @@ function changeNodeShapes(){
               shape: shape,
               'background-color': '#666666',
               label: 'data(id)',
-              'font-size': 10
+              'font-size': 10,
+              'overlay-opacity': 0,
             }
           }
-        ]
+        ],
       });
 
  
@@ -737,6 +756,8 @@ function changeNodeShapes(){
                locked: true,
             });
    ycoord = 50;
+   shapeNode.nodes().ungrabify();
+
   } 
   // test if shape has been used for another attribute
   else if(Object.keys(usedShapes).includes(shape)){
@@ -757,7 +778,6 @@ function changeNodeShapes(){
           id = graphString[i].split("\"")[1];
         } 
         else if(id != "" && graphString[i].includes('\"v_'+usedShapes[shape]+'\">true<')){
-
           cy.style()
             .selector('node[id ="'+id+'"]')        
             .style('shape', 'ellipse')
@@ -777,6 +797,7 @@ function changeNodeShapes(){
       .selector('node[id ="'+shapeAttribute+'"]')        
       .style('shape', shape)
       .update();
+
     usedShapeAttributes[shapeAttribute] = shape;
     usedShapes[shape] = shapeAttribute
   }
@@ -790,6 +811,8 @@ function changeNodeShapes(){
         .selector('node[id ="'+shapeAttribute+'"]')        
         .style('shape', shape)
         .update();
+    shapeNode.nodes().ungrabify().update();
+
   }
 }
 
@@ -856,149 +879,110 @@ function changeLayout(){
   }
   prevLayout = JSON.parse(JSON.stringify(selectedLayout));
 }
-
-// get graph for gene from Thorsten's database
-function getGraphforGene(name){
-  var networkInventory;
-  var reqNetworks = new XMLHttpRequest();
-  reqNetworks.open('GET', 'http://abidocker:48080/sbml4j/networkInventory', false);
-  reqNetworks.setRequestHeader('user', 'user')
-  reqNetworks.onload = function () {
-    networkInventory = JSON.parse(reqNetworks.responseText);
-   }
-  reqNetworks.send(document);
-  console.log(networkInventory)
-
-  var listofGenes;
-  var reqListofGenes = new XMLHttpRequest();
-  reqListofGenes.open('GET', 'http://abidocker:48080/sbml4j/networkInventory/2d25f4b9-8dd5-4bc3-9d04-9af418302244/filterOptions', false);
-  reqListofGenes.setRequestHeader('user', 'user')
-  reqListofGenes.onload = function () {
-    listofGenes = JSON.parse(reqListofGenes.responseText).nodeSymbols;
-   }
-  reqListofGenes.send(document);
-  if(listofGenes.includes(name)){
-    var responsetxt;
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'http://abidocker:48080/sbml4j/context?baseNetworkUUID=2d25f4b9-8dd5-4bc3-9d04-9af418302244&gene='+name+'&minSize=1&maxSize=1&format=graphml', false);
-    xhr.setRequestHeader('user', 'user')
-
-    xhr.onload = function () {
-      responsetxt = xhr.responseText;
-     }
-    xhr.send(document);
-    return responsetxt;
-  }
-
-}
-
 // get pathways of selected gene from kegg using entrez id
 function getPathwaysFromKEGG(name){ 
-	var xhr = new XMLHttpRequest();
-	xhr.open('GET', "http://rest.kegg.jp/get/hsa:" + name, false);
-	
-	xhr.onload = function () {
-		paths = xhr.responseText;
-	 }
+  var responsetxt;
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', "https://www.kegg.jp/entry/hsa:" + name, false);
+  xhr.onload = function () {
+  if (xhr.readyState === xhr.DONE) {
+    if (xhr.status === 200) {
+    paths = xhr.responseText;
+  }}
+  }
 
-	xhr.send(document);
-	return paths;
+  xhr.send(document);
+  return paths;
 }
 
 /*
-	generate a checkbox menu for the 10 most common pathways of all genes in the graph
+  generate a checkbox menu for the 10 most common pathways of all genes in the graph
 */
 function listKEGGPathways(){
   //swap button "Hide"/"show"
-	if(document.getElementById('keggpathways').firstChild.data == "Show KEGG Pathways"){
-		document.getElementById('keggpathways').firstChild.data  = "Hide KEGG Pathways";
+  if(document.getElementById('keggpathways').firstChild.data == "Show KEGG Pathways"){
+    document.getElementById('keggpathways').firstChild.data  = "Hide KEGG Pathways";
 
-		if(document.getElementById('KEGGpaths').style.visibility == "hidden"){
-			document.getElementById('KEGGpaths').style.visibility="visible";
-		}
-    //get pathways from KEGG, show loader while doing so
-		else{
+    if(document.getElementById('KEGGpaths').style.visibility == "hidden"){
       document.getElementById('KEGGpaths').style.visibility="visible";
-			document.getElementById('loader').style.visibility = "visible";
-			setTimeout(function(){
-				var pathsCount = [];
+    }
+    //get pathways from KEGG, show loader while doing so
+    else{
+      document.getElementById('KEGGpaths').style.visibility="visible";
+      document.getElementById('loader').style.visibility = "visible";
+      setTimeout(function(){
+        var pathsCount = [];
         allPaths = [];
         colorschemePaths = [];
-				for(var n in nodes){
-					if(nodes[n]["data"]["symbol"]!="legend"){
-						var	entrezID = nodes[n]["data"]["entrezID"].toString();
-						var keggpaths = getPathwaysFromKEGG(entrezID).split('\n');
-						var i = 0;
-						var searchPattern = new RegExp(/^\s* hsa/);
-
-						while(i <= keggpaths.length - 1){
-							if(keggpaths[i].startsWith("PATHWAY")){
-								let p = keggpaths[i].split("PATHWAY")[1].trim()
-								if(typeof allPaths[p] == 'undefined'){
-									allPaths[p]=[];
-								}
-								allPaths[p].push(entrezID);
-								if(isNaN(pathsCount[p])){
-									pathsCount[p]=1; 
-								}
-								else{
-									pathsCount[p]=pathsCount[p]+1;
-								}
-							}
-							else if(searchPattern.test(keggpaths[i])){
-								let p = keggpaths[i].trim();
-								if(typeof allPaths[p] == 'undefined'){
-									allPaths[p]=[];
-								}
-								allPaths[p].push(entrezID);
-								if(isNaN(pathsCount[p])){
-									pathsCount[p]=1; 
-								}
-								else{
-									pathsCount[p]=pathsCount[p]+1;
-								}
-							}
-							else if(keggpaths[i].startsWith("MODULE")){
-								break;
-							}
-							i++;
-					    }
-					}
-				}
+    for(var n in nodes){
+      if(nodes[n]["data"]["symbol"]!="legend"){
+        var entrezID = nodes[n]["data"]["entrezID"].toString();
+        var keggpaths = getPathwaysFromKEGG(entrezID);
+        keggpaths = keggpaths.split("\n")
+        var line = 0;
+        while(line < keggpaths.length){
+          if(keggpaths[line].includes("<nobr>Pathway</nobr>")){
+            line++;
+            var splitarray =keggpaths[line].split("</td>")
+            for(var i = 1; i < splitarray.length-2; i=i+2){
+              let hsa = "hsa"+splitarray[i-1].split(">hsa")[1].split("</a>")[0]
+              let p = splitarray[i].split("<td>")[1]
+              p = hsa+" "+p;
+              if(p != undefined){
+                if(typeof allPaths[p] == 'undefined'){
+                  allPaths[p]=[];
+                }
+                allPaths[p].push(entrezID);
+                if(isNaN(pathsCount[p])){
+                  pathsCount[p]=1; 
+                }
+                else{
+                  pathsCount[p]=pathsCount[p]+1;
+                }
+              }
+            }
+            break;
+          } 
+          else{
+            line++;
+          }
+        }
+      }
+    }
         // only get top 5 of pathways (most genes in)
-				var props = Object.keys(pathsCount).map(function(key) {
-				  return { key: key, value: this[key] };}, pathsCount);
-				props = props.sort(function(p1, p2) { return p2.value - p1.value; });
-				var topFive = props.slice(0, 5);
+    var props = Object.keys(pathsCount).map(function(key) {
+      return { key: key, value: this[key] };}, pathsCount);
+    props = props.sort(function(p1, p2) { return p2.value - p1.value; });
+    var topFive = props.slice(0, 5);
 
         //show table of pathways
-				var tbody = document.getElementById("KEGGpaths");
-				var htmlString ="<form> <h3>KEGG Pathways:</h3><br>";
-				var colors = ["#66c2a5","#fc8d62","#8da0cb","#e78ac3","#a6d854"]
+    var tbody = document.getElementById("KEGGpaths");
+    var htmlString ="<form> <h3>KEGG Pathways:</h3><br>";
+    var colors = ["#66c2a5","#fc8d62","#8da0cb","#e78ac3","#a6d854"]
 
-				for (var i = 0; i < topFive.length; i++) {
-					colorschemePaths[topFive[i].key] = colors[i];
-					var tr = "<b style='color:"+colors[i]+"'><label><input type='checkbox' value='"+topFive[i].key+"' onclick='highlightKEGGpaths()''>";
-				    tr += topFive[i].key + " </label><br><br>";
-				    htmlString += tr;
-				}
-				htmlString +="</form>"
-				tbody.innerHTML = htmlString;
-				document.getElementById('loader').style.visibility = "hidden";
-				},10);
-		}
-	}
+    for (var i = 0; i < topFive.length; i++) {
+      colorschemePaths[topFive[i].key] = colors[i];
+      var tr = "<b style='color:"+colors[i]+"'><label><input type='checkbox' value='"+topFive[i].key+"' onclick='highlightKEGGpaths()''>";
+        tr += topFive[i].key + " </label><br><br>";
+        htmlString += tr;
+    }
+    htmlString +="</form>"
+    tbody.innerHTML = htmlString;
+    document.getElementById('loader').style.visibility = "hidden";
+    },10);
+    }
+  }
   //Hide table, switch button to show
-	else {
-		document.getElementById('keggpathways').firstChild.data  = "Show KEGG Pathways";
-		document.getElementById('KEGGpaths').style.visibility = "hidden";
-		document.getElementById('loader').style.visibility = "hidden";
-		$('input:checkbox').prop('checked', false);
+  else {
+    document.getElementById('keggpathways').firstChild.data  = "Show KEGG Pathways";
+    document.getElementById('KEGGpaths').style.visibility = "hidden";
+    document.getElementById('loader').style.visibility = "hidden";
+    $('input:checkbox').prop('checked', false);
     layer.resetTransform(ctx);
     ctx.clearRect(0,0,canvas.width, canvas.height);          
     layer.setTransform(ctx);
     ctx.save();
-	}
+  }
 }
 
 //calculate distance between two nodes
@@ -1310,6 +1294,7 @@ function downloadPDF () {
     var height = ratio * width;
 
     html2canvas($("#everything").get(0), { onclone: (document) => {
+      document.getElementById('nav').style.visibility = 'hidden'
       document.getElementById('downloadPart').style.visibility = 'hidden' 
       document.getElementById('resetLayout').style.visibility = 'hidden'
       document.getElementById('description').style.visibility = 'hidden'
