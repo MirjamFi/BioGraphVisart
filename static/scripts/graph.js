@@ -1293,13 +1293,13 @@ function downloadJSON(){
 
 function downloadPDF () {
     const domElement = document.getElementById('everything');
-    var divHeight = $('#cy').height();
-    var divWidth = $('#cy').width();
+    var divHeight = window.innerHeight
+    var divWidth = window.innerWidth
     var ratio = divHeight / divWidth;
   
     var doc = new jsPDF("l", "mm", "a4");
-    var width = doc.internal.pageSize.getWidth()-20;
-    var height = ratio * width;
+    var width = doc.internal.pageSize.getWidth();
+    var height = (ratio * width)+50;
 
     html2canvas($("#everything").get(0), { onclone: (document) => {
     	document.getElementById('nav').style.visibility = 'hidden'
