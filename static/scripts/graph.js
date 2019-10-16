@@ -78,8 +78,7 @@ function getNodesAndEdges(graphString){
 
   var prevId = "";
   var pos = 0;
-
-  var regExp = /\>([^)]+)\</; // get symbol name between > <
+  var regExp = /\>([^]+)\</; // get symbol name between > <
 
   for (var i = 0; i <= graphString.length - 1; i++) {
     if(graphString[i].includes("attr.type=")){
@@ -92,13 +91,17 @@ function getNodesAndEdges(graphString){
       curNode.id = graphString[i].split("\"")[1]  ;
       nodes.push({data: curNode});
     }
-    if(!isEmpty(curNode) && regExp.exec(graphString[i]) != null){
+    if(!isEmpty(curNode)){
       if(graphString[i].includes("symbol\"\>")){  // get symbol of node
         var symbol = regExp.exec(graphString[i])[1];
         curNode.symbol = symbol;
       }
+      // console.log(curNode.id, graphString[i].includes("v_name\"\>"))
       if(graphString[i].includes("v_name\"\>")){  // get name of node
+        console.log(graphString[i])
+        console.log(regExp.exec(graphString[i]))
         var nodename = regExp.exec(graphString[i])[1];
+        console.log(curNode.id, nodename)
         curNode.nodename = nodename;
       }
       if(graphString[i].includes("\"v_"+nodeVal+"\"\>")){
