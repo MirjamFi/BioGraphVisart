@@ -83,21 +83,21 @@ function getNodesAndEdges(graphString){
 
   for (var i = 0; i <= graphString.length - 1; i++) {
     if(graphString[i].includes("attr.type=")){
-      //var curAttr = {};
-      attributesTypes[graphString[i].split(" ")[3].split("\"")[1]] = graphString[i].split(" ")[6].split("\"")[1];
-      //attributesTypes.push(curAttr);
+      if(graphString[i].split("attr.type=")[1].split("\"")[1] != "null"){
+        attributesTypes[graphString[i].split("id=")[1].split("\"")[1]] = graphString[i].split("attr.type=")[1].split("\"")[1];
+      }
     }
     if(graphString[i].includes("node id")){   // get node id
       var curNode = {};
       curNode.id = graphString[i].split("\"")[1]  ;
       nodes.push({data: curNode});
     }
-    if(!isEmpty(curNode)){
+    if(!isEmpty(curNode) && regExp.exec(graphString[i]) != null){
       if(graphString[i].includes("symbol\"\>")){  // get symbol of node
         var symbol = regExp.exec(graphString[i])[1];
         curNode.symbol = symbol;
       }
-      if(graphString[i].includes("v_name\"\>")){  // get symbol of node
+      if(graphString[i].includes("v_name\"\>")){  // get name of node
         var nodename = regExp.exec(graphString[i])[1];
         curNode.nodename = nodename;
       }
