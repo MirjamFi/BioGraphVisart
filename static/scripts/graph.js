@@ -10,7 +10,7 @@ function visualize(graphString) {
    
    //create cytoscape object; not necessary for json
   if(!isJson){
-    if(!noOptn && !clicked){
+    if(!noOptn && !clicked && !defaultVal){
       nodeVal = document.getElementById('values').value;
     }
 
@@ -67,6 +67,7 @@ function visualize(graphString) {
   else if(b == "Show KEGG Pathways" && allPaths){
     document.getElementById('KEGGpaths').style.visibility ="hidden";
   }
+  defaultVal = false;
 }
 
 //get information of nodes ande edges

@@ -24,6 +24,8 @@ var allPaths;
 var layer;
 var canvas;
 var ctx;
+var apigraphml = false;
+var defaultVal = false;
 
 function isJsonFile(){
 	$.get("/foundGraphs", function(foundGraphs) {
@@ -311,7 +313,6 @@ function loadFile() {
   document.getElementById("configPart").appendChild(drp);
   // node attributes
   var sele = document.createElement("OPTION");
-  sele.value =  "";
   sele.text = "Select Coloring Attribute";
   drp.add(sele);
   drp.onchange = function(){noOptn = false;visualize(graphString)};
@@ -327,7 +328,6 @@ function loadFile() {
 
   var seleLayout = document.createElement("OPTION");
   seleLayout.text = "Select Layout";
-  seleLayout.value = "";
   drpLayout.add(seleLayout);
 
   const layoutArray = ["dagre (default)", "klay", "breadthfirst", "cose-bilkent", "grid"];
@@ -403,6 +403,12 @@ function loadFile() {
         break;
       };
     };
+    if(apigraphml){
+      nodeVal = drp.options[1].value;
+      document.getElementById('values').value = nodeVal;
+      defaultVal = true;
+      visualize(graphString);
+    }
   }
   // if no attributes found for coloring/shape, remove dropdown menus and visualize
   if(noOptn && noDrpShapes){

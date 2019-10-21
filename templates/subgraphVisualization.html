@@ -2233,6 +2233,7 @@
 	<div align="left" id= "KEGGpaths" style="visibility: hidden;"></div>
 			<script type="text/javascript">
 			$.get("/vis", function(data){
+				apigraphml = true;
 				if(data){
 					var parser = new DOMParser;
 					var dom = parser.parseFromString(
