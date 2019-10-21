@@ -24,6 +24,7 @@ var allPaths;
 var layer;
 var canvas;
 var ctx;
+var defaultVal = false;
 
 function isJsonFile(){
 	$.get("/foundGraphs", function(foundGraphs) {
@@ -311,10 +312,9 @@ function loadFile() {
   document.getElementById("configPart").appendChild(drp);
   // node attributes
   var sele = document.createElement("OPTION");
-  sele.value =  "";
   sele.text = "Select Coloring Attribute";
   drp.add(sele);
-  drp.onchange = function(){visualize(graphString)};
+  drp.onchange = function(){noOptn = false;visualize(graphString)};
 
 
   // layout dropdown
@@ -327,7 +327,6 @@ function loadFile() {
 
   var seleLayout = document.createElement("OPTION");
   seleLayout.text = "Select Layout";
-  seleLayout.value = "";
   drpLayout.add(seleLayout);
 
   const layoutArray = ["dagre (default)", "klay", "breadthfirst", "cose-bilkent", "grid"];
@@ -382,12 +381,12 @@ function loadFile() {
       if(graphString[i].includes("for=\"node\"") && 
         (graphString[i].includes("attr.type=\"double\"") || 
           (graphString[i].includes("attr.type=\"boolean\"")))){
+        noOptn = false;
         var nodeattr = graphString[i].split("attr.name=")[1].split(" ")[0].replace(/"/g, "");
         var optn = document.createElement("OPTION");
         optn.text=nodeattr;
         optn.value=nodeattr;
         drp.add(optn);
-        noOptn = false;
 
         if(graphString[i].includes("attr.type=\"boolean\"")){
           var nodeattrShape = graphString[i].split("attr.name=")[1].split(" ")[0].replace(/"/g, "");
@@ -403,6 +402,10 @@ function loadFile() {
         break;
       };
     };
+    nodeVal = drp.options[1].value;
+    document.getElementById('values').value = nodeVal;
+    defaultVal = true;
+    visualize(graphString);
   }
   // if no attributes found for coloring/shape, remove dropdown menus and visualize
   if(noOptn && noDrpShapes){
@@ -414,7 +417,6 @@ function loadFile() {
   else if(noDrpShapes){
     drpShapes.parentNode.removeChild(drpShapes);
     drpShape.parentNode.removeChild(drpShape);
-    // visualize(graphString);
   }
   loadGraphCount ++; 
 };
