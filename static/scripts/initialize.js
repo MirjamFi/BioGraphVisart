@@ -24,7 +24,6 @@ var allPaths;
 var layer;
 var canvas;
 var ctx;
-var apigraphml = false;
 var defaultVal = false;
 
 function isJsonFile(){
@@ -403,12 +402,10 @@ function loadFile() {
         break;
       };
     };
-    if(apigraphml){
-      nodeVal = drp.options[1].value;
-      document.getElementById('values').value = nodeVal;
-      defaultVal = true;
-      visualize(graphString);
-    }
+    nodeVal = drp.options[1].value;
+    document.getElementById('values').value = nodeVal;
+    defaultVal = true;
+    visualize(graphString);
   }
   // if no attributes found for coloring/shape, remove dropdown menus and visualize
   if(noOptn && noDrpShapes){
