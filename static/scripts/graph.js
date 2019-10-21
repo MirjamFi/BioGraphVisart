@@ -1298,7 +1298,7 @@ function downloadPDF () {
   
     var doc = new jsPDF("l", "mm", "a4");
     var width = doc.internal.pageSize.getWidth();
-    var height = (ratio * width)+50;
+    var height = (ratio * width);
 
     html2canvas($("#everything").get(0), { onclone: (document) => {
     	document.getElementById('nav').style.visibility = 'hidden'
