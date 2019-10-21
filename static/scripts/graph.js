@@ -96,18 +96,14 @@ function getNodesAndEdges(graphString){
         var symbol = regExp.exec(graphString[i])[1];
         curNode.symbol = symbol;
       }
-      // console.log(curNode.id, graphString[i].includes("v_name\"\>"))
       if(graphString[i].includes("v_name\"\>")){  // get name of node
-        console.log(graphString[i])
-        console.log(regExp.exec(graphString[i]))
         var nodename = regExp.exec(graphString[i])[1];
-        console.log(curNode.id, nodename)
         curNode.nodename = nodename;
       }
       if(graphString[i].includes("\"v_"+nodeVal+"\"\>")){
         var val = regExp.exec(graphString[i])[1]; // if availabe get node value
         if(!isNaN(parseFloat(val))){
-          attrID = graphString[i].split(" ")[7].split("\"")[1];
+          attrID = graphString[i].split("\"")[1];
           currVal = {};
           currVal[nodeVal] = parseFloat(val);
           currVal.attr = attributesTypes[attrID];

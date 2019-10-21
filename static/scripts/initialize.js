@@ -314,7 +314,7 @@ function loadFile() {
   sele.value =  "";
   sele.text = "Select Coloring Attribute";
   drp.add(sele);
-  drp.onchange = function(){visualize(graphString)};
+  drp.onchange = function(){noOptn = false;visualize(graphString)};
 
 
   // layout dropdown
@@ -382,12 +382,12 @@ function loadFile() {
       if(graphString[i].includes("for=\"node\"") && 
         (graphString[i].includes("attr.type=\"double\"") || 
           (graphString[i].includes("attr.type=\"boolean\"")))){
+        noOptn = false;
         var nodeattr = graphString[i].split("attr.name=")[1].split(" ")[0].replace(/"/g, "");
         var optn = document.createElement("OPTION");
         optn.text=nodeattr;
         optn.value=nodeattr;
         drp.add(optn);
-        noOptn = false;
 
         if(graphString[i].includes("attr.type=\"boolean\"")){
           var nodeattrShape = graphString[i].split("attr.name=")[1].split(" ")[0].replace(/"/g, "");
@@ -414,7 +414,6 @@ function loadFile() {
   else if(noDrpShapes){
     drpShapes.parentNode.removeChild(drpShapes);
     drpShape.parentNode.removeChild(drpShape);
-    // visualize(graphString);
   }
   loadGraphCount ++; 
 };
