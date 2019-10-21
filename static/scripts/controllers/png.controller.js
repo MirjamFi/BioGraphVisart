@@ -224,7 +224,10 @@ const cytoSnapToPng = async (nodes, edges, nodesMin, nodesMax, valueAttr) => {
 };
 
 const getNodeValueRange = (nodes) => {
-  const nodesFilteredNaN = nodes.filter(node => !Number.isNaN(node.data.val));
+  const nodesFilteredNaN = nodes.filter(node => !Number.isNaN(parseFloat(node.data.val)));
+  if(nodesFilteredNaN.length == 0){
+    return ['false', 'true']
+  }
   const nodesMin = parseFloat(Math.min(...nodesFilteredNaN.map(node => node.data.val))).toFixed(2);
   const nodesMax = parseFloat(Math.max(...nodesFilteredNaN.map(node => node.data.val))).toFixed(2);
   return [nodesMin, nodesMax];

@@ -34,16 +34,23 @@ class Graph {
       },
     };
     nodes.push(legendNode);
-    return nodes.map(node => (
-      {
+    return nodes.map(function(node){
+      var value;
+      if(!Number.isNaN(parseFloat(node.data[valueAttr]))){
+        value = parseFloat(node.data[valueAttr])
+      }
+      else{
+        value = node.data[valueAttr]
+      }
+      return {
         data: {
           id: node.id,
           label: node.data[labelAttr],
-          val: parseFloat(node.data[valueAttr]),
+          val: value,
           _graphvisPseudoNode: node.data['_graphvisPseudoNode'],
         },
       }
-    ));
+    });
   }
 
   get edgedata() {
