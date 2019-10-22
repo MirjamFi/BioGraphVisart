@@ -925,7 +925,17 @@ function listKEGGPathways(){
         colorschemePaths = [];
 				for(var n in nodes){
 					if(nodes[n]["data"]["symbol"]!="legend"){
-						var	entrezID = nodes[n]["data"]["entrezID"].toString();
+            if(nodes[n]["data"]["entrezID"]){
+              var entrezID = nodes[n]["data"]["entrezID"].toString();
+            }
+            else if(nodes[n]["data"]["entrez"]){
+              var entrezID = nodes[n]["data"]["entrez"].toString();
+            }
+            else{
+              alert("No Entrez ID given.")
+              document.getElementById('loader').style.visibility = "hidden";
+              return
+            }
 						var keggpaths = getPathwaysFromKEGG(entrezID).split('\n');
 						var i = 0;
 						var searchPattern = new RegExp(/^\s* hsa/);
