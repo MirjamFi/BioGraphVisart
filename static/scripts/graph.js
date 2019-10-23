@@ -10,7 +10,7 @@ function visualize(graphString) {
    
    //create cytoscape object; not necessary for json
   if(!isJson){
-    if(!noOptn && !clicked){
+    if(!noOptn && !clicked && !defaultVal){
       nodeVal = document.getElementById('values').value;
     }
 
@@ -18,8 +18,8 @@ function visualize(graphString) {
     var nodesAndEdges = getNodesAndEdges(graphString);
     nodes = nodesAndEdges[0];
     edges = nodesAndEdges[1]; 
-  	nodeValuesNum = nodesAndEdges[2];
-  	attributesTypes = nodesAndEdges[3];
+    nodeValuesNum = nodesAndEdges[2];
+    attributesTypes = nodesAndEdges[3];
 
     nodeValuesNum = transform01toTF(nodeValuesNum);
 
@@ -33,17 +33,17 @@ function visualize(graphString) {
   }
   if(!clicked){
     $('#downloadPDF').removeAttr('disabled');
-	  $('#downloadPNG').removeAttr('disabled');
-	  $('#downloadSVG').removeAttr('disabled');
-	  $('#downloadJSON').removeAttr('disabled');
+    $('#downloadPNG').removeAttr('disabled');
+    $('#downloadSVG').removeAttr('disabled');
+    $('#downloadJSON').removeAttr('disabled');
 
-	  oldMin = nodesMin;
-	  oldMax = nodesMax;
+    oldMin = nodesMin;
+    oldMax = nodesMax;
 
-	  showLegend();
+    showLegend();
 
-	  document.getElementById('downloadPart').style.visibility = "visible";
-	}
+    document.getElementById('downloadPart').style.visibility = "visible";
+  }
   showMetaInfo();
   document.getElementById('selectlayout').setAttribute('style','visibility:visible');
 
@@ -67,6 +67,7 @@ function visualize(graphString) {
   else if(b == "Show KEGG Pathways" && allPaths){
     document.getElementById('KEGGpaths').style.visibility ="hidden";
   }
+  defaultVal = false;
 }
 
 //get information of nodes ande edges
@@ -83,7 +84,9 @@ function getNodesAndEdges(graphString){
 
   for (var i = 0; i <= graphString.length - 1; i++) {
     if(graphString[i].includes("attr.type=")){
-      attributesTypes[graphString[i].split("\"")[1]] = graphString[i].split("\"")[7];
+        if(graphString[i].split("attr.type=")[1].split("\"")[1] != "null"){
+          attributesTypes[graphString[i].split("id=")[1].split("\"")[1]] = graphString[i].split("attr.type=")[1].split("\"")[1];
+        }
     }
     if(graphString[i].includes("node id")){   // get node id
       var curNode = {};
