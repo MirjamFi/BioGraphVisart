@@ -402,9 +402,11 @@ function loadFile() {
         break;
       };
     };
-    nodeVal = drp.options[1].value;
-    document.getElementById('values').value = nodeVal;
-    defaultVal = true;
+    if(drp.options[1]){
+      nodeVal = drp.options[1].value;
+      document.getElementById('values').value = nodeVal;
+      defaultVal = true;
+    }
     visualize(graphString);
   }
   // if no attributes found for coloring/shape, remove dropdown menus and visualize
