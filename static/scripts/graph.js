@@ -79,7 +79,7 @@ function getNodesAndEdges(graphString){
 
   var prevId = "";
   var pos = 0;
-  var regExp = /\>([^]+)\</; // get symbol name between > <
+  var regExp = /\>(.*)\</; // get symbol name between > <
 
   for (var i = 0; i <= graphString.length - 1; i++) {
     if(graphString[i].includes("attr.type=")){
