@@ -27,24 +27,6 @@ var ctx;
 var defaultVal = false;
 
 function isJsonFile(){
-	$.get("/foundGraphs", function(foundGraphs) {
-	    // store all graphs used for expansion in object with gene symbol as key taken from file name
-	      foundGraphs.forEach( function (expandGraph){
-	        var expandFilename = expandGraph.replace(/\\/g,'/')
-	        expandFilename = expandFilename.split('/')[2].split('.')[0];
-	        expandPath = expandGraph.replace('..', 'http://127.0.0.1:3000/static')
-	        var gf = file;
-		    var xmlhttp = new XMLHttpRequest();
-		    xmlhttp.open("GET", expandPath, false);
-		    xmlhttp.send();
-		    if (xmlhttp.status==200) {
-		      var expandGraphString = xmlhttp.responseText.split("\n");
-		      expandGraphs[expandFilename] = expandGraphString;
-		   } 
-	      });
-	    });
-	
-
   var file = document.getElementById('fileName').files[0];
   if(file["name"].endsWith("json")){
     readJson(file);
