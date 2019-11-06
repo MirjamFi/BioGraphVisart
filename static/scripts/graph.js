@@ -33,9 +33,16 @@ function visualize(graphString) {
   }
   if(!collapsed){
     document.getElementById('reverse').setAttribute('style','visibility:hidden');
+    document.getElementById('KEGGpathsButton').style.visibility ="visible";
+    document.getElementById('KEGGpaths').style.visibility ="visible";
+    document.getElementById('values').disabled = false;
+    document.getElementById('nodeShapesAttr').disabled = false;
+    document.getElementById('nodeShapes').disabled = false;
   }
    if(collapsed){
     document.getElementById('reverse').setAttribute('style','visibility:visible');
+    document.getElementById('KEGGpathsButton').style.visibility ="hidden";
+    document.getElementById('KEGGpaths').style.visibility ="hidden";
     collapsed = false;
    }
   if(!clicked){
@@ -57,9 +64,6 @@ function visualize(graphString) {
   if(! noDrpShapes && !isJson){
     activateNodeShapeChange();
   }
-  
-  document.getElementById('KEGGpathsButton').style.visibility ="visible";
-  document.getElementById('KEGGpaths').style.visibility ="visible";
 
     // set background layer to hoghlight pathways
   layer = cy.cyCanvas({
@@ -159,7 +163,7 @@ function getNodesAndEdges(graphString){
       }
     }
   }
-  if(! noOptn){
+  if(! noOptn && !collapsed){
     var legendNode = {};
     legendNode.id = "l1";
     legendNode.symbol = "legend";
@@ -470,6 +474,9 @@ function addNodesAndEdges(){
       }
 		  clickedNodesPosition = cy.$(evt.target).position();
       if(neighboringgraphml){
+        document.getElementById('values').disabled = true;
+        document.getElementById('nodeShapesAttr').disabled = true;
+        document.getElementById('nodeShapes').disabled = true;
         collapsed = true;
   		  visualize(neighboringgraphml.split("\n"));
         cy.elements('node[name = "'+ evt.target.data().symbol+'"] ').style('border-width', 5).style('font-weight', 'bold')
