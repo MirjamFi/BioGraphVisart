@@ -489,7 +489,12 @@ function addNodesAndEdges(){
             if(key == "id"){
               return;
             }
-            info += "<td><b>"+key.charAt(0).toUpperCase() + key.slice(1).split("_").join(" ")+"</b></td><td>"+clickedNode[key]+"</td></tr>"
+            if(key == "drugbank_id"){
+              info+= "<td><b>"+key.charAt(0).toUpperCase() + key.slice(1).split("_").join(" ")+"</b></td><td><a href='https://www.drugbank.ca/drugs/"+clickedNode[key]+"'target='_blank'>"+clickedNode[key]+"</a></td></tr>"
+            }
+            else{
+              info += "<td><b>"+key.charAt(0).toUpperCase() + key.slice(1).split("_").join(" ")+"</b></td><td>"+clickedNode[key]+"</td></tr>"
+            }
         });
         info += "</table>"
         var newWindow = window.open("");
