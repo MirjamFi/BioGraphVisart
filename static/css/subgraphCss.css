@@ -157,6 +157,12 @@ input:hover{
     margin: 0 auto;
 }
 
+#reverse{
+  position: absolute;
+  left: 47%;
+  font-size: 18px;
+  text-align: center;
+}
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
