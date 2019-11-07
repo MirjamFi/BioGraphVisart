@@ -934,123 +934,124 @@ function getGraphforGene(name){
 }
 
 // get pathways of selected gene from kegg using entrez id
-function getPathwaysFromKEGG(name){ 
-	var xhr = new XMLHttpRequest();
-	xhr.open('GET', "http://rest.kegg.jp/get/hsa:" + name, false);
-	
-	xhr.onload = function () {
-		paths = xhr.responseText;
-	 }
-
-	xhr.send(document);
-	return paths;
+// get pathways of selected gene from kegg using entrez id
+async function getPathwaysFromKEGG(name) {
+    return new Promise(function (resolve, reject) {
+        let xhr = new XMLHttpRequest();
+        xhr.open('GET', "https://www.kegg.jp/entry/hsa:" + name);
+        xhr.onload = function () {
+            if (this.status >= 200 && this.status < 300) {
+                resolve(xhr.response);
+            } else {
+                reject({
+                    status: this.status,
+                    statusText: xhr.statusText
+                });
+            }
+        };
+        xhr.onerror = function () {
+            reject({
+                status: this.status,
+                statusText: xhr.statusText
+            });
+        };
+        xhr.send();
+    });
 }
 
 /*
 	generate a checkbox menu for the 10 most common pathways of all genes in the graph
 */
-function listKEGGPathways(){
+async function listKEGGPathways(){
   //swap button "Hide"/"show"
-	if(document.getElementById('keggpathways').firstChild.data == "Show KEGG Pathways"){
-		document.getElementById('keggpathways').firstChild.data  = "Hide KEGG Pathways";
+  if(document.getElementById('keggpathways').firstChild.data == "Show KEGG Pathways"){
+    document.getElementById('keggpathways').firstChild.data  = "Hide KEGG Pathways";
 
-		if(document.getElementById('KEGGpaths').style.visibility == "hidden"){
-			document.getElementById('KEGGpaths').style.visibility="visible";
-		}
-    //get pathways from KEGG, show loader while doing so
-		else{
+    if(document.getElementById('KEGGpaths').style.visibility == "hidden"){
       document.getElementById('KEGGpaths').style.visibility="visible";
-			document.getElementById('loader').style.visibility = "visible";
-			setTimeout(function(){
-				var pathsCount = [];
-        allPaths = [];
-        colorschemePaths = [];
-				for(var n in nodes){
-					if(nodes[n]["data"]["symbol"]!="legend"){
-            if(nodes[n]["data"]["entrezID"]){
-              var entrezID = nodes[n]["data"]["entrezID"].toString();
-            }
-            else if(nodes[n]["data"]["entrez"]){
-              var entrezID = nodes[n]["data"]["entrez"].toString();
-            }
+    }
+    //get pathways from KEGG, show loader while doing so
+    else{
+      document.getElementById('KEGGpaths').style.visibility="visible";
+      document.getElementById('loader').style.visibility = "visible";
+      var pathsCount = [];
+      allPaths = [];
+      colorschemePaths = [];
+      for(var n of nodes){
+        if(n["data"]["symbol"]!="legend"){
+          if(n["data"]["entrezID"] != undefined){
+            var entrezID = n["data"]["entrezID"].toString();
+          }
+          else if(n["data"]["entrez"] != undefined){
+            var entrezID = n["data"]["entrez"].toString();            
+          }
+          let keggpaths = await getPathwaysFromKEGG(entrezID);
+          keggpaths = keggpaths.split("\n")
+          var line = 0;
+          while(line < keggpaths.length){
+            if(keggpaths[line].includes("<nobr>Pathway</nobr>")){
+              line++;
+              var splitarray =keggpaths[line].split("</td>")
+              for(var i = 1; i < splitarray.length-2; i=i+2){
+                let hsa = "hsa"+splitarray[i-1].split(">hsa")[1].split("</a>")[0]
+                let p = splitarray[i].split("<td>")[1]
+                p = hsa+" "+p;
+                if(p != undefined){
+                  if(typeof allPaths[p] == 'undefined'){
+                    allPaths[p]=[];
+                  }
+                  allPaths[p].push(entrezID);
+                  if(isNaN(pathsCount[p])){
+                    pathsCount[p]=1; 
+                  }
+                  else{
+                    pathsCount[p]=pathsCount[p]+1;
+                  }
+                }
+              }
+              break;
+            } 
             else{
-              alert("No Entrez ID given.")
-              document.getElementById('loader').style.visibility = "hidden";
-              return
+              line++;
             }
-						var keggpaths = getPathwaysFromKEGG(entrezID).split('\n');
-						var i = 0;
-						var searchPattern = new RegExp(/^\s* hsa/);
+          }
+        }
+      }
+          // only get top 5 of pathways (most genes in)
+      var props = Object.keys(pathsCount).map(function(key) {
+        return { key: key, value: this[key] };}, pathsCount);
+      props = props.sort(function(p1, p2) { return p2.value - p1.value; });
+      var topFive = props.slice(0, 5);
 
-						while(i <= keggpaths.length - 1){
-							if(keggpaths[i].startsWith("PATHWAY")){
-								let p = keggpaths[i].split("PATHWAY")[1].trim()
-								if(typeof allPaths[p] == 'undefined'){
-									allPaths[p]=[];
-								}
-								allPaths[p].push(entrezID);
-								if(isNaN(pathsCount[p])){
-									pathsCount[p]=1; 
-								}
-								else{
-									pathsCount[p]=pathsCount[p]+1;
-								}
-							}
-							else if(searchPattern.test(keggpaths[i])){
-								let p = keggpaths[i].trim();
-								if(typeof allPaths[p] == 'undefined'){
-									allPaths[p]=[];
-								}
-								allPaths[p].push(entrezID);
-								if(isNaN(pathsCount[p])){
-									pathsCount[p]=1; 
-								}
-								else{
-									pathsCount[p]=pathsCount[p]+1;
-								}
-							}
-							else if(keggpaths[i].startsWith("MODULE")){
-								break;
-							}
-							i++;
-					    }
-					}
-				}
-        // only get top 5 of pathways (most genes in)
-				var props = Object.keys(pathsCount).map(function(key) {
-				  return { key: key, value: this[key] };}, pathsCount);
-				props = props.sort(function(p1, p2) { return p2.value - p1.value; });
-				var topFive = props.slice(0, 5);
+          //show table of pathways
+      var tbody = document.getElementById("KEGGpaths");
+      var htmlString ="<form> <h3>KEGG Pathways:</h3><br>";
+      var colors = ["#66c2a5","#fc8d62","#8da0cb","#e78ac3","#a6d854"]
 
-        //show table of pathways
-				var tbody = document.getElementById("KEGGpaths");
-				var htmlString ="<form> <h3>KEGG Pathways:</h3><br>";
-				var colors = ["#66c2a5","#fc8d62","#8da0cb","#e78ac3","#a6d854"]
-
-				for (var i = 0; i < topFive.length; i++) {
-					colorschemePaths[topFive[i].key] = colors[i];
-					var tr = "<b style='color:"+colors[i]+"'><label><input type='checkbox' value='"+topFive[i].key+"' onclick='highlightKEGGpaths()''>";
-				    tr += topFive[i].key + " </label><br><br>";
-				    htmlString += tr;
-				}
-				htmlString +="</form>"
-				tbody.innerHTML = htmlString;
-				document.getElementById('loader').style.visibility = "hidden";
-				},10);
-		}
-	}
+      for (var i = 0; i < topFive.length; i++) {
+        colorschemePaths[topFive[i].key] = colors[i];
+        var tr = "<b style='color:"+colors[i]+"'><label><input type='checkbox' value='"+topFive[i].key+"' onclick='highlightKEGGpaths()''>";
+          tr += topFive[i].key + " </label><br><br>";
+          htmlString += tr;
+      }
+      htmlString +="</form>"
+      tbody.innerHTML = htmlString;
+      document.getElementById('loader').style.visibility = "hidden";
+    }
+  }
   //Hide table, switch button to show
-	else {
-		document.getElementById('keggpathways').firstChild.data  = "Show KEGG Pathways";
-		document.getElementById('KEGGpaths').style.visibility = "hidden";
-		document.getElementById('loader').style.visibility = "hidden";
-		$('input:checkbox').prop('checked', false);
+  else {
+    document.getElementById('keggpathways').firstChild.data  = "Show KEGG Pathways";
+    document.getElementById('KEGGpaths').style.visibility = "hidden";
+    document.getElementById('loader').style.visibility = "hidden";
+    $('input:checkbox').prop('checked', false);
     layer.resetTransform(ctx);
     ctx.clearRect(0,0,canvas.width, canvas.height);          
     layer.setTransform(ctx);
     ctx.save();
-	}
+  }
 }
+
 
 //calculate distance between two nodes
 Math.getDistance = function( x1, y1, x2, y2 ) {
