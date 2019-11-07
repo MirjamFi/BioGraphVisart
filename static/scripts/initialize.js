@@ -27,7 +27,13 @@ var ctx;
 var defaultVal = false;
 
 function isJsonFile(){
+  document.getElementById('loader1').style.visibility = "visible";
   var file = document.getElementById('fileName').files[0];
+  if(file == undefined){
+    alert("No file given.")
+    document.getElementById('loader1').style.visibility = "hidden";
+    return;
+  }
   if(file["name"].endsWith("json")){
     readJson(file);
   }
@@ -180,7 +186,7 @@ function readJson(file) {
       else{
         for(n=0; n < cy.nodes().length; n++){
           cy.batch(function(){
-          cy.$('node[id =\''  + cy.nodes()[n]["_private"].data.id + '\']').style("label",cy.nodes()[n]["_private"].data.nodename);
+          cy.$('node[id =\''  + cy.nodes()[n]["_private"].data.id + '\']').style("label",cy.nodes()[n]["_private"].data.name);
           });
         }
       }
@@ -357,7 +363,7 @@ function loadFile() {
     drpShape.add(optnShape);
   });
 
-  if(! isJson){
+  if(!isJson){
     // get attributes for coloring -> double/boolean and shape -> boolean
     for (var i = 0; i <= graphString.length - 1; i++) {
       if(graphString[i].includes("for=\"node\"") && 

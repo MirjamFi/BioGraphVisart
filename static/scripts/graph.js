@@ -7,7 +7,6 @@ visualize a graph from .graphml-file
 */
 
 function visualize(graphString) {
-   
    //create cytoscape object; not necessary for json
   if(!isJson){
     if(!noOptn && !clicked && !defaultVal){
@@ -35,9 +34,15 @@ function visualize(graphString) {
     document.getElementById('reverse').setAttribute('style','visibility:hidden');
     document.getElementById('KEGGpathsButton').style.visibility ="visible";
     document.getElementById('KEGGpaths').style.visibility ="visible";
-    document.getElementById('values').disabled = false;
-    document.getElementById('nodeShapesAttr').disabled = false;
-    document.getElementById('nodeShapes').disabled = false;
+    if(document.getElementById('values')){
+      document.getElementById('values').disabled = false;
+    }
+    if(document.getElementById('nodeShapesAttr')){
+      document.getElementById('nodeShapesAttr').disabled = false;
+    }
+    if(document.getElementById('nodeShapes')){
+      document.getElementById('nodeShapes').disabled = false;
+    }
   }
    if(collapsed){
     document.getElementById('reverse').setAttribute('style','visibility:visible');
@@ -79,6 +84,7 @@ function visualize(graphString) {
     document.getElementById('KEGGpaths').style.visibility ="hidden";
   }
   defaultVal = false;
+  document.getElementById('loader1').style.visibility = "hidden";
 }
 
 //get information of nodes ande edges
@@ -163,7 +169,7 @@ function getNodesAndEdges(graphString){
       }
     }
   }
-  if(! noOptn && !collapsed){
+  if(!noOptn || (!collapsed && !noOptn)){
     var legendNode = {};
     legendNode.id = "l1";
     legendNode.symbol = "legend";
@@ -285,9 +291,6 @@ function addNodesAndEdges(){
     ready: function(){
           },
     elements: nodes.concat(edges),
-  //   layout: {
-  //   name: 'dagre'
-  // },
     style: [
          // style nodes
       {selector: 'node',
@@ -474,9 +477,15 @@ function addNodesAndEdges(){
       }
 		  clickedNodesPosition = cy.$(evt.target).position();
       if(neighboringgraphml){
-        document.getElementById('values').disabled = true;
-        document.getElementById('nodeShapesAttr').disabled = true;
-        document.getElementById('nodeShapes').disabled = true;
+        if(document.getElementById('values')){
+          document.getElementById('values').disabled = true;
+        }
+        if(document.getElementById('nodeShapesAttr')){
+          document.getElementById('nodeShapesAttr').disabled = true;
+        }
+        if(document.getElementById('nodeShapes')){
+          document.getElementById('nodeShapes').disabled = true;
+        }
         collapsed = true;
   		  visualize(neighboringgraphml.split("\n"));
         cy.elements('node[name = "'+ evt.target.data().symbol+'"] ').style('border-width', 5).style('font-weight', 'bold')
