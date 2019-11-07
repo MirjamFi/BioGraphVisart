@@ -10,7 +10,7 @@ function visualize(graphString) {
    //create cytoscape object; not necessary for json
   if(!isJson){
     if(!noOptn && !collapsed && !defaultVal){
-      nodeVal = document.getElementById('values').value;
+      nodeVal = document.getElementById('values').value; // get color attribute if available
     }
 
     // get nodes and edges
@@ -31,38 +31,33 @@ function visualize(graphString) {
 
   }
   if(!collapsed){
-    document.getElementById('reverse').setAttribute('style','visibility:hidden');
-    document.getElementById('KEGGpathsButton').style.visibility ="visible";
+    document.getElementById('reverse').setAttribute('style','visibility:hidden');  // hide main graph button graph is if already shown
+    document.getElementById('KEGGpathsButton').style.visibility ="visible"; // show kegg pathway options
     document.getElementById('KEGGpaths').style.visibility ="visible";
     if(document.getElementById('values')){
-      document.getElementById('values').disabled = false;
+      document.getElementById('values').disabled = false;  // color attributes visible
     }
     if(document.getElementById('nodeShapesAttr')){
-      document.getElementById('nodeShapesAttr').disabled = false;
+      document.getElementById('nodeShapesAttr').disabled = false;  // node shape attributes visible
     }
     if(document.getElementById('nodeShapes')){
       document.getElementById('nodeShapes').disabled = false;
     }
   }
    if(collapsed){
-    document.getElementById('reverse').setAttribute('style','visibility:visible');
-    document.getElementById('KEGGpathsButton').style.visibility ="hidden";
+    document.getElementById('reverse').setAttribute('style','visibility:visible'); // show button to get back to main graph
+    document.getElementById('KEGGpathsButton').style.visibility ="hidden"; // hide kegg patway stuff
     document.getElementById('KEGGpaths').style.visibility ="hidden";
     collapsed = false;
    }
-  if(!collapsed){
-    $('#downloadPDF').removeAttr('disabled');
-    $('#downloadPNG').removeAttr('disabled');
-    $('#downloadSVG').removeAttr('disabled');
-    $('#downloadJSON').removeAttr('disabled');
 
-    oldMin = nodesMin;
-    oldMax = nodesMax;
+  oldMin = nodesMin;
+  oldMax = nodesMax;
 
-    showLegend();
+  showLegend();
 
-    document.getElementById('downloadPart').style.visibility = "visible";
-  }
+  document.getElementById('downloadPart').style.visibility = "visible";
+
   showMetaInfo();
   document.getElementById('selectlayout').setAttribute('style','visibility:visible');
 
@@ -112,7 +107,7 @@ function getNodesAndEdges(graphString){
     }
     if(!isEmpty(curNode)){
       if(graphString[i].includes("\"v_"+nodeVal+"\"\>")){
-        var val = regExp.exec(graphString[i])[1]; // if availabe get node value
+        var val = regExp.exec(graphString[i])[1]; // if availabe get selected node value
         if(!isNaN(parseFloat(val))){
           attrID = graphString[i].split("\"")[1];
           currVal = {};
@@ -120,7 +115,7 @@ function getNodesAndEdges(graphString){
           currVal.attr = attributesTypes[attrID];
           nodeValuesNum.push(currVal);
         }
-        else if(val === "false" || val === "true"){
+        else if(val === "false" || val === "true"){ //boolean attributes
           currVal = {};
           currVal[nodeVal] = val;
           currVal.attr = "boolean";
@@ -128,7 +123,7 @@ function getNodesAndEdges(graphString){
         }
         curNode[nodeVal] = currVal[nodeVal];
       }
-      else if(graphString[i].includes("v_") && !graphString[i].includes("v_id")){
+      else if(graphString[i].includes("v_") && !graphString[i].includes("v_id")){  //other attributes (skip additional id)
         var attrVal = graphString[i].split("\>")[1].split("\<")[0];
         var attrName = graphString[i].split("v_")[1].split("\"\>")[0];
         curNode[attrName] = attrVal;
@@ -451,38 +446,34 @@ function addNodesAndEdges(){
       ]
   });
   changeLayout();
-  if(nodes.every(function(x){return(x.data["symbol"])})){
+  if(nodes.every(function(x){return(x.data["symbol"])})){  // symbol as label
     for(n=0; n < nodes.length; n++){
       cy.batch(function(){
         var labelText = nodes[n].data.symbol;
         var oldLabelText = nodes[n].data.symbol;
-        // if(getTextWidth(labelText, fontSize +" arial") > 45){
-          while(getTextWidth(labelText, fontSize +" arial") > 49){
-            oldLabelText = oldLabelText.slice(0,-1);
-            labelText = oldLabelText+'...';
-          }
-        // }
+        while(getTextWidth(labelText, fontSize +" arial") > 49){ // shorten if too long
+          oldLabelText = oldLabelText.slice(0,-1);
+          labelText = oldLabelText+'...';
+        }
         cy.$('node[id =\''  + nodes[n].data.id + '\']').style("label", labelText);
       });
     }
-  }
+  } 
   else{
-    for(n=0; n < nodes.length; n++){
+    for(n=0; n < nodes.length; n++){    // name as label
       cy.batch(function(){
         var labelText = nodes[n].data.name;
         var oldLabelText = nodes[n].data.name;
-        // if(getTextWidth(labelText, fontSize +" arial") > 45){
-          while(getTextWidth(labelText, fontSize +" arial") > 49){
-            oldLabelText = oldLabelText.slice(0,-1);
-            labelText = oldLabelText+'...';
-          }
-        // }
+        while(getTextWidth(labelText, fontSize +" arial") > 49){  // shorten if too long
+          oldLabelText = oldLabelText.slice(0,-1);
+          labelText = oldLabelText+'...';
+        }
         cy.$('node[id =\''  + nodes[n].data.id + '\']').style("label",labelText);
       });
     }
   }
 
-	// on click collapse all other nodes and expand extra nodes for clicked node
+	// on click collapse all other nodes and expand database nodes for clicked node
   if(!collapsed){
   	cy.on('tap', 'node', function(evt){
   		clickedNode = evt.target;
@@ -515,9 +506,9 @@ function addNodesAndEdges(){
         .style('background-height', '45%')
         .style('background-position-y', '100%')
       }
-  	}); // on tap
+  	});
   }
-  else if(collapsed){
+  else if(collapsed){  // display additional drug info in extra tab/window from database graph
     cy.on('tap', 'node', function(evt){
       var clickedNode = evt.target.data();
       if(clickedNode.midrug_id != undefined){
@@ -616,7 +607,7 @@ function showLegend(){
 //show meta-information of nodes by mouseover
 function showMetaInfo(){
   if(! noOptn || isJson){
-    cy.elements('node').qtip({       // show node attibute value by mouseover
+    cy.elements('node').qtip({       // show node label and attibute value by mouseover
         show: {   
           event: 'mouseover', 
           solo: true,
