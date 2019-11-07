@@ -1,8 +1,8 @@
 var nodes, edges, path, tracer, nodeVal, outputName, nodeAttributes, 
  graphString, oldMin, oldMax, nodeShapeAttr, shapeNode, ycoord;
  // no attributes for node coloring/shape
-  var noOptn = true;
-  var noDrpShapes = true;
+var noOptn = true;
+var noDrpShapes = true;
 var firstTime = true;
 var loadGraphCount = 0;
 var legendDrawn = false;
@@ -16,7 +16,6 @@ var getDrpDwnFiles = true;
 var isJson = false;
 var collapsed = false;
 var expandGraphs = [];
-var clicked = false;
 var clickedNode;
 var clickedNodesPosition;
 var colorschemePaths;
@@ -52,7 +51,6 @@ remove old buttons
 function cleanSelections(){
     // if it is not the first graph read, delete all selectable options
   usedShapeAttributes = [];
-  var myNode = document.getElementById("configPart");
   document.getElementById('KEGGpaths').innerHTML = "";
   document.getElementById('keggpathways').firstChild.data = "Show KEGG Pathways";
   document.getElementById('KEGGpaths').style.visibility = "hidden";
@@ -75,6 +73,10 @@ function cleanSelections(){
     {domNodeShapes.parentNode.removeChild(domNodeShapes);}
   if(domLayout)
     {domLayout.parentNode.removeChild(domLayout);}
+  noOptn = true;
+  noDrpShapes = true;
+  collapsed = false;
+  nodeVal = undefined;
 }
 /* 
 read from json - file and initialize cy-object
@@ -291,7 +293,6 @@ function readFile(file) {
 
 
 function loadFile() {
-
   // put node atttributes into dropdown select object
   var drp = document.createElement("select");
   drp.id = "values";
@@ -302,7 +303,7 @@ function loadFile() {
   var sele = document.createElement("OPTION");
   sele.text = "Select Coloring Attribute";
   drp.add(sele);
-  drp.onchange = function(){noOptn = false;visualize(graphString)};
+  drp.onchange = function(){visualize(graphString)};
 
 
   // layout dropdown
@@ -394,14 +395,14 @@ function loadFile() {
       nodeVal = drp.options[1].value;
       document.getElementById('values').value = nodeVal;
       defaultVal = true;
+        visualize(graphString)
     }
-    visualize(graphString);
-  }
-  // if no attributes found for coloring/shape, remove dropdown menus and visualize
+  } 
   if(noOptn && noDrpShapes){
     drp.parentNode.removeChild(drp);
     drpShapes.parentNode.removeChild(drpShapes);
     drpShape.parentNode.removeChild(drpShape);
+    defaultVal = false;
     visualize(graphString);
   }   
   else if(noDrpShapes){

@@ -9,7 +9,7 @@ visualize a graph from .graphml-file
 function visualize(graphString) {
    //create cytoscape object; not necessary for json
   if(!isJson){
-    if(!noOptn && !clicked && !defaultVal){
+    if(!noOptn && !collapsed && !defaultVal){
       nodeVal = document.getElementById('values').value;
     }
 
@@ -50,7 +50,7 @@ function visualize(graphString) {
     document.getElementById('KEGGpaths').style.visibility ="hidden";
     collapsed = false;
    }
-  if(!clicked){
+  if(!collapsed){
     $('#downloadPDF').removeAttr('disabled');
     $('#downloadPNG').removeAttr('disabled');
     $('#downloadSVG').removeAttr('disabled');
@@ -114,7 +114,7 @@ function getNodesAndEdges(graphString){
       if(graphString[i].includes("\"v_"+nodeVal+"\"\>")){
         var val = regExp.exec(graphString[i])[1]; // if availabe get node value
         if(!isNaN(parseFloat(val))){
-          attrID = graphString[i].split(" ")[7].split("\"")[1];
+          attrID = graphString[i].split("\"")[1];
           currVal = {};
           currVal[nodeVal] = parseFloat(val);
           currVal.attr = attributesTypes[attrID];
@@ -169,7 +169,8 @@ function getNodesAndEdges(graphString){
       }
     }
   }
-  if(!noOptn || (!collapsed && !noOptn)){
+  if(!noOptn || (!collapsed && document.getElementById("values"))){
+    noOptn = false;
     var legendNode = {};
     legendNode.id = "l1";
     legendNode.symbol = "legend";
@@ -935,7 +936,6 @@ function getGraphforGene(name){
 }
 
 // get pathways of selected gene from kegg using entrez id
-// get pathways of selected gene from kegg using entrez id
 async function getPathwaysFromKEGG(name) {
     return new Promise(function (resolve, reject) {
         let xhr = new XMLHttpRequest();
@@ -986,6 +986,9 @@ async function listKEGGPathways(){
           else if(n["data"]["entrez"] != undefined){
             var entrezID = n["data"]["entrez"].toString();            
           }
+          else{
+            continue;
+          }
           let keggpaths = await getPathwaysFromKEGG(entrezID);
           keggpaths = keggpaths.split("\n")
           var line = 0;
@@ -1023,7 +1026,12 @@ async function listKEGGPathways(){
         return { key: key, value: this[key] };}, pathsCount);
       props = props.sort(function(p1, p2) { return p2.value - p1.value; });
       var topFive = props.slice(0, 5);
-
+      if(topFive.length == 0){
+        alert("No entrezIDs given.")
+        document.getElementById('keggpathways').style.visibility = "hidden";
+        document.getElementById('loader').style.visibility = "hidden";
+        return;
+      }
           //show table of pathways
       var tbody = document.getElementById("KEGGpaths");
       var htmlString ="<form> <h3>KEGG Pathways:</h3><br>";
