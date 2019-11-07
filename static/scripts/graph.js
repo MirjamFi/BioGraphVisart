@@ -925,7 +925,12 @@ async function listKEGGPathways(){
       colorschemePaths = [];
   		for(var n of nodes){
   			if(n["data"]["symbol"]!="legend"){
-  				var	entrezID = n["data"]["entrezID"].toString();
+  				if(n["data"]["entrezID"] != undefined){
+            var entrezID = n["data"]["entrezID"].toString();
+          }
+          else if(n["data"]["entrez"] != undefined){
+            var entrezID = n["data"]["entrez"].toString();            
+          }
   				let keggpaths = await getPathwaysFromKEGG(entrezID);
   				keggpaths = keggpaths.split("\n")
   				var line = 0;
