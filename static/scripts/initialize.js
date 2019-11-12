@@ -252,6 +252,25 @@ function readJson(file) {
   reader.readAsText(file);
 }
 
+/* load example graphml file*/
+function readExample(){
+  cleanSelections();
+  // read text from URL location
+  var request = new XMLHttpRequest();
+  request.open('GET', 'http://127.0.0.1:3000/example.graphml', false);
+  request.onreadystatechange = function () {
+      if (request.readyState === 4 && request.status === 200) {
+          var type = request.getResponseHeader('Content-Type');
+          if (type.indexOf("text") !== 1) {
+            graphString = request.responseText.split("\n")
+            loadFile();
+            return graphString;
+          }
+      }
+  }
+  request.send(null);
+}
+
 /* 
 read from grphml - file and initialize cy-object
 */
