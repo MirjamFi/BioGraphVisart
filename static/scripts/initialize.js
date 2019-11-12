@@ -267,7 +267,7 @@ function readExample(){
   cleanSelections();
   // read text from URL location
   var request = new XMLHttpRequest();
-  request.open('GET', 'http://127.0.0.1:3000/example.graphml', false);
+  request.open('GET', 'https://raw.githubusercontent.com/MirjamFi/BioGraphVisart/master/example.graphml', false);
   request.onreadystatechange = function () {
       if (request.readyState === 4 && request.status === 200) {
           var type = request.getResponseHeader('Content-Type');
