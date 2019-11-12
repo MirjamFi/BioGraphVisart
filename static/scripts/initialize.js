@@ -69,6 +69,9 @@ function cleanSelections(){
     {domNodeShapes.parentNode.removeChild(domNodeShapes);}
   if(domLayout)
     {domLayout.parentNode.removeChild(domLayout);}
+  noOptn = true;
+  noDrpShapes = true;
+  nodeVal = undefined;
 }
 /* 
 read from json - file and initialize cy-object
@@ -315,7 +318,7 @@ function loadFile() {
   var sele = document.createElement("OPTION");
   sele.text = "Select Coloring Attribute";
   drp.add(sele);
-  drp.onchange = function(){noOptn = false;visualize(graphString)};
+  drp.onchange = function(){nvisualize(graphString)};
 
 
   // layout dropdown
@@ -407,14 +410,15 @@ function loadFile() {
       nodeVal = drp.options[1].value;
       document.getElementById('values').value = nodeVal;
       defaultVal = true;
+      visualize(graphString);
     }
-    visualize(graphString);
   }
   // if no attributes found for coloring/shape, remove dropdown menus and visualize
   if(noOptn && noDrpShapes){
     drp.parentNode.removeChild(drp);
     drpShapes.parentNode.removeChild(drpShapes);
     drpShape.parentNode.removeChild(drpShape);
+    defaultVal = false;
     visualize(graphString);
   }   
   else if(noDrpShapes){
