@@ -325,7 +325,7 @@ function loadFile() {
   var sele = document.createElement("OPTION");
   sele.text = "Select Coloring Attribute";
   drp.add(sele);
-  drp.onchange = function(){nvisualize(graphString)};
+  drp.onchange = function(){visualize(graphString)};
 
 
   // layout dropdown
