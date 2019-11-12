@@ -68,6 +68,7 @@ function visualize(graphString) {
     document.getElementById('KEGGpaths').style.visibility ="hidden";
   }
   defaultVal = false;
+  document.getElementById('loader1').style.visibility = "hidden";
 }
 
 //get information of nodes ande edges

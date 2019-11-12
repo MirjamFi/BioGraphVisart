@@ -27,6 +27,13 @@ var ctx;
 var defaultVal = false;
 
 function isJsonFile(){
+    document.getElementById('loader1').style.visibility = "visible";
+  var file = document.getElementById('fileName').files[0];
+  if(file == undefined){
+    alert("No file given.")
+    document.getElementById('loader1').style.visibility = "hidden";
+    return;
+  }
   var file = document.getElementById('fileName').files[0];
   if(file["name"].endsWith("json")){
     readJson(file);
