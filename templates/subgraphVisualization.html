@@ -29,7 +29,7 @@
     <script src="http://127.0.0.1:3000/static/scripts/cytoscape-svg.js"></script>
 
 	<script data-main="http://localhost:3000/static/scripts/initialize" src="http://127.0.0.1:3000/static/scripts/node_modules/requirejs/require.js"></script>
-
+	<script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/initialize.js"></script>
 	<script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/icons.js"></script>
 	<script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/graph.js"></script>
 
@@ -2377,6 +2377,67 @@ nPgo8L3N2Zz4K'>
 		<div class="loader" id="loader" style="visibility: hidden"></div>
 	</div>
 	<div align="left" id= "KEGGpaths" style="visibility: hidden;"></div>
+			<script type="text/javascript">
+			$.get("/vis", function(data){
+				if(data){
+					var parser = new DOMParser;
+					var dom = parser.parseFromString(
+					     data,
+					    'text/html');
+
+					graphString = []
+					var keytag = dom.body.getElementsByTagName("graphml")[0]
+					var keys = keytag.outerHTML.split(">  <");
+					for(var i = 0; i < keys.length-1; i++){
+							if(i != keys.length-2){
+							graphString.push('<'+keys[i]+'>')
+						}
+						else if(i == keys.length-2){
+							var nodetag = keys[i].split("<node");
+							for(var j = 0; j < nodetag.length; j++){
+								if(nodetag[j].includes('id') && j < nodetag.length-1){
+									var splitNode = nodetag[j].split('<data')
+									for(var k = 0; k < splitNode.length; k++){
+										if(splitNode[k].includes('id')){
+											graphString.push('<node' + splitNode[k])
+										}
+										else{
+											graphString.push('<data' + splitNode[k].split('</node>')[0])
+										}
+									}
+								}
+								if(j == nodetag.length-1){
+									var splitEdge = nodetag[j].split('<edge')
+									var split = splitEdge[0].split('<data')
+									for(var l = 0; l < split.length; l++){
+										if(split[l].includes('id')){
+											graphString.push('<node' + split[l])
+										}
+										else{
+											graphString.push('<data' + split[l])
+										}
+									}
+									for(var m = 1; m < splitEdge.length; m++){
+										var splitedEdge = splitEdge[m].split("<data")
+										for(var n =0; n <splitedEdge.length; n++){
+											if(splitedEdge[n].includes('source')){
+												graphString.push('<edge' + splitedEdge[n])
+											}
+											else{
+												graphString.push('<data' + splitedEdge[n].split('</edge')[0])
+											}
+										}
+										
+									}
+								}
+
+							}
+						}
+					}
+					loadFile();
+				}
+			})
+		</script>
 
 </body>
 
