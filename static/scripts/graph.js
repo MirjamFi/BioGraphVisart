@@ -357,6 +357,13 @@ function addNodesAndEdges(){
 	        'text-valign' : 'bottom',
 	        'text-max-width': 200
 	    }},
+       {selector: 'node[midrug_id]',
+        style:{
+          'background-image': 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNS4wLjIsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4KCjxzdmcKICAgeG1sbnM6ZGM9Imh0dHA6Ly9wdXJsLm9yZy9kYy9lbGVtZW50cy8xLjEvIgogICB4bWxuczpjYz0iaHR0cDovL2NyZWF0aXZlY29tbW9ucy5vcmcvbnMjIgogICB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiCiAgIHhtbG5zOnN2Zz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciCiAgIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICAgeG1sbnM6c29kaXBvZGk9Imh0dHA6Ly9zb2RpcG9kaS5zb3VyY2Vmb3JnZS5uZXQvRFREL3NvZGlwb2RpLTAuZHRkIgogICB4bWxuczppbmtzY2FwZT0iaHR0cDovL3d3dy5pbmtzY2FwZS5vcmcvbmFtZXNwYWNlcy9pbmtzY2FwZSIKICAgdmVyc2lvbj0iMS4xIgogICBpZD0iTGF5ZXJfMSIKICAgeD0iMHB4IgogICB5PSIwcHgiCiAgIHdpZHRoPSIyNDkuMjM1cHgiCiAgIGhlaWdodD0iMjQ5LjIzNnB4IgogICB2aWV3Qm94PSIwIDAgMjQ5LjIzNSAyNDkuMjM2IgogICBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCAyNDkuMjM1IDI0OS4yMzYiCiAgIHhtbDpzcGFjZT0icHJlc2VydmUiCiAgIHNvZGlwb2RpOmRvY25hbWU9InBpbGxfaWNvbl9yZWRfMjU2LnN2ZyIKICAgaW5rc2NhcGU6dmVyc2lvbj0iMC45Mi4yIDVjM2U4MGQsIDIwMTctMDgtMDYiPjxtZXRhZGF0YQogICAgIGlkPSJtZXRhZGF0YTEzIj48cmRmOlJERj48Y2M6V29yawogICAgICAgICByZGY6YWJvdXQ9IiI+PGRjOmZvcm1hdD5pbWFnZS9zdmcreG1sPC9kYzpmb3JtYXQ+PGRjOnR5cGUKICAgICAgICAgICByZGY6cmVzb3VyY2U9Imh0dHA6Ly9wdXJsLm9yZy9kYy9kY21pdHlwZS9TdGlsbEltYWdlIiAvPjwvY2M6V29yaz48L3JkZjpSREY+PC9tZXRhZGF0YT48ZGVmcwogICAgIGlkPSJkZWZzMTEiIC8+PHNvZGlwb2RpOm5hbWVkdmlldwogICAgIHBhZ2Vjb2xvcj0iI2ZmZmZmZiIKICAgICBib3JkZXJjb2xvcj0iIzY2NjY2NiIKICAgICBib3JkZXJvcGFjaXR5PSIxIgogICAgIG9iamVjdHRvbGVyYW5jZT0iMTAiCiAgICAgZ3JpZHRvbGVyYW5jZT0iMTAiCiAgICAgZ3VpZGV0b2xlcmFuY2U9IjEwIgogICAgIGlua3NjYXBlOnBhZ2VvcGFjaXR5PSIwIgogICAgIGlua3NjYXBlOnBhZ2VzaGFkb3c9IjIiCiAgICAgaW5rc2NhcGU6d2luZG93LXdpZHRoPSI3NzgiCiAgICAgaW5rc2NhcGU6d2luZG93LWhlaWdodD0iNDgwIgogICAgIGlkPSJuYW1lZHZpZXc5IgogICAgIHNob3dncmlkPSJmYWxzZSIKICAgICBpbmtzY2FwZTp6b29tPSIwLjk0Njg5Mzc0IgogICAgIGlua3NjYXBlOmN4PSIxMjQuNjE3NSIKICAgICBpbmtzY2FwZTpjeT0iMTI0LjYxOCIKICAgICBpbmtzY2FwZTp3aW5kb3cteD0iMjIzIgogICAgIGlua3NjYXBlOndpbmRvdy15PSI3NCIKICAgICBpbmtzY2FwZTp3aW5kb3ctbWF4aW1pemVkPSIwIgogICAgIGlua3NjYXBlOmN1cnJlbnQtbGF5ZXI9IkxheWVyXzEiIC8+PGcKICAgICBpZD0iZzYiCiAgICAgc3R5bGU9ImZpbGw6IzAwMDAwMDtmaWxsLW9wYWNpdHk6MSI+PHBhdGgKICAgICAgIGZpbGw9IiNGQkZCRkIiCiAgICAgICBkPSJNMTk1LjUxMiw1NC4yOTRjLTguMTQyLTguMTQzLTE4LjgxNS0xMi4yMjYtMjkuNDk0LTEyLjIyNmMtMTAuNjc0LDAtMjEuMzUxLDQuMDgzLTI5LjQ3LDEyLjIyNiAgIEw5NC4zOTYsOTYuNDM4bDAsMGwtNDIuMTQyLDQyLjEzNWMtMTYuMjg3LDE2LjI2Ny0xNi4yODcsNDIuNjgsMC4wMSw1OC45NjVjMTYuMjY2LDE2LjI3OCw0Mi42ODIsMTYuMjc4LDU4Ljk1NiwwbDMzLjE2My0zMy4xNSAgIGw1MS4xMTktNTEuMTE5QzIxMS43NzYsOTYuOTc0LDIxMS43NzYsNzAuNTU5LDE5NS41MTIsNTQuMjk0eiBNMTg2LjUzMiwxMDQuMjgzbC00Mi4xNDgsNDIuMTRMMTAzLjM2NSwxMDUuNGw0Mi4xNDItNDIuMTQgICBjNS40NzMtNS40NzQsMTIuNzY1LTguNTA3LDIwLjQ5Mi04LjUwN2M3Ljc1MSwwLDE1LjA0MiwzLjAzMywyMC41MTgsOC41MDdDMTk3LjgzOCw3NC41NjQsMTk3LjgzOCw5Mi45ODMsMTg2LjUzMiwxMDQuMjgzeiIKICAgICAgIGlkPSJwYXRoNCIKICAgICAgIHN0eWxlPSJmaWxsOiMwMDAwMDA7ZmlsbC1vcGFjaXR5OjEiIC8+PC9nPjwvc3ZnPg==',
+        'background-width': '45%',
+        'background-height': '45%',
+        'background-position-y': '100%'
+      }},
 
       // style edges
       {selector: 'edge',
@@ -477,15 +484,39 @@ function addNodesAndEdges(){
   if(!collapsed){
   	cy.on('tap', 'node', function(evt){
   		clickedNode = evt.target;
-      if(evt.target.data().symbol != undefined){
-        var targetNode = evt.target.data().symbol
+      if(clickedNode.data().symbol != undefined){
+        var targetNode = clickedNode.data().symbol
         var neighboringgraphml = getGraphforGene(targetNode);
       }
-      else if(evt.target.data().name != undefined){
-        var targetNode = evt.target.data().name
+      else if(clickedNode.data().name != undefined && clickedNode.data().drugbank_id == undefined){
+        var targetNode = clickedNode.data().name
         var neighboringgraphml = getGraphforGene(targetNode);        
       }
-		  clickedNodesPosition = cy.$(evt.target).position();
+      else if(clickedNode.data().drugbank_id != undefined){
+        var info = "<div align='left' id='information'><table><tr>"
+        Object.keys(clickedNode.data()).forEach(function(key) {
+            if(key == "id"){
+              return;
+            }
+            if(key == "drugbank_id"){
+              info+= "<td><b>"+key.charAt(0).toUpperCase() + key.slice(1).split("_").join(" ")+
+              "</b></td><td><a href='https://www.drugbank.ca/drugs/"+clickedNode.data()[key]+"'target='_blank'>"+clickedNode.data()[key]+"</a></td></tr>"
+            }
+            else{
+              info += "<td><b>"+key.charAt(0).toUpperCase() + key.slice(1).split("_").join(" ")+"</b></td><td>"+clickedNode.data()[key]+"</td></tr>"
+            }
+        });
+        info += "</table>"
+        var newWindow = window.open("");
+        var doc = newWindow.document;
+        doc.open("text/html", "replace");
+        doc.write("<HTML><HEAD><TITLE>"+clickedNode.data().name+
+          "</TITLE><link rel='stylesheet' type='text/css' href='http://127.0.0.1:3000/static/css/subgraphCss.css'></HEAD>"+
+          "<BODY><H1>"+clickedNode.data().name+
+          "</H1>"+info+"</BODY></HTML>");
+        doc.close();
+      }
+		  clickedNodesPosition = cy.$(clickedNode).position();
       if(neighboringgraphml){
         if(document.getElementById('values')){
           document.getElementById('values').disabled = true;
@@ -510,7 +541,7 @@ function addNodesAndEdges(){
   }
   else if(collapsed){  // display additional drug info in extra tab/window from database graph
     cy.on('tap', 'node', function(evt){
-      var clickedNode = evt.target.data();
+      var clickedNode = clickedNode.data();
       if(clickedNode.midrug_id != undefined){
         var info = "<div align='left' id='information'><table><tr>"
         Object.keys(clickedNode).forEach(function(key) {
