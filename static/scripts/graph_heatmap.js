@@ -94,6 +94,8 @@ function visualize() {
       document.getElementById('downloadRightPNG').disabled = false;
       document.getElementById('keggpathwaysRight').style.visibility = "visible";
       document.getElementById('KEGGpathsButtonRight').style.visibility ="visible";
+      document.getElementById('right').style.visibility = "visibile";
+      document.getElementById('rightID').style.visibility = "visible";
       showMetaInfo(graphRight);
       // set background layer to hoghlight pathways
       layerRight = graphRight.cyCanvas({
@@ -1017,12 +1019,11 @@ function mergeEdges(cy, cy2=undefined){
         edge.style('display', 'element').style('target-arrow-shape', 'vee').style('line-style','solid');
       }
       // hide single edges
-      else{
-        if(edge.data().id.includes(',')){
+      else if(edge.data().id.includes(edge.data().interaction) || edge.data().id.includes(',')){
           edge.style('display', 'none');
         }
       }
-    }
+    
   }
   if(cy2 != undefined){
     mergeEdges(cy2);

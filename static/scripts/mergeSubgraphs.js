@@ -124,12 +124,12 @@ function getmergedGraph(nodesL, nodesR, edgesL, edgesR){
 	        	for(var j=0; j < edges2.length; j++){
 	          		if(edges2[j].data.source == old_id){
 		            	edges2[j].data.source = nodes2[i].data.id;
-		            	edges2[j].data.id = edges2[j].data.source+edges2[j].data.target+'_'+edges2[j].data.interaction;
+		            	edges2[j].data.id = edges2[j].data.source+edges2[j].data.target;
 
 		          	}
 		       	 	if(edges2[j].data.target == old_id){
 			            edges2[j].data.target = nodes2[i].data.id;
-			            edges2[j].data.id = edges2[j].data.source+edges2[j].data.target+'_'+edges2[j].data.interaction;
+			            edges2[j].data.id = edges2[j].data.source+edges2[j].data.target;
 			        }
 	        	}
 	      	}
@@ -149,12 +149,12 @@ function getmergedGraph(nodesL, nodesR, edgesL, edgesR){
 		        for(var j=0; j < edges2.length; j++){
 		          if(edges2[j].data.source == n2.data.id){
 		            edges2[j].data.source = n1.data.id;
-		            edges2[j].data.id = edges2[j].data.source+edges2[j].data.target+'_'+edges2[j].data.interaction;
+		            edges2[j].data.id = edges2[j].data.source+edges2[j].data.target;
 
 		          }
 		          if(edges2[j].data.target == n2.data.id){
 		            edges2[j].data.target = n1.data.id;
-		            edges2[j].data.id = edges2[j].data.source+edges2[j].data.target+'_'+edges2[j].data.interaction;
+		            edges2[j].data.id = edges2[j].data.source+edges2[j].data.target;
 		          }
 		        }
 		        nodes2.splice(j,1);
@@ -240,18 +240,18 @@ function merge(){
 	if(!!document.getElementById("downloadMergeSVG")){
 		document.getElementById("downloadMergeSVG").remove();
 	}
-
-  	d3.select('#merge')
-	  .append('button')
-	  .attr('class', 'butn')
-	  .attr('type', 'button')
-	  .attr('id','mergeButton')
-	  .text('MERGE')
-	  .on('click', function() {
-		document.getElementById('mergeButton').style.visibility="hidden";
-		leftID = document.getElementById("leftID").innerHTML;
-		rightID = document.getElementById("rightID").innerHTML;
-		window.open('http://localhost:3000/merge');
-	});		
+	if(!document.getElementById("mergeButton")){
+	  	d3.select('#merge')
+		  .append('button')
+		  .attr('class', 'butn')
+		  .attr('type', 'button')
+		  .attr('id','mergeButton')
+		  .text('MERGE')
+		  .on('click', function() {
+			leftID = document.getElementById("leftID").innerHTML;
+			rightID = document.getElementById("rightID").innerHTML;
+			window.open('http://localhost:3000/merge');
+		});	
+	}	
 }
 
