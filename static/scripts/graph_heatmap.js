@@ -971,6 +971,64 @@ function highlightKEGGpaths(ctx, canvas, cy, layer, pos, allPaths, colorschemePa
   cy.zoom(cy.zoom()*1.000000000000001);
 }
 
+// optional merging of multiple edges between two nodes
+function mergeEdges(cy, cy2=undefined){
+  console.log(cy)
+  // do not merge edges
+  if(!document.getElementById("mergeEdges").checked) {
+    loopEdges:
+    for(var i = 0; i<cy.edges().length;i++){
+      var e = cy.edges()[i].data();
+      // find multiple edges
+      if(typeof e.interaction != "string"){
+        // hide merged edge
+        cy.edges('edge[id = "'+e.id+'"]').style('display', 'none');
+        loopInteraction:
+        for(var interact of e.interaction){
+          loopId:
+          for(var j = i; j < cy.edges().length; j++){
+            // single edge is already contained
+            if(cy.edges()[j].data().id == e.id+'_'+interact.trim()){
+              //show single edge
+              cy.edges('edge[id = "'+e.id+'_'+interact.trim()+'"]').style('display', 'element').update;
+              continue loopInteraction;
+            }
+          }
+          // add single edge to graph
+          cy.add({
+            group: 'edges',
+            data: { id:e.id+'_'+interact.trim(), source:e.source, target:e.target, interaction:interact.trim()},
+          });
+        }
+      }
+      else if(e.interaction.includes(",")){
+        cy.edges()[i].data().interaction = e.interaction.split(",");
+        cy.edges()[i].style('target-arrow-shape', 'vee').style('line-style','solid').update;
+        i--;
+      }
+    }
+    showMetaInfo(cy);
+  }
+  // merge edge
+  else if(document.getElementById("mergeEdges").checked){
+    for(var i = 0; i < cy.edges().length; i++){
+      var edge = cy.edges()[i]
+      // show merged edges
+      if(edge.hidden()){
+        edge.style('display', 'element').style('target-arrow-shape', 'vee').style('line-style','solid');
+      }
+      // hide single edges
+      else{
+        if(edge.data().id.includes(edge.data().interaction)){
+          edge.style('display', 'none');
+        }
+      }
+    }
+  }
+  if(cy2 != undefined){
+    mergeEdges(cy2);
+  }
+}
 /* 
   download png of graph
 */
@@ -1031,22 +1089,22 @@ function downloadSVGRight(){
 reset view (zoom, position)
 */
 function resetLeft(){
-	graphLeft.layout({
-    	name: 'dagre',
+  graphLeft.layout({
+      name: 'dagre',
     }).run();
   highlightedNode.getsymbol;
 };
 
 function resetRight(){
-	graphRight.layout({
-    	name: 'dagre',
+  graphRight.layout({
+      name: 'dagre',
     }).run();
   highlightedNode.getsymbol;
 };
 
 function resetMerge(){
-	merge_graph.cy.layout({
-    	name: 'dagre',
+  merge_graph.cy.layout({
+      name: 'dagre',
     }).run();
   highlightedNode.getsymbol;
 };

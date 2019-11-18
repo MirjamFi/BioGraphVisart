@@ -288,16 +288,16 @@ var cystyle =  [
 	    },
 	    content: {text : function(){
 	      if(!isNaN(parseFloat(this.data('val_g2'))) && !isNaN(parseFloat(this.data('val_g1')))){
-	        return '<b>'+nodeVal +' ' +filenameSplitLeft +'</b>: ' + parseFloat(this.data('val_g1')).toFixed(2) +
-	        '<br><b>'+nodeVal +' ' +filenameSplitRight +'</b>: ' + parseFloat(this.data('val_g2')).toFixed(2)} //numbers
+	        return '<b>'+window.opener.nodeVal +' ' +filenameSplitLeft +'</b>: ' + parseFloat(this.data('val_g1')).toFixed(2) +
+	        '<br><b>'+window.opener.nodeVal +' ' +filenameSplitRight +'</b>: ' + parseFloat(this.data('val_g2')).toFixed(2)} //numbers
 	      else if(isNaN(parseFloat(this.data('val_g2'))) && !isNaN(parseFloat(this.data('val_g1')))){
-	        return '<b>'+nodeVal +' ' +filenameSplitLeft +'</b>: ' + parseFloat(this.data('val_g1')).toFixed(2) +
-	        '<br><b>'+nodeVal +' ' +filenameSplitRight +'</b>: ' + this.data('val_g2')} //numbers
+	        return '<b>'+window.opener.nodeVal +' ' +filenameSplitLeft +'</b>: ' + parseFloat(this.data('val_g1')).toFixed(2) +
+	        '<br><b>'+window.opener.nodeVal +' ' +filenameSplitRight +'</b>: ' + this.data('val_g2')} //numbers
 	      else if(!isNaN(parseFloat(this.data('val_g2'))) && isNaN(parseFloat(this.data('val_g1')))){
-	        return '<b>'+nodeVal +' ' +filenameSplitLeft +'</b>: ' + this.data('val_g1') +
-	        '<br><b>'+nodeVal +' ' +filenameSplitRight +'</b>: ' + parseFloat(this.data('val_g2')).toFixed(2)} //numbers         //bools
+	        return '<b>'+window.opener.nodeVal +' ' +filenameSplitLeft +'</b>: ' + this.data('val_g1') +
+	        '<br><b>'+window.opener.nodeVal +' ' +filenameSplitRight +'</b>: ' + parseFloat(this.data('val_g2')).toFixed(2)} //numbers         //bools
 	      else{
-	      	return '<b>'+nodeVal +' </b>: ' + this.data('val_g1');
+	      	return '<b>'+window.opener.nodeVal +' </b>: ' + this.data('val_g1');
 	    }}},
 	    position: {
 	      my: 'top center',

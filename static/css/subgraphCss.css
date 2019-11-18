@@ -135,18 +135,50 @@ input:hover{
 
 .KEGGpathsButton{
   position: absolute;
-  top: 300px;
+  top: 120px;
   left:85%;
 }
-.KEGGpaths{
+#KEGGpaths{
   position: absolute;
-  top: 50px;
+  top: 150px;
   left:86%;
 }
-.KEGGpathsMerge{
-  position: absolute;
-  top: 2080px;
+#keggpathways{
+    position: absolute;
+  top: 120px;
   left:86%;
+}
+#keggpathwaysMerge{
+    position: absolute;
+  top: 120px;
+  left:86%;
+}
+#KEGGpathsMerge{
+    position: absolute;
+  top: 150px;
+  left:86%;
+}
+#keggpathwaysRight{
+    position: absolute;
+  top: 120px;
+  left:86%;
+}
+#KEGGpathsRight{
+    position: absolute;
+  top: 150px;
+  left:86%;
+}
+#keggpathwaysLeft{
+    position: absolute;
+  top: 120px;
+  left:86%;
+}
+#KEGGpathsLeft{
+    position: absolute;
+  top: 150px;
+  left:86%;
+}
+
 }
 .loader {
     border: 16px solid #f3f3f3; /* Light grey */
@@ -209,7 +241,7 @@ input:hover{
     margin: 0% 10% 5% 0%;
 }
  #merged_graph {
-      width: 71.5%;
+      width: 60%;
       /*height: 75%;*/
       position: absolute;
       top: 100px;
@@ -228,7 +260,7 @@ input:hover{
 }
 #merged_graph_legend {
     font-size: 11px;
-    margin-top: 5%;
+    margin-top: 10px;
     /*overflow: hidden; */
 }
 #legendArrows {
