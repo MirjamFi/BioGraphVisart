@@ -47,7 +47,7 @@ function visualize() {
       leftOldMin = leftLayout[0];
       leftOldMax = leftLayout[1];
       leftFirstTime = leftLayout[2];
-      document.getElementById("merged_graph_legend").setAttribute('style','visibility:hidden');
+      //document.getElementById("merged_graph_legend").setAttribute('style','visibility:hidden');
       document.getElementById('downloadPartLeft').style.visibility = "visible";
       document.getElementById('resetLeft').style.visibility = "visible";
       document.getElementById('downloadLeftSVG').disabled = false;
@@ -111,13 +111,14 @@ function visualize() {
     }
   });
   document.getElementById('legend_heatmap').setAttribute('style','visibility:visible');
-  document.getElementById("merged_graph").innerHTML = "";
+  //document.getElementById("merged_graph").innerHTML = "";
   if(!!right){
       merge();
   }
   //activateNodeShapeChange();
 }
 
+var leftNodes, rightNodes, leftEdges, rightEdges;
 //get information of nodes ande edges
 function getNodesAndEdges(cyObject, graphString){
   nodes = [];
@@ -567,8 +568,8 @@ function listKEGGPathways(pos, nodesList){
         var pathsCount = [];
         var allPaths = {};
         for(var n in nodesList){
-          if(nodesList[n]["data"] && nodesList[n]["data"]["symbol"]!="legend" && nodesList[n]["data"]["symbol"]!=document.getElementById("leftID").innerHTML 
-            && nodesList[n]["data"]["symbol"]!=document.getElementById("rightID").innerHTML){
+          if(nodesList[n]["data"] && nodesList[n]["data"]["symbol"]!="legend" && nodesList[n]["data"]["symbol"]!=window.opener.leftID
+            && nodesList[n]["data"]["symbol"]!=window.opener.rightID){
             if(nodesList[n]["data"]["entrezID"]){
               var entrezID = nodesList[n]["data"]["entrezID"].toString();
             }

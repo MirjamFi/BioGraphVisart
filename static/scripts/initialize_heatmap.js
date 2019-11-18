@@ -218,16 +218,16 @@ function cleanSelections(){
   document.getElementById('KEGGpathsRight').innerHTML = "";
   document.getElementById('keggpathwaysRight').firstChild.data = "Show KEGG Pathways";
   document.getElementById('KEGGpathsRight').style.visibility = "hidden";
-  document.getElementById('KEGGpathsMerge').innerHTML = "";
-  document.getElementById('keggpathwaysMerge').firstChild.data = "Show KEGG Pathways";
-  document.getElementById('KEGGpathsMerge').style.visibility = "hidden";
+  // document.getElementById('KEGGpathsMerge').innerHTML = "";
+  // document.getElementById('keggpathwaysMerge').firstChild.data = "Show KEGG Pathways";
+  // document.getElementById('KEGGpathsMerge').style.visibility = "hidden";
   if(document.getElementById('keggpathwaysMerge')){
     document.getElementById('keggpathwaysMerge').style.visibility = "hidden";
   }
   allPathsLeft = null;
   allPathsRight = null;
   allPathsMerge = null;
-  document.getElementById('merged_graph').innerHTML = "";
+  // document.getElementById('merged_graph').innerHTML = "";
   leftEdges = [];
   rightEdges = [];
   leftNodes = [];

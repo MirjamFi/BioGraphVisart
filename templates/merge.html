@@ -38,6 +38,7 @@
         <script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/mergeSubgraphs.js"></script>
 
         <script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/heatmapSubgraphs.js"></script>
+        <script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/showMerged.js"></script>
 
         <style>
   </style>
@@ -68,25 +69,14 @@
           });
         }
     </script>
-    <h1>Graph comparison with Heatmap</h1>
+    <h1>Merged Graph</h1>
 
-    <p id="description">Generate heatmap for graph overlap for (unique named) .graphml-files. Folder with files has to be in the main folder of this program. 
+    <p id="description"> 
+            <div id = "merged_graph_buttons"></div>   
+
     </p>
-    <div id="dataPart">
-        <input type="text" name="directory" id="directory" size = "30" value="Folder of graphmls to compare" onfocus="this.value=''">
-        <button type="submit" onclick="loadDir()" id="loadDir">Submit</button>
-
     <div class="loader" id="loader" style="display: none;"></div>
     </div>
-            <div id="heatmapcontainer"></div>
-    <div>
-        <p id="selectAttribute" style="visibility: hidden">Show subgraphs of selected samples (click on cell of heatmap) with selected attribute.<br>Below you can create the merged graph of these two subgraphs. Nodes with double border are common for both subgraphs, nodes with orange border are from top graph, nodes with light blue border are from middle graph.</br></p>
-
-        <select name="values" id="values" onchange="visualize()" style="visibility: hidden">
-            <option value="" selected disabled hidden>Choose node's attribute</option>
-        </select>
-    </div>
-   <div align="left" id="legend_heatmap" style="visibility: hidden">
     <table >
       <tr>
         <td>
@@ -2373,52 +2363,19 @@ nPgo8L3N2Zz4K'>
     </table>
       </div>
     </div>
-    <div class="clear"></div>
     <p></p>
-     <div id="subgraphs">
-         <div id="legendGraphsLeft" class="center-div"></div> 
-        <div align="left" id="left">
-            <div align="left" id="leftID"></div>
-            <div align="left" id="cyLeft"></div>
-            <div align="right" class="KEGGpathsbutton" id="KEGGpathsButtonLeft" style="visibility: hidden">
-                <button class="butn" class="keggpathways" id="keggpathwaysLeft">Show KEGG Pathways</button></p>
-                <div class="loader" id="loaderLeft" style="visibility: hidden"></div>
-                <div align="left" class = "KEGGpaths" id= "KEGGpathsLeft" style="visibility: hidden;"></div>
-            </div>
-        </div>
-        <div id="resetLeft" style="visibility: hidden">
-          <button class= 'butn' id="resetLeftLayout" onclick="resetLeft()">Reset layout</button>
-        </div>
-        <div id="downloadPartLeft" style="visibility: hidden">
-          <input name="outputFileLeft" type="text" maxlength="512" id="outputNameLeft" value="File name"/>
-          <button class= 'butn' id="downloadLeftPNG" onclick="downloadPNGLeft()" disabled="disabled">Download png</button>
-          <button class= 'butn' id="downloadLeftSVG" onclick="downloadSVGLeft()" disabled="disabled">Download svg</button>
-        </div>
-        <p></p>
-        <div id="legendGraphsRight" class="center-div"></div> <!-- onload="makeDraggable(evt)" -->
-        <div align="left" id="right">
-            <div align="left" id="rightID"></div>
-            <div align="left" id="cyRight"></div>
-            <div align="right" class="KEGGpathsbutton" id="KEGGpathsButtonRight" style="visibility: hidden">
-                <button class="butn" id="keggpathwaysRight" >Show KEGG Pathways</button></p>
-                <div class="loader" id="loaderRight" style="visibility: hidden"></div>
-                <div align="left" class = "KEGGpaths" id= "KEGGpathsRight" style="visibility: hidden;"></div>
-            </div>
-        </div>
-        <div id="resetRight" style="visibility: hidden">
-          <button id="resetRightLayout" onclick="resetRight()">Reset layout</button>
-        </div>
-        <div id="downloadPartRight" style="visibility: hidden">
-          <input name="outputFileRight" type="text" maxlength="512" id="outputNameRight" value="File name"/>
-          <button class= 'butn' id="downloadRightPNG" onclick="downloadPNGRight()" disabled="disabled">Download png</button>
-          <button class= 'butn' id="downloadRightSVG" onclick="downloadSVGRight()" disabled="disabled">Download svg</button>
-        </div>
-        <div class="clear"></div>
+    <button class= 'butn' id='resetMerge' onclick=resetLayout()>Reset layout</button>
+    <div align="left" id = "merged_graph"></div>
+
+    <p></p>
+    <div id="merged_graph_legend" class="center-div" style="visibility: hidden;"></div>
+    <div align="right" class="KEGGpathsbutton" id="KEGGpathsButtonMerge" style="visibility: hidden">
+        <button class= 'butn' class="butn" id="keggpathwaysMerge" >Show KEGG Pathways</button></p>
+        <div class="loader" id="loaderMerge" style="visibility: hidden"></div>
+        <div align="left" class = "KEGGpathsMerge" id= "KEGGpathsMerge" style="visibility: hidden;"></div>
+
     </div>
-
-    <p></p>
-    <div id = "merge"></div>
-
+    <script type="text/javascript">createMerged()</script>
     </body>
 
 
