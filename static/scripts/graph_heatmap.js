@@ -568,8 +568,8 @@ function listKEGGPathways(pos, nodesList){
         var pathsCount = [];
         var allPaths = {};
         for(var n in nodesList){
-          if(nodesList[n]["data"] && nodesList[n]["data"]["symbol"]!="legend" && nodesList[n]["data"]["symbol"]!=window.opener.leftID
-            && nodesList[n]["data"]["symbol"]!=window.opener.rightID){
+          if(nodesList[n]["data"] && nodesList[n]["data"]["symbol"]!="legend" && nodesList[n]["data"]["symbol"]!=leftID
+            && nodesList[n]["data"]["symbol"]!=rightID){
             if(nodesList[n]["data"]["entrezID"]){
               var entrezID = nodesList[n]["data"]["entrezID"].toString();
             }
@@ -973,7 +973,6 @@ function highlightKEGGpaths(ctx, canvas, cy, layer, pos, allPaths, colorschemePa
 
 // optional merging of multiple edges between two nodes
 function mergeEdges(cy, cy2=undefined){
-  console.log(cy)
   // do not merge edges
   if(!document.getElementById("mergeEdges").checked) {
     loopEdges:
@@ -1019,7 +1018,7 @@ function mergeEdges(cy, cy2=undefined){
       }
       // hide single edges
       else{
-        if(edge.data().id.includes(edge.data().interaction)){
+        if(edge.data().id.includes(',')){
           edge.style('display', 'none');
         }
       }
