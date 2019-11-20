@@ -341,6 +341,19 @@ function loadFile() {
   seleShapeAttr.value = "";
   drpShapes.add(seleShapeAttr);
 
+  var searchgene = document.createElement("input");
+  searchgene.id = "searchgene";
+  searchgene.value = "Search gene"
+  document.getElementById("configPart").appendChild(searchgene);
+  searchgene.setAttribute("type", "text");
+  searchgene.setAttribute("width", 30);
+  var searchbutn = document.createElement("button");
+  searchbutn.id = "searchbutn";
+  searchbutn.innerHTML = "Search";
+  document.getElementById("configPart").appendChild(searchbutn);
+  document.getElementById("searchbutn").className = 'butn';  
+  searchbutn.onclick = highlightSearchedGene;
+
  // shapes dropdown
   var drpShape = document.createElement("select");
   drpShape.id = "nodeShapes";

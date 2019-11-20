@@ -119,10 +119,13 @@ input:hover{
       /*border: solid #BDBDBD;*/
   }
 
+#searchgene{
+  margin-left: 30px;
+}
 
 #legend {
     position: absolute;
-    top: 250px;
+    top: 260px;
     left: 10px;
     font-size: 11px;
     width: 180px;
