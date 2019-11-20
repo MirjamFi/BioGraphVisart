@@ -1518,14 +1518,20 @@ function downloadPDF () {
 function highlightSearchedGene(){
   var gene = document.getElementById('searchgene').value;
   if(gene == ""){
-    cy.$('node').style("border-width", 2);    
+    cy.$('node').style("border-width", 2); 
+    cy.$('node[id = "l1"').style("border-width", 1);   
   }
   else if(cy.$('node[symbol=\''  + gene + '\']').length>0){
     cy.$('node').style("border-width", 2);
     cy.$('node[symbol =\''  + gene + '\']').style("border-width", 10);
+    cy.$('node[id = "l1"').style("border-width", 1);
   }
   else if(cy.$('node[name =\''  + gene + '\']').length>0){
     cy.$('node').style("border-width", 2);
     cy.$('node[name =\''  + gene + '\']').style("border-width", 10);
+    cy.$('node[id = "l1"').style("border-width", 1);
+  }
+  else{
+    document.getElementById('searchgene').value = gene+" not found"
   }
 }
