@@ -76,6 +76,12 @@ function cleanSelections(){
     {domNodeShapes.parentNode.removeChild(domNodeShapes);}
   if(domLayout)
     {domLayout.parentNode.removeChild(domLayout);}
+  var searchgene = document.getElementById("searchgene")
+  if(searchgene){
+    searchgene.parentNode.removeChild(searchgene);}
+  var searchbutn = document.getElementById("searchbutn")
+  if(searchbutn){
+    searchbutn.parentNode.removeChild(searchbutn); }
   noOptn = true;
   noDrpShapes = true;
   nodeVal = undefined;
@@ -385,6 +391,19 @@ function loadFile() {
     optnShape.value=nodeShape;
     drpShape.add(optnShape);
   });
+
+  var searchgene = document.createElement("input");
+  searchgene.id = "searchgene";
+  searchgene.value = "Search gene"
+  document.getElementById("configPart").appendChild(searchgene);
+  searchgene.setAttribute("type", "text");
+  searchgene.setAttribute("width", 30);
+  var searchbutn = document.createElement("button");
+  searchbutn.id = "searchbutn";
+  searchbutn.innerHTML = "Search";
+  document.getElementById("configPart").appendChild(searchbutn);
+  document.getElementById("searchbutn").className = 'butn';  
+  searchbutn.onclick = highlightSearchedGene;
 
   if(! isJson){
     // get attributes for coloring -> double/boolean and shape -> boolean
