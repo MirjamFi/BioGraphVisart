@@ -1030,7 +1030,7 @@ function getGraphforGene(name){
 
   var listofGenes;
   var reqListofGenes = new XMLHttpRequest();
-  reqListofGenes.open('GET', 'http://abidocker:48080/sbml4j/networkInventory/3cc6920c-e9e7-44aa-b3fa-efa41323884e/filterOptions', false);
+  reqListofGenes.open('GET', 'http://abidocker:48080/sbml4j/networkInventory/16c75fe8-7185-46e0-9a02-26dcc925488a/filterOptions', false);
   reqListofGenes.setRequestHeader('user', 'user')
   reqListofGenes.onload = function () {
     listofGenes = JSON.parse(reqListofGenes.responseText).nodeSymbols;
@@ -1039,7 +1039,7 @@ function getGraphforGene(name){
   if(listofGenes.includes(name)){
     var responsetxt;
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'http://abidocker:48080/sbml4j/context?baseNetworkUUID=3cc6920c-e9e7-44aa-b3fa-efa41323884e&gene='+name+'&minSize=1&maxSize=1&format=graphml', false);
+    xhr.open('GET', 'http://abidocker:48080/sbml4j/context?baseNetworkUUID=16c75fe8-7185-46e0-9a02-26dcc925488a&gene='+name+'&minSize=1&maxSize=1&format=graphml', false);
     xhr.setRequestHeader('user', 'user')
 
     xhr.onload = function () {

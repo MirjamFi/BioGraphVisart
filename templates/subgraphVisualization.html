@@ -62,7 +62,6 @@
 
 		<button class= 'butn' onclick="isJsonFile()" id="loadGraphml" >Load file</button>
 		<p></p>
-
 	</div> 
 
 	<div id="configPart">
@@ -2377,20 +2376,19 @@ nPgo8L3N2Zz4K'>
 		<div class="loader" id="loader" style="visibility: hidden"></div>
 	</div>
 	<div align="left" id= "KEGGpaths" style="visibility: hidden;"></div>
-			<script type="text/javascript">
+		<script type="text/javascript">
 			$.get("/vis", function(data){
 				if(data){
 					var parser = new DOMParser;
 					var dom = parser.parseFromString(
 					     data,
 					    'text/html');
-
 					graphString = []
 					var keytag = dom.body.getElementsByTagName("graphml")[0]
-					var keys = keytag.outerHTML.split(">  <");
+					var keys = keytag.outerHTML.split(/>(\s*?)</g);
 					for(var i = 0; i < keys.length-1; i++){
-							if(i != keys.length-2){
-							graphString.push('<'+keys[i]+'>')
+						if(i != keys.length-2){
+							graphString.push(keys[i])
 						}
 						else if(i == keys.length-2){
 							var nodetag = keys[i].split("<node");
