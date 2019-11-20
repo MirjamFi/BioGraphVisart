@@ -68,6 +68,7 @@ function visualize(graphString) {
     document.getElementById('KEGGpaths').style.visibility ="hidden";
   }
   defaultVal = false;
+  document.getElementById('loader1').style.visibility = "hidden";
 }
 
 //get information of nodes ande edges
@@ -98,8 +99,8 @@ function getNodesAndEdges(graphString){
         curNode.symbol = symbol;
       }
       if(graphString[i].includes("v_name\"\>")){  // get name of node
-        var nodename = regExp.exec(graphString[i])[1];
-        curNode.nodename = nodename;
+        var name = regExp.exec(graphString[i])[1];
+        curNode.name = name;
       }
       if(graphString[i].includes("\"v_"+nodeVal+"\"\>")){
         var val = regExp.exec(graphString[i])[1]; // if availabe get node value
@@ -463,14 +464,28 @@ function addNodesAndEdges(){
   if(nodes.every(function(x){return(x.data["symbol"])})){
     for(n=0; n < nodes.length; n++){
       cy.batch(function(){
-      cy.$('node[id =\''  + nodes[n].data.id + '\']').style("label",nodes[n].data.symbol);
+        var labelText = nodes[n].data.symbol;
+        var oldLabelText = nodes[n].data.symbol;
+          while(getTextWidth(labelText, fontSize +" arial") > 49){
+            oldLabelText = oldLabelText.slice(0,-1);
+            labelText = oldLabelText+'...';
+          }
+         // }
+         cy.$('node[id =\''  + nodes[n].data.id + '\']').style("label", labelText);
       });
     }
   }
   else{
     for(n=0; n < nodes.length; n++){
       cy.batch(function(){
-      cy.$('node[id =\''  + nodes[n].data.id + '\']').style("label",nodes[n].data.nodename);
+        var labelText = nodes[n].data.name;
+        var oldLabelText = nodes[n].data.name;
+          while(getTextWidth(labelText, fontSize +" arial") > 49){
+            oldLabelText = oldLabelText.slice(0,-1);
+            labelText = oldLabelText+'...';
+          }
+         // }
+         cy.$('node[id =\''  + nodes[n].data.id + '\']').style("label",labelText);
       });
     }
   }
@@ -556,20 +571,73 @@ function showMetaInfo(){
         },
         content: {text : function(){
           if(!isNaN(parseFloat(this.data()[nodeVal]))&&this.data('genename')){
-            return '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2) +
-            '<br>' + '<b>gene name</b>: ' + this.data('genename'); } //numbers
+            if(this.data('symbol') != undefined){
+               return '<b>'+ this.data('symbol') +'</b><br>' + 
+               '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2) +
+               '<br>' + '<b>gene name</b>: ' + this.data('genename')}
+             else if(this.data('name') != undefined){
+               return '<b>'+ this.data('name')+'</b><br>' +
+               '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal] +
+               '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2) +
+               '<br>' + '<b>gene name</b>: ' + this.data('genename')}
+             } //numbers
           else if(!isNaN(parseFloat(this.data()[nodeVal]))&& !this.data('genename')){
-            return '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2);
-          }
+            if(this.data('symbol') != undefined){
+               return '<b>'+ this.data('symbol') +'</b><br>' + 
+               '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2);} //numbers
+             else if(this.data('name') != undefined){
+               return '<b>'+ this.data('name')+'</b><br>' + 
+               '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2);
+             }            
           else if(this.data('genename')){
-            return '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal] +
-            '<br>' + '<b>gene name</b>: ' + this.data('genename');          //bools
-          }
+            if(this.data('symbol') != undefined){
+               return '<b>'+ this.data('symbol') +'</b><br>' + 
+               '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal] +
+               '<br>' + '<b>gene name</b>: ' + this.data('genename');          //bools
+             }
+             else if(this.data('name') != undefined){
+               return '<b>'+ this.data('name')+'</b><br>' +
+               '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal] +
+               '<br>' + '<b>gene name</b>: ' + this.data('genename'); 
+           }}
           else{
-            return '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal];
-          }
-        }},
-        position: {
+            if(this.data('symbol') != undefined){
+               return '<b>'+ this.data('symbol') +'</b><br>' + 
+               '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal];
+             }
+              else if(this.data('name') != undefined){
+               return '<b>'+ this.data('name')+'</b><br>' +
+               '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal];
+                     }
+         }
+         }},
+         position: {
+           my: 'top center',
+           at: 'bottom center'
+         },
+         style: {
+           classes: 'qtip-bootstrap',
+           tip: {
+             width: 8,
+             height: 8
+           }
+         },
+         }});
+   }
+   else if(!isJson && noOptn){
+     cy.elements('node').qtip({       // show node attibute value by mouseover
+         show: {   
+           event: 'mouseover', 
+           solo: true,
+         },
+         content: {text : function(){
+           if(this.data('symbol')){
+             return '<b>'+ this.data('symbol') +'</b>'; } //numbers
+           else if(this.data('name')){
+             return '<b>'+ this.data('name')+'</b>';
+           }
+         }},
+         position: {
           my: 'top center',
           at: 'bottom center'
         },
@@ -925,7 +993,12 @@ async function listKEGGPathways(){
       colorschemePaths = [];
   		for(var n of nodes){
   			if(n["data"]["symbol"]!="legend"){
-  				var	entrezID = n["data"]["entrezID"].toString();
+  				if(n["data"]["entrezID"] != undefined){
+            var entrezID = n["data"]["entrezID"].toString();
+          }
+          else if(n["data"]["entrez"] != undefined){
+            var entrezID = n["data"]["entrez"].toString();            
+          }
   				let keggpaths = await getPathwaysFromKEGG(entrezID);
   				keggpaths = keggpaths.split("\n")
   				var line = 0;
@@ -1321,3 +1394,17 @@ function downloadPDF () {
   });
 }
 
+function highlightSearchedGene(){
+  var gene = document.getElementById('searchgene').value;
+  if(gene == ""){
+    cy.$('node').style("border-width", 2);    
+  }
+  else if(cy.$('node[symbol=\''  + gene + '\']').length>0){
+    cy.$('node').style("border-width", 2);
+    cy.$('node[symbol =\''  + gene + '\']').style("border-width", 10);
+  }
+  else if(cy.$('node[name =\''  + gene + '\']').length>0){
+    cy.$('node').style("border-width", 2);
+    cy.$('node[name =\''  + gene + '\']').style("border-width", 10);
+  }
+}

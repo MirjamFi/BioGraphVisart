@@ -27,6 +27,13 @@ var ctx;
 var defaultVal = false;
 
 function isJsonFile(){
+    document.getElementById('loader1').style.visibility = "visible";
+  var file = document.getElementById('fileName').files[0];
+  if(file == undefined){
+    alert("No file given.")
+    document.getElementById('loader1').style.visibility = "hidden";
+    return;
+  }
   var file = document.getElementById('fileName').files[0];
   if(file["name"].endsWith("json")){
     readJson(file);
@@ -69,6 +76,15 @@ function cleanSelections(){
     {domNodeShapes.parentNode.removeChild(domNodeShapes);}
   if(domLayout)
     {domLayout.parentNode.removeChild(domLayout);}
+  var searchgene = document.getElementById("searchgene")
+  if(searchgene){
+    searchgene.parentNode.removeChild(searchgene);}
+  var searchbutn = document.getElementById("searchbutn")
+  if(searchbutn){
+    searchbutn.parentNode.removeChild(searchbutn); }
+  noOptn = true;
+  noDrpShapes = true;
+  nodeVal = undefined;
 }
 /* 
 read from json - file and initialize cy-object
@@ -252,6 +268,25 @@ function readJson(file) {
   reader.readAsText(file);
 }
 
+/* load example graphml file*/
+function readExample(){
+  cleanSelections();
+  // read text from URL location
+  var request = new XMLHttpRequest();
+  request.open('GET', 'https://raw.githubusercontent.com/MirjamFi/BioGraphVisart/master/example.graphml', false);
+  request.onreadystatechange = function () {
+      if (request.readyState === 4 && request.status === 200) {
+          var type = request.getResponseHeader('Content-Type');
+          if (type.indexOf("text") !== 1) {
+            graphString = request.responseText.split("\n")
+            loadFile();
+            return graphString;
+          }
+      }
+  }
+  request.send(null);
+}
+
 /* 
 read from grphml - file and initialize cy-object
 */
@@ -296,7 +331,7 @@ function loadFile() {
   var sele = document.createElement("OPTION");
   sele.text = "Select Coloring Attribute";
   drp.add(sele);
-  drp.onchange = function(){noOptn = false;visualize(graphString)};
+  drp.onchange = function(){visualize(graphString)};
 
 
   // layout dropdown
@@ -357,6 +392,19 @@ function loadFile() {
     drpShape.add(optnShape);
   });
 
+  var searchgene = document.createElement("input");
+  searchgene.id = "searchgene";
+  searchgene.value = "Search gene"
+  document.getElementById("configPart").appendChild(searchgene);
+  searchgene.setAttribute("type", "text");
+  searchgene.setAttribute("width", 30);
+  var searchbutn = document.createElement("button");
+  searchbutn.id = "searchbutn";
+  searchbutn.innerHTML = "Search";
+  document.getElementById("configPart").appendChild(searchbutn);
+  document.getElementById("searchbutn").className = 'butn';  
+  searchbutn.onclick = highlightSearchedGene;
+
   if(! isJson){
     // get attributes for coloring -> double/boolean and shape -> boolean
     for (var i = 0; i <= graphString.length - 1; i++) {
@@ -388,14 +436,15 @@ function loadFile() {
       nodeVal = drp.options[1].value;
       document.getElementById('values').value = nodeVal;
       defaultVal = true;
+      visualize(graphString);
     }
-    visualize(graphString);
   }
   // if no attributes found for coloring/shape, remove dropdown menus and visualize
   if(noOptn && noDrpShapes){
     drp.parentNode.removeChild(drp);
     drpShapes.parentNode.removeChild(drpShapes);
     drpShape.parentNode.removeChild(drpShape);
+    defaultVal = false;
     visualize(graphString);
   }   
   else if(noDrpShapes){
