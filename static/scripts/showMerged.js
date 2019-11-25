@@ -130,25 +130,15 @@ var cystyle =  [
 	  .attr('type', 'button')
 	  .attr('class', 'butn')
 	  .attr('id','downloadMergePNG')
-	  .text('Download png')
+	  .text('.png')
 	  .on('click', function(){
-	  	let filenameSplitLeft = left.split("/")
-		filenameSplitLeft = filenameSplitLeft[filenameSplitLeft.length-1].split('.')[0];
-
-	    let filenameSplitRight = right.split("/")
-	    filenameSplitRight = filenameSplitRight[filenameSplitRight.length-1].split('.')[0];
+	  	
 		  outputName = document.getElementById('outputNameMerge').value;
 	  	  var png64 = merge_graph.png();
 		  $('#downloadPNGMerge').attr('href', png64);
 		  var download = document.createElement('a');
 		  download.href = 'data:image/png;base64;'+png64;
-		  if(outputName != "File name"){
-		    download.download = outputName + '.png';
-		  }
-		  else{
-		     fileName = path + '_'+ filenameSplitLeft +'_'+filenameSplitRight;
-		     download.download = fileName + '_' + nodeVal + '.png';
-		  }
+	    download.download = outputName + '.png';
 		  download.click();
 	  });
 
@@ -157,23 +147,43 @@ var cystyle =  [
 	  .attr('type', 'button')
 	  .attr('class', 'butn')
 	  .attr('id','downloadMergeSVG')
-	  .text('Download svg')
+	  .text('.svg')
 	  .on('click', function(){
 	  	outputName = document.getElementById('outputNameMerge').value;
 	  	
 	    var svgContent = merge_graph.svg({scale: 1, full: true});
-		  if(outputName != "File name"){
-		    saveAs(new Blob([svgContent], {type:"image/svg+xml;charset=utf-8"}), outputName +".svg");
-		  }
-		  else{
-		    var filenameSplitLeft = left.split("/")
-		    filenameSplitLeft = filenameSplitLeft[filenameSplitLeft.length-1].split('.')[0];
-		    var filenameSplitRight = right.split("/")
-		    filenameSplitRight = filenameSplitRight[filenameSplitRight.length-1].split('.')[0];
-		    var fileName = path+ '_' + filenameSplitLeft + '_' + filenameSplitRight;
-		    saveAs(new Blob([svgContent], {type:"image/svg+xml;charset=utf-8"}), fileName + '_' + nodeVal + ".svg");
-		  }
+		  saveAs(new Blob([svgContent], {type:"image/svg+xml;charset=utf-8"}), outputName +".svg");
 	  });
+
+    d3.select('#merged_graph_buttons')
+    .append('button')
+    .attr('class', 'butn')
+    .attr('id', 'downloadPDF')
+    .text('.pdf')
+    .on('click', function(){
+      const domElement = document.getElementById('body');
+      var divHeight = window.innerHeight
+      var divWidth = window.innerWidth
+      var ratio = divHeight / divWidth;
+    
+      var doc = new jsPDF("l", "mm", "a4");
+      var width = doc.internal.pageSize.getWidth();
+      var height = (ratio * width);
+
+      html2canvas($("#body").get(0), { onclone: (document) => {
+        document.getElementById('nav').style.visibility = 'hidden'
+        document.getElementById('resetMerge').style.visibility = 'hidden'
+        document.getElementById('description').style.visibility = 'hidden'
+        document.getElementById('nav').style.visibility = 'hidden';
+        document.getElementById('merged_graph_buttons').style.visibility = 'hidden'
+      }}).then(function(canvas){
+      var imgData = canvas.toDataURL('image/png');
+
+      doc.addImage(imgData, 'PNG', 0, 0, width, height); 
+      outputName = document.getElementById('outputNameMerge').value;
+      doc.save(outputName + '.pdf');
+    })
+    })
 
       merge_graph.add(mergedNodes)
       merge_graph.add(mergedEdges)
@@ -339,3 +349,4 @@ function resetLayout(){
 	}).run();
 
 }
+
