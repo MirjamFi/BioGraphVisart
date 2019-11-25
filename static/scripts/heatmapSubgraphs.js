@@ -115,7 +115,7 @@ function createHeatmap(heatmapData){
             },
                 
             title: {
-                text: 'Subgraph Overlap'
+                text: 'Node Overlap'
             },
             xAxis: {
                 categories: xLabels,
@@ -150,7 +150,7 @@ function createHeatmap(heatmapData){
                 }
             },
             series: [{
-                name: 'Subgraph overlap',
+                name: 'Node overlap',
                 borderWidth: 1,
                 data: overlapArrays,  // first:x, second:y, thirsd:value
                 dataLabels: {
