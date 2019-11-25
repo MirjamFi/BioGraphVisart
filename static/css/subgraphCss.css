@@ -118,7 +118,7 @@ input:hover{
 
 #legend {
     position: absolute;
-    top: 300px;
+    top: 280px;
     left: 10px;
     font-size: 11px;
     width: 180px;
@@ -158,25 +158,31 @@ input:hover{
   top: 150px;
   left:86%;
 }
+
+#subgraphs{
+    margin-top: 5px;
+    margin-left: 220px;
+}
+
 #keggpathwaysRight{
     position: absolute;
   top: 120px;
-  left:86%;
+  left:84%;
 }
 #KEGGpathsRight{
     position: absolute;
   top: 150px;
-  left:86%;
+  left:84%;
 }
 #keggpathwaysLeft{
     position: absolute;
   top: 120px;
-  left:86%;
+  left:84%;
 }
 #KEGGpathsLeft{
     position: absolute;
   top: 150px;
-  left:86%;
+  left:84%;
 }
 
 }
@@ -244,7 +250,7 @@ input:hover{
       width: 60%;
       /*height: 75%;*/
       position: absolute;
-      top: 100px;
+      top: 180px;
       left: 280px;
       bottom: 15px;
       background-color:none;
@@ -268,14 +274,9 @@ input:hover{
     float:left;
 }
 
-#subgraphs{
-    margin-top: 5px;
-    margin-left: 220px;
-}
-
 #merged_graph_buttons{
     position: relative;
-    margin: 10px 10px 10px 10px;
+    margin: 20px 10px 10px 10px;
 }
 
 .center-div
@@ -283,16 +284,6 @@ input:hover{
      margin: 0 auto;
      width: 100px; 
 }
-
-#legendGraphsLeft{
-    font-size: 11px;
-    margin-top: 120px;
-}
-#legendGraphsRight{
-    font-size: 11px;
-    margin-top: 10px;
-}
-
 
 /* Style the active class, and buttons on mouse-over */
 .active{

@@ -226,8 +226,8 @@ function getmergedGraph(nodesL, nodesR, edgesL, edgesR){
 var merge_graph;
 
 function merge(){
+	document.getElementById('mergeButton').style.visibility = "visible";
 	// create buttons once
-
 	if(!!document.getElementById("resetMerge")){
 		document.getElementById("resetMerge").remove();
 	}
@@ -240,18 +240,10 @@ function merge(){
 	if(!!document.getElementById("downloadMergeSVG")){
 		document.getElementById("downloadMergeSVG").remove();
 	}
-	if(!document.getElementById("mergeButton")){
-	  	d3.select('#merge')
-		  .append('button')
-		  .attr('class', 'butn')
-		  .attr('type', 'button')
-		  .attr('id','mergeButton')
-		  .text('MERGE')
-		  .on('click', function() {
-			leftID = document.getElementById("leftID").innerHTML;
-			rightID = document.getElementById("rightID").innerHTML;
-			window.open('http://localhost:3000/merge');
-		});	
-	}	
 }
 
+function clickMerge(){
+	leftID = document.getElementById('leftID').innerHTML;
+    rightID = document.getElementById('rightID').innerHTML;
+    window.open('http://localhost:3000/merge');
+}

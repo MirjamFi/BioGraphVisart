@@ -14,6 +14,27 @@ var rightEdges = [];
 visualize a graph from .graphml-file
 */
 function visualize() { 
+  $(window).scroll(function() {
+    if($(window).scrollTop() <= 700){
+      $("#legend_heatmap").css({
+        "top": 760 +"px",
+        "left": ($(window).scrollLeft()) + "px"
+      });
+    }
+    else if($(window).scrollTop() > 710 ){ //&& $(window).scrollTop() < document.body.offsetHeight
+      $("#legend_heatmap").css({
+        "top": 200+($(window).scrollTop()) + "px",
+        "left": ($(window).scrollLeft()) + "px"
+      });
+    }
+    else if (window.scrollY + window.innerHeight == document.body.scrollHeight) {
+        $("#legend_heatmap").css({
+          "top": 500+($(window).scrollTop()) + "px",
+          "left": ($(window).scrollLeft()) + "px"
+      });
+    }
+  });
+
   path = document.getElementById('directory').value;
   nodeVal = document.getElementById('values').value;
 
@@ -48,10 +69,14 @@ function visualize() {
       leftOldMax = leftLayout[1];
       leftFirstTime = leftLayout[2];
       //document.getElementById("merged_graph_legend").setAttribute('style','visibility:hidden');
-      document.getElementById('downloadPartLeft').style.visibility = "visible";
+      document.getElementById('downloadPDF').style.visibility = "visible";
+      document.getElementById('outputName').style.visibility = "visible";
+      document.getElementById('downloadPDF').disabled = false;
       document.getElementById('resetLeft').style.visibility = "visible";
+      document.getElementById('downloadPartLeft').style.visibility = "visible";
       document.getElementById('downloadLeftSVG').disabled = false;
       document.getElementById('downloadLeftPNG').disabled = false;
+      document.getElementById('downloadLeftPDF').disabled = false;
       document.getElementById('keggpathwaysLeft').style.visibility = "visible";
       document.getElementById('KEGGpathsButtonLeft').style.visibility ="visible";
       showMetaInfo(graphLeft);
@@ -92,6 +117,7 @@ function visualize() {
       document.getElementById('resetRight').style.visibility = "visible";
       document.getElementById('downloadRightSVG').disabled = false;
       document.getElementById('downloadRightPNG').disabled = false;
+      document.getElementById('downloadRightPDF').disabled = false;
       document.getElementById('keggpathwaysRight').style.visibility = "visible";
       document.getElementById('KEGGpathsButtonRight').style.visibility ="visible";
       document.getElementById('right').style.visibility = "visibile";
@@ -1069,6 +1095,26 @@ function downloadSVGLeft(){
   }
 }
 
+function downloadPNGRight(){
+
+  var png64 = graphRight.png();
+  $('#downloadPNGRight').attr('href', png64);
+  var download = document.createElement('a');
+  download.href = 'data:image/png;base64;'+png64;
+
+  var outputName = document.getElementById('outputNameRight').value;
+  if(outputName != "File name"){
+    download.download = outputName + '.png';
+  }
+  else{
+    let filenameSplitRight = right.split("/")
+    filenameSplitRight = filenameSplitRight[filenameSplitRight.length-1].split('.')[0];
+     fileName = path+ '_' + filenameSplitRight;
+     download.download = fileName + '_' + nodeVal + '.png';
+  }
+  download.click();
+}
+
 function downloadSVGRight(){
   outputName = document.getElementById('outputNameRight').value;
   var svgContent = graphRight.svg({scale: 1, full: true});
@@ -1084,7 +1130,91 @@ function downloadSVGRight(){
   }
 }
 
+function downloadPDF() {
+    const domElement = document.getElementById('body');
+    var divHeight = window.innerHeight
+    var divWidth = window.innerWidth
+    var ratio = divHeight / divWidth;
+  
+    var doc = new jsPDF("l", "mm", "a4");
+    var width = doc.internal.pageSize.getWidth();
+    var height = (ratio * width);
 
+    html2canvas($("body").get(0), { onclone: (document) => {
+      // if(document.getElementsByTagName('h1') != undefined){
+      //   document.getElementsByTagName('h1').style.visibility = 'hidden';}
+      document.getElementById('description').remove();
+      document.getElementById('heatmapcontainer').remove();
+      document.getElementById('selectAttribute').remove();
+      document.getElementById('mergeButton').remove();
+      document.getElementById('outputName').remove();
+      document.getElementById('downloadPDF').remove();
+      document.getElementById('resetLeft').remove();
+      document.getElementById('downloadPartLeft').remove();
+      document.getElementById('resetRight').remove();
+      document.getElementById('downloadPartRight').remove();
+      document.getElementById('loadDir').remove();
+      document.getElementById("legend_heatmap").style.top = 200 +"px";
+    }}).then(function(canvas){
+    var imgData = canvas.toDataURL('image/png');
+
+    doc.addImage(imgData, 'PNG', 0, 0, width, height); 
+    outputName = document.getElementById('outputName').value;
+    doc.save(outputName + '.pdf');
+  });
+}
+
+function downloadPDFLeft() {
+    const domElement = document.getElementById('left');
+    var divHeight = window.innerHeight
+    var divWidth = window.innerWidth
+    var ratio = divHeight / divWidth;
+  
+    var doc = new jsPDF("l", "mm", "a4");
+    var width = doc.internal.pageSize.getWidth();
+    var height = (ratio * width);
+
+    html2canvas($("#left").get(0), { onclone: (document) => {
+    }}).then(function(canvas){
+    var imgData = canvas.toDataURL('image/png');
+
+    doc.addImage(imgData, 'PNG', 0, 0, width, height); 
+    outputName = document.getElementById('outputNameRight').value;
+    if(outputName != "Download File name"){
+      return outputName + ext;
+    }
+    else{
+      return path.replace(".graphml", "_") + '_' + nodeVal + ext;
+    }
+    doc.save(outputName + '.pdf');
+  });
+}
+
+function downloadPDFRight () {
+    const domElement = document.getElementById('right');
+    var divHeight = window.innerHeight
+    var divWidth = window.innerWidth
+    var ratio = divHeight / divWidth;
+  
+    var doc = new jsPDF("l", "mm", "a4");
+    var width = doc.internal.pageSize.getWidth();
+    var height = (ratio * width);
+
+    html2canvas($("#right").get(0), { onclone: (document) => {
+    }}).then(function(canvas){
+    var imgData = canvas.toDataURL('image/png');
+
+    doc.addImage(imgData, 'PNG', 0, 0, width, height); 
+    outputName = document.getElementById('outputNameRight').value;
+    if(outputName != "Download File name"){
+      return outputName + ext;
+    }
+    else{
+      return path.replace(".graphml", "_") + '_' + nodeVal + ext;
+    }
+    doc.save(outputName + '.pdf');
+  });
+}
 /*
 reset view (zoom, position)
 */

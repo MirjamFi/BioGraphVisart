@@ -11,9 +11,9 @@
         <script src="https://code.highcharts.com/modules/exporting.js"></script>
 
         <script src="http://d3js.org/d3.v3.min.js"></script> 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.debug.js" integrity="sha384-THVO/sM0mFD9h7dfSndI6TS0PgAGavwKvB5hAxRRvc0o9cPLohB0wb/PTA7LdUHs" crossorigin="anonymous"></script>
 
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/qtip2/3.0.3/basic/jquery.qtip.css">
-
         <link rel="stylesheet" type="text/css" href="http://127.0.0.1:3000/static/css/subgraphCss.css">
 
         <script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/cytoscape.js"></script> 
@@ -68,7 +68,7 @@
           });
         }
     </script>
-    <h1>Graph comparison with Heatmap</h1>
+    <h1>Graph comparison</h1>
 
     <p id="description">Generate heatmap for graph overlap for (unique named) .graphml-files. Folder with files has to be in the main folder of this program. 
     </p>
@@ -85,6 +85,9 @@
         <select name="values" id="values" onchange="visualize()" style="visibility: hidden">
             <option value="" selected disabled hidden>Choose node's attribute</option>
         </select>
+        <button class="butn" id="mergeButton" onclick="clickMerge()" style="visibility: hidden">MERGE</button>
+        <input name="outputFile" type="text" maxlength="512" id="outputName" value="File name" style="visibility: hidden"/>
+        <button  class= 'butn' id="downloadPDF" onclick="downloadPDF()" disabled="disabled" id="downloadPDF" style="visibility: hidden">.pdf</button>
     </div>
    <div align="left" id="legend_heatmap" style="visibility: hidden">
     <table >
@@ -2376,7 +2379,6 @@ nPgo8L3N2Zz4K'>
     <div class="clear"></div>
     <p></p>
      <div id="subgraphs">
-         <div id="legendGraphsLeft" class="center-div"></div> 
         <div align="left" id="left">
             <div align="left" id="leftID"></div>
             <div align="left" id="cyLeft"></div>
@@ -2391,11 +2393,11 @@ nPgo8L3N2Zz4K'>
         </div>
         <div id="downloadPartLeft" style="visibility: hidden">
           <input name="outputFileLeft" type="text" maxlength="512" id="outputNameLeft" value="File name"/>
-          <button class= 'butn' id="downloadLeftPNG" onclick="downloadPNGLeft()" disabled="disabled">Download png</button>
-          <button class= 'butn' id="downloadLeftSVG" onclick="downloadSVGLeft()" disabled="disabled">Download svg</button>
+          <button class= 'butn' id="downloadLeftPNG" onclick="downloadPNGLeft()" disabled="disabled">.png</button>
+          <button class= 'butn' id="downloadLeftSVG" onclick="downloadSVGLeft()" disabled="disabled">.svg</button>
+          <button  class= 'butn' id="downloadLeftPDF" onclick="downloadPDFLeft()" disabled="disabled" id="downloadPDF">.pdf</button>
         </div>
         <p></p>
-        <div id="legendGraphsRight" class="center-div"></div> <!-- onload="makeDraggable(evt)" -->
         <div align="left" id="right">
             <div align="left" id="rightID"></div>
             <div align="left" id="cyRight"></div>
@@ -2410,16 +2412,13 @@ nPgo8L3N2Zz4K'>
         </div>
         <div id="downloadPartRight" style="visibility: hidden">
           <input name="outputFileRight" type="text" maxlength="512" id="outputNameRight" value="File name"/>
-          <button class= 'butn' id="downloadRightPNG" onclick="downloadPNGRight()" disabled="disabled">Download png</button>
-          <button class= 'butn' id="downloadRightSVG" onclick="downloadSVGRight()" disabled="disabled">Download svg</button>
+          <button class= 'butn' id="downloadRightPNG" onclick="downloadPNGRight()" disabled="disabled">.png</button>
+          <button class= 'butn' id="downloadRightSVG" onclick="downloadSVGRight()" disabled="disabled">.svg</button>
+          <button  class= 'butn' id="downloadRightPDF" onclick="downloadPDFRight()" disabled="disabled" id="downloadPDF">.pdf</button>
         </div>
         <div class="clear"></div>
     </div>
-
-    <p></p>
-    <div id = "merge"></div>
-
-    </body>
+</body>
 
 
 </html>
