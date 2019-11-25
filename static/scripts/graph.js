@@ -1326,8 +1326,11 @@ function downloadName(ext){
   if(outputName != "Download File name"){
     return outputName + ext;
   }
-  else{
+  else if(path){
     return path.replace(".graphml", "_") + '_' + nodeVal + ext;
+  }
+  else{
+    return "example" + ext;
   }
 }
 

@@ -76,7 +76,6 @@ function visualize() {
       document.getElementById('downloadPartLeft').style.visibility = "visible";
       document.getElementById('downloadLeftSVG').disabled = false;
       document.getElementById('downloadLeftPNG').disabled = false;
-      document.getElementById('downloadLeftPDF').disabled = false;
       document.getElementById('keggpathwaysLeft').style.visibility = "visible";
       document.getElementById('KEGGpathsButtonLeft').style.visibility ="visible";
       showMetaInfo(graphLeft);
@@ -117,7 +116,6 @@ function visualize() {
       document.getElementById('resetRight').style.visibility = "visible";
       document.getElementById('downloadRightSVG').disabled = false;
       document.getElementById('downloadRightPNG').disabled = false;
-      document.getElementById('downloadRightPDF').disabled = false;
       document.getElementById('keggpathwaysRight').style.visibility = "visible";
       document.getElementById('KEGGpathsButtonRight').style.visibility ="visible";
       document.getElementById('right').style.visibility = "visibile";
@@ -1131,6 +1129,7 @@ function downloadSVGRight(){
 }
 
 function downloadPDF() {
+    $(window).scrollTop(0);
     const domElement = document.getElementById('body');
     var divHeight = window.innerHeight
     var divWidth = window.innerWidth
@@ -1141,8 +1140,6 @@ function downloadPDF() {
     var height = (ratio * width);
 
     html2canvas($("body").get(0), { onclone: (document) => {
-      // if(document.getElementsByTagName('h1') != undefined){
-      //   document.getElementsByTagName('h1').style.visibility = 'hidden';}
       document.getElementById('description').remove();
       document.getElementById('heatmapcontainer').remove();
       document.getElementById('selectAttribute').remove();
@@ -1155,63 +1152,12 @@ function downloadPDF() {
       document.getElementById('downloadPartRight').remove();
       document.getElementById('loadDir').remove();
       document.getElementById("legend_heatmap").style.top = 200 +"px";
+      document.getElementById('nav').style.visibility = 'hidden'
     }}).then(function(canvas){
     var imgData = canvas.toDataURL('image/png');
 
     doc.addImage(imgData, 'PNG', 0, 0, width, height); 
     outputName = document.getElementById('outputName').value;
-    doc.save(outputName + '.pdf');
-  });
-}
-
-function downloadPDFLeft() {
-    const domElement = document.getElementById('left');
-    var divHeight = window.innerHeight
-    var divWidth = window.innerWidth
-    var ratio = divHeight / divWidth;
-  
-    var doc = new jsPDF("l", "mm", "a4");
-    var width = doc.internal.pageSize.getWidth();
-    var height = (ratio * width);
-
-    html2canvas($("#left").get(0), { onclone: (document) => {
-    }}).then(function(canvas){
-    var imgData = canvas.toDataURL('image/png');
-
-    doc.addImage(imgData, 'PNG', 0, 0, width, height); 
-    outputName = document.getElementById('outputNameRight').value;
-    if(outputName != "Download File name"){
-      return outputName + ext;
-    }
-    else{
-      return path.replace(".graphml", "_") + '_' + nodeVal + ext;
-    }
-    doc.save(outputName + '.pdf');
-  });
-}
-
-function downloadPDFRight () {
-    const domElement = document.getElementById('right');
-    var divHeight = window.innerHeight
-    var divWidth = window.innerWidth
-    var ratio = divHeight / divWidth;
-  
-    var doc = new jsPDF("l", "mm", "a4");
-    var width = doc.internal.pageSize.getWidth();
-    var height = (ratio * width);
-
-    html2canvas($("#right").get(0), { onclone: (document) => {
-    }}).then(function(canvas){
-    var imgData = canvas.toDataURL('image/png');
-
-    doc.addImage(imgData, 'PNG', 0, 0, width, height); 
-    outputName = document.getElementById('outputNameRight').value;
-    if(outputName != "Download File name"){
-      return outputName + ext;
-    }
-    else{
-      return path.replace(".graphml", "_") + '_' + nodeVal + ext;
-    }
     doc.save(outputName + '.pdf');
   });
 }
