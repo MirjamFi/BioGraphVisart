@@ -950,32 +950,6 @@ function changeLayout(){
   prevLayout = JSON.parse(JSON.stringify(selectedLayout));
 }
 // get pathways of selected gene from kegg using entrez id
-async function getPathwaysFromKEGG(name) {
-    return new Promise(function (resolve, reject) {
-        let xhr = new XMLHttpRequest();
-        xhr.open('GET', "https://www.kegg.jp/entry/hsa:" + name);
-        xhr.onload = function () {
-            if (this.status >= 200 && this.status < 300) {
-                resolve(xhr.response);
-            } else {
-                reject({
-                    status: this.status,
-                    statusText: xhr.statusText
-                });
-            }
-        };
-        xhr.onerror = function () {
-            reject({
-                status: this.status,
-                statusText: xhr.statusText
-            });
-        };
-        xhr.send();
-    });
-}
-/*
-  generate a checkbox menu for the 10 most common pathways of all genes in the graph
-*/
 async function listKEGGPathways(){
   //swap button "Hide"/"show"
   if(document.getElementById('keggpathways').firstChild.data == "Show KEGG Pathways"){

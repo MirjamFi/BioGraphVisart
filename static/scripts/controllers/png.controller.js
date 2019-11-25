@@ -265,6 +265,7 @@ const getPng = async (
   const [nodesMin, nodesMax] = getNodeValueRange(nodes);
   return cytoSnapToPng(nodes, edges, nodesMin, nodesMax, valueAttr);
 };
+};
 
 module.exports = {
   getPng,
