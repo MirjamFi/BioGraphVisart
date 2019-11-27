@@ -26,18 +26,15 @@ a{
 /* Change the color of links on hover */
 .topnav a:hover {
   background-color: #868281;
-  color: black;
-}
-
-/* Add a color to the active/current link */
-.topnav a.active {
-  background-color: #4CAF50;
   color: white;
 }
 
 /* Right-aligned section inside the top navigation */
 .topnav-right {
   float: right;
+}
+.topnav-left {
+  float: left;
 }
 .topnav-centered a {
   float: none;
@@ -47,7 +44,6 @@ a{
   transform: translate(-50%, -50%);
   font-size: 24px;
   font-weight: bold;
-
 }
 
 h1 {
@@ -124,7 +120,8 @@ input:hover{
 
 #legend {
     position: absolute;
-    top: 260px;
+    top: 280px;
+heatmap
     left: 10px;
     font-size: 11px;
     width: 180px;
@@ -139,7 +136,7 @@ input:hover{
     height: 200px;
 }
 
-#KEGGpathsButton{
+.KEGGpathsButton{
   position: absolute;
   top: 300px;
   left:85%;
@@ -148,6 +145,49 @@ input:hover{
   position: absolute;
   top: 320px;
   left:86%;
+}
+#keggpathways{
+    position: absolute;
+  top: 320px;
+  left:86%;
+}
+#keggpathwaysMerge{
+    position: absolute;
+  top: 120px;
+  left:86%;
+}
+#KEGGpathsMerge{
+    position: absolute;
+  top: 150px;
+  left:86%;
+}
+
+#subgraphs{
+    margin-top: 5px;
+    margin-left: 220px;
+}
+
+#keggpathwaysRight{
+    position: absolute;
+  top: 120px;
+  left:84%;
+}
+#KEGGpathsRight{
+    position: absolute;
+  top: 150px;
+  left:84%;
+}
+#keggpathwaysLeft{
+    position: absolute;
+  top: 120px;
+  left:84%;
+}
+#KEGGpathsLeft{
+    position: absolute;
+  top: 150px;
+  left:84%;
+}
+
 }
 .loader {
     border: 16px solid #f3f3f3; /* Light grey */
@@ -164,6 +204,95 @@ input:hover{
     100% { transform: rotate(360deg); }
 } 
 
+#heatmapcontainer {
+    min-width: 300px;
+    max-width: 1000px;
+    height: 400px;
+    margin: 1em auto;
+}
+#downloadPartLeft{
+    margin-top: 20px;
+}
+#left {
+    width: 100%;
+    height: 500px;
+    position: relative;
+    margin: 10px 10px 10px 10px;
+    overflow: hidden;
+}
+
+#right {
+    width: 100%;
+    height: 500px;
+    position: relative;
+    margin: 10px 10px 10px 10px;
+}
+#rightID{
+    font-weight: bold;
+}
+#leftID{
+    font-weight: bold;
+}
+#downloadPartRight{
+    margin-top: 20px;
+}
+ #cyLeft {
+    width: 85%;
+    height: 100%;
+    position: absolute;
+    margin: 0% 5% 5% 0px;
+}
+
+#cyRight {
+    width: 85%;
+    height: 100%;
+    position: absolute;
+    margin: 0% 10% 5% 0%;
+}
+ #merged_graph {
+      width: 60%;
+      /*height: 75%;*/
+      position: absolute;
+      top: 180px;
+      left: 280px;
+      bottom: 15px;
+      background-color:none;
+}
+
+#legend_heatmap {
+    position: absolute;
+    top: 750px;
+    left: 10px;
+    font-size: 11px;
+    bottom: 10px;
+    /*overflow: hidden; */
+}
+#merged_graph_legend {
+    font-size: 11px;
+    margin-top: 10px;
+    /*overflow: hidden; */
+}
+#legendArrows {
+    width: 300px;
+    float:left;
+}
+
+#merged_graph_buttons{
+    position: relative;
+    margin: 20px 10px 10px 10px;
+}
+
+.center-div
+{
+     margin: 0 auto;
+     width: 100px; 
+}
+
+/* Style the active class, and buttons on mouse-over */
+.active{
+  background-color: #868281;
+  color: white;
+}
 
 /** Site footer */
 .site-footer { border-top: 1px solid #e8e8e8; padding: 30px 0; position: absolute; bottom: 0;}

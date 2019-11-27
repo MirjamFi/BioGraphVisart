@@ -18,8 +18,8 @@ function visualize(graphString) {
     var nodesAndEdges = getNodesAndEdges(graphString);
     nodes = nodesAndEdges[0];
     edges = nodesAndEdges[1]; 
-  	nodeValuesNum = nodesAndEdges[2];
-  	attributesTypes = nodesAndEdges[3];
+    nodeValuesNum = nodesAndEdges[2];
+    attributesTypes = nodesAndEdges[3];
 
     nodeValuesNum = transform01toTF(nodeValuesNum);
 
@@ -33,17 +33,17 @@ function visualize(graphString) {
   }
   if(!clicked){
     $('#downloadPDF').removeAttr('disabled');
-	  $('#downloadPNG').removeAttr('disabled');
-	  $('#downloadSVG').removeAttr('disabled');
-	  $('#downloadJSON').removeAttr('disabled');
+    $('#downloadPNG').removeAttr('disabled');
+    $('#downloadSVG').removeAttr('disabled');
+    $('#downloadJSON').removeAttr('disabled');
 
-	  oldMin = nodesMin;
-	  oldMax = nodesMax;
+    oldMin = nodesMin;
+    oldMax = nodesMax;
 
-	  showLegend();
+    showLegend();
 
-	  document.getElementById('downloadPart').style.visibility = "visible";
-	}
+    document.getElementById('downloadPart').style.visibility = "visible";
+  }
   showMetaInfo();
   document.getElementById('selectlayout').setAttribute('style','visibility:visible');
 
@@ -124,8 +124,8 @@ function getNodesAndEdges(graphString){
         curNode.genename = genename;
       }
       if(graphString[i].includes("v_entrez")){
-      	var entrezID = graphString[i].split("\>")[1].split("\<")[0];
-      	curNode.entrezID = entrezID;
+        var entrezID = graphString[i].split("\>")[1].split("\<")[0];
+        curNode.entrezID = entrezID;
       }
       
     }
@@ -347,18 +347,18 @@ function addNodesAndEdges(){
       }},
 
       {selector: 'node[id = "l1"]',
-	      style:{
-	        'color': 'black',
-	        'background-height':50,
-	        'background-width':200,
-	        'background-position-y':'100%',
-	        'shape': 'rectangle',
-	        'width':200,
-	        'height':50,
-	        'border-width':1,
-	        'text-valign' : 'bottom',
-	        'text-max-width': 200
-	    }},
+        style:{
+          'color': 'black',
+          'background-height':50,
+          'background-width':200,
+          'background-position-y':'100%',
+          'shape': 'rectangle',
+          'width':200,
+          'height':50,
+          'border-width':1,
+          'text-valign' : 'bottom',
+          'text-max-width': 200
+      }},
 
       // style edges
       {selector: 'edge',
@@ -401,10 +401,10 @@ function addNodesAndEdges(){
             'target-arrow-shape': 'triangle-cross',
             'line-style':'solid'
         }},
-      	{selector: 'edge[interaction = \'compound\']',
-	        style: {
-	          'target-arrow-shape': 'circle',
-	          'line-style':'solid'
+        {selector: 'edge[interaction = \'compound\']',
+          style: {
+            'target-arrow-shape': 'circle',
+            'line-style':'solid'
         }},
       {selector: 'edge[interaction = \'indirect effect\']',
         style: {
@@ -491,27 +491,27 @@ function addNodesAndEdges(){
   }
   for(var e =0; e < edges.length; e++){
       cy.batch(function(){
-      	if(Array.isArray(edges[e].data.interaction) || edges[e].data.interaction.split(",").length > 1){
-      	    cy.$('edge[id =\''  + edges[e].data.id + '\']').style('target-arrow-shape', 'vee').style('line-style','solid');
-      	}
+        if(Array.isArray(edges[e].data.interaction) || edges[e].data.interaction.split(",").length > 1){
+            cy.$('edge[id =\''  + edges[e].data.id + '\']').style('target-arrow-shape', 'vee').style('line-style','solid');
+        }
       });
     }
-	// on click collapse all other nodes and expand extra nodes for clicked node
-	cy.on('tap', 'node', function(evt){
-		clickedNode = evt.target;
-		if(!collapsed){
-			if(expandGraphs[evt.target.data().symbol]){
-			  collapsed = true;
-			  clickedNodesPosition = cy.$(evt.target).position();
-			  visualize(expandGraphs[evt.target.data().symbol]);
-			}
-		}
-		else if(collapsed){
-		 	collapsed = false;
-		 	visualize(graphString);
-		 }
-		
-	}); // on tap
+  // on click collapse all other nodes and expand extra nodes for clicked node
+  cy.on('tap', 'node', function(evt){
+    clickedNode = evt.target;
+    if(!collapsed){
+      if(expandGraphs[evt.target.data().symbol]){
+        collapsed = true;
+        clickedNodesPosition = cy.$(evt.target).position();
+        visualize(expandGraphs[evt.target.data().symbol]);
+      }
+    }
+    else if(collapsed){
+      collapsed = false;
+      visualize(graphString);
+     }
+    
+  }); // on tap
   cy.nodes().noOverlap({ padding: 5 });
   if(!noOptn){
   // calculate label position for legend and style legend
@@ -702,9 +702,9 @@ function mergeEdges(){
         }
       }
       else if(e.interaction.includes(",")){
-      	cy.edges()[i].data().interaction = e.interaction.split(",");
-      	cy.edges()[i].style('target-arrow-shape', 'vee').style('line-style','solid').update;
-      	i--;
+        cy.edges()[i].data().interaction = e.interaction.split(",");
+        cy.edges()[i].style('target-arrow-shape', 'vee').style('line-style','solid').update;
+        i--;
       }
     }
     showMetaInfo();
@@ -950,120 +950,94 @@ function changeLayout(){
   prevLayout = JSON.parse(JSON.stringify(selectedLayout));
 }
 // get pathways of selected gene from kegg using entrez id
-async function getPathwaysFromKEGG(name) {
-    return new Promise(function (resolve, reject) {
-        let xhr = new XMLHttpRequest();
-        xhr.open('GET', "https://www.kegg.jp/entry/hsa:" + name);
-        xhr.onload = function () {
-            if (this.status >= 200 && this.status < 300) {
-                resolve(xhr.response);
-            } else {
-                reject({
-                    status: this.status,
-                    statusText: xhr.statusText
-                });
-            }
-        };
-        xhr.onerror = function () {
-            reject({
-                status: this.status,
-                statusText: xhr.statusText
-            });
-        };
-        xhr.send();
-    });
-}
-/*
-	generate a checkbox menu for the 10 most common pathways of all genes in the graph
-*/
 async function listKEGGPathways(){
   //swap button "Hide"/"show"
-	if(document.getElementById('keggpathways').firstChild.data == "Show KEGG Pathways"){
-		document.getElementById('keggpathways').firstChild.data  = "Hide KEGG Pathways";
+  if(document.getElementById('keggpathways').firstChild.data == "Show KEGG Pathways"){
+    document.getElementById('keggpathways').firstChild.data  = "Hide KEGG Pathways";
 
-		if(document.getElementById('KEGGpaths').style.visibility == "hidden"){
-			document.getElementById('KEGGpaths').style.visibility="visible";
-		}
-    //get pathways from KEGG, show loader while doing so
-		else{
+    if(document.getElementById('KEGGpaths').style.visibility == "hidden"){
       document.getElementById('KEGGpaths').style.visibility="visible";
-			document.getElementById('loader').style.visibility = "visible";
-			var pathsCount = [];
+    }
+    //get pathways from KEGG, show loader while doing so
+    else{
+      document.getElementById('KEGGpaths').style.visibility="visible";
+      document.getElementById('loader').style.visibility = "visible";
+      var pathsCount = [];
       allPaths = [];
       colorschemePaths = [];
-  		for(var n of nodes){
-  			if(n["data"]["symbol"]!="legend"){
-  				if(n["data"]["entrezID"] != undefined){
+      for(var n of nodes){
+        if(n["data"]["symbol"]!="legend"){
+          if(n["data"]["entrezID"] != undefined){
             var entrezID = n["data"]["entrezID"].toString();
           }
           else if(n["data"]["entrez"] != undefined){
             var entrezID = n["data"]["entrez"].toString();            
           }
-  				let keggpaths = await getPathwaysFromKEGG(entrezID);
-  				keggpaths = keggpaths.split("\n")
-  				var line = 0;
-  				while(line < keggpaths.length){
-  					if(keggpaths[line].includes("<nobr>Pathway</nobr>")){
-  						line++;
-  						var splitarray =keggpaths[line].split("</td>")
-  						for(var i = 1; i < splitarray.length-2; i=i+2){
-  							let hsa = "hsa"+splitarray[i-1].split(">hsa")[1].split("</a>")[0]
-  							let p = splitarray[i].split("<td>")[1]
-  							p = hsa+" "+p;
-  							if(p != undefined){
-  								if(typeof allPaths[p] == 'undefined'){
-  									allPaths[p]=[];
-  								}
-  								allPaths[p].push(entrezID);
-  								if(isNaN(pathsCount[p])){
-  									pathsCount[p]=1; 
-  								}
-  								else{
-  									pathsCount[p]=pathsCount[p]+1;
-  								}
-  							}
-  						}
-  						break;
-  					}	
-  					else{
-  						line++;
-  					}
-  				}
-  			}
-  		}
+          let keggpaths = await getPathwaysFromKEGG(entrezID);
+          keggpaths = keggpaths.split("\n")
+          var line = 0;
+          while(line < keggpaths.length){
+            if(keggpaths[line].includes("<nobr>Pathway</nobr>")){
+              line++;
+              var splitarray =keggpaths[line].split("</td>")
+              for(var i = 1; i < splitarray.length-2; i=i+2){
+                let hsa = "hsa"+splitarray[i-1].split(">hsa")[1].split("</a>")[0]
+                let p = splitarray[i].split("<td>")[1]
+                p = hsa+" "+p;
+                if(p != undefined){
+                  if(typeof allPaths[p] == 'undefined'){
+                    allPaths[p]=[];
+                  }
+                  allPaths[p].push(entrezID);
+                  if(isNaN(pathsCount[p])){
+                    pathsCount[p]=1; 
+                  }
+                  else{
+                    pathsCount[p]=pathsCount[p]+1;
+                  }
+                }
+              }
+              break;
+            } 
+            else{
+              line++;
+            }
+          }
+        }
+      }
           // only get top 5 of pathways (most genes in)
-  		var props = Object.keys(pathsCount).map(function(key) {
-  		  return { key: key, value: this[key] };}, pathsCount);
-  		props = props.sort(function(p1, p2) { return p2.value - p1.value; });
-  		var topFive = props.slice(0, 5);
+      var props = Object.keys(pathsCount).map(function(key) {
+        return { key: key, value: this[key] };}, pathsCount);
+      props = props.sort(function(p1, p2) { return p2.value - p1.value; });
+      var topFive = props.slice(0, 5);
 
           //show table of pathways
-  		var tbody = document.getElementById("KEGGpaths");
-  		var htmlString ="<form> <h3>KEGG Pathways:</h3><br>";
-  		var colors = ["#66c2a5","#fc8d62","#8da0cb","#e78ac3","#a6d854"]
+      var tbody = document.getElementById("KEGGpaths");
+      var htmlString ="<form> <h3>KEGG Pathways:</h3><br>";
+      var colors = ["#66c2a5","#fc8d62","#8da0cb","#e78ac3","#a6d854"]
 
-  		for (var i = 0; i < topFive.length; i++) {
-  			colorschemePaths[topFive[i].key] = colors[i];
-  			var tr = "<b style='color:"+colors[i]+"'><label><input type='checkbox' value='"+topFive[i].key+"' onclick='highlightKEGGpaths()''>";
-  		    tr += topFive[i].key + " </label><br><br>";
-  		    htmlString += tr;
-  		}
-  		htmlString +="</form>"
-  		tbody.innerHTML = htmlString;
-  		document.getElementById('loader').style.visibility = "hidden";
-		}
-	}
+      for (var i = 0; i < topFive.length; i++) {
+        colorschemePaths[topFive[i].key] = colors[i];
+        var tr = "<b style='color:"+colors[i]+"'><label><input type='checkbox' value='"+topFive[i].key+"' onclick='highlightKEGGpaths()''>";
+          tr += topFive[i].key + " </label><br><br>";
+          htmlString += tr;
+      }
+      htmlString +="</form>"
+      tbody.innerHTML = htmlString;
+      document.getElementById('loader').style.visibility = "hidden";
+    }
+  }
   //Hide table, switch button to show
-	else {
-		document.getElementById('keggpathways').firstChild.data  = "Show KEGG Pathways";
-		document.getElementById('KEGGpaths').style.visibility = "hidden";
-		document.getElementById('loader').style.visibility = "hidden";
-		$('input:checkbox').prop('checked', false);
+  else {
+    document.getElementById('keggpathways').firstChild.data  = "Show KEGG Pathways";
+    document.getElementById('KEGGpaths').style.visibility = "hidden";
+    document.getElementById('loader').style.visibility = "hidden";
+    $('input:checkbox').prop('checked', false);
     layer.resetTransform(ctx);
     ctx.clearRect(0,0,canvas.width, canvas.height);          
     layer.setTransform(ctx);
     ctx.save();
-	}
+  }
 }
 
 //calculate distance between two nodes
@@ -1326,8 +1300,11 @@ function downloadName(ext){
   if(outputName != "Download File name"){
     return outputName + ext;
   }
-  else{
+  else if(path){
     return path.replace(".graphml", "_") + '_' + nodeVal + ext;
+  }
+  else{
+    return "example" + ext;
   }
 }
 
@@ -1375,7 +1352,7 @@ function downloadPDF () {
     var height = (ratio * width);
 
     html2canvas($("#everything").get(0), { onclone: (document) => {
-    	document.getElementById('nav').style.visibility = 'hidden'
+      document.getElementById('nav').style.visibility = 'hidden'
       document.getElementById('downloadPart').style.visibility = 'hidden' 
       document.getElementById('resetLayout').style.visibility = 'hidden'
       document.getElementById('description').style.visibility = 'hidden'
@@ -1398,18 +1375,18 @@ function highlightSearchedGene(){
   var gene = document.getElementById('searchgene').value;
   if(gene == ""){
     cy.$('node').style("border-width", 2); 
-    cy.$('node[id = "l1"').style("border-width", 1);  
+    cy.$('node[id = "l1"]').style("border-width", 1);  
     document.getElementById('searchgene').value = "Search gene"
   }
   else if(cy.$('node[symbol=\''  + gene + '\']').length>0){
     cy.$('node').style("border-width", 2);
     cy.$('node[symbol =\''  + gene + '\']').style("border-width", 10);
-    cy.$('node[id = "l1"').style("border-width", 1);
+    cy.$('node[id = "l1"]').style("border-width", 1);
   }
   else if(cy.$('node[name =\''  + gene + '\']').length>0){
     cy.$('node').style("border-width", 2);
     cy.$('node[name =\''  + gene + '\']').style("border-width", 10);
-    cy.$('node[id = "l1"').style("border-width", 1);
+    cy.$('node[id = "l1"]').style("border-width", 1);
   }
   else{
     document.getElementById('searchgene').value = gene+" not found"
