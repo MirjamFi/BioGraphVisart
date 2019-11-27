@@ -61,7 +61,6 @@ function fromDir(startPath, filter){
     return foundFiles
 }
 
-
 app.listen(3000);
 
 

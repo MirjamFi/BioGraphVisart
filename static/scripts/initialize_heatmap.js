@@ -30,6 +30,18 @@ var highlightedNode = {
       merge_graph.style().selector('node[symbol="'+this.symbol+'"]').style('border-width', 15).style('height', 80).style('width', 80).update();
   }
 };
+
+var graphsList = [];
+
+function getAllIndexes(arr, val) {
+
+    var indexes = [];
+    for(var i = 0; i < arr.length; i++)
+        if (arr[i].includes(val))
+            indexes.push(arr[i]);
+    return indexes;
+}
+
 /* load files from directory */
 function loadDir(){
   // document.getElementById("loadDir").disabled = true;
@@ -47,76 +59,58 @@ function loadDir(){
   document.getElementById("rightID").innerHTML = "";
 
   cleanSelections();
-  $.get('/foundFilesInDirectory', $("#directory")).then(function (files) {
-    if(files.length == 0){
-      alert('Folder does not exist.');
-      document.getElementById("loader").style.visibility = "hidden";
-    }
-    let foundFiles = files;
+  // $.get('/foundFilesInDirectory', $("#directory")).then(function (files) {
+  //   if(files.length == 0){
+  //     alert('Folder does not exist.');
+  //     document.getElementById("loader").style.visibility = "hidden";
+  //   }
+    let foundFiles = document.getElementById('fileName').files;
 
     counterlimit = foundFiles.length;
-    let data = {};
+    var data = {};
     let node_ids = [];
     let node_attributes = {};
     let j = 0;
-    foundFiles.forEach(function(file){
-      file = "http://127.0.0.1:3000/static/scripts/"+file.replace(/\\/g,'/')
-      data[file]=[];
-
-      let k = 0;
-      $.get(file).then(function(graphml) {
-        // get attribute information
-        let keyList = $(graphml).find('key')
-        keyList.each(function(){ // get keys
-          var $key = $(this);
-          var id = $key.attr("id");
-          var name = $key.attr("attr.name");
-          var type = $key.attr("attr.type");
-          if ($key.attr("for") == "node"){ 
-            node_attributes[id] = {type: type, name: name};
-          }
-          k++;
-          if(k == keyList.length){
-            let n = 0;
-            let nodeList = $(graphml).find('node')
-            nodeList.each(function() { //get nodes
-              let $node = $(this);
-              let ndata = {};
-              node_ids.push($node.attr("id"));
-              let datalist = $node.find('data');
-
-              let d = 0;
-              datalist.each(function() {  //get symbols
-                let $data = $(this);
-                let attr = node_attributes[$data.attr("key")];
-                if(attr.name == 'symbol'){
-                  data[file].push($data.text().toString());
-                };
-                if(j == counterlimit-1 && n == nodeList.length-1 &&  d == datalist.length-1){ 
+    var count = 0;
+    var regExp = /\>(.*)\</;
+    Array.from(foundFiles).forEach(function(file){
+      // read file
+      var path = file.name;
+      var reader = new FileReader();
+      reader.onloadend = function(evt) {
+      if (evt.target.readyState == FileReader.DONE) { // DONE == 2
+        var arrayBuffer = evt.target.result;
+        graphsList[path] = arrayBuffer.split("\n");
+        count = count+ 1;
+        if(count == foundFiles.length){
+          for(g in graphsList){
+            var graphml = graphsList[g];
+            j ++;
+            let keyList = getAllIndexes(graphml,'symbol')
+            keyList.forEach(function(key){ // get keys
+              if(key.includes('data')){
+                var symbol = regExp.exec(key)[1];
+                if(data[g] == undefined){
+                  data[g] = []
+                }
+                data[g].push(symbol);
+                if(j == Object.keys(graphsList).length){ 
                     var overlapDict = calculateOverlap(data);
                     createHeatmap(overlapDict);
                     document.getElementById("loader").style.display="none";
-                    // element.parentNode.removeChild(element);
                     document.getElementById('selectAttribute').style.visibility = "visible";
                 };
-                d++;
-                if(d == datalist.length){
-                  n++;
-                  if(n == nodeList.length){
-                    j++;
-                  }
-                };
-              });
+              };
             });
           };
-        });
-      });
-    });
-  });
+        }
+      };
+    };
+    reader.readAsText(file);
+  })
   document.getElementById("keggpathwaysLeft").addEventListener('click', function(){listKEGGPathways('Left', leftNodes);});
   document.getElementById("keggpathwaysRight").addEventListener('click', function(){listKEGGPathways('Right', rightNodes);});
-
-}
+};
 
 /* 
 calculate overlap between loaded graohs
@@ -155,27 +149,21 @@ function loadGraphml(sampleLeft, sampleRight) {
   samples = [sampleLeft, sampleRight];
   var drpValues=[];
   samples.forEach(function (sample){
+    var graphString;
     if(!!sample){
-      let filenameSplit = sample.split("/")
-      let patient = filenameSplit[filenameSplit.length-1].split('.')[0]   //name of graph
-
-      let path_sample = "../../"+sample;    //get file
-      var xmlhttp = new XMLHttpRequest();
-      xmlhttp.open("GET", path_sample, false);
-      xmlhttp.send();
-      if (xmlhttp.status==200) {
-        graphString = xmlhttp.responseText.split("\n");
         if(sample == sampleLeft){
-          graphStringLeft = graphString;
-          path_left = path_sample;
+          path_left = sample.split("/")[1];
+          graphString = graphsList[path_left];
+          graphStringLeft = graphsList[path_left];
         }
         else if(sample == sampleRight){
-          graphStringRight = graphString;
-          path_right=path_sample;
+          path_right=sample.split("/")[1];
+          graphString = graphsList[path_right];
+          graphStringRight = graphsList[path_right];
         }
-
       // put node atttributes into dropdown select object
         for (var i = 0; i <= graphString.length - 1; i++) {
+          console.log(graphString[i])
           if(graphString[i].includes("for=\"node\"") && 
             (graphString[i].includes("attr.type=\"double\"") || 
               (graphString[i].includes("attr.type=\"boolean\"")))){
@@ -186,8 +174,7 @@ function loadGraphml(sampleLeft, sampleRight) {
             break;
           };
         };
-      };
-    }
+      }
     else{
 
       return;

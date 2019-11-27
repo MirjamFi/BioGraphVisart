@@ -28,7 +28,7 @@
 
         <script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/jquery.csv.js"></script> 
 
-        <script data-main="http://127.0.0.1:3000/static/scripts/initialize_heatmap" src="http://127.0.0.1:3000/static/node_modules/requirejs/require.js"></script>
+        <script data-main="http://127.0.0.1:3000/static/scripts/initialize_heatmap" src="http://127.0.0.1:3000/static/scripts/node_modules/requirejs/require.js"></script>
         <script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/initialize_heatmap.js"></script>
         <script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/legend.js"></script>
 
@@ -73,8 +73,8 @@
     <p id="description">Generate heatmap for graph overlap for (unique named) .graphml-files. Folder with files has to be in the main folder of this program. 
     </p>
     <div id="dataPart">
-        <input type="text" name="directory" id="directory" size = "30" value="Folder of graphmls to compare" onfocus="this.value=''">
-        <button class="butn" type="submit" onclick="loadDir()" id="loadDir">Submit</button>
+        <input type="file" accept=".graphml" id="fileName" name="file" multiple/>
+        <button class= 'butn' onclick="loadDir()" id="loadGraphml" >Load files</button>
 
     <div class="loader" id="loader" style="display: none;"></div>
     </div>
