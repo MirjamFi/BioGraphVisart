@@ -92,8 +92,8 @@ function createHeatmap(heatmapData){
                 series: {
                     events: {
                         click: function (event) {
-                            left = document.getElementById('directory').value+'/'+leftSelect+'.graphml';
-                            right=document.getElementById('directory').value+'/'+rightSelect+'.graphml';
+                            left = leftSelect+'.graphml';
+                            right=rightSelect+'.graphml';
                             document.getElementById("leftID").innerHTML = "";
                             document.getElementById("rightID").innerHTML = "";
                             document.getElementById('values').setAttribute('style','visibility:visible');

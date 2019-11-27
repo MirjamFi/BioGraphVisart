@@ -152,18 +152,18 @@ function loadGraphml(sampleLeft, sampleRight) {
     var graphString;
     if(!!sample){
         if(sample == sampleLeft){
-          path_left = sample.split("/")[1];
+          path_left = sample;
           graphString = graphsList[path_left];
           graphStringLeft = graphsList[path_left];
         }
         else if(sample == sampleRight){
-          path_right=sample.split("/")[1];
+          path_right=sample;
           graphString = graphsList[path_right];
           graphStringRight = graphsList[path_right];
         }
+
       // put node atttributes into dropdown select object
         for (var i = 0; i <= graphString.length - 1; i++) {
-          console.log(graphString[i])
           if(graphString[i].includes("for=\"node\"") && 
             (graphString[i].includes("attr.type=\"double\"") || 
               (graphString[i].includes("attr.type=\"boolean\"")))){

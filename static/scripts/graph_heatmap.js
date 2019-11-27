@@ -35,7 +35,6 @@ function visualize() {
     }
   });
 
-  path = document.getElementById('directory').value;
   nodeVal = document.getElementById('values').value;
 
   if(!!right){
@@ -1150,7 +1149,7 @@ function downloadPDF() {
       document.getElementById('downloadPartLeft').remove();
       document.getElementById('resetRight').remove();
       document.getElementById('downloadPartRight').remove();
-      document.getElementById('loadDir').remove();
+      document.getElementById('dataPart').remove();
       document.getElementById("legend_heatmap").style.top = 200 +"px";
       document.getElementById('nav').style.visibility = 'hidden'
     }}).then(function(canvas){
