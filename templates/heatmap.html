@@ -88,8 +88,11 @@
         <select name="values" id="values" onchange="visualize()" style="visibility: hidden">
             <option value="" selected disabled hidden>Choose node's attribute</option>
         </select>
+        <input type="text" name="searchgene" id="searchgene" width="30" style="visibility: hidden" value="Search gene">
+        <button class="butn" id="searchbutton" onclick="highlightSearchedGene()" style="visibility: hidden">Search</button>
+
         <button class="butn" id="mergeButton" onclick="clickMerge()" style="visibility: hidden">MERGE</button>
-        <input name="outputFile" type="text" maxlength="512" id="outputName" value="File name" style="visibility: hidden"/>
+        <input name="outputFile" type="text" maxlength="512" id="outputNameHeatmap" value="File name" style="visibility: hidden"/>
         <button  class= 'butn' id="downloadPDF" onclick="downloadPDF()" disabled="disabled" id="downloadPDF" style="visibility: hidden">.pdf</button>
     </div>
    <div align="left" id="legend_heatmap" style="visibility: hidden">

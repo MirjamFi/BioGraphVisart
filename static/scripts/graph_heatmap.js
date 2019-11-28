@@ -68,7 +68,7 @@ function visualize() {
       leftFirstTime = leftLayout[2];
       //document.getElementById("merged_graph_legend").setAttribute('style','visibility:hidden');
       document.getElementById('downloadPDF').style.visibility = "visible";
-      document.getElementById('outputName').style.visibility = "visible";
+      document.getElementById('outputNameHeatmap').style.visibility = "visible";
       document.getElementById('downloadPDF').disabled = false;
       document.getElementById('resetLeft').style.visibility = "visible";
       document.getElementById('downloadPartLeft').style.visibility = "visible";
@@ -1131,6 +1131,40 @@ function changeLayout(cy, pos, prevLayout){
   }
 }
 
+
+function highlightSearchedGene(){
+  var gene = document.getElementById('searchgene').value;
+  if(gene == ""){
+    graphLeft.$('node').style("border-width", 2); 
+    graphLeft.$('node[id = "l1"]').style("border-width", 1);  
+    graphRight.$('node').style("border-width", 2); 
+    graphRight.$('node[id = "l1"]').style("border-width", 1);  
+    document.getElementById('searchgene').value = "Search gene"
+  }
+  else if(graphLeft.$('node[symbol=\''  + gene + '\']').length>0 || graphRight.$('node[symbol=\''  + gene + '\']').length>0){
+    graphLeft.$('node').style("border-width", 2);
+    graphLeft.$('node[symbol =\''  + gene + '\']').style("border-width", 10);
+    graphLeft.$('node[id = "l1"]').style("border-width", 1);
+    graphRight.$('node').style("border-width", 2);
+    graphRight.$('node[symbol =\''  + gene + '\']').style("border-width", 10);
+    graphRight.$('node[id = "l1"]').style("border-width", 1);
+
+  }
+  else if(graphLeft.$('node[name =\''  + gene + '\']').length>0 || graphRight.$('node[name =\''  + gene + '\']').length>0){
+    graphRight.$('node').style("border-width", 2);
+    graphRight.$('node[name =\''  + gene + '\']').style("border-width", 10);
+    graphRight.$('node[id = "l1"]').style("border-width", 1);
+    graphRight.$('node').style("border-width", 2);
+    graphRight.$('node[name =\''  + gene + '\']').style("border-width", 10);
+    graphRight.$('node[id = "l1"]').style("border-width", 1);
+
+  }
+  else{
+    document.getElementById('searchgene').value = gene+" not found"
+  }
+}
+
+
 /* 
   download png of graph
 */
@@ -1230,7 +1264,7 @@ function downloadPDF() {
       document.getElementById('heatmapcontainer').remove();
       document.getElementById('selectAttribute').remove();
       document.getElementById('mergeButton').remove();
-      document.getElementById('outputName').remove();
+      document.getElementById('outputNameHeatmap').remove();
       document.getElementById('downloadPDF').remove();
       document.getElementById('resetLeft').remove();
       document.getElementById('downloadPartLeft').remove();
@@ -1243,7 +1277,7 @@ function downloadPDF() {
     var imgData = canvas.toDataURL('image/png');
 
     doc.addImage(imgData, 'PNG', 0, 0, width, height); 
-    outputName = document.getElementById('outputName').value;
+    outputName = document.getElementById('outputNameHeatmap').value;
     doc.save(outputName + '.pdf');
   });
 }
