@@ -280,9 +280,8 @@ var cystyle =  [
     mapValuestoNodeColor(merge_graph, 'g2', '2', mergeMin, mergeMax, symbolsRight);
 
     // on mpuse-over show value of selected attribute
-
-   	let filenameSplitLeft = window.opener.left.split("/")
-	filenameSplitLeft = filenameSplitLeft[filenameSplitLeft.length-1].split('.')[0];
+   let filenameSplitLeft = window.opener.left.split("/")
+	 filenameSplitLeft = filenameSplitLeft[filenameSplitLeft.length-1].split('.')[0];
 
     let filenameSplitRight = window.opener.right.split("/")
     filenameSplitRight = filenameSplitRight[filenameSplitRight.length-1].split('.')[0];

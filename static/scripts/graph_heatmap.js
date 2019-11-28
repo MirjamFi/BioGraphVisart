@@ -36,7 +36,6 @@ function visualize() {
   });
 
   nodeVal = document.getElementById('values').value;
-
   if(!!right){
     var cys = ['cyLeft', 'cyRight'];
   }
@@ -75,8 +74,9 @@ function visualize() {
       document.getElementById('downloadPartLeft').style.visibility = "visible";
       document.getElementById('downloadLeftSVG').disabled = false;
       document.getElementById('downloadLeftPNG').disabled = false;
-      document.getElementById('keggpathwaysLeft').style.visibility = "visible";
       document.getElementById('KEGGpathsButtonLeft').style.visibility ="visible";
+      document.getElementById('keggpathwaysLeft').style.visibility = "visible";
+      document.getElementById("keggpathwaysLeft").addEventListener('click', function(){listKEGGPathways('Left', leftNodes);});
       showMetaInfo(graphLeft);
       // set background layer to hoghlight pathways
       layerLeft = graphLeft.cyCanvas({
@@ -85,11 +85,15 @@ function visualize() {
       canvasLeft = layerLeft.getCanvas();
       ctxLeft = canvasLeft.getContext('2d');
       var bLeft = $.extend( [], document.getElementById('keggpathwaysLeft').firstChild.data ).join("");
+
       if(bLeft == "Hide KEGG Pathways" && allPathsLeft){
         highlightKEGGpaths(ctxLeft, canvasLeft, graphLeft, layerLeft, "Left", allPathsLeft, colorschemePathsLeft);
       }
       else if(bLeft == "Show KEGG Pathways" && allPathsLeft){
         document.getElementById('KEGGpathsLeft').style.visibility ="hidden";
+      }
+      else if(bLeft == "Show KEGG Pathways"){
+        document.getElementById('KEGGpathsLeft').style.visibility = "visible";
       }
     }
     else if(cyO = 'cyRight'){
@@ -119,6 +123,7 @@ function visualize() {
       document.getElementById('KEGGpathsButtonRight').style.visibility ="visible";
       document.getElementById('right').style.visibility = "visibile";
       document.getElementById('rightID').style.visibility = "visible";
+      document.getElementById("keggpathwaysRight").addEventListener('click', function(){listKEGGPathways('Right', rightNodes);});
       showMetaInfo(graphRight);
       // set background layer to hoghlight pathways
       layerRight = graphRight.cyCanvas({
@@ -132,6 +137,9 @@ function visualize() {
       }
       else if(bRight == "Show KEGG Pathways" && allPathsRight){
         document.getElementById('KEGGpathsRight').style.visibility ="hidden";
+      }
+      else if(bRight == "Show KEGG Pathways"){
+        document.getElementById('KEGGpathsRight').style.visibility ="visible";
       }
     }
   });
@@ -578,7 +586,7 @@ function changeNodeShapes(cyObject, graphString){
 /*
   generate a checkbox menu for the 10 most common pathways of all genes in the graph
 */
-function listKEGGPathways(pos, nodesList){
+async function listKEGGPathways(pos, nodesList){
   //swap button "Hide"/"show"
   if(document.getElementById('keggpathways'+pos).firstChild.data == "Show KEGG Pathways"){
     document.getElementById('keggpathways'+pos).firstChild.data  = "Hide KEGG Pathways";
@@ -589,105 +597,104 @@ function listKEGGPathways(pos, nodesList){
     else{
       document.getElementById('KEGGpaths'+pos).style.visibility="visible";
       document.getElementById('loader'+pos).style.visibility = "visible";
-      setTimeout(function(){
-        var pathsCount = [];
-        var allPaths = {};
-        for(var n in nodesList){
-          if(nodesList[n]["data"] && nodesList[n]["data"]["symbol"]!="legend" && nodesList[n]["data"]["symbol"]!=leftID
-            && nodesList[n]["data"]["symbol"]!=rightID){
-            if(nodesList[n]["data"]["entrezID"]){
-              var entrezID = nodesList[n]["data"]["entrezID"].toString();
-            }
-            else if(nodesList[n]["data"]["entrez"]){
-              var entrezID = nodesList[n]["data"]["entrez"].toString();
-            }
-            var keggpaths = getPathwaysFromKEGG(entrezID).split('\n');
-            var i = 0;
-            var searchPattern = new RegExp(/^\s* hsa/);
-
-            while(i <= keggpaths.length - 1){
-              if(keggpaths[i].startsWith("PATHWAY")){
-                let p = keggpaths[i].split("PATHWAY")[1].trim()
-                if(typeof allPaths[p] == 'undefined'){
-                  allPaths[p]=[];
-                }
-                allPaths[p].push(entrezID);
-                if(isNaN(pathsCount[p])){
-                  pathsCount[p]=1; 
-                }
-                else{
-                  pathsCount[p]=pathsCount[p]+1;
-                }
-              }
-              else if(searchPattern.test(keggpaths[i])){
-                let p = keggpaths[i].trim();
-                if(typeof allPaths[p] == 'undefined'){
-                  allPaths[p]=[];
-                }
-                allPaths[p].push(entrezID);
-                if(isNaN(pathsCount[p])){
-                  pathsCount[p]=1; 
-                }
-                else{
-                  pathsCount[p]=pathsCount[p]+1;
-                }
-              }
-              else if(keggpaths[i].startsWith("MODULE")){
-                break;
-              }
-              i++;
-              }
+      var pathsCount = [];
+      var allPaths = {};
+      for(var n in nodesList){
+        if(nodesList[n]["data"] && nodesList[n]["data"]["symbol"]!="legend" && nodesList[n]["data"]["symbol"]!=leftID
+          && nodesList[n]["data"]["symbol"]!=rightID){
+          if(nodesList[n]["data"]["entrezID"]){
+            var entrezID = nodesList[n]["data"]["entrezID"].toString();
           }
+          else if(nodesList[n]["data"]["entrez"]){
+            var entrezID = nodesList[n]["data"]["entrez"].toString();
+          }
+          var keggpaths = await getPathwaysFromKEGG(entrezID);
+          keggpaths = keggpaths.split("\n");
+          var i = 0;
+          var searchPattern = new RegExp(/^\s* hsa/);
+
+          while(i <= keggpaths.length - 1){
+            if(keggpaths[i].startsWith("PATHWAY")){
+              let p = keggpaths[i].split("PATHWAY")[1].trim()
+              if(typeof allPaths[p] == 'undefined'){
+                allPaths[p]=[];
+              }
+              allPaths[p].push(entrezID);
+              if(isNaN(pathsCount[p])){
+                pathsCount[p]=1; 
+              }
+              else{
+                pathsCount[p]=pathsCount[p]+1;
+              }
+            }
+            else if(searchPattern.test(keggpaths[i])){
+              let p = keggpaths[i].trim();
+              if(typeof allPaths[p] == 'undefined'){
+                allPaths[p]=[];
+              }
+              allPaths[p].push(entrezID);
+              if(isNaN(pathsCount[p])){
+                pathsCount[p]=1; 
+              }
+              else{
+                pathsCount[p]=pathsCount[p]+1;
+              }
+            }
+            else if(keggpaths[i].startsWith("MODULE")){
+              break;
+            }
+            i++;
+            }
         }
+      }
+      if(pos == "Left"){
+        allPathsLeft = Object.assign({},allPaths);
+      }
+      else if(pos == "Right"){
+        allPathsRight = Object.assign({},allPaths);          
+      }
+      else if(pos == "Merge"){
+        allPathsMerge = Object.assign({}, allPaths);
+      }
+      // only get top 5 of pathways (most genes in)
+      var props = Object.keys(pathsCount).map(function(key) {
+        return { key: key, value: this[key] };}, pathsCount);
+      props = props.sort(function(p1, p2) { return p2.value - p1.value; });
+      var topFive = props.slice(0, 5);
+      //show table of pathways
+      var tbody = document.getElementById("KEGGpaths"+pos);
+      var htmlString ="<form id='form"+pos+"'> <h3>KEGG Pathways:</h3><br>";
+      var colors = ["#66c2a5","#fc8d62","#8da0cb","#e78ac3","#a6d854"]
+      for (var i = 0; i < topFive.length; i++) {
         if(pos == "Left"){
-          allPathsLeft = Object.assign({},allPaths);
+          colorschemePathsLeft[topFive[i].key] = colors[i];
+        }
+        if(pos == "Right"){
+          colorschemePathsRight[topFive[i].key] = colors[i];
+        }
+        if(pos == "Merge"){
+          colorschemePathsMerge[topFive[i].key] = colors[i];
+        }
+        var tr = "<b id = 'highlight"+pos+i+"' style='color:"+colors[i]+"'><label><input type='checkbox' value='"+topFive[i].key+"'>";
+        tr += topFive[i].key + " </label></b><br><br>";
+        htmlString += tr;
+      }
+      htmlString +="</form>"
+      tbody.innerHTML = htmlString;
+      document.getElementById('keggpathways'+pos).firstChild.data = "Hide KEGG Pathways";
+      document.getElementById('KEGGpaths'+pos).style.visibility = "visible";
+      document.getElementById('loader'+pos).style.visibility = "hidden";
+      for(var i = 0; i < topFive.length; i++){
+        if(pos == 'Left'){
+          document.getElementById('highlight'+pos+i).addEventListener('click', function(){highlightKEGGpaths(ctxLeft, canvasLeft, graphLeft, layerLeft, pos, allPathsLeft, colorschemePathsLeft);});
         }
         else if(pos == "Right"){
-          allPathsRight = Object.assign({},allPaths);          
+          document.getElementById('highlight'+pos+i).addEventListener('click', function(){highlightKEGGpaths(ctxRight, canvasRight, graphRight,layerRight, pos, allPathsRight, colorschemePathsRight);});
         }
         else if(pos == "Merge"){
-          allPathsMerge = Object.assign({}, allPaths);
+          document.getElementById('highlight'+pos+i).addEventListener('click', function(){highlightKEGGpaths(ctxMerge, canvasMerge, merge_graph,layerMerge, pos, allPathsMerge, colorschemePathsMerge);});
         }
-        // only get top 5 of pathways (most genes in)
-        var props = Object.keys(pathsCount).map(function(key) {
-          return { key: key, value: this[key] };}, pathsCount);
-        props = props.sort(function(p1, p2) { return p2.value - p1.value; });
-        var topFive = props.slice(0, 5);
-        //show table of pathways
-        var tbody = document.getElementById("KEGGpaths"+pos);
-        var htmlString ="<form id='form"+pos+"'> <h3>KEGG Pathways:</h3><br>";
-        var colors = ["#66c2a5","#fc8d62","#8da0cb","#e78ac3","#a6d854"]
-        for (var i = 0; i < topFive.length; i++) {
-          if(pos == "Left"){
-            colorschemePathsLeft[topFive[i].key] = colors[i];
-          }
-          if(pos == "Right"){
-            colorschemePathsRight[topFive[i].key] = colors[i];
-          }
-          if(pos == "Merge"){
-            colorschemePathsMerge[topFive[i].key] = colors[i];
-          }
-          var tr = "<b id = 'highlight"+pos+i+"' style='color:"+colors[i]+"'><label><input type='checkbox' value='"+topFive[i].key+"'>";
-          tr += topFive[i].key + " </label></b><br><br>";
-          htmlString += tr;
-        }
-        htmlString +="</form>"
-        tbody.innerHTML = htmlString;
-        document.getElementById('keggpathways'+pos).firstChild.data = "Hide KEGG Pathways";
-        document.getElementById('KEGGpaths'+pos).style.visibility = "visible";
-        document.getElementById('loader'+pos).style.visibility = "hidden";
-        for(var i = 0; i < 5; i++){
-          if(pos == 'Left'){
-            document.getElementById('highlight'+pos+i).addEventListener('click', function(){highlightKEGGpaths(ctxLeft, canvasLeft, graphLeft, layerLeft, pos, allPathsLeft, colorschemePathsLeft);});
-          }
-          else if(pos == "Right"){
-            document.getElementById('highlight'+pos+i).addEventListener('click', function(){highlightKEGGpaths(ctxRight, canvasRight, graphRight,layerRight, pos, allPathsRight, colorschemePathsRight);});
-          }
-          else if(pos == "Merge"){
-            document.getElementById('highlight'+pos+i).addEventListener('click', function(){highlightKEGGpaths(ctxMerge, canvasMerge, merge_graph,layerMerge, pos, allPathsMerge, colorschemePathsMerge);});
-          }
-        }
-        },10);
+      }
     }
   }
   //Hide table, switch button to show
@@ -719,7 +726,7 @@ function listKEGGPathways(pos, nodesList){
 }
 
 // get pathways of selected gene from kegg using entrez id
-function getPathwaysFromKEGG(name){ 
+async function getPathwaysFromKEGG(name){ 
   var responsetxt;
   var xhr = new XMLHttpRequest();
   xhr.open('GET', "http://rest.kegg.jp/get/hsa:" + name, false);
