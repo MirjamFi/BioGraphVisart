@@ -282,6 +282,11 @@ heatmap
     margin: 20px 10px 10px 10px;
 }
 
+#selectlayoutMerged{
+    position: relative;
+    margin-left: 50px;
+}
+
 .center-div
 {
      margin: 0 auto;

@@ -185,6 +185,43 @@ var cystyle =  [
     })
     })
 
+      // layout dropdown
+    var drpLayout = document.createElement("select");
+    drpLayout.id = "selectlayoutMerged";
+    drpLayout.name = "selectlayout";
+    document.getElementById("merged_graph_buttons").appendChild(drpLayout);
+    drpLayout.style.visibility = "visible";
+    drpLayout.onchange = changeLayoutMerged;
+
+    var seleLayout = document.createElement("OPTION");
+    seleLayout.text = "Select Layout";
+    drpLayout.add(seleLayout);
+
+    const layoutArray = ["dagre (default)", "klay", "breadthfirst", "cose-bilkent", "grid"];
+
+    layoutArray.forEach(function(s){
+      var graphLayout = s;
+      var optnLayout = document.createElement("OPTION");
+      optnLayout.text=graphLayout;
+      optnLayout.value=graphLayout;
+      drpLayout.add(optnLayout);
+    });
+
+
+var searchgene = document.createElement("input");
+  searchgene.id = "searchgene";
+  searchgene.value = "Search gene"
+  document.getElementById("merged_graph_buttons").appendChild(searchgene);
+  searchgene.setAttribute("type", "text");
+  searchgene.setAttribute("width", 30);
+  var searchbutn = document.createElement("button");
+  searchbutn.id = "searchbutn";
+  searchbutn.innerHTML = "Search";
+  document.getElementById("merged_graph_buttons").appendChild(searchbutn);
+  document.getElementById("searchbutn").className = 'butn';  
+  searchbutn.onclick = highlightSearchedGene;
+
+
       merge_graph.add(mergedNodes)
       merge_graph.add(mergedEdges)
       merge_graph.nodes().noOverlap({ padding: 5 });
@@ -347,5 +384,100 @@ function resetLayout(){
     name: 'dagre',
 	}).run();
 
+}
+
+var prevLayout = "";
+function changeLayoutMerged(){
+  var animateLayout = true;
+  var selectedLayout = document.getElementById('selectlayoutMerged').value;
+  if(prevLayout == selectedLayout){
+    animateLayout = false;
+  }
+  if(selectedLayout == "klay"){
+    var options = {
+      animate: animateLayout, // Whether to transition the node positions
+      klay: {
+        aspectRatio: 1.49, // The aimed aspect ratio of the drawing, that is the quotient of width by height
+        compactComponents: true, // Tries to further compact components (disconnected sub-graphs).
+        nodeLayering:'LONGEST_PATH', // Strategy for node layering.
+        /* NETWORK_SIMPLEX This algorithm tries to minimize the length of edges. This is the most computationally intensive algorithm. 
+        The number of iterations after which it aborts if it hasn't found a result yet can be set with the Maximal Iterations option.
+        LONGEST_PATH A very simple algorithm that distributes nodes along their longest path to a sink node.
+        INTERACTIVE Distributes the nodes into layers by comparing their positions before the layout algorithm was started. The idea is that the relative horizontal order of nodes as it was before layout was applied is not changed. This of course requires valid positions for all nodes to have been set on the input graph before calling the layout algorithm. The interactive node layering algorithm uses the Interactive Reference Point option to determine which reference point of nodes are used to compare positions. */
+        thoroughness: 10 // How much effort should be spent to produce a nice layout..
+      },
+    };
+    merge_graph.layout({
+      name:'klay',
+      options
+    }).run();
+  }
+  else if(selectedLayout == "breadthfirst"){
+    merge_graph.layout({
+        name: "breadthfirst",
+        spacingFactor: 0.5,
+        animate: animateLayout
+      }).run();
+  }
+  else if(selectedLayout == "dagre (default)"){
+    merge_graph.layout({
+        name: "dagre",
+        animate: animateLayout
+      }).run();
+  }
+  else if(selectedLayout == "cose-bilkent"){
+    merge_graph.layout({
+        name: "cose-bilkent",
+        // Gravity range (constant)
+        gravityRange: 1.3,
+        animate: true
+      }).run();
+  }
+  else if(selectedLayout == "grid"){
+    merge_graph.layout({
+        name: "grid",
+        animate: animateLayout,
+        avoidOverlapPadding: 5
+      }).run();
+  }
+  else{
+    merge_graph.layout({
+        name: "dagre",
+        animate: animateLayout
+      }).run();
+    document.getElementById('selectlayoutMerged').value = "dagre (default)";
+  }
+  prevLayout = JSON.parse(JSON.stringify(selectedLayout));
+}
+
+
+function highlightSearchedGene(){
+  var gene = document.getElementById('searchgene').value;
+  if(gene == ""){
+    merge_graph.$('node').style("border-width", 5); 
+    merge_graph.$('node[id = "l1"]').style("border-width", 1);  
+    merge_graph.$('node[id = "g1"]').style("border-width", 13);  
+    merge_graph.$('node[id = "g2"]').style("border-width", 13);  
+    document.getElementById('searchgene').value = "Search gene"
+  }
+  else if(merge_graph.$('node[symbol=\''  + gene + '\']').length>0){
+    merge_graph.$('node').style("border-width", 5);
+    merge_graph.$('node[symbol =\''  + gene + '\']').style("border-width", 10);
+    merge_graph.$('node[id = "l1"]').style("border-width", 1);
+    merge_graph.$('node[id = "g1"]').style("border-width", 13);  
+    merge_graph.$('node[id = "g2"]').style("border-width", 13);  
+
+  }
+  else if(merge_graph.$('node[name =\''  + gene + '\']').length>0){
+    merge_graph.$('node').style("border-width", 5);
+    merge_graph.$('node[name =\''  + gene + '\']').style("border-width", 10);
+    merge_graph.$('node[id = "l1"]').style("border-width", 1);
+    merge_graph.$('node[id = "g1"]').style("border-width", 13);  
+    merge_graph.$('node[id = "g2"]').style("border-width", 13);  
+
+  }
+  else{
+    document.getElementById('searchgene').value = gene+" not found"
+  }
 }
 
