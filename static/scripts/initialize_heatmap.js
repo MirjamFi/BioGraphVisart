@@ -66,6 +66,32 @@ function loadDir(){
   //     alert('Folder does not exist.');
   //     document.getElementById("loader").style.visibility = "hidden";
   //   }
+
+  var drpLayoutLeft = document.getElementById("selectlayoutLeft")
+  var seleLayoutLeft = document.createElement("OPTION");
+  seleLayoutLeft.text = "Select Layout";
+  drpLayoutLeft.add(seleLayoutLeft);
+
+  var drpLayoutRight = document.getElementById("selectlayoutRight")
+  var seleLayoutRight = document.createElement("OPTION");
+  seleLayoutRight.text = "Select Layout";
+  drpLayoutRight.add(seleLayoutRight);
+
+  const layoutArray = ["dagre (default)", "klay", "breadthfirst", "cose-bilkent", "grid"];
+
+  layoutArray.forEach(function(s){
+    var graphLayoutLeft = s;
+    var optnLayoutLeft = document.createElement("OPTION");
+    optnLayoutLeft.text=graphLayoutLeft;
+    optnLayoutLeft.value=graphLayoutLeft;
+    var graphLayoutRight = s;
+    var optnLayoutRight = document.createElement("OPTION");
+    optnLayoutRight.text=graphLayoutRight;
+    optnLayoutRight.value=graphLayoutRight;
+    drpLayoutLeft.add(optnLayoutLeft);
+    drpLayoutRight.add(optnLayoutRight);
+  });
+
     let foundFiles = document.getElementById('fileName').files;
 
     counterlimit = foundFiles.length;

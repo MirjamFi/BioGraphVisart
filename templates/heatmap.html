@@ -21,6 +21,9 @@
         <script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/dagre.js"></script>
         <script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/cytoscape-dagre.js"></script>
          <script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/cytoscape-canvas.js"></script>
+        <script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/klay.js"></script>
+        <script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/cytoscape-klay.js"></script>
+        <script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/cytoscape-cose-bilkent.js"></script>
         <script src="https://unpkg.com/file-saver@1.3.8/FileSaver.js"></script>
         <script src="http://127.0.0.1:3000/static/scripts/cytoscape-svg.js"></script>
         <script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/cytoscape-no-overlap.js"></script>
@@ -2390,6 +2393,7 @@ nPgo8L3N2Zz4K'>
         </div>
         <div id="resetLeft" style="visibility: hidden">
           <button class= 'butn' id="resetLeftLayout" onclick="resetLeft()">Reset layout</button>
+          <select id ="selectlayoutLeft" onchange="changeLayout(graphLeft, 'Left', prevLayoutLeft)">Select Layout</select>
         </div>
         <div id="downloadPartLeft" style="visibility: hidden">
           <input name="outputFileLeft" type="text" maxlength="512" id="outputNameLeft" value="File name"/>
@@ -2408,6 +2412,7 @@ nPgo8L3N2Zz4K'>
         </div>
         <div id="resetRight" style="visibility: hidden">
           <button class = "butn" id="resetRightLayout" onclick="resetRight()">Reset layout</button>
+          <select id ="selectlayoutRight" onchange="changeLayout(graphRight, 'Right', prevLayoutRight)">Select Layout</select>
         </div>
         <div id="downloadPartRight" style="visibility: hidden">
           <input name="outputFileRight" type="text" maxlength="512" id="outputNameRight" value="File name"/>
