@@ -950,6 +950,31 @@ function changeLayout(){
   prevLayout = JSON.parse(JSON.stringify(selectedLayout));
 }
 // get pathways of selected gene from kegg using entrez id
+
+async function getPathwaysFromKEGG(name) {
+     return new Promise(function (resolve, reject) {
+         let xhr = new XMLHttpRequest();
+         xhr.open('GET', "https://www.kegg.jp/entry/hsa:" + name);
+         xhr.onload = function () {
+             if (this.status >= 200 && this.status < 300) {
+                 resolve(xhr.response);
+             } else {
+                 reject({
+                     status: this.status,
+                     statusText: xhr.statusText
+                 });
+             }
+         };
+         xhr.onerror = function () {
+             reject({
+                 status: this.status,
+                 statusText: xhr.statusText
+             });
+         };
+         xhr.send();
+     });
+ }
+
 async function listKEGGPathways(){
   //swap button "Hide"/"show"
   if(document.getElementById('keggpathways').firstChild.data == "Show KEGG Pathways"){
@@ -1010,7 +1035,6 @@ async function listKEGGPathways(){
         return { key: key, value: this[key] };}, pathsCount);
       props = props.sort(function(p1, p2) { return p2.value - p1.value; });
       var topFive = props.slice(0, 5);
-
           //show table of pathways
       var tbody = document.getElementById("KEGGpaths");
       var htmlString ="<form> <h3>KEGG Pathways:</h3><br>";
