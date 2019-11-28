@@ -1076,8 +1076,10 @@ function downloadPNGLeft(){
     download.download = outputName + '.png';
   }
   else{
-    let filenameSplitLeft = left.split("/")
-    filenameSplitLeft = filenameSplitLeft[filenameSplitLeft.length-1].split('.')[0];
+    var reverse = left.split("").reverse().join("")
+    var reversesplit = reverse.split(".")
+    var reverseselect = reversesplit.slice(1,reversesplit.length).join("_").split("").reverse().join("");
+    let filenameSplitLeft = reverseselect
      fileName = path+ '_' + filenameSplitLeft;
      download.download = fileName + '_' + nodeVal + '.png';
   }
@@ -1092,8 +1094,10 @@ function downloadSVGLeft(){
     saveAs(new Blob([svgContent], {type:"image/svg+xml;charset=utf-8"}), outputName +".svg");
   }
   else{
-    let filenameSplitLeft = left.split("/")
-    filenameSplitLeft = filenameSplitLeft[filenameSplitLeft.length-1].split('.')[0];
+    var reverse = left.split("").reverse().join("")
+    var reversesplit = reverse.split(".")
+    var reverseselect = reversesplit.slice(1,reversesplit.length).join("_").split("").reverse().join("");
+    let filenameSplitLeft = reverseselect
      fileName = path+ '_' + filenameSplitLeft;
      saveAs(new Blob([svgContent], {type:"image/svg+xml;charset=utf-8"}), fileName + '_' + nodeVal + ".svg");
   }
@@ -1111,8 +1115,10 @@ function downloadPNGRight(){
     download.download = outputName + '.png';
   }
   else{
-    let filenameSplitRight = right.split("/")
-    filenameSplitRight = filenameSplitRight[filenameSplitRight.length-1].split('.')[0];
+    var reverse = right.split("").reverse().join("")
+    var reversesplit = reverse.split(".")
+    var reverseselect = reversesplit.slice(1,reversesplit.length).join("_").split("").reverse().join("");
+    let filenameSplitRight = reverseselect
      fileName = path+ '_' + filenameSplitRight;
      download.download = fileName + '_' + nodeVal + '.png';
   }
@@ -1127,8 +1133,10 @@ function downloadSVGRight(){
     saveAs(new Blob([svgContent], {type:"image/svg+xml;charset=utf-8"}), outputName +".svg");
   }
   else{
-    let filenameSplitRight = left.split("/")
-    filenameSplitRight = filenameSplitRight[filenameSplitRight.length-1].split('.')[0];
+    var reverse = right.split("").reverse().join("")
+    var reversesplit = reverse.split(".")
+    var reverseselect = reversesplit.slice(1,reversesplit.length).join("_").split("").reverse().join("");
+    let filenameSplitRight = reverseselect
      fileName = path+ '_' + filenameSplitRight;
      saveAs(new Blob([svgContent], {type:"image/svg+xml;charset=utf-8"}), fileName + '_' + nodeVal + ".svg");
   }

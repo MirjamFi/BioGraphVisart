@@ -39,8 +39,11 @@ function createHeatmap(heatmapData){
 
     for (let i in heatmapData){ //get file names
         axes.push(heatmapData[i]["sample"]);
-        let filenameSplit = heatmapData[i]["sample"].split("/")
-        xLabels.push(filenameSplit[filenameSplit.length-1].split('.')[0]);
+        var reverse = heatmapData[i]["sample"].split("").reverse().join("")
+        var reversesplit = reverse.split(".")
+        var reverseselect = reversesplit.slice(1,reversesplit.length).join(".").split("").reverse().join("");
+        let filenameSplit = reverseselect
+        xLabels.push(filenameSplit);
     }
 
     var normalizedValues = heatmapData;
