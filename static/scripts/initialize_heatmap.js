@@ -42,15 +42,17 @@ function getAllIndexes(arr, val) {
     return indexes;
 }
 
-/* load files from directory */
+/* 
+ files from directory */
 function loadDir(){
-  // document.getElementById("loadDir").disabled = true;
   document.getElementById("loader").style.display="block";
   document.getElementById("heatmapcontainer").innerHTML = "";
   document.getElementById("cyLeft").innerHTML = "";
   document.getElementById("cyRight").innerHTML = "";
   document.getElementById('keggpathwaysLeft').style.visibility = "hidden";
+  document.getElementById('KEGGpathsButtonLeft').style.visibility = "hidden";
   document.getElementById('keggpathwaysRight').style.visibility = "hidden";
+  document.getElementById('KEGGpathsButtonRight').style.visibility = "hidden";
   document.getElementById('downloadPartLeft').style.visibility = "hidden";
   document.getElementById('downloadPartRight').style.visibility = "hidden";
   document.getElementById('resetLeft').style.visibility = "hidden";
@@ -64,6 +66,32 @@ function loadDir(){
   //     alert('Folder does not exist.');
   //     document.getElementById("loader").style.visibility = "hidden";
   //   }
+
+  var drpLayoutLeft = document.getElementById("selectlayoutLeft")
+  var seleLayoutLeft = document.createElement("OPTION");
+  seleLayoutLeft.text = "Select Layout";
+  drpLayoutLeft.add(seleLayoutLeft);
+
+  var drpLayoutRight = document.getElementById("selectlayoutRight")
+  var seleLayoutRight = document.createElement("OPTION");
+  seleLayoutRight.text = "Select Layout";
+  drpLayoutRight.add(seleLayoutRight);
+
+  const layoutArray = ["dagre (default)", "klay", "breadthfirst", "cose-bilkent", "grid"];
+
+  layoutArray.forEach(function(s){
+    var graphLayoutLeft = s;
+    var optnLayoutLeft = document.createElement("OPTION");
+    optnLayoutLeft.text=graphLayoutLeft;
+    optnLayoutLeft.value=graphLayoutLeft;
+    var graphLayoutRight = s;
+    var optnLayoutRight = document.createElement("OPTION");
+    optnLayoutRight.text=graphLayoutRight;
+    optnLayoutRight.value=graphLayoutRight;
+    drpLayoutLeft.add(optnLayoutLeft);
+    drpLayoutRight.add(optnLayoutRight);
+  });
+
     let foundFiles = document.getElementById('fileName').files;
 
     counterlimit = foundFiles.length;
@@ -108,8 +136,6 @@ function loadDir(){
     };
     reader.readAsText(file);
   })
-  document.getElementById("keggpathwaysLeft").addEventListener('click', function(){listKEGGPathways('Left', leftNodes);});
-  document.getElementById("keggpathwaysRight").addEventListener('click', function(){listKEGGPathways('Right', rightNodes);});
 };
 
 /* 
@@ -139,13 +165,6 @@ function calculateOverlap(data){
 
 function loadGraphml(sampleLeft, sampleRight) {
   cleanSelections();
-  document.getElementById('KEGGpathsLeft').style.visibility ="visible";
-
-  document.getElementById('KEGGpathsRight').style.visibility ="visible";
-
-    document.getElementById('keggpathwaysLeft').style.visibility = "visible";
-    document.getElementById('keggpathwaysRight').style.visibility = "visible";
-
   samples = [sampleLeft, sampleRight];
   var drpValues=[];
   samples.forEach(function (sample){
@@ -176,7 +195,6 @@ function loadGraphml(sampleLeft, sampleRight) {
         };
       }
     else{
-
       return;
     }
   });
@@ -205,9 +223,6 @@ function cleanSelections(){
   document.getElementById('KEGGpathsRight').innerHTML = "";
   document.getElementById('keggpathwaysRight').firstChild.data = "Show KEGG Pathways";
   document.getElementById('KEGGpathsRight').style.visibility = "hidden";
-  // document.getElementById('KEGGpathsMerge').innerHTML = "";
-  // document.getElementById('keggpathwaysMerge').firstChild.data = "Show KEGG Pathways";
-  // document.getElementById('KEGGpathsMerge').style.visibility = "hidden";
   if(document.getElementById('keggpathwaysMerge')){
     document.getElementById('keggpathwaysMerge').style.visibility = "hidden";
   }
@@ -219,6 +234,55 @@ function cleanSelections(){
   rightEdges = [];
   leftNodes = [];
   rightNodes = [];
+
+  oldHighlightedNode = null;
+  layerLeft = null;
+  canvasLeft = null;
+  ctxLeft = null;
+  layerRight = null;
+  canvasRight = null;
+  ctxRight= null;
+  layerMerge = null;
+  cavasMerge = null;
+  ctxMerge = null;
+
+  graphLeft = null;
+  graphRight= null;
+  path= null;
+  nodes= null;
+  colorschemePathsLeft = [];
+  colorschemePathsRight = [];
+  colorschemePathsMerge = [];
+  leftEdges = [];
+  rightEdges = [];
+
+  leftNodesMin = -1;
+  leftNodesMax = 1;
+  rightNodesMin = -1;
+  rightNodesMax = 1;
+  leftOldMin =null;
+  leftOldMax =null;
+  rightOldMin =null;
+  rightOldMax =null;
+  leftGraph = false;
+  leftNodes = [];
+  rightNodes = [];
+  leftEdges = [];
+  rightEdges = [];
+  graphStringLeft =null;
+  graphStringRight =null;
+  path_left =null;
+  path_right =null;
+  leftFirstTime = true;
+  rightFirstTime = true;
+  loadGraphCount = 0;
+  svg_part =null;
+  firstShape = true;
+  usedShapeAttributes = [];
+  getDrpDwnFiles = true;
+  leftNodeValuesNum = [];
+  rightNodeValuesNum = [];
+  merge_graph =null;
 
 }
 

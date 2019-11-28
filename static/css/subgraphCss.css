@@ -143,7 +143,7 @@ heatmap
 }
 #KEGGpaths{
   position: absolute;
-  top: 320px;
+  top: 350px;
   left:86%;
 }
 #keggpathways{
@@ -213,6 +213,9 @@ heatmap
 #downloadPartLeft{
     margin-top: 20px;
 }
+#outputNameHeatmap{
+    margin-left: 20px;
+}
 #left {
     width: 100%;
     height: 500px;
@@ -280,6 +283,11 @@ heatmap
 #merged_graph_buttons{
     position: relative;
     margin: 20px 10px 10px 10px;
+}
+
+#selectlayoutMerged{
+    position: relative;
+    margin-left: 50px;
 }
 
 .center-div

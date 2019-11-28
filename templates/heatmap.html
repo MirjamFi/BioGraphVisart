@@ -21,6 +21,9 @@
         <script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/dagre.js"></script>
         <script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/cytoscape-dagre.js"></script>
          <script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/cytoscape-canvas.js"></script>
+        <script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/klay.js"></script>
+        <script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/cytoscape-klay.js"></script>
+        <script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/cytoscape-cose-bilkent.js"></script>
         <script src="https://unpkg.com/file-saver@1.3.8/FileSaver.js"></script>
         <script src="http://127.0.0.1:3000/static/scripts/cytoscape-svg.js"></script>
         <script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/cytoscape-no-overlap.js"></script>
@@ -85,8 +88,11 @@
         <select name="values" id="values" onchange="visualize()" style="visibility: hidden">
             <option value="" selected disabled hidden>Choose node's attribute</option>
         </select>
+        <input type="text" name="searchgene" id="searchgene" width="30" style="visibility: hidden" value="Search gene">
+        <button class="butn" id="searchbutton" onclick="highlightSearchedGene()" style="visibility: hidden">Search</button>
+
         <button class="butn" id="mergeButton" onclick="clickMerge()" style="visibility: hidden">MERGE</button>
-        <input name="outputFile" type="text" maxlength="512" id="outputName" value="File name" style="visibility: hidden"/>
+        <input name="outputFile" type="text" maxlength="512" id="outputNameHeatmap" value="File name" style="visibility: hidden"/>
         <button  class= 'butn' id="downloadPDF" onclick="downloadPDF()" disabled="disabled" id="downloadPDF" style="visibility: hidden">.pdf</button>
     </div>
    <div align="left" id="legend_heatmap" style="visibility: hidden">
@@ -2383,13 +2389,14 @@ nPgo8L3N2Zz4K'>
             <div align="left" id="leftID"></div>
             <div align="left" id="cyLeft"></div>
             <div align="right" class="KEGGpathsbutton" id="KEGGpathsButtonLeft" style="visibility: hidden">
-                <button class="butn" class="keggpathways" id="keggpathwaysLeft">Show KEGG Pathways</button></p>
+                <button class="butn" class="keggpathways" id="keggpathwaysLeft" style="visibility: hidden">Show KEGG Pathways</button></p>
                 <div class="loader" id="loaderLeft" style="visibility: hidden"></div>
                 <div align="left" class = "KEGGpaths" id= "KEGGpathsLeft" style="visibility: hidden;"></div>
             </div>
         </div>
         <div id="resetLeft" style="visibility: hidden">
           <button class= 'butn' id="resetLeftLayout" onclick="resetLeft()">Reset layout</button>
+          <select id ="selectlayoutLeft" onchange="changeLayout(graphLeft, 'Left', prevLayoutLeft)">Select Layout</select>
         </div>
         <div id="downloadPartLeft" style="visibility: hidden">
           <input name="outputFileLeft" type="text" maxlength="512" id="outputNameLeft" value="File name"/>
@@ -2401,13 +2408,14 @@ nPgo8L3N2Zz4K'>
             <div align="left" id="rightID"></div>
             <div align="left" id="cyRight"></div>
             <div align="right" class="KEGGpathsbutton" id="KEGGpathsButtonRight" style="visibility: hidden">
-                <button class="butn" id="keggpathwaysRight" >Show KEGG Pathways</button></p>
+                <button class="butn" id="keggpathwaysRight" style="visibility: hidden">Show KEGG Pathways</button></p>
                 <div class="loader" id="loaderRight" style="visibility: hidden"></div>
                 <div align="left" class = "KEGGpaths" id= "KEGGpathsRight" style="visibility: hidden;"></div>
             </div>
         </div>
         <div id="resetRight" style="visibility: hidden">
           <button class = "butn" id="resetRightLayout" onclick="resetRight()">Reset layout</button>
+          <select id ="selectlayoutRight" onchange="changeLayout(graphRight, 'Right', prevLayoutRight)">Select Layout</select>
         </div>
         <div id="downloadPartRight" style="visibility: hidden">
           <input name="outputFileRight" type="text" maxlength="512" id="outputNameRight" value="File name"/>

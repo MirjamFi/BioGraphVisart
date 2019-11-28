@@ -39,8 +39,11 @@ function createHeatmap(heatmapData){
 
     for (let i in heatmapData){ //get file names
         axes.push(heatmapData[i]["sample"]);
-        let filenameSplit = heatmapData[i]["sample"].split("/")
-        xLabels.push(filenameSplit[filenameSplit.length-1].split('.')[0]);
+        var reverse = heatmapData[i]["sample"].split("").reverse().join("")
+        var reversesplit = reverse.split(".")
+        var reverseselect = reversesplit.slice(1,reversesplit.length).join(".").split("").reverse().join("");
+        let filenameSplit = reverseselect
+        xLabels.push(filenameSplit);
     }
 
     var normalizedValues = heatmapData;
@@ -56,13 +59,8 @@ function createHeatmap(heatmapData){
 			sampleCol = axes[j];
             i = parseInt(i);
             overlapArrays.push([j,i, Math.round(parseInt(heatmapData[i][axes[j]])*200/(parseInt(sampleSizes[sampleRow])+parseInt(sampleSizes[sampleCol])))]);
-            //overlapValues.push(parseInt(heatmapData[i][axes[j]]));
         }
-    	
-        
     }
-
-    //var heatmapValues = Array.from(new Set(overlapValues));
     var heatmapColorStopsDist = 1/9;
 
     var viridis = ['#440154', '#482777', '#3F4A8A', '#31678E', '#26838F', '#1F9D8A', '#6CCE5A', '#B6DE2B', '#FEE825']
@@ -98,7 +96,6 @@ function createHeatmap(heatmapData){
                             document.getElementById("rightID").innerHTML = "";
                             document.getElementById('values').setAttribute('style','visibility:visible');
                             document.getElementById("leftID").innerHTML = leftSelect;
-
                             if(left === right){
                                 document.getElementById("rightID").innerHTML = "";
                                 document.getElementById("cyRight").innerHTML = "";

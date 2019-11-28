@@ -227,6 +227,8 @@ var merge_graph;
 
 function merge(){
 	document.getElementById('mergeButton').style.visibility = "visible";
+	document.getElementById('searchgene').style.visibility = "visible";
+	document.getElementById('searchbutton').style.visibility = "visible";
 	// create buttons once
 	if(!!document.getElementById("resetMerge")){
 		document.getElementById("resetMerge").remove();

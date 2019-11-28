@@ -36,7 +36,6 @@ function visualize() {
   });
 
   nodeVal = document.getElementById('values').value;
-
   if(!!right){
     var cys = ['cyLeft', 'cyRight'];
   }
@@ -69,14 +68,15 @@ function visualize() {
       leftFirstTime = leftLayout[2];
       //document.getElementById("merged_graph_legend").setAttribute('style','visibility:hidden');
       document.getElementById('downloadPDF').style.visibility = "visible";
-      document.getElementById('outputName').style.visibility = "visible";
+      document.getElementById('outputNameHeatmap').style.visibility = "visible";
       document.getElementById('downloadPDF').disabled = false;
       document.getElementById('resetLeft').style.visibility = "visible";
       document.getElementById('downloadPartLeft').style.visibility = "visible";
       document.getElementById('downloadLeftSVG').disabled = false;
       document.getElementById('downloadLeftPNG').disabled = false;
-      document.getElementById('keggpathwaysLeft').style.visibility = "visible";
       document.getElementById('KEGGpathsButtonLeft').style.visibility ="visible";
+      document.getElementById('keggpathwaysLeft').style.visibility = "visible";
+      document.getElementById("keggpathwaysLeft").addEventListener('click', function(){listKEGGPathways('Left', leftNodes);});
       showMetaInfo(graphLeft);
       // set background layer to hoghlight pathways
       layerLeft = graphLeft.cyCanvas({
@@ -85,11 +85,15 @@ function visualize() {
       canvasLeft = layerLeft.getCanvas();
       ctxLeft = canvasLeft.getContext('2d');
       var bLeft = $.extend( [], document.getElementById('keggpathwaysLeft').firstChild.data ).join("");
+
       if(bLeft == "Hide KEGG Pathways" && allPathsLeft){
         highlightKEGGpaths(ctxLeft, canvasLeft, graphLeft, layerLeft, "Left", allPathsLeft, colorschemePathsLeft);
       }
       else if(bLeft == "Show KEGG Pathways" && allPathsLeft){
         document.getElementById('KEGGpathsLeft').style.visibility ="hidden";
+      }
+      else if(bLeft == "Show KEGG Pathways"){
+        document.getElementById('KEGGpathsLeft').style.visibility = "visible";
       }
     }
     else if(cyO = 'cyRight'){
@@ -119,6 +123,7 @@ function visualize() {
       document.getElementById('KEGGpathsButtonRight').style.visibility ="visible";
       document.getElementById('right').style.visibility = "visibile";
       document.getElementById('rightID').style.visibility = "visible";
+      document.getElementById("keggpathwaysRight").addEventListener('click', function(){listKEGGPathways('Right', rightNodes);});
       showMetaInfo(graphRight);
       // set background layer to hoghlight pathways
       layerRight = graphRight.cyCanvas({
@@ -132,6 +137,9 @@ function visualize() {
       }
       else if(bRight == "Show KEGG Pathways" && allPathsRight){
         document.getElementById('KEGGpathsRight').style.visibility ="hidden";
+      }
+      else if(bRight == "Show KEGG Pathways"){
+        document.getElementById('KEGGpathsRight').style.visibility ="visible";
       }
     }
   });
@@ -578,7 +586,7 @@ function changeNodeShapes(cyObject, graphString){
 /*
   generate a checkbox menu for the 10 most common pathways of all genes in the graph
 */
-function listKEGGPathways(pos, nodesList){
+async function listKEGGPathways(pos, nodesList){
   //swap button "Hide"/"show"
   if(document.getElementById('keggpathways'+pos).firstChild.data == "Show KEGG Pathways"){
     document.getElementById('keggpathways'+pos).firstChild.data  = "Hide KEGG Pathways";
@@ -589,105 +597,104 @@ function listKEGGPathways(pos, nodesList){
     else{
       document.getElementById('KEGGpaths'+pos).style.visibility="visible";
       document.getElementById('loader'+pos).style.visibility = "visible";
-      setTimeout(function(){
-        var pathsCount = [];
-        var allPaths = {};
-        for(var n in nodesList){
-          if(nodesList[n]["data"] && nodesList[n]["data"]["symbol"]!="legend" && nodesList[n]["data"]["symbol"]!=leftID
-            && nodesList[n]["data"]["symbol"]!=rightID){
-            if(nodesList[n]["data"]["entrezID"]){
-              var entrezID = nodesList[n]["data"]["entrezID"].toString();
-            }
-            else if(nodesList[n]["data"]["entrez"]){
-              var entrezID = nodesList[n]["data"]["entrez"].toString();
-            }
-            var keggpaths = getPathwaysFromKEGG(entrezID).split('\n');
-            var i = 0;
-            var searchPattern = new RegExp(/^\s* hsa/);
-
-            while(i <= keggpaths.length - 1){
-              if(keggpaths[i].startsWith("PATHWAY")){
-                let p = keggpaths[i].split("PATHWAY")[1].trim()
-                if(typeof allPaths[p] == 'undefined'){
-                  allPaths[p]=[];
-                }
-                allPaths[p].push(entrezID);
-                if(isNaN(pathsCount[p])){
-                  pathsCount[p]=1; 
-                }
-                else{
-                  pathsCount[p]=pathsCount[p]+1;
-                }
-              }
-              else if(searchPattern.test(keggpaths[i])){
-                let p = keggpaths[i].trim();
-                if(typeof allPaths[p] == 'undefined'){
-                  allPaths[p]=[];
-                }
-                allPaths[p].push(entrezID);
-                if(isNaN(pathsCount[p])){
-                  pathsCount[p]=1; 
-                }
-                else{
-                  pathsCount[p]=pathsCount[p]+1;
-                }
-              }
-              else if(keggpaths[i].startsWith("MODULE")){
-                break;
-              }
-              i++;
-              }
+      var pathsCount = [];
+      var allPaths = {};
+      for(var n in nodesList){
+        if(nodesList[n]["data"] && nodesList[n]["data"]["symbol"]!="legend" && nodesList[n]["data"]["symbol"]!=leftID
+          && nodesList[n]["data"]["symbol"]!=rightID){
+          if(nodesList[n]["data"]["entrezID"]){
+            var entrezID = nodesList[n]["data"]["entrezID"].toString();
           }
+          else if(nodesList[n]["data"]["entrez"]){
+            var entrezID = nodesList[n]["data"]["entrez"].toString();
+          }
+          var keggpaths = await getPathwaysFromKEGG(entrezID);
+          keggpaths = keggpaths.split("\n");
+          var i = 0;
+          var searchPattern = new RegExp(/^\s* hsa/);
+
+          while(i <= keggpaths.length - 1){
+            if(keggpaths[i].startsWith("PATHWAY")){
+              let p = keggpaths[i].split("PATHWAY")[1].trim()
+              if(typeof allPaths[p] == 'undefined'){
+                allPaths[p]=[];
+              }
+              allPaths[p].push(entrezID);
+              if(isNaN(pathsCount[p])){
+                pathsCount[p]=1; 
+              }
+              else{
+                pathsCount[p]=pathsCount[p]+1;
+              }
+            }
+            else if(searchPattern.test(keggpaths[i])){
+              let p = keggpaths[i].trim();
+              if(typeof allPaths[p] == 'undefined'){
+                allPaths[p]=[];
+              }
+              allPaths[p].push(entrezID);
+              if(isNaN(pathsCount[p])){
+                pathsCount[p]=1; 
+              }
+              else{
+                pathsCount[p]=pathsCount[p]+1;
+              }
+            }
+            else if(keggpaths[i].startsWith("MODULE")){
+              break;
+            }
+            i++;
+            }
         }
+      }
+      if(pos == "Left"){
+        allPathsLeft = Object.assign({},allPaths);
+      }
+      else if(pos == "Right"){
+        allPathsRight = Object.assign({},allPaths);          
+      }
+      else if(pos == "Merge"){
+        allPathsMerge = Object.assign({}, allPaths);
+      }
+      // only get top 5 of pathways (most genes in)
+      var props = Object.keys(pathsCount).map(function(key) {
+        return { key: key, value: this[key] };}, pathsCount);
+      props = props.sort(function(p1, p2) { return p2.value - p1.value; });
+      var topFive = props.slice(0, 5);
+      //show table of pathways
+      var tbody = document.getElementById("KEGGpaths"+pos);
+      var htmlString ="<form id='form"+pos+"'> <h3>KEGG Pathways:</h3><br>";
+      var colors = ["#66c2a5","#fc8d62","#8da0cb","#e78ac3","#a6d854"]
+      for (var i = 0; i < topFive.length; i++) {
         if(pos == "Left"){
-          allPathsLeft = Object.assign({},allPaths);
+          colorschemePathsLeft[topFive[i].key] = colors[i];
+        }
+        if(pos == "Right"){
+          colorschemePathsRight[topFive[i].key] = colors[i];
+        }
+        if(pos == "Merge"){
+          colorschemePathsMerge[topFive[i].key] = colors[i];
+        }
+        var tr = "<b id = 'highlight"+pos+i+"' style='color:"+colors[i]+"'><label><input type='checkbox' value='"+topFive[i].key+"'>";
+        tr += topFive[i].key + " </label></b><br><br>";
+        htmlString += tr;
+      }
+      htmlString +="</form>"
+      tbody.innerHTML = htmlString;
+      document.getElementById('keggpathways'+pos).firstChild.data = "Hide KEGG Pathways";
+      document.getElementById('KEGGpaths'+pos).style.visibility = "visible";
+      document.getElementById('loader'+pos).style.visibility = "hidden";
+      for(var i = 0; i < topFive.length; i++){
+        if(pos == 'Left'){
+          document.getElementById('highlight'+pos+i).addEventListener('click', function(){highlightKEGGpaths(ctxLeft, canvasLeft, graphLeft, layerLeft, pos, allPathsLeft, colorschemePathsLeft);});
         }
         else if(pos == "Right"){
-          allPathsRight = Object.assign({},allPaths);          
+          document.getElementById('highlight'+pos+i).addEventListener('click', function(){highlightKEGGpaths(ctxRight, canvasRight, graphRight,layerRight, pos, allPathsRight, colorschemePathsRight);});
         }
         else if(pos == "Merge"){
-          allPathsMerge = Object.assign({}, allPaths);
+          document.getElementById('highlight'+pos+i).addEventListener('click', function(){highlightKEGGpaths(ctxMerge, canvasMerge, merge_graph,layerMerge, pos, allPathsMerge, colorschemePathsMerge);});
         }
-        // only get top 5 of pathways (most genes in)
-        var props = Object.keys(pathsCount).map(function(key) {
-          return { key: key, value: this[key] };}, pathsCount);
-        props = props.sort(function(p1, p2) { return p2.value - p1.value; });
-        var topFive = props.slice(0, 5);
-        //show table of pathways
-        var tbody = document.getElementById("KEGGpaths"+pos);
-        var htmlString ="<form id='form"+pos+"'> <h3>KEGG Pathways:</h3><br>";
-        var colors = ["#66c2a5","#fc8d62","#8da0cb","#e78ac3","#a6d854"]
-        for (var i = 0; i < topFive.length; i++) {
-          if(pos == "Left"){
-            colorschemePathsLeft[topFive[i].key] = colors[i];
-          }
-          if(pos == "Right"){
-            colorschemePathsRight[topFive[i].key] = colors[i];
-          }
-          if(pos == "Merge"){
-            colorschemePathsMerge[topFive[i].key] = colors[i];
-          }
-          var tr = "<b id = 'highlight"+pos+i+"' style='color:"+colors[i]+"'><label><input type='checkbox' value='"+topFive[i].key+"'>";
-          tr += topFive[i].key + " </label></b><br><br>";
-          htmlString += tr;
-        }
-        htmlString +="</form>"
-        tbody.innerHTML = htmlString;
-        document.getElementById('keggpathways'+pos).firstChild.data = "Hide KEGG Pathways";
-        document.getElementById('KEGGpaths'+pos).style.visibility = "visible";
-        document.getElementById('loader'+pos).style.visibility = "hidden";
-        for(var i = 0; i < 5; i++){
-          if(pos == 'Left'){
-            document.getElementById('highlight'+pos+i).addEventListener('click', function(){highlightKEGGpaths(ctxLeft, canvasLeft, graphLeft, layerLeft, pos, allPathsLeft, colorschemePathsLeft);});
-          }
-          else if(pos == "Right"){
-            document.getElementById('highlight'+pos+i).addEventListener('click', function(){highlightKEGGpaths(ctxRight, canvasRight, graphRight,layerRight, pos, allPathsRight, colorschemePathsRight);});
-          }
-          else if(pos == "Merge"){
-            document.getElementById('highlight'+pos+i).addEventListener('click', function(){highlightKEGGpaths(ctxMerge, canvasMerge, merge_graph,layerMerge, pos, allPathsMerge, colorschemePathsMerge);});
-          }
-        }
-        },10);
+      }
     }
   }
   //Hide table, switch button to show
@@ -719,7 +726,7 @@ function listKEGGPathways(pos, nodesList){
 }
 
 // get pathways of selected gene from kegg using entrez id
-function getPathwaysFromKEGG(name){ 
+async function getPathwaysFromKEGG(name){ 
   var responsetxt;
   var xhr = new XMLHttpRequest();
   xhr.open('GET', "http://rest.kegg.jp/get/hsa:" + name, false);
@@ -1052,6 +1059,112 @@ function mergeEdges(cy, cy2=undefined){
     mergeEdges(cy2);
   }
 }
+
+
+var prevLayoutLeft = "";
+var prevLayoutRight = "";
+function changeLayout(cy, pos, prevLayout){
+  var animateLayout = true;
+  var selectedLayout = document.getElementById('selectlayout'+pos).value;
+  if(prevLayout == selectedLayout){
+    animateLayout = false;
+  }
+  if(selectedLayout == "klay"){
+    var options = {
+      animate: animateLayout, // Whether to transition the node positions
+      klay: {
+        aspectRatio: 1.49, // The aimed aspect ratio of the drawing, that is the quotient of width by height
+        compactComponents: true, // Tries to further compact components (disconnected sub-graphs).
+        nodeLayering:'LONGEST_PATH', // Strategy for node layering.
+        /* NETWORK_SIMPLEX This algorithm tries to minimize the length of edges. This is the most computationally intensive algorithm. 
+        The number of iterations after which it aborts if it hasn't found a result yet can be set with the Maximal Iterations option.
+        LONGEST_PATH A very simple algorithm that distributes nodes along their longest path to a sink node.
+        INTERACTIVE Distributes the nodes into layers by comparing their positions before the layout algorithm was started. The idea is that the relative horizontal order of nodes as it was before layout was applied is not changed. This of course requires valid positions for all nodes to have been set on the input graph before calling the layout algorithm. The interactive node layering algorithm uses the Interactive Reference Point option to determine which reference point of nodes are used to compare positions. */
+        thoroughness: 10 // How much effort should be spent to produce a nice layout..
+      },
+    };
+    cy.layout({
+      name:'klay',
+      options
+    }).run();
+  }
+  else if(selectedLayout == "breadthfirst"){
+    cy.layout({
+        name: "breadthfirst",
+        spacingFactor: 0.5,
+        animate: animateLayout
+      }).run();
+  }
+  else if(selectedLayout == "dagre (default)"){
+    cy.layout({
+        name: "dagre",
+        animate: animateLayout
+      }).run();
+  }
+  else if(selectedLayout == "cose-bilkent"){
+    cy.layout({
+        name: "cose-bilkent",
+        // Gravity range (constant)
+        gravityRange: 1.3,
+        animate: true
+      }).run();
+  }
+  else if(selectedLayout == "grid"){
+    cy.layout({
+        name: "grid",
+        animate: animateLayout,
+        avoidOverlapPadding: 5
+      }).run();
+  }
+  else{
+    cy.layout({
+        name: "dagre",
+        animate: animateLayout
+      }).run();
+    document.getElementById('selectlayout').value = "dagre (default)";
+  }
+  if(pos == "Left"){
+    prevLayouLeftt = JSON.parse(JSON.stringify(selectedLayout));  
+  }
+  else if(pos == "Right"){
+    prevLayoutRight = JSON.parse(JSON.stringify(selectedLayout));
+  }
+}
+
+
+function highlightSearchedGene(){
+  var gene = document.getElementById('searchgene').value;
+  if(gene == ""){
+    graphLeft.$('node').style("border-width", 2); 
+    graphLeft.$('node[id = "l1"]').style("border-width", 1);  
+    graphRight.$('node').style("border-width", 2); 
+    graphRight.$('node[id = "l1"]').style("border-width", 1);  
+    document.getElementById('searchgene').value = "Search gene"
+  }
+  else if(graphLeft.$('node[symbol=\''  + gene + '\']').length>0 || graphRight.$('node[symbol=\''  + gene + '\']').length>0){
+    graphLeft.$('node').style("border-width", 2);
+    graphLeft.$('node[symbol =\''  + gene + '\']').style("border-width", 10);
+    graphLeft.$('node[id = "l1"]').style("border-width", 1);
+    graphRight.$('node').style("border-width", 2);
+    graphRight.$('node[symbol =\''  + gene + '\']').style("border-width", 10);
+    graphRight.$('node[id = "l1"]').style("border-width", 1);
+
+  }
+  else if(graphLeft.$('node[name =\''  + gene + '\']').length>0 || graphRight.$('node[name =\''  + gene + '\']').length>0){
+    graphRight.$('node').style("border-width", 2);
+    graphRight.$('node[name =\''  + gene + '\']').style("border-width", 10);
+    graphRight.$('node[id = "l1"]').style("border-width", 1);
+    graphRight.$('node').style("border-width", 2);
+    graphRight.$('node[name =\''  + gene + '\']').style("border-width", 10);
+    graphRight.$('node[id = "l1"]').style("border-width", 1);
+
+  }
+  else{
+    document.getElementById('searchgene').value = gene+" not found"
+  }
+}
+
+
 /* 
   download png of graph
 */
@@ -1069,8 +1182,10 @@ function downloadPNGLeft(){
     download.download = outputName + '.png';
   }
   else{
-    let filenameSplitLeft = left.split("/")
-    filenameSplitLeft = filenameSplitLeft[filenameSplitLeft.length-1].split('.')[0];
+    var reverse = left.split("").reverse().join("")
+    var reversesplit = reverse.split(".")
+    var reverseselect = reversesplit.slice(1,reversesplit.length).join("_").split("").reverse().join("");
+    let filenameSplitLeft = reverseselect
      fileName = path+ '_' + filenameSplitLeft;
      download.download = fileName + '_' + nodeVal + '.png';
   }
@@ -1085,8 +1200,10 @@ function downloadSVGLeft(){
     saveAs(new Blob([svgContent], {type:"image/svg+xml;charset=utf-8"}), outputName +".svg");
   }
   else{
-    let filenameSplitLeft = left.split("/")
-    filenameSplitLeft = filenameSplitLeft[filenameSplitLeft.length-1].split('.')[0];
+    var reverse = left.split("").reverse().join("")
+    var reversesplit = reverse.split(".")
+    var reverseselect = reversesplit.slice(1,reversesplit.length).join("_").split("").reverse().join("");
+    let filenameSplitLeft = reverseselect
      fileName = path+ '_' + filenameSplitLeft;
      saveAs(new Blob([svgContent], {type:"image/svg+xml;charset=utf-8"}), fileName + '_' + nodeVal + ".svg");
   }
@@ -1104,8 +1221,10 @@ function downloadPNGRight(){
     download.download = outputName + '.png';
   }
   else{
-    let filenameSplitRight = right.split("/")
-    filenameSplitRight = filenameSplitRight[filenameSplitRight.length-1].split('.')[0];
+    var reverse = right.split("").reverse().join("")
+    var reversesplit = reverse.split(".")
+    var reverseselect = reversesplit.slice(1,reversesplit.length).join("_").split("").reverse().join("");
+    let filenameSplitRight = reverseselect
      fileName = path+ '_' + filenameSplitRight;
      download.download = fileName + '_' + nodeVal + '.png';
   }
@@ -1120,8 +1239,10 @@ function downloadSVGRight(){
     saveAs(new Blob([svgContent], {type:"image/svg+xml;charset=utf-8"}), outputName +".svg");
   }
   else{
-    let filenameSplitRight = left.split("/")
-    filenameSplitRight = filenameSplitRight[filenameSplitRight.length-1].split('.')[0];
+    var reverse = right.split("").reverse().join("")
+    var reversesplit = reverse.split(".")
+    var reverseselect = reversesplit.slice(1,reversesplit.length).join("_").split("").reverse().join("");
+    let filenameSplitRight = reverseselect
      fileName = path+ '_' + filenameSplitRight;
      saveAs(new Blob([svgContent], {type:"image/svg+xml;charset=utf-8"}), fileName + '_' + nodeVal + ".svg");
   }
@@ -1143,7 +1264,7 @@ function downloadPDF() {
       document.getElementById('heatmapcontainer').remove();
       document.getElementById('selectAttribute').remove();
       document.getElementById('mergeButton').remove();
-      document.getElementById('outputName').remove();
+      document.getElementById('outputNameHeatmap').remove();
       document.getElementById('downloadPDF').remove();
       document.getElementById('resetLeft').remove();
       document.getElementById('downloadPartLeft').remove();
@@ -1156,7 +1277,7 @@ function downloadPDF() {
     var imgData = canvas.toDataURL('image/png');
 
     doc.addImage(imgData, 'PNG', 0, 0, width, height); 
-    outputName = document.getElementById('outputName').value;
+    outputName = document.getElementById('outputNameHeatmap').value;
     doc.save(outputName + '.pdf');
   });
 }
