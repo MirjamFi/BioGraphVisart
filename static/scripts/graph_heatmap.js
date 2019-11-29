@@ -598,53 +598,46 @@ async function listKEGGPathways(pos, nodesList){
       document.getElementById('KEGGpaths'+pos).style.visibility="visible";
       document.getElementById('loader'+pos).style.visibility = "visible";
       var pathsCount = [];
-      var allPaths = {};
-      for(var n in nodesList){
-        if(nodesList[n]["data"] && nodesList[n]["data"]["symbol"]!="legend" && nodesList[n]["data"]["symbol"]!=leftID
-          && nodesList[n]["data"]["symbol"]!=rightID){
-          if(nodesList[n]["data"]["entrezID"]){
-            var entrezID = nodesList[n]["data"]["entrezID"].toString();
+      allPaths = [];
+      colorschemePaths = [];
+      for(var n of nodes){
+        if(n["data"]["symbol"]!="legend"){
+          if(n["data"]["entrezID"] != undefined){
+            var entrezID = n["data"]["entrezID"].toString();
           }
-          else if(nodesList[n]["data"]["entrez"]){
-            var entrezID = nodesList[n]["data"]["entrez"].toString();
+          else if(n["data"]["entrez"] != undefined){
+            var entrezID = n["data"]["entrez"].toString();            
           }
-          var keggpaths = await getPathwaysFromKEGG(entrezID);
-          keggpaths = keggpaths.split("\n");
-          var i = 0;
-          var searchPattern = new RegExp(/^\s* hsa/);
-
-          while(i <= keggpaths.length - 1){
-            if(keggpaths[i].startsWith("PATHWAY")){
-              let p = keggpaths[i].split("PATHWAY")[1].trim()
-              if(typeof allPaths[p] == 'undefined'){
-                allPaths[p]=[];
+          let keggpaths = await getPathwaysFromKEGG(entrezID);
+          keggpaths = keggpaths.split("\n")
+          var line = 0;
+          while(line < keggpaths.length){
+            if(keggpaths[line].includes("<nobr>Pathway</nobr>")){
+              line++;
+              var splitarray =keggpaths[line].split("</td>")
+              for(var i = 1; i < splitarray.length-2; i=i+2){
+                let hsa = "hsa"+splitarray[i-1].split(">hsa")[1].split("</a>")[0]
+                let p = splitarray[i].split("<td>")[1]
+                p = hsa+" "+p;
+                if(p != undefined){
+                  if(typeof allPaths[p] == 'undefined'){
+                    allPaths[p]=[];
+                  }
+                  allPaths[p].push(entrezID);
+                  if(isNaN(pathsCount[p])){
+                    pathsCount[p]=1; 
+                  }
+                  else{
+                    pathsCount[p]=pathsCount[p]+1;
+                  }
+                }
               }
-              allPaths[p].push(entrezID);
-              if(isNaN(pathsCount[p])){
-                pathsCount[p]=1; 
-              }
-              else{
-                pathsCount[p]=pathsCount[p]+1;
-              }
-            }
-            else if(searchPattern.test(keggpaths[i])){
-              let p = keggpaths[i].trim();
-              if(typeof allPaths[p] == 'undefined'){
-                allPaths[p]=[];
-              }
-              allPaths[p].push(entrezID);
-              if(isNaN(pathsCount[p])){
-                pathsCount[p]=1; 
-              }
-              else{
-                pathsCount[p]=pathsCount[p]+1;
-              }
-            }
-            else if(keggpaths[i].startsWith("MODULE")){
               break;
+            } 
+            else{
+              line++;
             }
-            i++;
-            }
+          }
         }
       }
       if(pos == "Left"){
@@ -661,6 +654,7 @@ async function listKEGGPathways(pos, nodesList){
         return { key: key, value: this[key] };}, pathsCount);
       props = props.sort(function(p1, p2) { return p2.value - p1.value; });
       var topFive = props.slice(0, 5);
+      console.log(topFive)
       //show table of pathways
       var tbody = document.getElementById("KEGGpaths"+pos);
       var htmlString ="<form id='form"+pos+"'> <h3>KEGG Pathways:</h3><br>";
