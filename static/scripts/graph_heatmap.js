@@ -600,7 +600,7 @@ async function listKEGGPathways(pos, nodesList){
       var pathsCount = [];
       allPaths = [];
       colorschemePaths = [];
-      for(var n of nodes){
+      for(var n of nodesList){
         if(n["data"]["symbol"]!="legend"){
           if(n["data"]["entrezID"] != undefined){
             var entrezID = n["data"]["entrezID"].toString();
