@@ -27,7 +27,7 @@ var ctx;
 var defaultVal = false;
 
 function isJsonFile(){
-    document.getElementById('loader1').style.visibility = "visible";
+  document.getElementById('loader1').style.visibility = "visible";
   var file = document.getElementById('fileName').files[0];
   if(file == undefined){
     alert("No file given.")
@@ -82,6 +82,9 @@ function cleanSelections(){
   var searchbutn = document.getElementById("searchbutn")
   if(searchbutn){
     searchbutn.parentNode.removeChild(searchbutn); }
+  var undobutn = document.getElementById("undobutn")
+    if(undobutn){
+      undobutn.parentNode.removeChild(undobutn); }
   noOptn = true;
   noDrpShapes = true;
   nodeVal = undefined;
@@ -404,6 +407,14 @@ function loadFile() {
   document.getElementById("configPart").appendChild(searchbutn);
   document.getElementById("searchbutn").className = 'butn';  
   searchbutn.onclick = highlightSearchedGene;
+
+
+  var undobutn = document.createElement("button");
+  undobutn.id = "undobutn";
+  undobutn.innerHTML = "Undo delete";
+  document.getElementById("configPart").appendChild(undobutn);
+  document.getElementById("undobutn").className = 'butn';  
+  undobutn.onclick = undoDeletion;
 
   if(! isJson){
     // get attributes for coloring -> double/boolean and shape -> boolean

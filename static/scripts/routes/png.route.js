@@ -21,3 +21,4 @@ png.get('/', async (req, res) => {
 module.exports = {
   png,
 };
+
