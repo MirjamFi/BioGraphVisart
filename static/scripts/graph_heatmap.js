@@ -725,19 +725,29 @@ async function listKEGGPathways(pos, nodesList){
   }
 }
 
-// get pathways of selected gene from kegg using entrez id
-async function getPathwaysFromKEGG(name){ 
-  var responsetxt;
-  var xhr = new XMLHttpRequest();
-  xhr.open('GET', "http://rest.kegg.jp/get/hsa:" + name, false);
-  
-  xhr.onload = function () {
-    paths = xhr.responseText;
-   }
-
-  xhr.send(document);
-  return paths;
-}
+async function getPathwaysFromKEGG(name) {
+     return new Promise(function (resolve, reject) {
+         let xhr = new XMLHttpRequest();
+         xhr.open('GET', "https://www.kegg.jp/entry/hsa:" + name);
+         xhr.onload = function () {
+             if (this.status >= 200 && this.status < 300) {
+                 resolve(xhr.response);
+             } else {
+                 reject({
+                     status: this.status,
+                     statusText: xhr.statusText
+                 });
+             }
+         };
+         xhr.onerror = function () {
+             reject({
+                 status: this.status,
+                 statusText: xhr.statusText
+             });
+         };
+         xhr.send();
+     });
+ }
 
 //calculate distance between two nodes
 Math.getDistance = function( x1, y1, x2, y2 ) {
