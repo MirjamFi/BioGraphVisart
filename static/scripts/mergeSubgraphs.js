@@ -247,5 +247,5 @@ function merge(){
 function clickMerge(){
 	leftID = document.getElementById('leftID').innerHTML;
     rightID = document.getElementById('rightID').innerHTML;
-    window.open('/BioGraphVisart/merge');
+    window.open('../merge');
 }
