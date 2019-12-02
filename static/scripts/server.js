@@ -19,6 +19,12 @@ app.get('/BioGraphVisart/about',function(req,res){
 app.get('/BioGraphVisart/heatmap',function(req,res){
   res.sendFile(path.resolve('../../templates/heatmap.html'));
 });
+app.get('/datenschutzerklarung',function(req,res){
+  res.sendFile(path.resolve('../../templates/datenschutzerklarung.html'));
+});
+app.get('/imprint',function(req,res){
+  res.sendFile(path.resolve('../../templates/imprint.html'));
+});
 
 app.get('/foundFilesInDirectory', function(req,res){
     var startPath = '../../'+req.query.directory;
