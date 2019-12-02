@@ -9,14 +9,14 @@ var foundFiles = [];
 var prevdirectory = "";
 app.use(express.static('../../'));
 
-app.get('/',function(req,res){
-  res.sendFile(path.resolve('../../templates/subgraphVisualization.html'));
+app.get('/BioGraphVisart',function(req,res){
+  res.sendFile(path.resolve('../../templates/BioGraphVisart.html'));
 });
 
-app.get('/about',function(req,res){
+app.get('/BioGraphVisart/about',function(req,res){
   res.sendFile(path.resolve('../../templates/about.html'));
 });
-app.get('/heatmap',function(req,res){
+app.get('/BioGraphVisart/heatmap',function(req,res){
   res.sendFile(path.resolve('../../templates/heatmap.html'));
 });
 
@@ -32,11 +32,11 @@ app.get('/foundFilesInDirectory', function(req,res){
     }
 })
 var mergedGraph;
-app.post('/merge', function(req, res){
+app.post('/BioGraphVisart/merge', function(req, res){
 	mergedGraph = req.body;
 	res.send(mergedGraph)
 })
-app.get('/merge', function(req, res){
+app.get('/BioGraphVisart/merge', function(req, res){
 	res.sendFile(path.resolve('../../templates/merge.html'));
 })
 
