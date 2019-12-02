@@ -1276,6 +1276,11 @@ function downloadPDF() {
       document.getElementById('dataPart').remove();
       document.getElementById("legend_heatmap").style.top = 200 +"px";
       document.getElementById('nav').style.visibility = 'hidden'
+      document.getElementById('footer').style.visibility = 'hidden'
+      document.getElementById('searchbutton').style.visibility = 'hidden'
+      if(document.getElementById('searchgene').value == "Search gene"){
+        document.getElementById('searchgene').style.visibility = 'hidden'
+      }
     }}).then(function(canvas){
     var imgData = canvas.toDataURL('image/png');
 
