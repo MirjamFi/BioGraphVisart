@@ -102,12 +102,12 @@ function getTextWidth(text, font) {
 } 
 
 
-const getNodeValueRange = (nodes) => {
+function getNodeValueRange(nodes){
   const nodesFilteredNaN = nodes.filter(node => node.data.val);
   const nodesMin = parseFloat(Math.min(...(nodesFilteredNaN.map(node => node.data.val)))).toFixed(2);
   const nodesMax = parseFloat(Math.max(...(nodesFilteredNaN.map(node => node.data.val)))).toFixed(2);
   return [nodesMin, nodesMax];
-};
+}
 
 function getmergedGraph(nodesL, nodesR, edgesL, edgesR){
 	var nodes1 = JSON.parse(JSON.stringify(nodesL));
