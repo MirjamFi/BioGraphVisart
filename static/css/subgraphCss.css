@@ -1,6 +1,9 @@
 body {
   font-family: helvetica neue, helvetica, liberation sans, arial, sans-serif;
   font-size: 14px;
+  height:100%;
+  display: flex;
+  flex-direction: column;
 }
 
 a{
@@ -87,6 +90,9 @@ h1 {
   text-decoration: none;
 }
 
+#resetMerge{
+  width:120px;
+}
 select {
   cursor: pointer;
 }
@@ -108,7 +114,7 @@ input:hover{
       width: 71.5%;
       /*height: 75%;*/
       position: absolute;
-      top: 250px;
+      top: 265px;
       left: 190px;
       bottom: 15px;
       background-color:none;
@@ -121,7 +127,6 @@ input:hover{
 #legend {
     position: absolute;
     top: 280px;
-heatmap
     left: 10px;
     font-size: 11px;
     width: 180px;
@@ -129,7 +134,7 @@ heatmap
 }
 #legendNodes {
     position: absolute;
-    top: 540px;
+    top: 560px;
     left: 10px;
     font-size: 11px;
     width: 180px;
@@ -147,18 +152,18 @@ heatmap
   left:86%;
 }
 #keggpathways{
-    position: absolute;
+  position: absolute;
   top: 320px;
   left:86%;
 }
 #keggpathwaysMerge{
-    position: absolute;
-  top: 120px;
+  position: absolute;
+  top: 148px;
   left:86%;
 }
 #KEGGpathsMerge{
-    position: absolute;
-  top: 150px;
+  position: absolute;
+  top: 170px;
   left:86%;
 }
 
@@ -253,13 +258,15 @@ heatmap
     margin: 0% 10% 5% 0%;
 }
  #merged_graph {
-      width: 60%;
+      width: 65%;
       /*height: 75%;*/
       position: absolute;
-      top: 180px;
+      top: 200px;
       left: 280px;
       bottom: 15px;
+      max-height : 80%;
       background-color:none;
+      flex: 1;
 }
 
 #legend_heatmap {
@@ -282,7 +289,7 @@ heatmap
 
 #merged_graph_buttons{
     position: relative;
-    margin: 20px 10px 10px 10px;
+    margin: 0px 10px 10px 10px;
 }
 
 #selectlayoutMerged{
@@ -302,15 +309,37 @@ heatmap
   color: white;
 }
 
-/** Site footer */
-.site-footer { border-top: 1px solid #e8e8e8; padding: 30px 0; position: absolute; bottom: 0;}
-
-.footer-heading { font-size: 18px; margin-bottom: 15px; }
-
-footer {
-  position: fixed;
-  padding: 10px;
-  bottom: 0;
-  left: 0;
-  right: 0;
+.csc-default{
+  flex: 1;
 }
+
+.entry-content{
+  flex: 1;
+}
+
+.content{
+  flex: 1;
+}
+
+footer 
+{
+  background: #BDBDBD;
+  color: white;
+}
+
+.container {
+  margin: 1em auto;
+  max-width: 100%;
+  padding: 0 1em;
+}
+
+.containerMerged {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 1em 1em;
+  margin: 0.5em auto;
+  background: #BDBDBD;
+  color: white;
+}
+

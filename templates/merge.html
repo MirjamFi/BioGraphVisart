@@ -49,7 +49,6 @@
     </head>
 
     <body>
-
         <div class="topnav" id ="nav">
 
         <div class="topnav-left">
@@ -76,13 +75,11 @@
     </script>
     <h1>Merged Graph</h1>
 
-    <p id="description"> 
             <div id = "merged_graph_buttons"></div>   
 
-    </p>
     <div class="loader" id="loader" style="display: none;"></div>
     </div>
-    <table >
+    <table style="width: 50px">
       <tr>
         <td>
           <span style="font-size:15px" ><b>Interactions</b></span> 
@@ -92,7 +89,7 @@
         </td>
       </tr>
     </table>
-    <table id="arrows">
+    <table style="width: 250px"id="arrows">
           <tr>
             <td>Activation, Expression</td>
             <td><img width='40' height='30' alt='activation_expression.svg' src='data:image/svg+xml;base64,
@@ -2367,12 +2364,12 @@ nPgo8L3N2Zz4K'>
       </tr>
     </table>
       </div>
-    </div>
-    <p></p>
-    <button class= 'butn' id='resetMerge' onclick=resetLayout()>Reset layout</button>
-    <div align="left" id = "merged_graph"></div>
 
     <p></p>
+    <button class= 'butn' id='resetMerge' onclick='resetLayout()'>Reset layout</button>
+        <div class="content">
+
+    <div align="left" id = "merged_graph"></div>
     <div id="merged_graph_legend" class="center-div" style="visibility: hidden;"></div>
     <div align="right" class="KEGGpathsbutton" id="KEGGpathsButtonMerge" style="visibility: hidden">
         <button class= 'butn' class="butn" id="keggpathwaysMerge" >Show KEGG Pathways</button></p>
@@ -2381,22 +2378,12 @@ nPgo8L3N2Zz4K'>
 
     </div>
     <script type="text/javascript">createMerged()</script>
-
-        <footer >
-    <div class="site-info">         
-        <div id="copyright-widget">
-            <section id="nav_menu-3" class="widget widget_nav_menu"><div class="menu-imprint_menu-container">
-                <ul id="menu-imprint_menu" class="menu">
-                    <li id="menu-item-429" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-429"><a href="/imprint/">Imprint</a></li>
-                    <li id="menu-item-507" class="menu-item menu-item-type-post_type menu-item-object-page current-menu-item page_item page-item-504 current_page_item menu-item-507"><a href="/datenschutzerklarung/" aria-current="page">Datenschutzerklärung</a></li>
-                </ul>
-            </section>  
-        </div>          
-    </div>
-
-    <div class="site-info-2">
-    </div>
-        
+</div>
+<footer>
+    <div class="containerMerged">
+        <a href="/imprint/">Imprint</a><br>
+        <a href="/datenschutzerklarung/" aria-current="page">Datenschutzerklärung</a>   
+    </div>  
 </footer>
     </body>
 
