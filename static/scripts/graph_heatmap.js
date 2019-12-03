@@ -1294,21 +1294,21 @@ reset view (zoom, position)
 */
 function resetLeft(){
   graphLeft.layout({
-      name: 'dagre',
+      name: document.getElementById('selectlayoutLeft').value;,
     }).run();
   highlightedNode.getsymbol;
 };
 
 function resetRight(){
   graphRight.layout({
-      name: 'dagre',
+      name: document.getElementById('selectlayoutRight').value;
     }).run();
   highlightedNode.getsymbol;
 };
 
 function resetMerge(){
   merge_graph.cy.layout({
-      name: 'dagre',
+      name: document.getElementById('selectlayoutMerge').value;
     }).run();
   highlightedNode.getsymbol;
 };
