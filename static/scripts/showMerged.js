@@ -191,7 +191,7 @@ var cystyle =  [
 
       // layout dropdown
     var drpLayout = document.createElement("select");
-    drpLayout.id = "selectlayoutMerged";
+    drpLayout.id = "selectlayoutMerge";
     drpLayout.name = "selectlayout";
     document.getElementById("merged_graph_buttons").appendChild(drpLayout);
     drpLayout.style.visibility = "visible";
@@ -383,17 +383,10 @@ var searchgene = document.createElement("input");
 
 }
 
-function resetLayout(){
-    merge_graph.layout({
-    name: 'dagre',
-	}).run();
-
-}
-
 var prevLayout = "";
 function changeLayoutMerged(){
   var animateLayout = true;
-  var selectedLayout = document.getElementById('selectlayoutMerged').value;
+  var selectedLayout = document.getElementById('selectlayoutMerge').value;
   if(prevLayout == selectedLayout){
     animateLayout = false;
   }
@@ -449,7 +442,7 @@ function changeLayoutMerged(){
         name: "dagre",
         animate: animateLayout
       }).run();
-    document.getElementById('selectlayoutMerged').value = "dagre (default)";
+    document.getElementById('selectlayoutMerge').value = "dagre (default)";
   }
   prevLayout = JSON.parse(JSON.stringify(selectedLayout));
 }

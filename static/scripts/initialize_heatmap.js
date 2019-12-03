@@ -15,7 +15,8 @@ var ctxMerge;
 var highlightedNode = {
   symbol: '',
   get getsymbol() { 
-    graphLeft.style().selector('node[symbol="'+this.symbol+'"]').style('border-width', 2).style('height', 50).style('width', 50).update();
+    if(graphLeft){
+    graphLeft.style().selector('node[symbol="'+this.symbol+'"]').style('border-width', 2).style('height', 50).style('width', 50).update();}
     if(graphRight){
     graphRight.style().selector('node[symbol="'+this.symbol+'"]').style('border-width', 2).style('height', 50).style('width', 50).update();}
     if(merge_graph)
