@@ -1430,9 +1430,16 @@ function downloadPDF () {
       document.getElementById('description').style.visibility = 'hidden'
       document.getElementById('loadGraphml').style.visibility = 'hidden'
       document.getElementById('keggpathways').style.visibility = 'hidden'
+      document.getElementById('footer').style.visibility = 'hidden'
+      document.getElementById('searchbutn').style.visibility = 'hidden'
+      document.getElementById('undobutn').style.visibility = 'hidden'
+      document.getElementById('exampleFile').style.visibility = 'hidden'
       if(!noDrpShapes){
         document.getElementById('nodeShapesAttr').style.visibility = 'hidden'
         document.getElementById('nodeShapes').style.visibility = 'hidden'
+      }
+      if(document.getElementById('searchgene').value == "Search gene"){
+        document.getElementById('searchgene').style.visibility = 'hidden'
       }
     }}).then(function(canvas){
     var imgData = canvas.toDataURL('image/png');

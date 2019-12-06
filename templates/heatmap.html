@@ -47,16 +47,17 @@
     </head>
 
     <body>
+       <div class="content"> 
+        <div class="topnav" id ="nav">
 
-    <div class="topnav" id="nav">
         <div class="topnav-left">
-            <a class="page-link active" href="/heatmap/">Heatmap</a>
+            <a class="page-link active" href="/BioGraphVisart/heatmap">Heatmap</a>
         </div>
         <div class="topnav-centered">
-            <a class="page-link" href="/">BioGraphVisart</a>
+            <a class="page-link" href="/BioGraphVisart">BioGraphVisart</a>
         </div>
         <div class="topnav-right">
-            <a class="page-link" href="/about/">About</a>
+            <a class="page-link" href="/BioGraphVisart/about">About</a>
         </div>
     </div>
     <script>
@@ -73,7 +74,7 @@
     </script>
     <h1>Graph comparison</h1>
 
-    <p id="description">Generate heatmap for graph overlap for (unique named) .graphml-files. Folder with files has to be in the main folder of this program. 
+    <p id="description">Generate heatmap for node overlap from .graphml-files.
     </p>
     <div id="dataPart">
         <input type="file" accept=".graphml" id="fileName" name="file" multiple/>
@@ -2395,7 +2396,7 @@ nPgo8L3N2Zz4K'>
             </div>
         </div>
         <div id="resetLeft" style="visibility: hidden">
-          <button class= 'butn' id="resetLeftLayout" onclick="resetLeft()">Reset layout</button>
+          <button class= 'butn' id="resetLeftLayout" onclick="resetLayout(graphLeft, 'Left')">Reset layout</button>
           <select id ="selectlayoutLeft" onchange="changeLayout(graphLeft, 'Left', prevLayoutLeft)">Select Layout</select>
         </div>
         <div id="downloadPartLeft" style="visibility: hidden">
@@ -2414,7 +2415,7 @@ nPgo8L3N2Zz4K'>
             </div>
         </div>
         <div id="resetRight" style="visibility: hidden">
-          <button class = "butn" id="resetRightLayout" onclick="resetRight()">Reset layout</button>
+          <button class = "butn" id="resetRightLayout" onclick="resetLayout(graphRight, 'Right')">Reset layout</button>
           <select id ="selectlayoutRight" onchange="changeLayout(graphRight, 'Right', prevLayoutRight)">Select Layout</select>
         </div>
         <div id="downloadPartRight" style="visibility: hidden">
@@ -2424,6 +2425,14 @@ nPgo8L3N2Zz4K'>
         </div>
         <div class="clear"></div>
     </div>
+<p></p>
+</div> 
+<footer id="footer">
+    <div class="container">
+        <a href="/imprint/">Imprint</a><br>
+        <a href="/datenschutzerklarung/" aria-current="page">Datenschutzerklärung</a>   
+    </div>  
+</footer>
 </body>
 
 

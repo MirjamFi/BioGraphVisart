@@ -598,53 +598,46 @@ async function listKEGGPathways(pos, nodesList){
       document.getElementById('KEGGpaths'+pos).style.visibility="visible";
       document.getElementById('loader'+pos).style.visibility = "visible";
       var pathsCount = [];
-      var allPaths = {};
-      for(var n in nodesList){
-        if(nodesList[n]["data"] && nodesList[n]["data"]["symbol"]!="legend" && nodesList[n]["data"]["symbol"]!=leftID
-          && nodesList[n]["data"]["symbol"]!=rightID){
-          if(nodesList[n]["data"]["entrezID"]){
-            var entrezID = nodesList[n]["data"]["entrezID"].toString();
+      allPaths = [];
+      colorschemePaths = [];
+      for(var n of nodesList){
+        if(n["data"]["symbol"]!="legend"){
+          if(n["data"]["entrezID"] != undefined){
+            var entrezID = n["data"]["entrezID"].toString();
           }
-          else if(nodesList[n]["data"]["entrez"]){
-            var entrezID = nodesList[n]["data"]["entrez"].toString();
+          else if(n["data"]["entrez"] != undefined){
+            var entrezID = n["data"]["entrez"].toString();            
           }
-          var keggpaths = await getPathwaysFromKEGG(entrezID);
-          keggpaths = keggpaths.split("\n");
-          var i = 0;
-          var searchPattern = new RegExp(/^\s* hsa/);
-
-          while(i <= keggpaths.length - 1){
-            if(keggpaths[i].startsWith("PATHWAY")){
-              let p = keggpaths[i].split("PATHWAY")[1].trim()
-              if(typeof allPaths[p] == 'undefined'){
-                allPaths[p]=[];
+          let keggpaths = await getPathwaysFromKEGG(entrezID);
+          keggpaths = keggpaths.split("\n")
+          var line = 0;
+          while(line < keggpaths.length){
+            if(keggpaths[line].includes("<nobr>Pathway</nobr>")){
+              line++;
+              var splitarray =keggpaths[line].split("</td>")
+              for(var i = 1; i < splitarray.length-2; i=i+2){
+                let hsa = "hsa"+splitarray[i-1].split(">hsa")[1].split("</a>")[0]
+                let p = splitarray[i].split("<td>")[1]
+                p = hsa+" "+p;
+                if(p != undefined){
+                  if(typeof allPaths[p] == 'undefined'){
+                    allPaths[p]=[];
+                  }
+                  allPaths[p].push(entrezID);
+                  if(isNaN(pathsCount[p])){
+                    pathsCount[p]=1; 
+                  }
+                  else{
+                    pathsCount[p]=pathsCount[p]+1;
+                  }
+                }
               }
-              allPaths[p].push(entrezID);
-              if(isNaN(pathsCount[p])){
-                pathsCount[p]=1; 
-              }
-              else{
-                pathsCount[p]=pathsCount[p]+1;
-              }
-            }
-            else if(searchPattern.test(keggpaths[i])){
-              let p = keggpaths[i].trim();
-              if(typeof allPaths[p] == 'undefined'){
-                allPaths[p]=[];
-              }
-              allPaths[p].push(entrezID);
-              if(isNaN(pathsCount[p])){
-                pathsCount[p]=1; 
-              }
-              else{
-                pathsCount[p]=pathsCount[p]+1;
-              }
-            }
-            else if(keggpaths[i].startsWith("MODULE")){
               break;
+            } 
+            else{
+              line++;
             }
-            i++;
-            }
+          }
         }
       }
       if(pos == "Left"){
@@ -725,19 +718,29 @@ async function listKEGGPathways(pos, nodesList){
   }
 }
 
-// get pathways of selected gene from kegg using entrez id
-async function getPathwaysFromKEGG(name){ 
-  var responsetxt;
-  var xhr = new XMLHttpRequest();
-  xhr.open('GET', "http://rest.kegg.jp/get/hsa:" + name, false);
-  
-  xhr.onload = function () {
-    paths = xhr.responseText;
-   }
-
-  xhr.send(document);
-  return paths;
-}
+async function getPathwaysFromKEGG(name) {
+     return new Promise(function (resolve, reject) {
+         let xhr = new XMLHttpRequest();
+         xhr.open('GET', "https://www.kegg.jp/entry/hsa:" + name);
+         xhr.onload = function () {
+             if (this.status >= 200 && this.status < 300) {
+                 resolve(xhr.response);
+             } else {
+                 reject({
+                     status: this.status,
+                     statusText: xhr.statusText
+                 });
+             }
+         };
+         xhr.onerror = function () {
+             reject({
+                 status: this.status,
+                 statusText: xhr.statusText
+             });
+         };
+         xhr.send();
+     });
+ }
 
 //calculate distance between two nodes
 Math.getDistance = function( x1, y1, x2, y2 ) {
@@ -1121,7 +1124,7 @@ function changeLayout(cy, pos, prevLayout){
         name: "dagre",
         animate: animateLayout
       }).run();
-    document.getElementById('selectlayout').value = "dagre (default)";
+    document.getElementById('selectlayout'+pos).value = "dagre (default)";
   }
   if(pos == "Left"){
     prevLayouLeftt = JSON.parse(JSON.stringify(selectedLayout));  
@@ -1273,6 +1276,11 @@ function downloadPDF() {
       document.getElementById('dataPart').remove();
       document.getElementById("legend_heatmap").style.top = 200 +"px";
       document.getElementById('nav').style.visibility = 'hidden'
+      document.getElementById('footer').style.visibility = 'hidden'
+      document.getElementById('searchbutton').style.visibility = 'hidden'
+      if(document.getElementById('searchgene').value == "Search gene"){
+        document.getElementById('searchgene').style.visibility = 'hidden'
+      }
     }}).then(function(canvas){
     var imgData = canvas.toDataURL('image/png');
 
@@ -1284,24 +1292,64 @@ function downloadPDF() {
 /*
 reset view (zoom, position)
 */
-function resetLeft(){
-  graphLeft.layout({
-      name: 'dagre',
+function resetLayout(cy, pos){
+var animateLayout = true;
+  var selectedLayout = document.getElementById('selectlayout' + pos).value;
+  if(selectedLayout == "klay"){
+    var options = {
+      animate: animateLayout, // Whether to transition the node positions
+      klay: {
+        aspectRatio: 1.49, // The aimed aspect ratio of the drawing, that is the quotient of width by height
+        compactComponents: true, // Tries to further compact components (disconnected sub-graphs).
+        nodeLayering:'LONGEST_PATH', // Strategy for node layering.
+        /* NETWORK_SIMPLEX This algorithm tries to minimize the length of edges. This is the most computationally intensive algorithm. 
+        The number of iterations after which it aborts if it hasn't found a result yet can be set with the Maximal Iterations option.
+        LONGEST_PATH A very simple algorithm that distributes nodes along their longest path to a sink node.
+        INTERACTIVE Distributes the nodes into layers by comparing their positions before the layout algorithm was started. The idea is that the relative horizontal order of nodes as it was before layout was applied is not changed. This of course requires valid positions for all nodes to have been set on the input graph before calling the layout algorithm. The interactive node layering algorithm uses the Interactive Reference Point option to determine which reference point of nodes are used to compare positions. */
+        thoroughness: 10 // How much effort should be spent to produce a nice layout..
+      },
+    };
+    cy.layout({
+      name:'klay',
+      options
     }).run();
+  }
+  else if(selectedLayout == "breadthfirst"){
+    cy.layout({
+        name: "breadthfirst",
+        spacingFactor: 0.5,
+        animate: animateLayout
+      }).run();
+  }
+  else if(selectedLayout == "dagre (default)"){
+    cy.layout({
+        name: "dagre",
+        animate: animateLayout
+      }).run();
+  }
+  else if(selectedLayout == "cose-bilkent"){
+    cy.layout({
+        name: "cose-bilkent",
+        // Gravity range (constant)
+        gravityRange: 1.3,
+        animate: true
+      }).run();
+  }
+  else if(selectedLayout == "grid"){
+    cy.layout({
+        name: "grid",
+        animate: animateLayout,
+        avoidOverlapPadding: 5
+      }).run();
+  }
+  else{
+    cy.layout({
+        name: "dagre",
+        animate: animateLayout
+      }).run();
+    document.getElementById('selectlayout'+pos).value = "dagre (default)";
+  }
   highlightedNode.getsymbol;
 };
 
-function resetRight(){
-  graphRight.layout({
-      name: 'dagre',
-    }).run();
-  highlightedNode.getsymbol;
-};
-
-function resetMerge(){
-  merge_graph.cy.layout({
-      name: 'dagre',
-    }).run();
-  highlightedNode.getsymbol;
-};
 

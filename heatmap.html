@@ -1,6 +1,7 @@
 <!doctype html>
 <html>
     <head>
+        <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> 
         <title>BioGraphVisart Comparison</title>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -15,7 +16,7 @@
         <script type="application/javascript" src="https://rawcdn.githack.com/MirjamFi/BioGraphVisart/1ebdad7d2d5ee59906b8c89227d3f92e0288bbb5/static/scripts/html2canvas.min.js"></script>
 
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/qtip2/3.0.3/basic/jquery.qtip.css">
-        <link rel="stylesheet" type="text/css" href="hhttps://raw.githack.com/MirjamFi/BioGraphVisart/master/static/css/subgraphCss.css">
+        <link rel="stylesheet" type="text/css" href="https://rawcdn.githack.com/MirjamFi/BioGraphVisart/ad732af3a87dda2c70ad9b0516a369eda84dede4/static/css/subgraphCss.css">
 
         <script type="application/javascript" src="https://rawcdn.githack.com/MirjamFi/BioGraphVisart/1ebdad7d2d5ee59906b8c89227d3f92e0288bbb5/static/scripts/cytoscape.js"></script> 
         <script type="application/javascript" src="https://rawcdn.githack.com/MirjamFi/BioGraphVisart/1ebdad7d2d5ee59906b8c89227d3f92e0288bbb5/static/scripts/cytoscape-qtip.js"></script>  
@@ -32,13 +33,12 @@
         <script type="text/javascript" src="https://rawcdn.githack.com/MirjamFi/BioGraphVisart/0316eb87bb53c839c9f032eb847bf6c6a45e994c/static/scripts/jquery.csv.js"></script> 
 
         <script data-main="https://rawcdn.githack.com/MirjamFi/BioGraphVisart/0316eb87bb53c839c9f032eb847bf6c6a45e994c/static/scripts/initialize_heatmap" src="https://rawcdn.githack.com/MirjamFi/BioGraphVisart/1ebdad7d2d5ee59906b8c89227d3f92e0288bbb5/static/scripts/node_modules/requirejs/require.js"></script>
-        <script type="text/javascript" src="https://rawcdn.githack.com/MirjamFi/BioGraphVisart/0316eb87bb53c839c9f032eb847bf6c6a45e994c/static/scripts/initialize_heatmap.js"></script>
+        <script type="text/javascript" src="https://rawcdn.githack.com/MirjamFi/BioGraphVisart/ad732af3a87dda2c70ad9b0516a369eda84dede4/static/scripts/initialize_heatmap.js"></script>
         <script type="text/javascript" src="https://rawcdn.githack.com/MirjamFi/BioGraphVisart/0316eb87bb53c839c9f032eb847bf6c6a45e994c/static/scripts/legend.js"></script>
 
         <script type="text/javascript" src="https://raw.githack.com/MirjamFi/BioGraphVisart/master/static/scripts/icons.js"></script>
-        <script type="text/javascript" src="https://rawcdn.githack.com/MirjamFi/BioGraphVisart/0316eb87bb53c839c9f032eb847bf6c6a45e994c/static/scripts/graph_heatmap.js"></script>
-
-        <script type="text/javascript" src="https://rawcdn.githack.com/MirjamFi/BioGraphVisart/0316eb87bb53c839c9f032eb847bf6c6a45e994c/static/scripts/mergeSubgraphs.js"></script>
+        <script type="text/javascript" src="https://rawcdn.githack.com/MirjamFi/BioGraphVisart/ad732af3a87dda2c70ad9b0516a369eda84dede4/static/scripts/graph_heatmap.js"></script>
+        <script type="text/javascript" src="https://rawcdn.githack.com/MirjamFi/BioGraphVisart/60940ded862d70095c4b6b0c25b2301ec1bfa80f/static/scripts/mergeSubgraphs.js"></script>
 
         <script type="text/javascript" src="https://rawcdn.githack.com/MirjamFi/BioGraphVisart/0316eb87bb53c839c9f032eb847bf6c6a45e994c/static/scripts/heatmapSubgraphs.js"></script>
 
@@ -47,7 +47,7 @@
     </head>
 
     <body>
-
+ <div class="content"> 
     <div class="topnav" id="nav">
         <div class="topnav-left">
             <a class="page-link active" href="heatmap">Heatmap</a>
@@ -73,7 +73,7 @@
     </script>
     <h1>Graph comparison</h1>
 
-    <p id="description">Generate heatmap for graph overlap for (unique named) .graphml-files. Folder with files has to be in the main folder of this program. 
+    <p id="description">Generate heatmap for node overlap for .graphml-files.
     </p>
     <div id="dataPart">
         <input type="file" accept=".graphml" id="fileName" name="file" multiple/>
@@ -2395,7 +2395,7 @@ nPgo8L3N2Zz4K'>
             </div>
         </div>
         <div id="resetLeft" style="visibility: hidden">
-          <button class= 'butn' id="resetLeftLayout" onclick="resetLeft()">Reset layout</button>
+          <button class= 'butn' id="resetLeftLayout" onclick="resetLayout(graphLeft, 'Left')">Reset layout</button>
           <select id ="selectlayoutLeft" onchange="changeLayout(graphLeft, 'Left', prevLayoutLeft)">Select Layout</select>
         </div>
         <div id="downloadPartLeft" style="visibility: hidden">
@@ -2414,7 +2414,7 @@ nPgo8L3N2Zz4K'>
             </div>
         </div>
         <div id="resetRight" style="visibility: hidden">
-          <button class = "butn" id="resetRightLayout" onclick="resetRight()">Reset layout</button>
+          <button class = "butn" id="resetRightLayout" onclick="resetLayout(graphRight, 'Right')">Reset layout</button>
           <select id ="selectlayoutRight" onchange="changeLayout(graphRight, 'Right', prevLayoutRight)">Select Layout</select>
         </div>
         <div id="downloadPartRight" style="visibility: hidden">
@@ -2424,6 +2424,14 @@ nPgo8L3N2Zz4K'>
         </div>
         <div class="clear"></div>
     </div>
+    <p></p>
+</div> 
+<footer id="footer">
+    <div class="container">
+        <a href="imprint">Imprint</a><br>
+        <a href="datenschutzerklarung" aria-current="page">Datenschutzerklärung</a>   
+    </div>  
+</footer>
 </body>
 
 
