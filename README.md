@@ -36,3 +36,16 @@ You need to have [nodejs](nodejs.org) installed.
 4. Select a .graphml-file and select attribute for node coloring to generate a subgraph or select a .json of a previous generated graph.
 
 
+# Embedding other web applications
+Import the BioGraphVisart main html into your html:
+
+		<head>
+	    	<link rel="import" href="https://raw.githubusercontent.com/MirjamFi/BioGraphVisart/master/templates/BioGraphVisart.html">
+		</head>
+		<script>
+		   	var link = document.querySelector('link[rel="import"]');
+		   	var content = link.import;
+			var el = content.getElementById('everything');
+		
+		    document.body.appendChild(el.cloneNode(true));
+  		</script>
