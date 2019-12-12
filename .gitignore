@@ -1,6 +1,2 @@
 # silly apple
 .DS_Store
-/static/scripts/node_modules
-/server/node_modules
-/api/node_modules
-/api/src/node_modules
