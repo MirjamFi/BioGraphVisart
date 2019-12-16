@@ -46,17 +46,24 @@
 		}
 	</script>
 	<div class="content">
-	 	<div class="topnav" id ="nav">
+	<div class="topnav" id ="nav">
 
-	    <div class="topnav-left">
+      <div class="topnav-left">
             <a class="page-link" href="/BioGraphVisart/heatmap">Heatmap</a>
         </div>
         <div class="topnav-centered">
             <a class="page-link active" href="/BioGraphVisart">BioGraphVisart</a>
         </div>
-        <div class="topnav-right">
-            <a class="page-link" href="/BioGraphVisart/about">About</a>
-        </div>
+        <div class="dropdown topnav-right">
+          <button class="dropbtn"><a href="/BioGraphVisart/about" class="page-link">About</a>  
+            <i class="fa fa-caret-down"></i>
+          </button>
+          <div class="dropdown-content">
+            <!-- <a href="/BioGraphVisart/about" class="page-link active">About</a> -->
+            <a class="page-link" href="/BioGraphVisart/documentation">Documentation</a>
+            <a class="page-link" href="/BioGraphVisart/contact">Contact</a>
+          </div>
+      </div>
     </div>
     <script>
         // Add active class to the current button (highlight it)
@@ -71,7 +78,7 @@
         }
     </script>
 
-	<p id="description" ><center>BioGraphVisart simplifies the process of analysis and interactive visualization for faster data interpretation of biological networks. It accepts networks from .graphml-files as input.</center></p>
+	<p id="description"><center>BioGraphVisart simplifies the process of analysis and interactive visualization for faster data interpretation of biological networks. It accepts networks from .graphml-files as input.</center></p>
 
 	<div  class="datapart" id="dataPart">
 		<input type="file" accept=".graphml,.json" id="fileName" name="file" />
@@ -2313,8 +2320,8 @@
 	</div>
 <footer id="footer">
     <div class="containerMerged">
-        <a href="/imprint/">Imprint</a><br>
-        <a href="/datenschutzerklarung/" aria-current="page">Datenschutzerklärung</a>   
+        <a class="page-link" href="/imprint/">Imprint</a><br>
+        <a class="page-link" href="/datenschutzerklarung/" aria-current="page">Datenschutzerklärung</a>   
     </div>  
 </footer>
 </body>

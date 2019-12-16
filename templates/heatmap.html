@@ -48,17 +48,24 @@
 
     <body>
        <div class="content"> 
-        <div class="topnav" id ="nav">
+    <div class="topnav" id ="nav">
 
-        <div class="topnav-left">
+      <div class="topnav-left">
             <a class="page-link active" href="/BioGraphVisart/heatmap">Heatmap</a>
         </div>
         <div class="topnav-centered">
             <a class="page-link" href="/BioGraphVisart">BioGraphVisart</a>
         </div>
-        <div class="topnav-right">
-            <a class="page-link" href="/BioGraphVisart/about">About</a>
-        </div>
+        <div class="dropdown topnav-right">
+          <button class="dropbtn"><a href="/BioGraphVisart/about" class="page-link">About</a>  
+            <i class="fa fa-caret-down"></i>
+          </button>
+          <div class="dropdown-content">
+            <!-- <a href="/BioGraphVisart/about" class="page-link active">About</a> -->
+            <a class="page-link" href="/BioGraphVisart/documentation">Documentation</a>
+            <a class="page-link" href="/BioGraphVisart/contact">Contact</a>
+          </div>
+      </div>
     </div>
     <script>
         // Add active class to the current button (highlight it)
@@ -73,7 +80,7 @@
         }
     </script>
 
-    <p id="description">Compare networks by calculating the node overlap displayed in a heatmap. Input are multiple .graphml-files.
+    <p id="description" style="font-size: 14px">Compare networks by calculating the node overlap displayed in a heatmap. Input are multiple .graphml-files.
     </p>
     <div id="dataPart">
         <input type="file" accept=".graphml" id="fileName" name="file" multiple/>
@@ -2428,8 +2435,8 @@ nPgo8L3N2Zz4K'>
 </div> 
 <footer id="footer">
     <div class="container">
-        <a href="/imprint/">Imprint</a><br>
-        <a href="/datenschutzerklarung/" aria-current="page">Datenschutzerklärung</a>   
+        <a class="page-link" href="/imprint/">Imprint</a><br>
+        <a class="page-link" href="/datenschutzerklarung/" aria-current="page">Datenschutzerklärung</a>   
     </div>  
 </footer>
 </body>

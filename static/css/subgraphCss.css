@@ -10,14 +10,40 @@ a{
   text-decoration: none;
 }
 
+.dropdown {
+  float: right;
+  width: 150px;
+}
+.dropdown .dropbtn {
+  font-size: 16px;  
+  border: none;
+  outline: none;
+  color: black;
+  /*padding: 14px 16px;*/
+  background-color: inherit;
+  font-family: inherit;
+  margin: 0;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 10;
+}
+
+
 .topnav{
   position: relative;
   width: 100%;
-  overflow: hidden;
+/*  overflow: hidden;*/  
   border-bottom: 1px solid #DCDCDC;
   border-top: 1px solid #DCDCDC;
   color: grey;
   text-decoration: none;
+  height: 50px;
 }
 /* Style the links inside the navigation bar */
 .topnav a {
@@ -31,7 +57,25 @@ a{
   text-decoration: underline;
 }
 
-a:visited {color:#000;}
+.dropdown-content a {
+  float: none;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+/*
+.dropdown-content a:hover {
+  background-color: #ddd;
+}*/
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.page-link:visited {color:#000;}
+a:visited{color: blue}
 
 /* Right-aligned section inside the top navigation */
 .topnav-right {
@@ -46,7 +90,7 @@ a:visited {color:#000;}
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 24px;
+  font-size: 30px;
   font-weight: 500;
 }
 

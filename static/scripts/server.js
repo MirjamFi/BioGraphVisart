@@ -25,6 +25,12 @@ app.get('/datenschutzerklarung',function(req,res){
 app.get('/imprint',function(req,res){
   res.sendFile(path.resolve('../../templates/imprint.html'));
 });
+app.get('/BioGraphVisart/documentation',function(req,res){
+  res.sendFile(path.resolve('../../templates/documentation.html'));
+});
+app.get('/BioGraphVisart/contact',function(req,res){
+  res.sendFile(path.resolve('../../templates/contact.html'));
+});
 
 app.get('/foundFilesInDirectory', function(req,res){
     var startPath = '../../'+req.query.directory;
