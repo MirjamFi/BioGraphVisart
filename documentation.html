@@ -2277,7 +2277,45 @@ Edges are interactions between nodes taken from the edge attribute &lt;data key=
 <p style="width: 50%; margin-left:25%; font-size:20px;" id="LayoutsDoc">Layouts</p>
 <p style="width: 50%; margin-left:25%">
 There are multiple layouts available: 
-the default layout is <a href="https://github.com/cytoscape/cytoscape.js-dagre">dagre</a>, others are <a href="https://github.com/cytoscape/cytoscape.js-klay">klay</a>, <a href="https://github.com/cytoscape/cytoscape.js/tree/master/documentation/demos/images-breadthfirst-layout">breadthfirst</a>, <a href="https://github.com/cytoscape/cytoscape.js-cose-bilkent">cose-bilkent</a>, and grid.</p>
+  <ul style="width: 50%; margin-left:25%">
+    <li> <a href="https://github.com/cytoscape/cytoscape.js-dagre">dagre</a> (default): </li>
+    <ul>
+      <li>DAG (directed acyclic graph) system</li>  
+      <li >Principles [1]:</li>
+      <ol>
+        <li>Expose hierarchical structure in the graph. </li>
+        <li>Avoid visual anomalies that do not convey information about the underlying graph.</li>
+        <li>Keep edges short.</li>
+        <li>Favor symmetry and balance.</li>
+      </ol>
+    </ul>
+
+    <li><a href="https://github.com/cytoscape/cytoscape.js-klay">klay</a>:</li>
+    <ul>
+      <li>Kieler Layouters component [2]</li>
+      <li>Layer-based layout algorithm</li> 
+      <li>Best suited for node-link diagrams with an inherent data flow direction</li>
+    </ul>
+
+    <li><a href="https://github.com/cytoscape/cytoscape.js/tree/master/documentation/demos/images-breadthfirst-layout">breadthfirst</a>:</li>
+    <ul>
+      <li>Hierarchical</li>
+      <li>Based on a breadthfirst traversal</li>
+      <li>Best suited for trees and forests</li>
+    </ul>
+
+    <li><a href="https://github.com/cytoscape/cytoscape.js-cose-bilkent">cose-bilkent</a>:</li>
+    <ul>
+      <li>CoSE (Compound Spring Embedder) layout developed in Bilkent University</li>
+      <li>spring embedder layout</li>
+    </ul>
+
+    <li>grid:</li>
+    <ul>
+      <li>simple layout that arranges all of the nodes in a square grid</li>
+    </ul>
+  </ul>
+</p>
 
 <hr style="width: 50%; margin-left:25%;">
 <p style="width: 50%; margin-left:25%; font-size:20px;" id="DownloadDoc">Download Visualization</p>
@@ -2332,7 +2370,8 @@ If the nodes have the EntrezID as attribute (&lt;data key="v_entrez"&gt;...&lt;/
 
 
   </article>
-
+<p style="width: 50%; margin-left:25%; margin-top: 20px; font-size: 10px">[1] Gansner, Emden R., et al. "A technique for drawing directed graphs." IEEE Transactions on Software Engineering 19.3 (1993): 214-230.<br>
+[2] Christoph Daniel Schulze, Miro Spönemann, and Reinhard von Hanxleden. Drawing layered graphs with port constraints. Journal of  Visual Languages and Computing, Special Issue on on Diagram Aesthetics and Layout, 25(2):89–106, 2014.</p>
 </div>
 
       </div>
