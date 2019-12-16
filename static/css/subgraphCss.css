@@ -44,7 +44,6 @@ a{
   color: grey;
   text-decoration: none;
   height: 50px;
-  color: black;
 }
 /* Style the links inside the navigation bar */
 .topnav a {
@@ -75,6 +74,7 @@ a{
   display: block;
 }
 
+.page-link{color: #000;}
 .page-link:visited {color:#000;}
 a:visited{color: blue}
 
