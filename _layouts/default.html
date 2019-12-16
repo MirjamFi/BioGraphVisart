@@ -57,10 +57,28 @@
 		<div class="topnav-centered">
 			<a class="site-title" href="/BioGraphVisart/">BioGraphVisart</a>
 		</div>
-	    <div class="topnav-right">
-	    	<a class="page-link" href="about">About</a>
-		</div>
+	    <div class="dropdown topnav-right">
+          <button class="dropbtn"><a href="about" class="page-link">About</a>  
+            <i class="fa fa-caret-down"></i>
+          </button>
+          <div class="dropdown-content">
+            <a class="page-link" href="documentation">Documentation</a>
+            <a class="page-link" href="contact">Contact</a>
+          </div>
+      </div>
 	</div>
+	 <script>
+        // Add active class to the current button (highlight it)
+        var header = document.getElementById("nav");
+        var btns = header.getElementsByClassName("page-link");
+        for (var i = 0; i < btns.length; i++) {
+          btns[i].addEventListener("click", function() {
+          var current = document.getElementsByClassName("active");
+          current[0].className = current[0].className.replace(" active", "");
+          this.className += " active";
+          });
+        }
+    </script>
 	<p id="description" ><center>BioGraphVisart simplifies the process of analysis and interactive visualization for faster data interpretation of biological networks. It accepts networks from .graphml-files as input.</center></p>
 
 
