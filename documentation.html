@@ -2343,7 +2343,8 @@ Search a node by entering its name into the field <i>Search gene</i>. If the nod
 <hr style="width: 50%; margin-left:25%;">
 <p style="width: 50%; margin-left:25%; font-size:20px;" id="KEGGDoc">KEGG Pathways</p>
 <p style="width: 50%; margin-left:25%">
-If the nodes have the EntrezID as attribute (&lt;data key="v_entrez"&gt;...&lt;/data&gt; or &lt;data key="v_entrezID"&gt;...&lt;/data&gt;), clicking on the button <i>Show KEGG pathways</i> the human pathways the displayed genes/nodes are in are collected from <a href="https://www.genome.jp/kegg/">KEGG</a> and the five pathways in which most of the displayed genes are in are listed. These pathways can be selected and the contained genes are highlighted by accordingly colored rectangles. Nodes that are close to each other are assembled in the same rectangle. Depending on the zoom this might cause that nodes are contained that should not be. Zooming in helps to clearify nodes in question. Highlighted pathways can of course be hidden again. 
+If the nodes have the EntrezID as attribute (&lt;data key="v_entrez"&gt;...&lt;/data&gt; or &lt;data key="v_entrezID"&gt;...&lt;/data&gt;), clicking on the button <i>Show KEGG pathways</i> the human pathways the displayed genes/nodes are in are collected from <a href="https://www.genome.jp/kegg/">KEGG</a> and the five pathways in which most of the displayed genes are in are listed. These pathways can be selected and the contained genes are highlighted by accordingly colored rectangles. Nodes that are close to each other are assembled in the same rectangle. Depending on the zoom this might cause that nodes are contained that should not be. Zooming in helps to clearify nodes in question. Highlighted pathways can of course be hidden again. <br><br>
+To load the KEGG pathways the Cross-Origin Restrictions need to be disabled. Have a look at the <a href="https://github.com/MirjamFi/BioGraphVisart">README</a> under "How to run it locally" point 4. 
 </p>
 <hr style="width: 50%; margin-left:25%;">
 
@@ -2366,8 +2367,6 @@ If the nodes have the EntrezID as attribute (&lt;data key="v_entrez"&gt;...&lt;/
   <p style="width: 50%; margin-left:25%; font-size:20px;" id="mergeDoc">Merged Graph</p>
   <p style="width: 50%; margin-left:25%">
   The displayed networks can be merged (button <i>MERGE</i>) and the new network is dislpayed in a new tab/window. Nodes from the previous top network have a orange border, nodes from the other network have a light blue border, respectively. Shared nodes have a black double border and are colored half with the attributes value of the one network and half the other. The KEGG pathways are now calculated for the new merged network.</p>
-
-
 
   </article>
 <p style="width: 50%; margin-left:25%; margin-top: 20px; font-size: 10px" id="RefDoc">References:<br>

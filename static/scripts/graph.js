@@ -1004,6 +1004,7 @@ async function getPathwaysFromKEGG(name) {
              }
          };
          xhr.onerror = function () {
+          alert("Please disable Cross-Origin Restrictions to get the KEGG pathways. For help look in the Documentation.")
              reject({
                  status: this.status,
                  statusText: xhr.statusText
