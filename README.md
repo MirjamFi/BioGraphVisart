@@ -4,7 +4,20 @@ This is a web-based tool to interactively visualize networks, especially with bi
 ## How to run it locally
 You need to have [nodejs](nodejs.org) installed.
 
-1. Disable Cross-Origin Restrictions in your Browser!  
+1. In terminal go to 
+
+		cd BioGraphVisart-master/static/scripts 
+	and run
+		
+		node server.js
+
+2. Open in browser 
+
+		http://localhost:3000/BioGraphVisart
+
+3. Select a .graphml-file and select attribute for node coloring to generate a subgraph or select a .json of a previous generated graph.
+
+4. To show the KEGG Pathways disable Cross-Origin Restrictions in your Browser!  
 
 	- **Google Chrome**:
 		* Start Google Chrome in the terminal using 
@@ -29,20 +42,6 @@ You need to have [nodejs](nodejs.org) installed.
 
 	- **Firefox**
 		* install the Firefox Add-on [*cors-plugin*](https://addons.mozilla.org/en-US/firefox/addon/cors-plugin/) and activate it.
-
-2. In terminal go to 
-
-		cd BioGraphVisart-master/static/scripts 
-	and run
-		
-		node server.js
-
-3. Open in browser 
-
-		http://localhost:3000/BioGraphVisart
-
-4. Select a .graphml-file and select attribute for node coloring to generate a subgraph or select a .json of a previous generated graph.
-
 
 ## Embedding other web applications
 Import the BioGraphVisart main html into your html:
