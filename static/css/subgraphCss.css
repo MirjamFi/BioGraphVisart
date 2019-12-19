@@ -12,10 +12,11 @@ a{
 
 .dropdown {
   float: right;
-  width: 150px;
+  width: 5vw;
+  margin-right: 4vw;
 }
 .dropdown .dropbtn {
-  font-size: 16px;  
+  font-size: 1vw;  
   border: none;
   outline: none;
   color: black;
@@ -29,7 +30,6 @@ a{
   display: none;
   position: absolute;
   background-color: #f9f9f9;
-  min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 10;
 }
@@ -38,19 +38,17 @@ a{
 .topnav{
   position: relative;
   width: 100%;
-/*  overflow: hidden;*/  
   border-bottom: 1px solid #DCDCDC;
   border-top: 1px solid #DCDCDC;
   color: grey;
   text-decoration: none;
-  height: 50px;
+  height: 3vw;
 }
 /* Style the links inside the navigation bar */
 .topnav a {
   float: left;
   text-align: center;
-  padding: 14px 16px;
-  font-size: 17px;
+  padding: 1vw 16px;
 }
 
 .topnav a:hover {
@@ -74,16 +72,18 @@ a{
   display: block;
 }
 
+a:visited{color: blue}
 .page-link{color: #000;}
 .page-link:visited {color:#000;}
-a:visited{color: blue}
 
 /* Right-aligned section inside the top navigation */
 .topnav-right {
   float: right;
+  font-size: 1vw;
 }
 .topnav-left {
   float: left;
+  font-size: 1vw;
 }
 .topnav-centered a{
   float: none;
@@ -91,7 +91,7 @@ a:visited{color: blue}
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 30px;
+  font-size: 2vw;
   font-weight: 500;
 }
 
@@ -212,22 +212,22 @@ input:hover{
 
 #keggpathwaysRight{
     position: absolute;
-  top: 120px;
+  top: 10px;
   left:84%;
 }
 #KEGGpathsRight{
     position: absolute;
-  top: 150px;
+  top: 30px;
   left:84%;
 }
 #keggpathwaysLeft{
     position: absolute;
-  top: 120px;
+  top: 10px;
   left:84%;
 }
 #KEGGpathsLeft{
     position: absolute;
-  top: 150px;
+  top: 30px;
   left:84%;
 }
 
