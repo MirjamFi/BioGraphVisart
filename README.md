@@ -15,7 +15,7 @@ You need to have [nodejs](nodejs.org) installed.
 
 		http://localhost:3000/BioGraphVisart
 
-3. Select a .graphml-file and select attribute for node coloring to generate a subgraph or select a .json of a previous generated graph.
+3. Select a .graphml-file or select a .json of a previous generated graph.
 
 4. To show the KEGG Pathways disable Cross-Origin Restrictions in your Browser!  
 
