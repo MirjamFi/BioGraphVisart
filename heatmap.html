@@ -16,7 +16,7 @@
         <script type="application/javascript" src="https://rawcdn.githack.com/MirjamFi/BioGraphVisart/1ebdad7d2d5ee59906b8c89227d3f92e0288bbb5/static/scripts/html2canvas.min.js"></script>
 
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/qtip2/3.0.3/basic/jquery.qtip.css">
-        <link rel="stylesheet" type="text/css" href="https://rawcdn.githack.com/MirjamFi/BioGraphVisart/ad732af3a87dda2c70ad9b0516a369eda84dede4/static/css/subgraphCss.css">
+        <link rel="stylesheet" type="text/css" href="https://rawcdn.githack.com/MirjamFi/BioGraphVisart/a679f6c29c9eeeae0aef399eb410401480246931/static/css/subgraphCss.css">
 
         <script type="application/javascript" src="https://rawcdn.githack.com/MirjamFi/BioGraphVisart/1ebdad7d2d5ee59906b8c89227d3f92e0288bbb5/static/scripts/cytoscape.js"></script> 
         <script type="application/javascript" src="https://rawcdn.githack.com/MirjamFi/BioGraphVisart/1ebdad7d2d5ee59906b8c89227d3f92e0288bbb5/static/scripts/cytoscape-qtip.js"></script>  
@@ -48,16 +48,24 @@
 
     <body>
  <div class="content"> 
-    <div class="topnav" id="nav">
-        <div class="topnav-left">
+  <div class="topnav" id ="nav">
+
+      <div class="topnav-left">
             <a class="page-link active" href="heatmap">Heatmap</a>
         </div>
         <div class="topnav-centered">
             <a class="page-link" href="/BioGraphVisart">BioGraphVisart</a>
         </div>
-        <div class="topnav-right">
-            <a class="page-link" href="about">About</a>
-        </div>
+        <div class="dropdown topnav-right">
+          <button class="dropbtn"><a href="about" class="page-link">About</a>  
+            <i class="fa fa-caret-down"></i>
+          </button>
+          <div class="dropdown-content">
+            <!-- <a href="/BioGraphVisart/about" class="page-link active">About</a> -->
+            <a class="page-link" href="documentation">Documentation</a>
+            <a class="page-link" href="contact">Contact</a>
+          </div>
+      </div>
     </div>
     <script>
         // Add active class to the current button (highlight it)
@@ -73,8 +81,8 @@
     </script>
     <h1>Graph comparison</h1>
 
-    <p id="description">Generate heatmap for node overlap for .graphml-files.
-    </p>
+    <p id="description">Compare networks by calculating the node overlap displayed in a heatmap. Input are multiple .graphml-files.
+     </p>
     <div id="dataPart">
         <input type="file" accept=".graphml" id="fileName" name="file" multiple/>
         <button class= 'butn' onclick="loadDir()" id="loadGraphml" >Load files</button>
@@ -83,7 +91,8 @@
     </div>
             <div id="heatmapcontainer"></div>
     <div>
-        <p id="selectAttribute" style="visibility: hidden">Show subgraphs of selected samples (click on cell of heatmap) with selected attribute.<br>Below you can create the merged graph of these two subgraphs. Nodes with double border are common for both subgraphs, nodes with orange border are from top graph, nodes with light blue border are from middle graph.</br></p>
+        <p id="selectAttribute" style="visibility: hidden"> Select two networks for direct comparison by clicking on a cell in the heatmap and select a attribute for node coloring. Create the merge network for those two by clicking <b>MERGE</b>. It will open in a new tab.</p>
+
 
         <select name="values" id="values" onchange="visualize()" style="visibility: hidden">
             <option value="" selected disabled hidden>Choose node's attribute</option>

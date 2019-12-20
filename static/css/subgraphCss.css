@@ -10,49 +10,89 @@ a{
   text-decoration: none;
 }
 
+.dropdown {
+  float: right;
+  width: 5vw;
+  margin-right: 4vw;
+}
+.dropdown .dropbtn {
+  font-size: 1vw;  
+  border: none;
+  outline: none;
+  color: black;
+  /*padding: 14px 16px;*/
+  background-color: inherit;
+  font-family: inherit;
+  margin: 0;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 10;
+}
+
+
 .topnav{
   position: relative;
   width: 100%;
-  background-color: #BDBDBD;
-  overflow: hidden;
+  border-bottom: 1px solid #DCDCDC;
+  border-top: 1px solid #DCDCDC;
+  color: grey;
+  text-decoration: none;
+  height: 3vw;
 }
 /* Style the links inside the navigation bar */
 .topnav a {
   float: left;
-  color: black;
   text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-  font-size: 17px;
+  padding: 1vw 16px;
 }
 
-/* Change the color of links on hover */
 .topnav a:hover {
-  background-color: #868281;
-  color: white;
+  text-decoration: underline;
 }
+
+.dropdown-content a {
+  float: none;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+/*
+.dropdown-content a:hover {
+  background-color: #ddd;
+}*/
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+a:visited{color: blue}
+.page-link{color: #000;}
+.page-link:visited {color:#000;}
 
 /* Right-aligned section inside the top navigation */
 .topnav-right {
   float: right;
+  font-size: 1vw;
 }
 .topnav-left {
   float: left;
+  font-size: 1vw;
 }
-.topnav-centered a {
+.topnav-centered a{
   float: none;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 24px;
-  font-weight: bold;
-}
-
-h1 {
-  opacity: 1;
-  font-size: 30px;
-  font-weight: bold;
+  font-size: 2vw;
+  font-weight: 500;
 }
 
 #description{
@@ -112,13 +152,11 @@ input:hover{
 
 #cy {
       width: 71.5%;
-      /*height: 75%;*/
       position: absolute;
       top: 265px;
       left: 190px;
       bottom: 70px;
       background-color:none;
-      /*border: solid #BDBDBD;*/
   }
 #searchgene{
   margin-left: 30px;
@@ -174,29 +212,29 @@ input:hover{
 
 #keggpathwaysRight{
     position: absolute;
-  top: 120px;
+  top: 10px;
   left:84%;
 }
 #KEGGpathsRight{
     position: absolute;
-  top: 150px;
+  top: 30px;
   left:84%;
 }
 #keggpathwaysLeft{
     position: absolute;
-  top: 120px;
+  top: 10px;
   left:84%;
 }
 #KEGGpathsLeft{
     position: absolute;
-  top: 150px;
+  top: 30px;
   left:84%;
 }
 
 }
 .loader {
-    border: 16px solid #f3f3f3; /* Light grey */
-    border-top: 16px solid #3498db; /* Blue */
+    border: 16px solid #f3f3f3; 
+    border-top: 16px solid #3498db; 
     border-radius: 50%;
     width: 100px;
     height: 100px;
@@ -271,16 +309,14 @@ input:hover{
 
 #legend_heatmap {
     position: absolute;
-    top: 750px;
-    left: 10px;
+    /*top: 700px;*/
+    /*left: 10px;*/
+    margin-top: 40px;
     font-size: 11px;
-    bottom: 10px;
-    /*overflow: hidden; */
 }
 #merged_graph_legend {
     font-size: 11px;
     margin-top: 10px;
-    /*overflow: hidden; */
 }
 #legendArrows {
     width: 300px;
@@ -305,8 +341,8 @@ input:hover{
 
 /* Style the active class, and buttons on mouse-over */
 .active{
-  background-color: #868281;
-  color: white;
+  color: black;
+  font-weight: bold;
 }
 
 .csc-default{
@@ -323,11 +359,13 @@ input:hover{
 
 footer 
 {
-  background: #BDBDBD;
   color: white;
+  width: 98%;
 }
 
 .container {
+  border-top: 1px solid #DCDCDC;
+  width: 98%;
   margin: 1em auto;
   max-width: 100%;
   padding: 0 1em;
@@ -336,10 +374,10 @@ footer
 .containerMerged {
   position: fixed;
   bottom: 0;
-  width: 100%;
+  width: 98%;
   padding: 1em 1em;
   margin: 0.5em auto;
-  background: #BDBDBD;
+  border-top: 1px solid #DCDCDC;
   color: white;
 }
 

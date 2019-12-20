@@ -85,6 +85,7 @@ function cleanSelections(){
   var undobutn = document.getElementById("undobutn")
     if(undobutn){
       undobutn.parentNode.removeChild(undobutn); }
+  document.getElementById('mergeEdges').checked = true;
   noOptn = true;
   noDrpShapes = true;
   nodeVal = undefined;

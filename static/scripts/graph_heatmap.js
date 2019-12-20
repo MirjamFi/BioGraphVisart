@@ -15,22 +15,24 @@ visualize a graph from .graphml-file
 */
 function visualize() { 
   $(window).scroll(function() {
-    if($(window).scrollTop() <= 700){
-      $("#legend_heatmap").css({
-        "top": 760 +"px",
-        "left": ($(window).scrollLeft()) + "px"
-      });
-    }
-    else if($(window).scrollTop() > 710 ){ //&& $(window).scrollTop() < document.body.offsetHeight
-      $("#legend_heatmap").css({
-        "top": 200+($(window).scrollTop()) + "px",
-        "left": ($(window).scrollLeft()) + "px"
-      });
-    }
-    else if (window.scrollY + window.innerHeight == document.body.scrollHeight) {
+    if ($(window).scrollTop() >= document.getElementById("right").offsetTop-700) {
+      console.log("hk")
         $("#legend_heatmap").css({
-          "top": 500+($(window).scrollTop()) + "px",
-          "left": ($(window).scrollLeft()) + "px"
+          "top": document.getElementById("right").offsetTop + "px",
+          "left": ($(window).scrollLeft()) + "px",
+          "position":"absolute",
+          "margin-top":0+"px",
+          "margin-left":10+"px"
+      });
+    }
+    else if($(window).scrollTop() <= document.getElementById("left").offsetTop){
+    // if($(window).scrollTop() <= window.innerHeight/2){
+      $("#legend_heatmap").css({
+        "top": document.getElementById("left").offsetTop +"px",
+        "left": ($(window).scrollLeft()) + "px",
+        "position":"absolute",
+        "margin-top":0+"px",
+        "margin-left":10+"px"
       });
     }
   });

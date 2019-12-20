@@ -1004,6 +1004,7 @@ async function getPathwaysFromKEGG(name) {
              }
          };
          xhr.onerror = function () {
+          alert("Please disable Cross-Origin Restrictions to get the KEGG pathways. For help look in the Documentation.")
              reject({
                  status: this.status,
                  statusText: xhr.statusText
@@ -1094,7 +1095,11 @@ async function listKEGGPathways(){
     document.getElementById('keggpathways').firstChild.data  = "Show KEGG Pathways";
     document.getElementById('KEGGpaths').style.visibility = "hidden";
     document.getElementById('loader').style.visibility = "hidden";
+    var mergeEdgeschecked = document.getElementById('mergeEdges').checked;
     $('input:checkbox').prop('checked', false);
+    if(mergeEdgeschecked){
+      document.getElementById('mergeEdges').checked = true;
+    }
     layer.resetTransform(ctx);
     ctx.clearRect(0,0,canvas.width, canvas.height);          
     layer.setTransform(ctx);
