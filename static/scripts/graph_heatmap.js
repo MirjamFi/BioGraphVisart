@@ -14,32 +14,30 @@ var rightEdges = [];
 visualize a graph from .graphml-file
 */
 function visualize() { 
-  $(window).scroll(function() {
-    if ($(window).scrollTop() >= document.getElementById("right").offsetTop-700) {
-      console.log("hk")
+  nodeVal = document.getElementById('values').value;
+  if(!!right){
+    var cys = ['cyLeft', 'cyRight'];
+    $(window).scroll(function() {
+      if ($(window).scrollTop() >= document.getElementById("right").offsetTop-700 && !!right) {
+          $("#legend_heatmap").css({
+            "top": document.getElementById("right").offsetTop + "px",
+            "left": ($(window).scrollLeft()) + "px",
+            "position":"absolute",
+            "margin-top":0+"px",
+            "margin-left":10+"px"
+        });
+      }
+      else if($(window).scrollTop() <= document.getElementById("left").offsetTop && !!right){
+      // if($(window).scrollTop() <= window.innerHeight/2){
         $("#legend_heatmap").css({
-          "top": document.getElementById("right").offsetTop + "px",
+          "top": document.getElementById("left").offsetTop +"px",
           "left": ($(window).scrollLeft()) + "px",
           "position":"absolute",
           "margin-top":0+"px",
           "margin-left":10+"px"
-      });
-    }
-    else if($(window).scrollTop() <= document.getElementById("left").offsetTop){
-    // if($(window).scrollTop() <= window.innerHeight/2){
-      $("#legend_heatmap").css({
-        "top": document.getElementById("left").offsetTop +"px",
-        "left": ($(window).scrollLeft()) + "px",
-        "position":"absolute",
-        "margin-top":0+"px",
-        "margin-left":10+"px"
-      });
-    }
-  });
-
-  nodeVal = document.getElementById('values').value;
-  if(!!right){
-    var cys = ['cyLeft', 'cyRight'];
+        });
+      }
+    });
   }
   else{
     var cys = ['cyLeft'];
@@ -148,6 +146,7 @@ function visualize() {
   document.getElementById('legend_heatmap').setAttribute('style','visibility:visible');
   //document.getElementById("merged_graph").innerHTML = "";
   if(!!right){
+      clickMerge();
       merge();
   }
   //activateNodeShapeChange();

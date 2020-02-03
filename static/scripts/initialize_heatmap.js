@@ -214,6 +214,9 @@ function loadGraphml(sampleLeft, sampleRight) {
     optn.value=val;
     drp.add(optn);
   })
+  document.getElementById('values').value = drpValues[0];
+  if(sampleRight)
+    clickMerge();
 };
 
 function cleanSelections(){
