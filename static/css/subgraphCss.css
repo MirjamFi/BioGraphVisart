@@ -179,6 +179,10 @@ input:hover{
     height: 200px;
 }
 
+#selectColorAttribute{
+  margin-left: 30px;
+}
+
 .KEGGpathsButton{
   position: absolute;
   top: 300px;
@@ -331,7 +335,7 @@ input:hover{
 
 #selectlayoutMerge{
     position: relative;
-    margin-left: 50px;
+    margin-left: 10px;
 }
 
 .center-div

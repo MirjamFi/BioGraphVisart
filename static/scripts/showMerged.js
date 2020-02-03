@@ -109,85 +109,101 @@ var cystyle =  [
   	}
 	];
 	merge_graph = createCyObject('merged_graph', -1,1)
-	const nodesEdges = getmergedGraph(window.opener.leftNodes, window.opener.rightNodes, window.opener.leftEdges, window.opener.rightEdges);
-	var mergedNodes = nodesEdges[0];
-	var mergedEdges = nodesEdges[1];
 	//buttons: reset, merge, download
+  if(!document.getElementById("outputNameMerge")){
+	   d3.select('#merged_graph_buttons')  
+	     .append('p')
 
-	 d3.select('#merged_graph_buttons')  
-	  .append('p')
+  	  d3.select('#merged_graph_buttons')  
+  	  .append('input')
+  	  .attr('name', 'outputFileMerge')
+  	  .attr('type', 'text')
+  	  .attr('maxlength', '512')
+  	  .attr('id', 'outputNameMerge')
+  	  .attr('value', 'File name')
 
-	  d3.select('#merged_graph_buttons')  
-	  .append('input')
-	  .attr('name', 'outputFileMerge')
-	  .attr('type', 'text')
-	  .attr('maxlength', '512')
-	  .attr('id', 'outputNameMerge')
-	  .attr('value', 'File name')
-
-	  d3.select('#merged_graph_buttons')  
-	  .append('button')
-	  .attr('type', 'button')
-	  .attr('class', 'butn')
-	  .attr('id','downloadMergePNG')
-	  .text('.png')
-	  .on('click', function(){
+  	  d3.select('#merged_graph_buttons')  
+  	  .append('button')
+  	  .attr('type', 'button')
+  	  .attr('class', 'butn')
+  	  .attr('id','downloadMergePNG')
+  	  .text('.png')
+  	  .on('click', function(){
 	  	
-		  outputName = document.getElementById('outputNameMerge').value;
-	  	  var png64 = merge_graph.png();
-		  $('#downloadPNGMerge').attr('href', png64);
-		  var download = document.createElement('a');
-		  download.href = 'data:image/png;base64;'+png64;
-	    download.download = outputName + '.png';
-		  download.click();
-	  });
+  		  outputName = document.getElementById('outputNameMerge').value;
+  	  	  var png64 = merge_graph.png();
+  		  $('#downloadPNGMerge').attr('href', png64);
+  		  var download = document.createElement('a');
+  		  download.href = 'data:image/png;base64;'+png64;
+  	    download.download = outputName + '.png';
+  		  download.click();
+  	  });
 
-	d3.select('#merged_graph_buttons')  
-	  .append('button')
-	  .attr('type', 'button')
-	  .attr('class', 'butn')
-	  .attr('id','downloadMergeSVG')
-	  .text('.svg')
-	  .on('click', function(){
-	  	outputName = document.getElementById('outputNameMerge').value;
-	  	
-	    var svgContent = merge_graph.svg({scale: 1, full: true});
-		  saveAs(new Blob([svgContent], {type:"image/svg+xml;charset=utf-8"}), outputName +".svg");
-	  });
+  	d3.select('#merged_graph_buttons')  
+  	  .append('button')
+  	  .attr('type', 'button')
+  	  .attr('class', 'butn')
+  	  .attr('id','downloadMergeSVG')
+  	  .text('.svg')
+  	  .on('click', function(){
+  	  	outputName = document.getElementById('outputNameMerge').value;
+  	  	
+  	    var svgContent = merge_graph.svg({scale: 1, full: true});
+  		  saveAs(new Blob([svgContent], {type:"image/svg+xml;charset=utf-8"}), outputName +".svg");
+  	  });
 
-    d3.select('#merged_graph_buttons')
-    .append('button')
-    .attr('class', 'butn')
-    .attr('id', 'downloadPDF')
-    .text('.pdf')
-    .on('click', function(){
-      const domElement = document.getElementById('body');
-      var divHeight = window.innerHeight
-      var divWidth = window.innerWidth
-      var ratio = divHeight / divWidth;
-    
-      var doc = new jsPDF("l", "mm", "a4");
-      var width = doc.internal.pageSize.getWidth();
-      var height = (ratio * width);
+      d3.select('#merged_graph_buttons')
+      .append('button')
+      .attr('class', 'butn')
+      .attr('id', 'downloadPDF')
+      .text('.pdf')
+      .on('click', function(){
+        const domElement = document.getElementById('body');
+        var divHeight = window.innerHeight
+        var divWidth = window.innerWidth
+        var ratio = divHeight / divWidth;
+      
+        var doc = new jsPDF("l", "mm", "a4");
+        var width = doc.internal.pageSize.getWidth();
+        var height = (ratio * width);
 
-      html2canvas($("#body").get(0), { onclone: (document) => {
-        document.getElementById('nav').style.visibility = 'hidden'
-        document.getElementById('resetMerge').style.visibility = 'hidden'
-        document.getElementById('nav').style.visibility = 'hidden';
-        document.getElementById('merged_graph_buttons').style.visibility = 'hidden'
-        document.getElementById('footer').style.visibility = 'hidden'
-        document.getElementById('searchbutn').style.visibility = 'hidden'
-        if(document.getElementById('searchgene').value == "Search gene"){
-          document.getElementById('searchgene').style.visibility = 'hidden'
-        }
-      }}).then(function(canvas){
-      var imgData = canvas.toDataURL('image/png');
+        html2canvas($("#body").get(0), { onclone: (document) => {
+          document.getElementById('nav').style.visibility = 'hidden'
+          document.getElementById('resetMerge').style.visibility = 'hidden'
+          document.getElementById('nav').style.visibility = 'hidden';
+          document.getElementById('merged_graph_buttons').style.visibility = 'hidden'
+          document.getElementById('footer').style.visibility = 'hidden'
+          document.getElementById('searchbutn').style.visibility = 'hidden'
+          if(document.getElementById('searchgene').value == "Search gene"){
+            document.getElementById('searchgene').style.visibility = 'hidden'
+          }
+        }}).then(function(canvas){
+        var imgData = canvas.toDataURL('image/png');
 
-      doc.addImage(imgData, 'PNG', 0, 0, width, height); 
-      outputName = document.getElementById('outputNameMerge').value;
-      doc.save(outputName + '.pdf');
-    })
-    })
+        doc.addImage(imgData, 'PNG', 0, 0, width, height); 
+        outputName = document.getElementById('outputNameMerge').value;
+        doc.save(outputName + '.pdf');
+      })
+      })
+
+      // color options dropdown
+      var drpColor = document.createElement("select");
+      drpColor.id = "selectColorAttribute";
+      drpColor.name = "selectColor";
+      document.getElementById("merged_graph_buttons").appendChild(drpColor);
+      drpColor.style.visibility = "visible";
+      drpColor.onchange = createMerged;
+
+      var sele = document.createElement("OPTION");    
+      sele.text = "Choose node's attribute";
+      sele.value = window.opener.drpValues[0];
+      drpColor.add(sele);
+      window.opener.drpValues.forEach(function(val){
+        var optn = document.createElement("OPTION");
+        optn.text=val;
+        optn.value=val;
+        drpColor.add(optn);
+      })
 
       // layout dropdown
     var drpLayout = document.createElement("select");
@@ -225,14 +241,17 @@ var searchgene = document.createElement("input");
   document.getElementById("searchbutn").className = 'butn';  
   searchbutn.onclick = highlightSearchedGene;
 
-
+}
+const nodesEdges = getmergedGraph(window.opener.leftNodes, window.opener.rightNodes, window.opener.leftEdges, window.opener.rightEdges);
+  var mergedNodes = nodesEdges[0];
+  var mergedEdges = nodesEdges[1];
       merge_graph.add(mergedNodes)
       merge_graph.add(mergedEdges)
       merge_graph.nodes().noOverlap({ padding: 5 });
 
       // calculate label position for legend and style legend
 	  var fontSize = 10;
-	  var labelVal = window.opener.nodeVal;
+	  var labelVal = document.getElementById("selectColorAttribute").value;
 	  var whitespace = getTextWidth(' ', fontSize +" arial");
 	  var minspace = getTextWidth(mergeMin, fontSize +" arial");
 	  var valspace = getTextWidth(labelVal, fontSize +" arial");
@@ -315,10 +334,10 @@ var searchgene = document.createElement("input");
 
 
     // map values to node color for GA
-    mapValuestoNodeColor(merge_graph, 'g1', '1', mergeMin, mergeMax, symbolsLeft);
+    mapValuestoNodeColor(merge_graph, 'g1', '1', mergeMin, mergeMax, symbolsLeft, document.getElementById("selectColorAttribute").value);
 
     // map values to node color for GB
-    mapValuestoNodeColor(merge_graph, 'g2', '2', mergeMin, mergeMax, symbolsRight);
+    mapValuestoNodeColor(merge_graph, 'g2', '2', mergeMin, mergeMax, symbolsRight, document.getElementById("selectColorAttribute").value);
 
     // on mpuse-over show value of selected attribute
    let filenameSplitLeft = window.opener.left.split("/")
@@ -327,8 +346,8 @@ var searchgene = document.createElement("input");
     let filenameSplitRight = window.opener.right.split("/")
     filenameSplitRight = filenameSplitRight[filenameSplitRight.length-1].split('.')[0];
 		 
-	mergeMousover(merge_graph,'g1', window.opener.nodeVal, filenameSplitLeft);
-	mergeMousover(merge_graph,'g2', window.opener.nodeVal, filenameSplitRight);
+	mergeMousover(merge_graph,'g1', document.getElementById("selectColorAttribute").value, filenameSplitLeft);
+	mergeMousover(merge_graph,'g2', document.getElementById("selectColorAttribute").value, filenameSplitRight);
 
 	// createLegendMerge(mergeMin, mergeMax);
     merge_graph.nodes('[graph = "both"]').qtip({       // show node attibute value by mouseover
@@ -337,17 +356,18 @@ var searchgene = document.createElement("input");
 	      solo: true,
 	    },
 	    content: {text : function(){
-	      if(!isNaN(parseFloat(this.data('val_g2'))) && !isNaN(parseFloat(this.data('val_g1')))){
-	        return '<b>'+window.opener.nodeVal +' ' +filenameSplitLeft +'</b>: ' + parseFloat(this.data('val_g1')).toFixed(2) +
-	        '<br><b>'+window.opener.nodeVal +' ' +filenameSplitRight +'</b>: ' + parseFloat(this.data('val_g2')).toFixed(2)} //numbers
-	      else if(isNaN(parseFloat(this.data('val_g2'))) && !isNaN(parseFloat(this.data('val_g1')))){
-	        return '<b>'+window.opener.nodeVal +' ' +filenameSplitLeft +'</b>: ' + parseFloat(this.data('val_g1')).toFixed(2) +
-	        '<br><b>'+window.opener.nodeVal +' ' +filenameSplitRight +'</b>: ' + this.data('val_g2')} //numbers
-	      else if(!isNaN(parseFloat(this.data('val_g2'))) && isNaN(parseFloat(this.data('val_g1')))){
-	        return '<b>'+window.opener.nodeVal +' ' +filenameSplitLeft +'</b>: ' + this.data('val_g1') +
-	        '<br><b>'+window.opener.nodeVal +' ' +filenameSplitRight +'</b>: ' + parseFloat(this.data('val_g2')).toFixed(2)} //numbers         //bools
+        var val = document.getElementById("selectColorAttribute").value;
+	      if(!isNaN(parseFloat(this.data(val+'_g2'))) && !isNaN(parseFloat(this.data(val+'_g1')))){
+	        return '<b>'+val +' ' +filenameSplitLeft +'</b>: ' + parseFloat(this.data(val+'_g1')).toFixed(2) +
+	        '<br><b>'+val +' ' +filenameSplitRight +'</b>: ' + parseFloat(this.data(val+'_g2')).toFixed(2)} //numbers
+	      else if(isNaN(parseFloat(this.data(val+'_g2'))) && !isNaN(parseFloat(this.data(val+'_g1')))){
+	        return '<b>'+val +' ' +filenameSplitLeft +'</b>: ' + parseFloat(this.data(val+'_g1')).toFixed(2) +
+	        '<br><b>'+val +' ' +filenameSplitRight +'</b>: ' + this.data('val_g2')} //numbers
+	      else if(!isNaN(parseFloat(this.data(val+'_g2'))) && isNaN(parseFloat(this.data(val+'_g1')))){
+	        return '<b>'+val +' ' +filenameSplitLeft +'</b>: ' + this.data(val+'_g1') +
+	        '<br><b>'+val +' ' +filenameSplitRight +'</b>: ' + parseFloat(this.data(val+'_g2')).toFixed(2)} //numbers         //bools
 	      else{
-	      	return '<b>'+window.opener.nodeVal +' </b>: ' + this.data('val_g1');
+	      	return '<b>'+val +' </b>: ' + this.data(val+'_g1');
 	    }}},
 	    position: {
 	      my: 'top center',

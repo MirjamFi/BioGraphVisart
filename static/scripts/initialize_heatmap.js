@@ -164,10 +164,10 @@ function calculateOverlap(data){
   };
 };
 
+var drpValues = [];
 function loadGraphml(sampleLeft, sampleRight) {
   cleanSelections();
   samples = [sampleLeft, sampleRight];
-  var drpValues=[];
   samples.forEach(function (sample){
     var graphString;
     if(!!sample){
@@ -215,8 +215,10 @@ function loadGraphml(sampleLeft, sampleRight) {
     drp.add(optn);
   })
   document.getElementById('values').value = drpValues[0];
-  if(sampleRight)
-    clickMerge();
+    if(!!path_right){
+      clickMerge();
+      merge();
+  }
 };
 
 function cleanSelections(){
