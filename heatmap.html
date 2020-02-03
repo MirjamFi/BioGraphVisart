@@ -32,15 +32,15 @@
 
         <script type="text/javascript" src="https://rawcdn.githack.com/MirjamFi/BioGraphVisart/0316eb87bb53c839c9f032eb847bf6c6a45e994c/static/scripts/jquery.csv.js"></script> 
 
-        <script data-main="https://rawcdn.githack.com/MirjamFi/BioGraphVisart/0316eb87bb53c839c9f032eb847bf6c6a45e994c/static/scripts/initialize_heatmap" src="https://rawcdn.githack.com/MirjamFi/BioGraphVisart/1ebdad7d2d5ee59906b8c89227d3f92e0288bbb5/static/scripts/node_modules/requirejs/require.js"></script>
+        <script data-main="https://raw.githack.com/MirjamFi/BioGraphVisart/master/static/scripts/initialize_heatmap" src="https://rawcdn.githack.com/MirjamFi/BioGraphVisart/1ebdad7d2d5ee59906b8c89227d3f92e0288bbb5/static/scripts/node_modules/requirejs/require.js"></script>
         <script type="text/javascript" src="https://rawcdn.githack.com/MirjamFi/BioGraphVisart/ad732af3a87dda2c70ad9b0516a369eda84dede4/static/scripts/initialize_heatmap.js"></script>
         <script type="text/javascript" src="https://rawcdn.githack.com/MirjamFi/BioGraphVisart/0316eb87bb53c839c9f032eb847bf6c6a45e994c/static/scripts/legend.js"></script>
 
         <script type="text/javascript" src="https://raw.githack.com/MirjamFi/BioGraphVisart/master/static/scripts/icons.js"></script>
-        <script type="text/javascript" src="https://rawcdn.githack.com/MirjamFi/BioGraphVisart/ad732af3a87dda2c70ad9b0516a369eda84dede4/static/scripts/graph_heatmap.js"></script>
-        <script type="text/javascript" src="https://rawcdn.githack.com/MirjamFi/BioGraphVisart/60940ded862d70095c4b6b0c25b2301ec1bfa80f/static/scripts/mergeSubgraphs.js"></script>
+        <script type="text/javascript" src="https://raw.githack.com/MirjamFi/BioGraphVisart/master/static/scripts/graph_heatmap.js"></script>
+        <script type="text/javascript" src="https://raw.githack.com/MirjamFi/BioGraphVisart/master/static/scripts/mergeSubgraphs.js"></script>
 
-        <script type="text/javascript" src="https://rawcdn.githack.com/MirjamFi/BioGraphVisart/0316eb87bb53c839c9f032eb847bf6c6a45e994c/static/scripts/heatmapSubgraphs.js"></script>
+        <script type="text/javascript" src="https://raw.githack.com/MirjamFi/BioGraphVisart/master/static/scripts/heatmapSubgraphs.js"></script>
 
         <style>
   </style>
@@ -51,7 +51,7 @@
   <div class="topnav" id ="nav">
 
       <div class="topnav-left">
-            <a class="page-link active" href="heatmap">Heatmap</a>
+           <a class="page-link active" href="heatmap">Comparison</a>
         </div>
         <div class="topnav-centered">
             <a class="page-link" href="/BioGraphVisart">BioGraphVisart</a>
@@ -91,7 +91,7 @@
     </div>
             <div id="heatmapcontainer"></div>
     <div>
-        <p id="selectAttribute" style="visibility: hidden"> Select two networks for direct comparison by clicking on a cell in the heatmap and select a attribute for node coloring. Create the merge network for those two by clicking <b>MERGE</b>. It will open in a new tab.</p>
+        <p id="selectAttribute" style="visibility: hidden"> Select two networks for direct comparison by clicking on a cell in the heatmap. The merged network will open in a new tab.</p>
 
 
         <select name="values" id="values" onchange="visualize()" style="visibility: hidden">
@@ -100,7 +100,6 @@
         <input type="text" name="searchgene" id="searchgene" width="30" style="visibility: hidden" value="Search gene">
         <button class="butn" id="searchbutton" onclick="highlightSearchedGene()" style="visibility: hidden">Search</button>
 
-        <button class="butn" id="mergeButton" onclick="clickMerge()" style="visibility: hidden">MERGE</button>
         <input name="outputFile" type="text" maxlength="512" id="outputNameHeatmap" value="File name" style="visibility: hidden"/>
         <button  class= 'butn' id="downloadPDF" onclick="downloadPDF()" disabled="disabled" id="downloadPDF" style="visibility: hidden">.pdf</button>
     </div>

@@ -1,37 +1,35 @@
  var leftID, rightID;
  // map values to node color for GA
-function mapValuestoNodeColor(merge_graph, group, pieno, mergeMin, mergeMax, symbols){
-	 Object.entries(symbols).forEach(entry => {
+function mapValuestoNodeColor(merge_graph, group, pieno, mergeMin, mergeMax, symbols, val){
+	Object.entries(symbols).forEach(entry => {
 		  let sym = entry[0];
 
 		// if(value < 0){
-	  	merge_graph.style().selector('node[graph="'+group+'"][symbol = "'+sym+'"][val <0]')
-	  		.style('background-color', 'mapData(val,'+ mergeMin+', 0, #006cf0, white)').update();
-	  	merge_graph.style().selector('node[graph="both"][symbol = "'+sym+'"][val_'+group+' <0]')
-	  		.style('pie-'+pieno+'-background-color', 'mapData(val_'+group+','+ mergeMin+', 0, #006cf0, white)')
-	  		.style('pie-'+pieno+'-background-size','50').update();
-
 		merge_graph.style()                // update the elements in the graph with the new style            
-	    .selector('node[val <0]')
+	    .selector('node['+val+' <0]')
 	        .style('color', 'black').update();
 	    merge_graph.style() 
-	      .selector('node[val <='+0.5*mergeMin+']')
+	      .selector('node['+val+' <='+0.5*mergeMin+']')
 	        .style('color', 'white').update();
-		// else if(value > 0){
-	  	merge_graph.style().selector('node[graph="'+group+'"][symbol = "'+sym+'"][val >0]')
-	  		.style('background-color', 'mapData(val, 0,'+ mergeMax+', white, #d50000)').update();
-	  	merge_graph.style().selector('node[graph="both"][symbol = "'+sym+'"][val_'+group+' >0]')
-	  		.style('pie-'+pieno+'-background-color', 'mapData(val_'+group+', 0,'+ mergeMax+', white, #d50000)')
+	   	merge_graph.style().selector('node[graph="'+group+'"][symbol = "'+sym+'"]['+val+' <0]')
+	  		.style('background-color', 'mapData('+val+','+ mergeMin+', 0, #006cf0, white)').update();
+	  	merge_graph.style().selector('node[graph="both"][symbol = "'+sym+'"]['+val+'_'+group+' <0]')
+	  		.style('pie-'+pieno+'-background-color', 'mapData('+val+'_'+group+','+ mergeMin+', 0, #006cf0, white)')
 	  		.style('pie-'+pieno+'-background-size','50').update();
-
+		// else if(value > 0){
 	  	merge_graph.style() 
-	      .selector('node[val >0]')
+	      .selector('node['+val+' >0]')
 	        .style('color', 'black').update();
 	    merge_graph.style() 
-	      .selector('node[val >='+0.5*mergeMax+']')
+	      .selector('node['+val+' >='+0.5*mergeMax+']')
 	        .style('color', 'white').update(); 
+		merge_graph.style().selector('node[graph="'+group+'"][symbol = "'+sym+'"]['+val+' >0]')
+	  		.style('background-color', 'mapData('+val+', 0,'+ mergeMax+', white, #d50000)').update();
+	  	merge_graph.style().selector('node[graph="both"][symbol = "'+sym+'"]['+val+'_'+group+' >0]')
+	  		.style('pie-'+pieno+'-background-color', 'mapData('+val+'_'+group+', 0,'+ mergeMax+', white, #d50000)')
+	  		.style('pie-'+pieno+'-background-size','50').update();
 		// else if(value == 0){
-	  	merge_graph.style().selector('node[graph="'+group+'"][symbol = "'+sym+'"][val =0]')
+	  	merge_graph.style().selector('node[graph="'+group+'"][symbol = "'+sym+'"]['+val+' =0]')
 	  		.style('background-color','white').update();
 
 	  	merge_graph.style().selector('node[graph="both"]')
@@ -48,10 +46,10 @@ function mergeMousover(merge_graph, GA, nodeVal, filenameSplit){
 	      solo: true,
 	    },
 	    content: {text : function(){
-	      if(!isNaN(parseFloat(this.data('val')))){
-	        return '<b>'+nodeVal +' ' +filenameSplit +'</b>: ' + parseFloat(this.data('val')).toFixed(2) ; } //numbers
+	      if(!isNaN(parseFloat(this.data(nodeVal)))){
+	        return '<b>'+nodeVal +' ' +filenameSplit +'</b>: ' + parseFloat(this.data(nodeVal)).toFixed(2) ; } //numbers
 	       else{
-	        return '<b>'+nodeVal +'</b>: '+ this.data('val') ;          //bools
+	        return '<b>'+nodeVal +'</b>: '+ this.data(nodeVal) ;          //bools
 	      }
 		    }},
 		    position: {
@@ -102,13 +100,26 @@ function getTextWidth(text, font) {
 } 
 
 
-function getNodeValueRange(nodes){
-  const nodesFilteredNaN = nodes.filter(node => node.data.val);
-  const nodesMin = parseFloat(Math.min(...(nodesFilteredNaN.map(node => node.data.val)))).toFixed(2);
-  const nodesMax = parseFloat(Math.max(...(nodesFilteredNaN.map(node => node.data.val)))).toFixed(2);
+function getNodeValueRange(nodes, val){
+  const nodesFilteredNaN = nodes.filter(node => node.data[val]);
+  const nodesFilteredNaNg1 = nodes.filter(node => node.data[val+'_g1']);
+  const nodesFilteredNaNg2 = nodes.filter(node => node.data[val+'_g2']);
+  var valArray = [];
+  for(var n of nodesFilteredNaN){
+  	valArray.push(parseFloat(n.data[val]))
+  }
+  for(var n of nodesFilteredNaNg1){
+  	valArray.push(parseFloat(n.data[val+'_g1']))
+  }
+   for(var n of nodesFilteredNaNg2){
+  	valArray.push(parseFloat(n.data[val+'_g2']))
+  }
+  const nodesMin = parseFloat(Math.min(...valArray)).toFixed(2);
+  const nodesMax = parseFloat(Math.max(...valArray)).toFixed(2);
   return [nodesMin, nodesMax];
 }
 
+var unionNodes;
 function getmergedGraph(nodesL, nodesR, edgesL, edgesR){
 	var nodes1 = JSON.parse(JSON.stringify(nodesL));
 	var nodes2 = JSON.parse(JSON.stringify(nodesR));
@@ -144,8 +155,9 @@ function getmergedGraph(nodesL, nodesR, edgesL, edgesR){
 	  		if(n1.data.symbol == n2.data.symbol){
 	  			mergedNodes[i] = n1;
 	  			mergedNodes[i].data.graph = "both";
-		        mergedNodes[i].data.val_g1 = n1.data.val;
-		        mergedNodes[i].data.val_g2 = n2.data.val;
+	  			var val = document.getElementById("selectColorAttribute").value;
+		        mergedNodes[i].data[val+"_g1"] = n1.data[val];
+		        mergedNodes[i].data[val+"_g2"] = n2.data[val];
 		        for(var j=0; j < edges2.length; j++){
 		          if(edges2[j].data.source == n2.data.id){
 		            edges2[j].data.source = n1.data.id;
@@ -188,7 +200,7 @@ function getmergedGraph(nodesL, nodesR, edgesL, edgesR){
 
   	// mergedArray have duplicates, lets remove the duplicates using Set
   	let set = new Set();
-  	let unionNodes = Array.from(mergedNodes.filter(item => {
+  	unionNodes = Array.from(mergedNodes.filter(item => {
 	    if (!set.has(item.data.symbol)) {
 	      set.add(item.data.symbol);
 	      return true;
@@ -216,8 +228,8 @@ function getmergedGraph(nodesL, nodesR, edgesL, edgesR){
 	    }
 	    return false;
 	}, set));
-	const [nodesMin, nodesMax] = getNodeValueRange(unionNodes);
-	var minMax = getNodeValueRange(unionNodes);
+	//const [nodesMin, nodesMax] = getNodeValueRange(unionNodes, document.getElementById("selectColorAttribute").value);
+	var minMax = getNodeValueRange(unionNodes, document.getElementById("selectColorAttribute").value);
 	mergeMin = minMax[0];
 	mergeMax = minMax[1];
 	return [unionNodes, unionEdges];
@@ -226,7 +238,6 @@ function getmergedGraph(nodesL, nodesR, edgesL, edgesR){
 var merge_graph;
 
 function merge(){
-	document.getElementById('mergeButton').style.visibility = "visible";
 	document.getElementById('searchgene').style.visibility = "visible";
 	document.getElementById('searchbutton').style.visibility = "visible";
 	// create buttons once

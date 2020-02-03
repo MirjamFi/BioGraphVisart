@@ -14,32 +14,32 @@ var rightEdges = [];
 visualize a graph from .graphml-file
 */
 function visualize() { 
-  $(window).scroll(function() {
-    if ($(window).scrollTop() >= document.getElementById("right").offsetTop-700) {
-      console.log("hk")
+  nodeVal = document.getElementById('values').value;
+
+  // move edge legend when scrolling
+  if(!!right){
+    var cys = ['cyLeft', 'cyRight'];
+    $(window).scroll(function() {
+      if ($(window).scrollTop() >= document.getElementById("right").offsetTop-700 && !!right) {
+          $("#legend_heatmap").css({
+            "top": document.getElementById("right").offsetTop + "px",
+            "left": ($(window).scrollLeft()) + "px",
+            "position":"absolute",
+            "margin-top":0+"px",
+            "margin-left":10+"px"
+        });
+      }
+      else if($(window).scrollTop() <= document.getElementById("left").offsetTop && !!right){
+      // if($(window).scrollTop() <= window.innerHeight/2){
         $("#legend_heatmap").css({
-          "top": document.getElementById("right").offsetTop + "px",
+          "top": document.getElementById("left").offsetTop +"px",
           "left": ($(window).scrollLeft()) + "px",
           "position":"absolute",
           "margin-top":0+"px",
           "margin-left":10+"px"
-      });
-    }
-    else if($(window).scrollTop() <= document.getElementById("left").offsetTop){
-    // if($(window).scrollTop() <= window.innerHeight/2){
-      $("#legend_heatmap").css({
-        "top": document.getElementById("left").offsetTop +"px",
-        "left": ($(window).scrollLeft()) + "px",
-        "position":"absolute",
-        "margin-top":0+"px",
-        "margin-left":10+"px"
-      });
-    }
-  });
-
-  nodeVal = document.getElementById('values').value;
-  if(!!right){
-    var cys = ['cyLeft', 'cyRight'];
+        });
+      }
+    });
   }
   else{
     var cys = ['cyLeft'];
@@ -52,10 +52,9 @@ function visualize() {
   cys.forEach(function(cyO){
     // get nodes and edges 
     if(cyO == 'cyLeft'){
-      graphLeft= createCyObject(cyO, -1, 1);
       leftGraph = true;
       graphString = graphStringLeft;
-      leftNodeValuesNum =  getNodesAndEdges(graphLeft, graphString);
+      leftNodeValuesNum =  getNodesAndEdges(graphString);
       leftNodeValuesNum = transform01toTF(leftNodeValuesNum);
       // set min and max for legend  and add nodes and edges to graph
       var leftRange = legendsRange(leftNodesMin, leftNodesMax, leftOldMin, leftOldMax, leftFirstTime, leftNodeValuesNum);
@@ -63,6 +62,7 @@ function visualize() {
       leftNodesMax = leftRange[1];
       leftOldMin = leftRange[2];
       leftOldMax = leftRange[3];
+      graphLeft= createCyObject(cyO, leftNodesMin, leftNodesMax);
       addNodesAndEdges(graphLeft,leftFirstTime, leftNodesMin, leftNodesMax);
       var leftLayout = calculateLayout(graphLeft, leftOldMin, leftOldMax, leftNodesMin, leftNodesMax, leftFirstTime);
       leftOldMin = leftLayout[0];
@@ -99,10 +99,9 @@ function visualize() {
       }
     }
     else if(cyO = 'cyRight'){
-      graphRight= createCyObject(cyO, -1, 1);
       leftGraph = false;
       graphString = graphStringRight;
-      rightNodeValuesNum = getNodesAndEdges(graphRight, graphString);
+      rightNodeValuesNum = getNodesAndEdges(graphString);
       rightNodeValuesNum = transform01toTF(rightNodeValuesNum);
       // set min and max for legend  and add nodes and edges to graph
       var rightRange = legendsRange(rightNodesMin, rightNodesMax, rightOldMin, rightOldMax, rightFirstTime, rightNodeValuesNum);
@@ -110,6 +109,8 @@ function visualize() {
       rightNodesMax = rightRange[1];
       rightOldMin = rightRange[2];
       rightOldMax = rightRange[3];
+      graphRight= createCyObject(cyO, rightNodesMin, rightNodesMax);
+
       addNodesAndEdges(graphRight,rightFirstTime, rightNodesMin, rightNodesMax);
       var rightLayout = calculateLayout(graphRight, rightOldMin, rightOldMax, rightNodesMin, rightNodesMax, rightFirstTime);
       rightOldMin = rightLayout[0];
@@ -146,16 +147,11 @@ function visualize() {
     }
   });
   document.getElementById('legend_heatmap').setAttribute('style','visibility:visible');
-  //document.getElementById("merged_graph").innerHTML = "";
-  if(!!right){
-      merge();
-  }
-  //activateNodeShapeChange();
 }
 
 var leftNodes, rightNodes, leftEdges, rightEdges;
 //get information of nodes ande edges
-function getNodesAndEdges(cyObject, graphString){
+function getNodesAndEdges(graphString){
   nodes = [];
   edges = [];
   nodeValuesNum = [];
@@ -191,9 +187,15 @@ function getNodesAndEdges(cyObject, graphString){
       nodes.push({data: curNode});
     }
     if(!isEmpty(curNode)){
-      if(graphString[i].includes("symbol\"\>")){  // get symbol of node
-        var symbol = regExp.exec(graphString[i])[1];
-        curNode.symbol = symbol;
+      if(graphString[i].includes("key=\"v_") && !graphString[i].includes("v_id")){
+        var attrname = graphString[i].split("v_")[1].split("\">")[0]
+        var val = regExp.exec(graphString[i])[1]
+        if(!isNaN(parseFloat(val))){
+          curNode[attrname] = parseFloat(val);
+        }
+        else{
+          curNode[attrname] = val;
+        }
       }
       if(graphString[i].includes("\"v_"+nodeVal+"\"\>")){
         var val = regExp.exec(graphString[i])[1]; // if availabe get node value
@@ -203,25 +205,15 @@ function getNodesAndEdges(cyObject, graphString){
           currVal.val = parseFloat(val);
           currVal.attr = attributesTypes[attrID];;
           nodeValuesNum.push(currVal);
+          curNode.val = parseFloat(val);
         }
         else if(val === "false" || val === "true"){
           currVal = {};
-          currVal.val = val;
+          currVal[val] = val;
           currVal.attr = "boolean";
           nodeValuesNum.push(currVal);
+          curNode.val = val;
         }
-        curNode.val = currVal.val;
-      }
-      /*if(isEmpty(curNode.val)){
-        curNode.val = 0;
-      }*/
-      if(graphString[i].includes("v_gene_name")){       // get gene names
-        var genename = graphString[i].split("\>")[1].split("\<")[0];
-        curNode.genename = genename;
-      }
-      if(graphString[i].includes("v_entrez")){
-        var entrezID = graphString[i].split("\>")[1].split("\<")[0];
-        curNode.entrezID = entrezID;
       }
     }   
     if(graphString[i].includes("edge source")){     // get edges
@@ -770,8 +762,8 @@ function getNeighbors(cp, cy){
   var g = 0;
   var nearest_groups = {};
   for(var i = 0; i < cp.length-1; i++){
-    let renderedPos_i_id = cy.$("node[entrezID ='"+cp[i]+"']").renderedPosition();
-    let renderedPos_i = cy.$("node[entrez ='"+cp[i]+"']").renderedPosition();
+    let renderedPos_i_id = cy.$("node[entrezID ="+cp[i]+"]").renderedPosition();
+    let renderedPos_i = cy.$("node[entrez ="+cp[i]+"]").renderedPosition();
     var position = 0;
     if(renderedPos_i_id){
       position = renderedPos_i_id;
@@ -783,8 +775,8 @@ function getNeighbors(cp, cy){
       continue;
     }
     for(var j = 1; j < cp.length; j++){
-      let renderedPos_j_id = cy.$("node[entrezID ='"+cp[j]+"']").renderedPosition();
-      let renderedPos_j = cy.$("node[entrez ='"+cp[j]+"']").renderedPosition();
+      let renderedPos_j_id = cy.$("node[entrezID ="+cp[j]+"]").renderedPosition();
+      let renderedPos_j = cy.$("node[entrez ="+cp[j]+"]").renderedPosition();
       var pos_m = 0;
       if(renderedPos_j_id){
         pos_m = renderedPos_j_id;
@@ -915,19 +907,19 @@ function drawPathwayRectangles(ctx, cy, pos, allPaths, colorschemePaths){
           // multiple nodes in one rectangle
           if(grouped_nodes.size > 1){
             for(let n of grouped_nodes){
-              if(cy.$("node[entrezID ='"+n+"']").position()){
-                var position = cy.$("node[entrezID ='"+n+"']").position();
+              if(cy.$("node[entrezID ="+n+"]").position()){
+                var position = cy.$("node[entrezID ="+n+"]").position();
               }
-              else if(cy.$("node[entrez ='"+n+"']").position()){
-                var position = cy.$("node[entrez ='"+n+"']").position();
+              else if(cy.$("node[entrez ="+n+"]").position()){
+                var position = cy.$("node[entrez ="+n+"]").position();
               }
               for(let m of grouped_nodes){
                 var pos_m;
-                if(cy.$("node[entrezID ='"+m+"']").position()){
-                  pos_m = cy.$("node[entrezID ='"+m+"']").position()
+                if(cy.$("node[entrezID ="+m+"]").position()){
+                  pos_m = cy.$("node[entrezID ="+m+"]").position()
                 }
-                else if(cy.$("node[entrez ='"+m+"']").position()){
-                  pos_m = cy.$("node[entrez ='"+m+"']").position()
+                else if(cy.$("node[entrez ="+m+"]").position()){
+                  pos_m = cy.$("node[entrez ="+m+"]").position()
                 }
                 let dist_x = Math.abs(position['x'] -  pos_m['x']);
                 if(dist_x >= max_dist_x){
@@ -951,11 +943,11 @@ function drawPathwayRectangles(ctx, cy, pos, allPaths, colorschemePaths){
                 }
               }
             }
-            if(cy.$("node[entrezID ='"+[...grouped_nodes][0]+"']").length > 0){
-              var renderedWidth = cy.$("node[entrezID ='"+[...grouped_nodes][0]+"']").width();
+            if(cy.$("node[entrezID ="+[...grouped_nodes][0]+"]").length > 0){
+              var renderedWidth = cy.$("node[entrezID ="+[...grouped_nodes][0]+"]").width();
             }
-            else if(cy.$("node[entrez ='"+[...grouped_nodes][0]+"']").length > 0){
-              var renderedWidth = cy.$("node[entrez ='"+[...grouped_nodes][0]+"']").width();
+            else if(cy.$("node[entrez ="+[...grouped_nodes][0]+"]").length > 0){
+              var renderedWidth = cy.$("node[entrez ="+[...grouped_nodes][0]+"]").width();
             }
             max_dist_x = (max_dist_x + renderedWidth);
             max_dist_y = (max_dist_y + renderedWidth);
@@ -974,16 +966,16 @@ function drawPathwayRectangles(ctx, cy, pos, allPaths, colorschemePaths){
           // single node in square
           else if(grouped_nodes.size == 1){
             var k = [...grouped_nodes][0];
-            let renderedPos_id = cy.$("node[entrezID ='"+k+"']").position();
-            let renderedPos = cy.$("node[entrez ='"+k+"']").position();
+            let renderedPos_id = cy.$("node[entrezID ="+k+"]").position();
+            let renderedPos = cy.$("node[entrez ="+k+"]").position();
             if(renderedPos_id){
               var position = renderedPos_id;
-              var side = (cy.$("node[entrezID ='"+k+"']").width()/Math.sqrt(2))*1.7;
+              var side = (cy.$("node[entrezID ="+k+"]").width()/Math.sqrt(2))*1.7;
               drawRect(pos, position, side, side, side, path, ctx, colorschemePaths);
             }
             else if(renderedPos){
               var position = renderedPos;
-              var side = (cy.$("node[entrez ='"+k+"']").width()/Math.sqrt(2))*1.7;
+              var side = (cy.$("node[entrez ="+k+"]").width()/Math.sqrt(2))*1.7;
               drawRect(pos, position, side, side, side, path, ctx, colorschemePaths);
             }
           }
