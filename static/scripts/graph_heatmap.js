@@ -429,11 +429,9 @@ function showMetaInfo(cyObject){
     },
     content: {text : function(){
       if(!isNaN(parseFloat(this.data('val')))){
-        return '<b>'+nodeVal +'</b>: ' + parseFloat(this.data('val')).toFixed(2) +
-        '<br>' + '<b>gene name</b>: ' + this.data('genename'); } //numbers
+        return '<b>'+nodeVal +'</b>: ' + parseFloat(this.data('val')).toFixed(2); } //numbers
       else{
-        return '<b>'+nodeVal +'</b>: '+ this.data('val') +
-        '<br>' + '<b>gene name</b>: ' + this.data('genename');          //bools
+        return '<b>'+nodeVal +'</b>: '+ this.data('val');          //bools
       }
     }},
     position: {
