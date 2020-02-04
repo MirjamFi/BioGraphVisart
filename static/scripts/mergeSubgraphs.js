@@ -232,12 +232,15 @@ function getmergedGraph(nodesL, nodesR, edgesL, edgesR){
 	var minMax = getNodeValueRange(unionNodes, document.getElementById("selectColorAttribute").value);
 	mergeMin = minMax[0];
 	mergeMax = minMax[1];
+		console.log(window.opener.interactionTypes)
+	showLegend(window.opener.interactionTypes);
 	return [unionNodes, unionEdges];
 };
 
 var merge_graph;
 
 function merge(){
+	document.getElementById('arrows').innerHTML = "";
 	document.getElementById('searchgene').style.visibility = "visible";
 	document.getElementById('searchbutton').style.visibility = "visible";
 	// create buttons once

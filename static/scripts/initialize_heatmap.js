@@ -223,6 +223,7 @@ function loadGraphml(sampleLeft, sampleRight) {
 
 function cleanSelections(){
     // if it is not the first graph read, delete all selectable options
+  document.getElementById('arrows').innerHTML = "";
   document.getElementById('KEGGpathsLeft').innerHTML = "";
   document.getElementById('keggpathwaysLeft').firstChild.data = "Show KEGG Pathways";
   document.getElementById('KEGGpathsLeft').style.visibility = "hidden";

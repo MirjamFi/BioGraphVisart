@@ -116,7 +116,6 @@ function visualize() {
       rightOldMin = rightLayout[0];
       rightOldMax = rightLayout[1];
       rightFirstTime = rightLayout[2];
-      // showLegend(rightNodesMin, rightNodesMax, graphRight);
       document.getElementById('cyRight').style.visibility = "visible";
       document.getElementById('downloadPartRight').style.visibility = "visible";
       document.getElementById('resetRight').style.visibility = "visible";
@@ -146,10 +145,12 @@ function visualize() {
       }
     }
   });
+  showLegend(interactionTypes);
   document.getElementById('legend_heatmap').setAttribute('style','visibility:visible');
 }
 
 var leftNodes, rightNodes, leftEdges, rightEdges;
+var interactionTypes = new Set();
 //get information of nodes ande edges
 function getNodesAndEdges(graphString){
   nodes = [];
@@ -227,6 +228,7 @@ function getNodesAndEdges(graphString){
     if(!isEmpty(curEdge)){
       if(graphString[i].includes("e_interaction")){     // get edges interaction type
         var interact = regExp.exec(graphString[i])[1]; 
+        interactionTypes.add(interact);
 
         if(prevId == curEdge.id){                       // multiple edges between two nodes
           if(!Array.isArray(edges[pos-1].data.interaction)){
@@ -485,6 +487,118 @@ function removeOptions(selectbox){
     {
         selectbox.remove(i);
     }
+}
+
+//show legend
+function showLegend(interactionTypes){
+  document.getElementById("arrows").innerHTML = "";
+  if(interactionTypes.has("activation") && interactionTypes.has("expression")){
+    interactionTypes.delete("expression")
+  }
+  if(interactionTypes.has("inhibition") && interactionTypes.has("repression")){
+    interactionTypes.delete("repression")
+  }
+  if(interactionTypes.has("binding/association") && interactionTypes.has("dissociation")){
+    interactionTypes.delete("dissociation")
+  }
+  // show legend and update if necessary
+  var table = document.getElementById('arrows');
+  var i = 0;
+  for(var interact of interactionTypes){
+    // Insert a row in the table at the last row
+    var newRow   = table.insertRow();
+    // Insert a cells
+    var newInteraction  = newRow.insertCell(0);
+    var newArrow  = newRow.insertCell(1);
+
+    var img = document.createElement('img');
+    img.width =40;
+    img.height =30;
+
+    if(["activation", "expression"].includes(interact)){
+      var newText  = document.createTextNode("Activation, Expression");
+      img.src = activation_expression;
+    }
+    else if(["inhibition", "repression"].includes(interact)){
+      var newText  = document.createTextNode("Inhibition, Repression");
+      img.src = inhibition_repression;
+    }
+    else if(["compound"].includes(interact)){
+      var newText  = document.createTextNode('Compound');
+      img.src = compound;
+    }
+    else if(["indirect effect"].includes(interact)){
+      var newText  = document.createTextNode('Indirect effect');
+      img.src = indirecteffect;
+    }
+    else if(["state change"].includes(interact)){
+      var newText  = document.createTextNode('State change');
+      img.src = statechange;
+    }
+    else if(["missing interaction"].includes(interact)){
+      var newText  = document.createTextNode('Missing interaction');
+      img.src = missinginteraction;
+    }
+    else if(["phosphorylation"].includes(interact)){
+      var newText  = document.createTextNode('Phosphorylation');
+      img.src = phosphorylation;
+    }
+    else if(["dephosphorylation"].includes(interact)){
+      var newText  = document.createTextNode('Dephosphorylation');
+      img.src = dephosphorylation;
+    }
+    else if(["glycosylation"].includes(interact)){
+      var newText  = document.createTextNode('Glycosylation');
+      img.src = glycosylation;
+    }
+    else if(["methylation"].includes(interact)){
+      var newText  = document.createTextNode('Methylation');
+      img.src = methylation;
+    }
+    else if(["ubiquitination"].includes(interact)){
+      var newText  = document.createTextNode('Ubiquitination');
+      img.src = ubiquitination;
+    }
+    else if(["binding/association", "dissociation"].includes(interact)){
+      var newText  = document.createTextNode('Binding/association, dissociation');
+      img.src = bindingassociation_dissociation;
+    }
+    else{
+      var newText  = document.createTextNode('Other');
+      img.src = other;
+    }
+    newInteraction.appendChild(newText);
+    newArrow.appendChild(img);
+    i++;
+  }
+  if(i == interactionTypes.size){
+    var newRow = table.insertRow();
+    var multipleInteractions = table.insertRow();
+    var checkMultiple = newRow.insertCell(0);
+    var newArrow = newRow.insertCell(1);
+
+    var newCheckMultiple = document.createElement('input');
+    newCheckMultiple.type = "checkbox";
+    newCheckMultiple.id = "mergeEdges";
+    newCheckMultiple.checked = true;
+    newCheckMultiple.addEventListener('click', function(){
+      mergeEdges(graphLeft, graphRight);
+    });
+
+    var label = document.createElement('label')
+    label.htmlFor = "mergeEdges";
+    label.appendChild(document.createTextNode('Multiple interactions'));
+
+    checkMultiple.appendChild(newCheckMultiple);
+    checkMultiple.appendChild(label)
+
+
+    var img = document.createElement('img');
+    img.width =40;
+    img.height =30;
+    img.src = multipleinteractions;
+    newArrow.appendChild(img);
+  }
 }
 
 // show drop downs for nodes' shapes attribute and shape itself
@@ -1343,5 +1457,4 @@ var animateLayout = true;
   }
   highlightedNode.getsymbol;
 };
-
 
