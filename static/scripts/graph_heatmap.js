@@ -651,7 +651,7 @@ async function listKEGGPathways(pos, nodesList){
       //show table of pathways
       var tbody = document.getElementById("KEGGpaths"+pos);
       var htmlString ="<form id='form"+pos+"'> <h3>KEGG Pathways:</h3><br>";
-      var colors = ["#66c2a5","#fc8d62","#8da0cb","#e78ac3","#a6d854"]
+      var colors = ["#66c2a5","#dfc27d","#8da0cb","#e78ac3","#a6d854"]
       for (var i = 0; i < topFive.length; i++) {
         if(pos == "Left"){
           colorschemePathsLeft[topFive[i].key] = colors[i];

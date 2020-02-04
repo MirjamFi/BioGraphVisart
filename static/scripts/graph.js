@@ -1077,7 +1077,7 @@ async function listKEGGPathways(){
           //show table of pathways
       var tbody = document.getElementById("KEGGpaths");
       var htmlString ="<form> <h3>KEGG Pathways:</h3><br>";
-      var colors = ["#66c2a5","#fc8d62","#8da0cb","#e78ac3","#a6d854"]
+      var colors = ["#66c2a5","#dfc27d","#8da0cb","#e78ac3","#a6d854"]
 
       for (var i = 0; i < topFive.length; i++) {
         colorschemePaths[topFive[i].key] = colors[i];
