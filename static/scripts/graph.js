@@ -43,6 +43,7 @@ function visualize(graphString) {
     oldMin = nodesMin;
     oldMax = nodesMax;
 
+    document.getElementById('arrows').innerHTML = "";
     showLegend(interactionTypes);
 
     document.getElementById('downloadPart').style.visibility = "visible";
@@ -145,7 +146,15 @@ function getNodesAndEdges(graphString){
     if(!isEmpty(curEdge)){
       if(graphString[i].includes("e_interaction")){     // get edges interaction type
         var interact = regExp.exec(graphString[i])[1]; 
-        interactionTypes.add(interact);
+        if(interact.includes(",")){
+          var interactarray = interact.split(",")
+          for(let inter of interactarray){
+            interactionTypes.add(inter);
+          }
+        }
+        else{ 
+          interactionTypes.add(interact);
+        }
         if(prevId == curEdge.id){                       // multiple edges between two nodes
           if(!Array.isArray(edges[pos-1].data.interaction)){
             curEdge.interaction=[edges[pos-1].data.interaction, interact]
@@ -941,6 +950,7 @@ function changeNodeShapes(){
     usedShapeAttributes[shapeAttribute] = shape;
      shapeNode = cytoscape({
         container: document.getElementById('legendNodes'),
+        autolock: true,
         layout: {
           name: 'preset'
         },
@@ -959,7 +969,7 @@ function changeNodeShapes(){
         ],
       });
 
- 
+    shapeNode.userZoomingEnabled( false );
    shapeNode.add({ // node n1
               group: 'nodes', 
 
@@ -1014,9 +1024,16 @@ function changeNodeShapes(){
       .selector('node[id ="'+shapeAttribute+'"]')        
       .style('shape', shape)
       .update();
-
-    usedShapeAttributes[shapeAttribute] = shape;
-    usedShapes[shape] = shapeAttribute
+    if(shape == "ellipse"){
+        shapeNode.remove('node[id ="'+shapeAttribute+'"]')
+        if(shapeNode.nodes().length == 0){
+          usedShapeAttributes = [];
+        }
+      }
+    else{
+      usedShapeAttributes[shapeAttribute] = shape;
+      usedShapes[shape] = shapeAttribute
+    }
   }
 
   // add new shape and attribute
