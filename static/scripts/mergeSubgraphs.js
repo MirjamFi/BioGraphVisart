@@ -232,7 +232,6 @@ function getmergedGraph(nodesL, nodesR, edgesL, edgesR){
 	var minMax = getNodeValueRange(unionNodes, document.getElementById("selectColorAttribute").value);
 	mergeMin = minMax[0];
 	mergeMax = minMax[1];
-		console.log(window.opener.interactionTypes)
 	showLegend(window.opener.interactionTypes);
 	return [unionNodes, unionEdges];
 };
