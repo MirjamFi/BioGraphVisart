@@ -385,7 +385,7 @@ function loadFile() {
 
   var seleShape = document.createElement("OPTION");
   seleShape.text = "Select Shape";
-  seleShape.value = "";
+  seleShape.value = "ellipse";
   drpShape.add(seleShape);
 
   const shapesArray = ["rectangle", "octagon", "rhomboid", "pentagon", "tag"];

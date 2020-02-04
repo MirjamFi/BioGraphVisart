@@ -205,6 +205,54 @@ var cystyle =  [
         drpColor.add(optn);
       })
 
+    // node shape drop dpwn
+    var nodeShapesAttr = document.createElement("select")
+    nodeShapesAttr.id = "nodeShapesAttr"
+    nodeShapesAttr.name = "nodeShapesAttr"
+    document.getElementById("merged_graph_buttons").appendChild(nodeShapesAttr)
+    nodeShapesAttr.onchange = activateShapes;
+
+    var drpShapes = document.getElementById("nodeShapesAttr");
+    var seleShapeAttr = document.createElement("OPTION");    
+    seleShapeAttr.text = "Select Shape Attribute";
+    seleShapeAttr.value = "";
+    drpShapes.add(seleShapeAttr);
+
+    shapeAttributes = Array.from(new Set(window.opener.shapeAttributes)); 
+    if(shapeAttributes.length > 0){
+      shapeAttributes.forEach(function(val){
+        var optn = document.createElement("OPTION");
+        optn.text=val;
+        optn.value=val;
+        drpShapes.add(optn);
+      })
+    }
+
+    var nodeShapes = document.createElement("select")
+    nodeShapes.name= "nodeShapes" 
+    nodeShapes.id="nodeShapes" 
+    document.getElementById("merged_graph_buttons").appendChild(nodeShapes);
+    nodeShapes.onchange= changeNodeShapes;
+    
+
+    // shapes dropdown
+    var drpShape = document.getElementById("nodeShapes");
+    drpShape.style.visibility = "hidden";
+    var seleShape = document.createElement("OPTION");
+    seleShape.text = "Select Shape";
+    seleShape.value = "ellipse";
+    drpShape.add(seleShape);
+
+    const shapesArray = ["rectangle", "octagon", "rhomboid", "pentagon", "tag"];
+
+    shapesArray.forEach(function(s){
+      var nodeShape = s;
+      var optnShape = document.createElement("OPTION");
+      optnShape.text=nodeShape;
+      optnShape.value=nodeShape;
+      drpShape.add(optnShape);
+    });
+
       // layout dropdown
     var drpLayout = document.createElement("select");
     drpLayout.id = "selectlayoutMerge";
@@ -226,7 +274,6 @@ var cystyle =  [
       optnLayout.value=graphLayout;
       drpLayout.add(optnLayout);
     });
-
 
 var searchgene = document.createElement("input");
   searchgene.id = "searchgene";

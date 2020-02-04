@@ -96,6 +96,33 @@
         <select name="values" id="values" onchange="visualize()" style="visibility: hidden">
             <option value="" selected disabled hidden>Choose node's attribute</option>
         </select>
+   <select name= "nodeShapesAttr" id="nodeShapesAttr" onchange="activateShapes()" style="visibility: hidden;"> </select>
+  <script type="text/javascript">
+    var drpShapes = document.getElementById("nodeShapesAttr");
+    var seleShapeAttr = document.createElement("OPTION");    
+    seleShapeAttr.text = "Select Shape Attribute";
+    seleShapeAttr.value = "";
+    drpShapes.add(seleShapeAttr);
+  </script>
+  <select name= "nodeShapes" id="nodeShapes" onchange="changeNodeShapes()" style="visibility: hidden;"> </select>
+  <script type="text/javascript">
+   // shapes dropdown
+   var drpShape = document.getElementById("nodeShapes");
+    var seleShape = document.createElement("OPTION");
+    seleShape.text = "Select Shape";
+    seleShape.value = "ellipse";
+    drpShape.add(seleShape);
+
+    const shapesArray = ["rectangle", "octagon", "rhomboid", "pentagon", "tag"];
+
+    shapesArray.forEach(function(s){
+      var nodeShape = s;
+      var optnShape = document.createElement("OPTION");
+      optnShape.text=nodeShape;
+      optnShape.value=nodeShape;
+      drpShape.add(optnShape);
+    });
+    </script>
         <input type="text" name="searchgene" id="searchgene" width="30" style="visibility: hidden" value="Search gene">
         <button class="butn" id="searchbutton" onclick="highlightSearchedGene()" style="visibility: hidden">Search</button>
 
