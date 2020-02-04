@@ -22,6 +22,7 @@ function visualize(graphString) {
     edges = nodesAndEdges[1]; 
     nodeValuesNum = nodesAndEdges[2];
     attributesTypes = nodesAndEdges[3];
+    interactionTypes = nodesAndEdges[4];
 
     nodeValuesNum = transform01toTF(nodeValuesNum);
 
@@ -42,7 +43,8 @@ function visualize(graphString) {
     oldMin = nodesMin;
     oldMax = nodesMax;
 
-    showLegend();
+    document.getElementById('arrows').innerHTML = "";
+    showLegend(interactionTypes);
 
     document.getElementById('downloadPart').style.visibility = "visible";
   }
@@ -79,6 +81,7 @@ function getNodesAndEdges(graphString){
   var edges = [];
   var nodeValuesNum = [];
   var attributesTypes = {};
+  var interactionTypes = new Set();
 
   var prevId = "";
   var pos = 0;
@@ -143,7 +146,15 @@ function getNodesAndEdges(graphString){
     if(!isEmpty(curEdge)){
       if(graphString[i].includes("e_interaction")){     // get edges interaction type
         var interact = regExp.exec(graphString[i])[1]; 
-
+        if(interact.includes(",")){
+          var interactarray = interact.split(",")
+          for(let inter of interactarray){
+            interactionTypes.add(inter);
+          }
+        }
+        else{ 
+          interactionTypes.add(interact);
+        }
         if(prevId == curEdge.id){                       // multiple edges between two nodes
           if(!Array.isArray(edges[pos-1].data.interaction)){
             curEdge.interaction=[edges[pos-1].data.interaction, interact]
@@ -171,7 +182,7 @@ function getNodesAndEdges(graphString){
     legendNode.symbol = "legend";
     nodes.push({data:legendNode});
   }
-  return [nodes, edges, nodeValuesNum, attributesTypes];
+  return [nodes, edges, nodeValuesNum, attributesTypes, interactionTypes];
 }
 
 //transform 0 and 1 as atttributes to true and false
@@ -594,9 +605,116 @@ function addNodesAndEdges(){
 }
 
 //show legend
-function showLegend(){
+function showLegend(interactionTypes){
+  if(interactionTypes.has("activation") && interactionTypes.has("expression")){
+    interactionTypes.delete("expression")
+  }
+  if(interactionTypes.has("inhibition") && interactionTypes.has("repression")){
+    interactionTypes.delete("repression")
+  }
+  if(interactionTypes.has("binding/association") && interactionTypes.has("dissociation")){
+    interactionTypes.delete("dissociation")
+  }
   // show legend and update if necessary
-  document.getElementById('legend').setAttribute('style','visibility:visible');
+  var table = document.getElementById('arrows');
+  var i = 0;
+  for(var interact of interactionTypes){
+    // Insert a row in the table at the last row
+    var newRow   = table.insertRow();
+    // Insert a cells
+    var newInteraction  = newRow.insertCell(0);
+    var newArrow  = newRow.insertCell(1);
+
+    var img = document.createElement('img');
+    img.width =40;
+    img.height =30;
+
+    if(["activation", "expression"].includes(interact)){
+      var newText  = document.createTextNode("Activation, Expression");
+      img.src = activation_expression;
+    }
+    else if(["inhibition", "repression"].includes(interact)){
+      var newText  = document.createTextNode("Inhibition, Repression");
+      img.src = inhibition_repression;
+    }
+    else if(["compound"].includes(interact)){
+      var newText  = document.createTextNode('Compound');
+      img.src = compound;
+    }
+    else if(["indirect effect"].includes(interact)){
+      var newText  = document.createTextNode('Indirect effect');
+      img.src = indirecteffect;
+    }
+    else if(["state change"].includes(interact)){
+      var newText  = document.createTextNode('State change');
+      img.src = statechange;
+    }
+    else if(["missing interaction"].includes(interact)){
+      var newText  = document.createTextNode('Missing interaction');
+      img.src = missinginteraction;
+    }
+    else if(["phosphorylation"].includes(interact)){
+      var newText  = document.createTextNode('Phosphorylation');
+      img.src = phosphorylation;
+    }
+    else if(["dephosphorylation"].includes(interact)){
+      var newText  = document.createTextNode('Dephosphorylation');
+      img.src = dephosphorylation;
+    }
+    else if(["glycosylation"].includes(interact)){
+      var newText  = document.createTextNode('Glycosylation');
+      img.src = glycosylation;
+    }
+    else if(["methylation"].includes(interact)){
+      var newText  = document.createTextNode('Methylation');
+      img.src = methylation;
+    }
+    else if(["ubiquitination"].includes(interact)){
+      var newText  = document.createTextNode('Ubiquitination');
+      img.src = ubiquitination;
+    }
+    else if(["binding/association", "dissociation"].includes(interact)){
+      var newText  = document.createTextNode('Binding/association, dissociation');
+      img.src = bindingassociation_dissociation;
+    }
+    else{
+      var newText  = document.createTextNode('Other');
+      img.src = other;
+    }
+    newInteraction.appendChild(newText);
+    newArrow.appendChild(img);
+    i++;
+  }
+  if(i == interactionTypes.size){
+    var newRow = table.insertRow();
+    var multipleInteractions = table.insertRow();
+    var checkMultiple = newRow.insertCell(0);
+    var newArrow = newRow.insertCell(1);
+
+    var newCheckMultiple = document.createElement('input');
+    newCheckMultiple.type = "checkbox";
+    newCheckMultiple.id = "mergeEdges";
+    newCheckMultiple.checked = true;
+    newCheckMultiple.addEventListener('click', function(){
+      mergeEdges(cy);
+    });
+
+    var label = document.createElement('label')
+    label.htmlFor = "mergeEdges";
+    label.appendChild(document.createTextNode('Multiple interactions'));
+
+    checkMultiple.appendChild(newCheckMultiple);
+    checkMultiple.appendChild(label)
+
+
+    var img = document.createElement('img');
+    img.width =40;
+    img.height =30;
+    img.src = multipleinteractions;
+    newArrow.appendChild(img);
+
+    document.getElementById('legend').setAttribute('style','visibility:visible');
+  }
 }
 
 //show meta-information of nodes by mouseover
@@ -832,6 +950,7 @@ function changeNodeShapes(){
     usedShapeAttributes[shapeAttribute] = shape;
      shapeNode = cytoscape({
         container: document.getElementById('legendNodes'),
+        autolock: true,
         layout: {
           name: 'preset'
         },
@@ -850,7 +969,7 @@ function changeNodeShapes(){
         ],
       });
 
- 
+    shapeNode.userZoomingEnabled( false );
    shapeNode.add({ // node n1
               group: 'nodes', 
 
@@ -905,9 +1024,16 @@ function changeNodeShapes(){
       .selector('node[id ="'+shapeAttribute+'"]')        
       .style('shape', shape)
       .update();
-
-    usedShapeAttributes[shapeAttribute] = shape;
-    usedShapes[shape] = shapeAttribute
+    if(shape == "ellipse"){
+        shapeNode.remove('node[id ="'+shapeAttribute+'"]')
+        if(shapeNode.nodes().length == 0){
+          usedShapeAttributes = [];
+        }
+      }
+    else{
+      usedShapeAttributes[shapeAttribute] = shape;
+      usedShapes[shape] = shapeAttribute
+    }
   }
 
   // add new shape and attribute
@@ -1077,7 +1203,7 @@ async function listKEGGPathways(){
           //show table of pathways
       var tbody = document.getElementById("KEGGpaths");
       var htmlString ="<form> <h3>KEGG Pathways:</h3><br>";
-      var colors = ["#66c2a5","#fc8d62","#8da0cb","#e78ac3","#a6d854"]
+      var colors = ["#66c2a5","#dfc27d","#8da0cb","#e78ac3","#a6d854"]
 
       for (var i = 0; i < topFive.length; i++) {
         colorschemePaths[topFive[i].key] = colors[i];

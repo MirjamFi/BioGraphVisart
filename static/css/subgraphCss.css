@@ -172,7 +172,7 @@ input:hover{
 }
 #legendNodes {
     position: absolute;
-    top: 560px;
+    margin-top: 10px;
     left: 10px;
     font-size: 11px;
     width: 180px;
@@ -233,6 +233,12 @@ input:hover{
     position: absolute;
   top: 30px;
   left:84%;
+}
+
+#heatmap_shapes{
+  width: 200px;
+  height: 200px;
+  top: 10px;
 }
 
 }

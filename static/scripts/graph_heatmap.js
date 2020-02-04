@@ -116,7 +116,6 @@ function visualize() {
       rightOldMin = rightLayout[0];
       rightOldMax = rightLayout[1];
       rightFirstTime = rightLayout[2];
-      // showLegend(rightNodesMin, rightNodesMax, graphRight);
       document.getElementById('cyRight').style.visibility = "visible";
       document.getElementById('downloadPartRight').style.visibility = "visible";
       document.getElementById('resetRight').style.visibility = "visible";
@@ -146,10 +145,12 @@ function visualize() {
       }
     }
   });
+  showLegend(interactionTypes);
   document.getElementById('legend_heatmap').setAttribute('style','visibility:visible');
 }
 
 var leftNodes, rightNodes, leftEdges, rightEdges;
+var interactionTypes = new Set();
 //get information of nodes ande edges
 function getNodesAndEdges(graphString){
   nodes = [];
@@ -227,6 +228,15 @@ function getNodesAndEdges(graphString){
     if(!isEmpty(curEdge)){
       if(graphString[i].includes("e_interaction")){     // get edges interaction type
         var interact = regExp.exec(graphString[i])[1]; 
+        if(interact.includes(",")){
+          var interactarray = interact.split(",")
+          for(let inter of interactarray){
+            interactionTypes.add(inter);
+          }
+        }
+        else{ 
+          interactionTypes.add(interact);
+        }
 
         if(prevId == curEdge.id){                       // multiple edges between two nodes
           if(!Array.isArray(edges[pos-1].data.interaction)){
@@ -429,11 +439,9 @@ function showMetaInfo(cyObject){
     },
     content: {text : function(){
       if(!isNaN(parseFloat(this.data('val')))){
-        return '<b>'+nodeVal +'</b>: ' + parseFloat(this.data('val')).toFixed(2) +
-        '<br>' + '<b>gene name</b>: ' + this.data('genename'); } //numbers
+        return '<b>'+nodeVal +'</b>: ' + parseFloat(this.data('val')).toFixed(2); } //numbers
       else{
-        return '<b>'+nodeVal +'</b>: '+ this.data('val') +
-        '<br>' + '<b>gene name</b>: ' + this.data('genename');          //bools
+        return '<b>'+nodeVal +'</b>: '+ this.data('val');          //bools
       }
     }},
     position: {
@@ -489,91 +497,243 @@ function removeOptions(selectbox){
     }
 }
 
+//show legend
+function showLegend(interactionTypes){
+  document.getElementById("arrows").innerHTML = "";
+  if(interactionTypes.has("activation") && interactionTypes.has("expression")){
+    interactionTypes.delete("expression")
+  }
+  if(interactionTypes.has("inhibition") && interactionTypes.has("repression")){
+    interactionTypes.delete("repression")
+  }
+  if(interactionTypes.has("binding/association") && interactionTypes.has("dissociation")){
+    interactionTypes.delete("dissociation")
+  }
+  // show legend and update if necessary
+  var table = document.getElementById('arrows');
+  var i = 0;
+  for(var interact of interactionTypes){
+    console.log(interact)
+    // Insert a row in the table at the last row
+    var newRow   = table.insertRow();
+    // Insert a cells
+    var newInteraction  = newRow.insertCell(0);
+    var newArrow  = newRow.insertCell(1);
+
+    var img = document.createElement('img');
+    img.width =40;
+    img.height =30;
+
+    if(["activation", "expression"].includes(interact)){
+      var newText  = document.createTextNode("Activation, Expression");
+      img.src = activation_expression;
+    }
+    else if(["inhibition", "repression"].includes(interact)){
+      var newText  = document.createTextNode("Inhibition, Repression");
+      img.src = inhibition_repression;
+    }
+    else if(["compound"].includes(interact)){
+      var newText  = document.createTextNode('Compound');
+      img.src = compound;
+    }
+    else if(["indirect effect"].includes(interact)){
+      var newText  = document.createTextNode('Indirect effect');
+      img.src = indirecteffect;
+    }
+    else if(["state change"].includes(interact)){
+      var newText  = document.createTextNode('State change');
+      img.src = statechange;
+    }
+    else if(["missing interaction"].includes(interact)){
+      var newText  = document.createTextNode('Missing interaction');
+      img.src = missinginteraction;
+    }
+    else if(["phosphorylation"].includes(interact)){
+      var newText  = document.createTextNode('Phosphorylation');
+      img.src = phosphorylation;
+    }
+    else if(["dephosphorylation"].includes(interact)){
+      var newText  = document.createTextNode('Dephosphorylation');
+      img.src = dephosphorylation;
+    }
+    else if(["glycosylation"].includes(interact)){
+      var newText  = document.createTextNode('Glycosylation');
+      img.src = glycosylation;
+    }
+    else if(["methylation"].includes(interact)){
+      var newText  = document.createTextNode('Methylation');
+      img.src = methylation;
+    }
+    else if(["ubiquitination"].includes(interact)){
+      var newText  = document.createTextNode('Ubiquitination');
+      img.src = ubiquitination;
+    }
+    else if(["binding/association", "dissociation"].includes(interact)){
+      var newText  = document.createTextNode('Binding/association, dissociation');
+      img.src = bindingassociation_dissociation;
+    }
+    else{
+      var newText  = document.createTextNode('Other');
+      img.src = other;
+    }
+    newInteraction.appendChild(newText);
+    newArrow.appendChild(img);
+    i++;
+  }
+  if(i == interactionTypes.size){
+    var newRow = table.insertRow();
+    var multipleInteractions = table.insertRow();
+    var checkMultiple = newRow.insertCell(0);
+    var newArrow = newRow.insertCell(1);
+
+    var newCheckMultiple = document.createElement('input');
+    newCheckMultiple.type = "checkbox";
+    newCheckMultiple.id = "mergeEdges";
+    newCheckMultiple.checked = true;
+    newCheckMultiple.addEventListener('click', function(){
+      mergeEdges(graphLeft, graphRight);
+    });
+
+    var label = document.createElement('label')
+    label.htmlFor = "mergeEdges";
+    label.appendChild(document.createTextNode('Multiple interactions'));
+
+    checkMultiple.appendChild(newCheckMultiple);
+    checkMultiple.appendChild(label)
+
+
+    var img = document.createElement('img');
+    img.width =40;
+    img.height =30;
+    img.src = multipleinteractions;
+    newArrow.appendChild(img);
+
+    var shapelegend = document.createElement("div")
+    shapelegend.id = "heatmap_shapes";
+    shapelegend.visibility = "visible";
+    if(graphLeft || graphRight){
+      document.getElementById("legend_heatmap").appendChild(shapelegend);
+    }
+    else if( merge_graph){
+      document.getElementById("legend_merge").appendChild(shapelegend);
+    }
+  }
+}
+
 // show drop downs for nodes' shapes attribute and shape itself
 function activateNodeShapeChange(){
   document.getElementById('nodeShapesAttr').setAttribute('style','visibility:visible');
+}
+
+function activateShapes(){
   document.getElementById('nodeShapes').setAttribute('style','visibility:visible');
 }
 
 /*
   change node shape of nodes with given attribute
 */
-function changeNodeShapes(cyObject, graphString){
+function changeNodeShapes(){
   var shapeAttribute = document.getElementById('nodeShapesAttr').value;
   var shape = document.getElementById('nodeShapes').value;
-
-  if(shapeAttribute == "" || shape == ""){
-    return;
-  }
-  var i = 0;
-  var id = "";
-  while(i < graphString.length){
-
-    if(graphString[i].includes("node id")){   // get node id
-      id = graphString[i].split("\"")[1];
-    } 
-    else if(id != "" && graphString[i].includes('\"v_'+shapeAttribute+'\">true<')){
-
-      cyObject.style()
-        .selector('node[id ="'+id+'"]')        
+  if(merge_graph){
+      merge_graph.style()
+        .selector('node['+shapeAttribute+' ="true"]')        
         .style('shape', shape)
         .update();
-
+  }
+  if(graphLeft || graphRight){
+    if(graphLeft.nodes().filter('node['+shapeAttribute+' ="true"]').length > 0 || 
+      graphRight.nodes().filter('node['+shapeAttribute+' ="true"]').length > 0){
+      graphLeft.style()
+        .selector('node['+shapeAttribute+' ="true"]')        
+        .style('shape', shape)
+        .update();
+      if(graphRight){
+        graphRight.style()
+          .selector('node['+shapeAttribute+' ="true"]')        
+          .style('shape', shape)
+          .update();
+      }
     }
-    i++;
+  }
+  if(graphLeft && graphLeft.nodes().filter('node['+shapeAttribute+' ="true"]').length > 0 || 
+    graphRight && graphRight.nodes().filter('node['+shapeAttribute+' ="true"]').length > 0 ||
+    merge_graph && merge_graph.nodes().filter('node['+shapeAttribute+' ="true"]').length > 0){
+      // list all shapes already used
+  usedShapes = []
+  for (var key in usedShapeAttributes) {
+    if (Object.prototype.hasOwnProperty.call(usedShapeAttributes, key)) {
+        var val = usedShapeAttributes[key];
+        usedShapes[val] = key;
+    }
   }
 
-  if(isEmpty(usedShapeAttributes)){// 
-    usedShapeAttributes[shapeAttribute] = {"usedShape":shape};
-     shapeNode = cytoscape({
-        container: document.getElementById('legend_heatmap'),
-        layout: {
-          name: 'preset'
-        },
-        style: [
-            {selector: 'node',
-              style: {
-              width: 18,
-              height: 18,
-              shape: shape,
-              'background-color': '#666666',
-              label: 'data(id)',
-              'font-size': 12
-            }
-          }
-        ]
-      });
- 
-   shapeNode.add({ // node n1
-              group: 'nodes', 
-
-              data: { 
-                id: shapeAttribute, 
-              },
-              position: { // the model position of the node (optional on init, mandatory after)
-                x: 94,
-                y: 50
+    if(isEmpty(usedShapeAttributes)){// 
+      usedShapeAttributes[shapeAttribute] = {"usedShape":shape};
+       shapeNode = cytoscape({
+          container: document.getElementById('heatmap_shapes'),
+          autolock: true,
+          layout: {
+            name: 'preset'
+          },
+          style: [
+              {selector: 'node',
+                style: {
+                width: 18,
+                height: 18,
+                shape: shape,
+                'background-color': '#666666',
+                label: 'data(id)',
+                'font-size': 12
               }
-            });
-   ycoord = 50;
-  } 
-  
-  // update shape of a attribute already used
-  else if (usedShapeAttributes.hasOwnProperty(shapeAttribute)){
-    shapeNode.style()
-      .selector('node[id ="'+shapeAttribute+'"]')        
-      .style('shape', shape)
-      .update();
+            }
+          ]
+        });
+      shapeNode.userZoomingEnabled( false );
+     shapeNode.add({ // node n1
+                group: 'nodes', 
+
+                data: { 
+                  id: shapeAttribute, 
+                },
+                position: { // the model position of the node (optional on init, mandatory after)
+                  x: 94,
+                  y: 50
+                }
+              });
+     ycoord = 50;
+    } 
+    
+    // update shape of a attribute already used
+    else if (usedShapeAttributes.hasOwnProperty(shapeAttribute)){
+      // update shape of a attribute already used
+      if (usedShapeAttributes.hasOwnProperty(shapeAttribute)){
+        shapeNode.style()
+          .selector('node[id ="'+shapeAttribute+'"]')        
+          .style('shape', shape)
+          .update();
+      if(shape == "ellipse"){
+          shapeNode.remove('node[id ="'+shapeAttribute+'"]')
+          if(shapeNode.nodes().length == 0){
+            usedShapeAttributes = [];
+          }
+        }
+      else{
+        usedShapeAttributes[shapeAttribute] = shape;
+        usedShapes[shape] = shapeAttribute
+      }
+    }
   }
 
-  else if(!isEmpty(usedShapeAttributes) && !usedShapeAttributes.hasOwnProperty(shapeAttribute)){
-    ycoord = ycoord + 35;
-    usedShapeAttributes[shapeAttribute] = {"usedShape":shape};
-    shapeNode.add( { group: "nodes", data: { id: shapeAttribute}, position:{'x':94, 'y':ycoord}});
-    shapeNode.style()
-        .selector('node[id ="'+shapeAttribute+'"]')        
-        .style('shape', shape)
-        .update();
+    else if(!isEmpty(usedShapeAttributes) && !usedShapeAttributes.hasOwnProperty(shapeAttribute)){
+      ycoord = ycoord + 35;
+      usedShapeAttributes[shapeAttribute] = {"usedShape":shape};
+      shapeNode.add( { group: "nodes", data: { id: shapeAttribute}, position:{'x':94, 'y':ycoord}});
+      shapeNode.style()
+          .selector('node[id ="'+shapeAttribute+'"]')        
+          .style('shape', shape)
+          .update();
+    }
   }
 }
 
@@ -651,7 +811,7 @@ async function listKEGGPathways(pos, nodesList){
       //show table of pathways
       var tbody = document.getElementById("KEGGpaths"+pos);
       var htmlString ="<form id='form"+pos+"'> <h3>KEGG Pathways:</h3><br>";
-      var colors = ["#66c2a5","#fc8d62","#8da0cb","#e78ac3","#a6d854"]
+      var colors = ["#66c2a5","#dfc27d","#8da0cb","#e78ac3","#a6d854"]
       for (var i = 0; i < topFive.length; i++) {
         if(pos == "Left"){
           colorschemePathsLeft[topFive[i].key] = colors[i];
@@ -1345,5 +1505,4 @@ var animateLayout = true;
   }
   highlightedNode.getsymbol;
 };
-
 

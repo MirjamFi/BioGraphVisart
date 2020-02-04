@@ -54,6 +54,7 @@ function cleanSelections(){
     // if it is not the first graph read, delete all selectable options
   usedShapeAttributes = [];
   var myNode = document.getElementById("configPart");
+  document.getElementById("arrows").innerHTML = "";
   document.getElementById('KEGGpaths').innerHTML = "";
   document.getElementById('keggpathways').firstChild.data = "Show KEGG Pathways";
   document.getElementById('KEGGpaths').style.visibility = "hidden";
@@ -83,9 +84,10 @@ function cleanSelections(){
   if(searchbutn){
     searchbutn.parentNode.removeChild(searchbutn); }
   var undobutn = document.getElementById("undobutn")
-    if(undobutn){
+  if(undobutn){
       undobutn.parentNode.removeChild(undobutn); }
-  document.getElementById('mergeEdges').checked = true;
+  if(document.getElementById('mergeEdges'))
+    document.getElementById('mergeEdges').checked = true;
   noOptn = true;
   noDrpShapes = true;
   nodeVal = undefined;
@@ -383,7 +385,7 @@ function loadFile() {
 
   var seleShape = document.createElement("OPTION");
   seleShape.text = "Select Shape";
-  seleShape.value = "";
+  seleShape.value = "ellipse";
   drpShape.add(seleShape);
 
   const shapesArray = ["rectangle", "octagon", "rhomboid", "pentagon", "tag"];

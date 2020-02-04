@@ -11,6 +11,7 @@ var ctxRight;
 var layerMerge;
 var cavasMerge;
 var ctxMerge;
+var shapeNode;
 
 var highlightedNode = {
   symbol: '',
@@ -165,6 +166,7 @@ function calculateOverlap(data){
 };
 
 var drpValues = [];
+var shapeAttributes = [];
 function loadGraphml(sampleLeft, sampleRight) {
   cleanSelections();
   samples = [sampleLeft, sampleRight];
@@ -189,6 +191,9 @@ function loadGraphml(sampleLeft, sampleRight) {
               (graphString[i].includes("attr.type=\"boolean\"")))){
             var nodeattr = graphString[i].split("attr.name=")[1].split(" ")[0].replace(/"/g, "");
             drpValues.push(nodeattr);
+            if(graphString[i].includes("attr.type=\"boolean\"")){
+              shapeAttributes.push(nodeattr);
+            }
           };
           if(graphString[i].includes("<node id=\"n0\">")){
             break;
@@ -215,14 +220,38 @@ function loadGraphml(sampleLeft, sampleRight) {
     drp.add(optn);
   })
   document.getElementById('values').value = drpValues[0];
-    if(!!path_right){
+
+  var drpShapeAttr = document.getElementById("nodeShapesAttr"); // boolean attributes
+  removeOptions(drpShapeAttr); 
+
+  var sele = document.createElement("OPTION");    
+  sele.text = "Choose node's attribute";
+  sele.value = "";
+  drpShapeAttr.add(sele);
+
+  shapeAttributes = Array.from(new Set(shapeAttributes)); 
+  if(shapeAttributes.length > 0){
+    shapeAttributes.forEach(function(val){
+      var optn = document.createElement("OPTION");
+      optn.text=val;
+      optn.value=val;
+      drpShapeAttr.add(optn);
+    })
+    drpShapeAttr.style.visibility = "visible";
+  }
+  if(!!path_right){
       clickMerge();
       merge();
   }
 };
 
 function cleanSelections(){
+  if(shapeNode){
+    shapeNode.elements().remove();
+  }
+  usedShapeAttributes = [];
     // if it is not the first graph read, delete all selectable options
+  document.getElementById('arrows').innerHTML = "";
   document.getElementById('KEGGpathsLeft').innerHTML = "";
   document.getElementById('keggpathwaysLeft').firstChild.data = "Show KEGG Pathways";
   document.getElementById('KEGGpathsLeft').style.visibility = "hidden";
