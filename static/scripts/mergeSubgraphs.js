@@ -261,19 +261,6 @@ function merge(){
 	document.getElementById('arrows').innerHTML = "";
 	document.getElementById('searchgene').style.visibility = "visible";
 	document.getElementById('searchbutton').style.visibility = "visible";
-	// create buttons once
-	if(!!document.getElementById("resetMerge")){
-		document.getElementById("resetMerge").remove();
-	}
-	if(!!document.getElementById("outputNameMerge")){
-		document.getElementById("outputNameMerge").remove();
-	}
-	if(!!document.getElementById("downloadMergePNG")){
-		document.getElementById("downloadMergePNG").remove();
-	}
-	if(!!document.getElementById("downloadMergeSVG")){
-		document.getElementById("downloadMergeSVG").remove();
-	}
 }
 
 function clickMerge(){

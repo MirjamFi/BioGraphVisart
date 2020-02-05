@@ -111,10 +111,10 @@ var cystyle =  [
 	merge_graph = createCyObject('merged_graph', -1,1)
 	//buttons: reset, merge, download
   if(!document.getElementById("outputNameMerge")){
-	   d3.select('#merged_graph_buttons')  
-	     .append('p')
+	  d3.select('#merged_graph_buttons')  
+	    .append('p')
 
-  	  d3.select('#merged_graph_buttons')  
+  	d3.select('#merged_graph_buttons')  
   	  .append('input')
   	  .attr('name', 'outputFileMerge')
   	  .attr('type', 'text')
@@ -122,7 +122,7 @@ var cystyle =  [
   	  .attr('id', 'outputNameMerge')
   	  .attr('value', 'File name')
 
-  	  d3.select('#merged_graph_buttons')  
+  	d3.select('#merged_graph_buttons')  
   	  .append('button')
   	  .attr('type', 'button')
   	  .attr('class', 'butn')
@@ -130,14 +130,14 @@ var cystyle =  [
   	  .text('.png')
   	  .on('click', function(){
 	  	
-  		  outputName = document.getElementById('outputNameMerge').value;
-  	  	  var png64 = merge_graph.png();
-  		  $('#downloadPNGMerge').attr('href', png64);
-  		  var download = document.createElement('a');
-  		  download.href = 'data:image/png;base64;'+png64;
-  	    download.download = outputName + '.png';
-  		  download.click();
-  	  });
+  	outputName = document.getElementById('outputNameMerge').value;
+  	  var png64 = merge_graph.png();
+  		$('#downloadPNGMerge').attr('href', png64);
+  		var download = document.createElement('a');
+  		download.href = 'data:image/png;base64;'+png64;
+  	  download.download = outputName + '.png';
+  		download.click();
+  	});
 
   	d3.select('#merged_graph_buttons')  
   	  .append('button')
@@ -146,13 +146,13 @@ var cystyle =  [
   	  .attr('id','downloadMergeSVG')
   	  .text('.svg')
   	  .on('click', function(){
-  	  	outputName = document.getElementById('outputNameMerge').value;
+  		outputName = document.getElementById('outputNameMerge').value;
   	  	
-  	    var svgContent = merge_graph.svg({scale: 1, full: true});
-  		  saveAs(new Blob([svgContent], {type:"image/svg+xml;charset=utf-8"}), outputName +".svg");
-  	  });
+  	  var svgContent = merge_graph.svg({scale: 1, full: true});
+  	  saveAs(new Blob([svgContent], {type:"image/svg+xml;charset=utf-8"}), outputName +".svg");
+  	});
 
-      d3.select('#merged_graph_buttons')
+    d3.select('#merged_graph_buttons')
       .append('button')
       .attr('class', 'butn')
       .attr('id', 'downloadPDF')
@@ -168,93 +168,94 @@ var cystyle =  [
         var height = (ratio * width);
 
         html2canvas($("#body").get(0), { onclone: (document) => {
-          document.getElementById('nav').style.visibility = 'hidden'
-          document.getElementById('resetMerge').style.visibility = 'hidden'
-          document.getElementById('nav').style.visibility = 'hidden';
-          document.getElementById('merged_graph_buttons').style.visibility = 'hidden'
-          document.getElementById('footer').style.visibility = 'hidden'
-          document.getElementById('searchbutn').style.visibility = 'hidden'
-          if(document.getElementById('searchgene').value == "Search gene"){
-            document.getElementById('searchgene').style.visibility = 'hidden'
-          }
-
+            document.getElementById('nav').style.visibility = 'hidden'
+            document.getElementById('resetMerge').style.visibility = 'hidden'
+            document.getElementById('nav').style.visibility = 'hidden';
+            document.getElementById('merged_graph_buttons').style.visibility = 'hidden'
+            document.getElementById('footer').style.visibility = 'hidden'
+            document.getElementById('searchbutn').style.visibility = 'hidden'
+            if(document.getElementById('searchgene').value == "Search gene"){
+              document.getElementById('searchgene').style.visibility = 'hidden'
+            }
         }}).then(function(canvas){
-        var imgData = canvas.toDataURL('image/png');
+          var imgData = canvas.toDataURL('image/png');
 
-        doc.addImage(imgData, 'PNG', 0, 0, width, height); 
-        outputName = document.getElementById('outputNameMerge').value;
-        doc.save(outputName + '.pdf');
-      })
+          doc.addImage(imgData, 'PNG', 0, 0, width, height); 
+          outputName = document.getElementById('outputNameMerge').value;
+          doc.save(outputName + '.pdf');
+        })
       })
 
-      // color options dropdown
-      var drpColor = document.createElement("select");
-      drpColor.id = "selectColorAttribute";
-      drpColor.name = "selectColor";
-      document.getElementById("merged_graph_buttons").appendChild(drpColor);
-      drpColor.style.visibility = "visible";
-      drpColor.onchange = createMerged;
+    // color options dropdown
+    var drpColor = document.createElement("select");
+    drpColor.id = "selectColorAttribute";
+    drpColor.name = "selectColor";
+    document.getElementById("merged_graph_buttons").appendChild(drpColor);
+    drpColor.style.visibility = "visible";
+    drpColor.onchange = createMerged;
 
-      var sele = document.createElement("OPTION");    
-      sele.text = "Choose node's attribute";
-      sele.value = window.opener.drpValues[0];
-      drpColor.add(sele);
-      window.opener.drpValues.forEach(function(val){
-        var optn = document.createElement("OPTION");
-        optn.text=val;
-        optn.value=val;
-        drpColor.add(optn);
-      })
+    var sele = document.createElement("OPTION");    
+    sele.text = "Choose node's attribute";
+    sele.value = window.opener.drpValues[0];
+    drpColor.add(sele);
+    window.opener.drpValues.forEach(function(val){
+      var optn = document.createElement("OPTION");
+      optn.text=val;
+      optn.value=val;
+      drpColor.add(optn);
+    }); 
 
     // node shape drop dpwn
-    var nodeShapesAttr = document.createElement("select")
-    nodeShapesAttr.id = "nodeShapesAttr"
-    nodeShapesAttr.name = "nodeShapesAttr"
-    document.getElementById("merged_graph_buttons").appendChild(nodeShapesAttr)
-    nodeShapesAttr.onchange = activateShapes;
+    if(window.opener.shapeAttributes.length > 0){
+      var nodeShapesAttr = document.createElement("select")
+      nodeShapesAttr.id = "nodeShapesAttr"
+      nodeShapesAttr.name = "nodeShapesAttr"
+      document.getElementById("merged_graph_buttons").appendChild(nodeShapesAttr)
+      nodeShapesAttr.onchange = activateShapes;
 
-    var drpShapes = document.getElementById("nodeShapesAttr");
-    var seleShapeAttr = document.createElement("OPTION");    
-    seleShapeAttr.text = "Select Shape Attribute";
-    seleShapeAttr.value = "";
-    drpShapes.add(seleShapeAttr);
+      var drpShapes = document.getElementById("nodeShapesAttr");
+      var seleShapeAttr = document.createElement("OPTION");    
+      seleShapeAttr.text = "Select Shape Attribute";
+      seleShapeAttr.value = "";
+      drpShapes.add(seleShapeAttr);
 
-    shapeAttributes = Array.from(new Set(window.opener.shapeAttributes)); 
-    if(shapeAttributes.length > 0){
-      shapeAttributes.forEach(function(val){
-        var optn = document.createElement("OPTION");
-        optn.text=val;
-        optn.value=val;
-        drpShapes.add(optn);
-      })
+      shapeAttributes = Array.from(new Set(window.opener.shapeAttributes)); 
+      if(shapeAttributes.length > 0){
+        shapeAttributes.forEach(function(val){
+          var optn = document.createElement("OPTION");
+          optn.text=val;
+          optn.value=val;
+          drpShapes.add(optn);
+        })
+      }
+
+      var nodeShapes = document.createElement("select")
+      nodeShapes.name= "nodeShapes" 
+      nodeShapes.id="nodeShapes" 
+      document.getElementById("merged_graph_buttons").appendChild(nodeShapes);
+      nodeShapes.onchange= changeNodeShapes;
+      
+
+      // shapes dropdown
+      var drpShape = document.getElementById("nodeShapes");
+      drpShape.style.visibility = "hidden";
+      var seleShape = document.createElement("OPTION");
+      seleShape.text = "Select Shape";
+      seleShape.value = "ellipse";
+      drpShape.add(seleShape);
+
+      const shapesArray = ["rectangle", "octagon", "rhomboid", "pentagon", "tag"];
+
+      shapesArray.forEach(function(s){
+        var nodeShape = s;
+        var optnShape = document.createElement("OPTION");
+        optnShape.text=nodeShape;
+        optnShape.value=nodeShape;
+        drpShape.add(optnShape);
+      });
     }
 
-    var nodeShapes = document.createElement("select")
-    nodeShapes.name= "nodeShapes" 
-    nodeShapes.id="nodeShapes" 
-    document.getElementById("merged_graph_buttons").appendChild(nodeShapes);
-    nodeShapes.onchange= changeNodeShapes;
-    
-
-    // shapes dropdown
-    var drpShape = document.getElementById("nodeShapes");
-    drpShape.style.visibility = "hidden";
-    var seleShape = document.createElement("OPTION");
-    seleShape.text = "Select Shape";
-    seleShape.value = "ellipse";
-    drpShape.add(seleShape);
-
-    const shapesArray = ["rectangle", "octagon", "rhomboid", "pentagon", "tag"];
-
-    shapesArray.forEach(function(s){
-      var nodeShape = s;
-      var optnShape = document.createElement("OPTION");
-      optnShape.text=nodeShape;
-      optnShape.value=nodeShape;
-      drpShape.add(optnShape);
-    });
-
-      // layout dropdown
+    // layout dropdown
     var drpLayout = document.createElement("select");
     drpLayout.id = "selectlayoutMerge";
     drpLayout.name = "selectlayout";
@@ -276,7 +277,7 @@ var cystyle =  [
       drpLayout.add(optnLayout);
     });
 
-  var searchgene = document.createElement("input");
+    var searchgene = document.createElement("input");
     searchgene.id = "searchgene";
     searchgene.value = "Search gene"
     document.getElementById("merged_graph_buttons").appendChild(searchgene);

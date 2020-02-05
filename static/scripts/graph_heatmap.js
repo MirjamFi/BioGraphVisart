@@ -607,14 +607,16 @@ function showLegend(interactionTypes){
     img.src = multipleinteractions;
     newArrow.appendChild(img);
 
-    var shapelegend = document.createElement("div")
-    shapelegend.id = "heatmap_shapes";
-    shapelegend.visibility = "visible";
-    if(graphLeft || graphRight){
-      document.getElementById("legend_heatmap").appendChild(shapelegend);
-    }
-    else if( merge_graph){
-      document.getElementById("legend_merge").appendChild(shapelegend);
+    if(!document.getElementById('heatmap_shapes') && document.getElementById('nodeShapesAttr')){
+      var shapelegend = document.createElement("div")
+      shapelegend.id = "heatmap_shapes";
+      shapelegend.visibility = "visible";
+      if(graphLeft || graphRight){
+        document.getElementById("legend_heatmap").appendChild(shapelegend);
+      }
+      else if( merge_graph){
+        document.getElementById("legend_merge").appendChild(shapelegend);
+      }
     }
   }
 }
@@ -640,20 +642,17 @@ function changeNodeShapes(){
         .style('shape', shape)
         .update();
   }
-  if(graphLeft || graphRight){
-    if(graphLeft.nodes().filter('node['+shapeAttribute+' ="true"]').length > 0 || 
-      graphRight.nodes().filter('node['+shapeAttribute+' ="true"]').length > 0){
-      graphLeft.style()
-        .selector('node['+shapeAttribute+' ="true"]')        
-        .style('shape', shape)
-        .update();
-      if(graphRight){
-        graphRight.style()
-          .selector('node['+shapeAttribute+' ="true"]')        
-          .style('shape', shape)
-          .update();
-      }
-    }
+  if(graphLeft && graphLeft.nodes().filter('node['+shapeAttribute+' ="true"]').length > 0){
+    graphLeft.style()
+      .selector('node['+shapeAttribute+' ="true"]')        
+      .style('shape', shape)
+      .update();
+  }
+  if(graphRight && graphRight.nodes().filter('node['+shapeAttribute+' ="true"]').length > 0){
+    graphRight.style()
+      .selector('node['+shapeAttribute+' ="true"]')        
+      .style('shape', shape)
+      .update();
   }
   if(graphLeft && graphLeft.nodes().filter('node['+shapeAttribute+' ="true"]').length > 0 || 
     graphRight && graphRight.nodes().filter('node['+shapeAttribute+' ="true"]').length > 0 ||
