@@ -302,7 +302,9 @@ function readJson(file) {
       }
       loadFile();
       showMetaInfo()
-          document.getElementById('KEGGpaths').style.visibility = "hidden";
+      document.getElementById('KEGGpaths').style.visibility = "hidden";
+      document.getElementById('keggpathways').style.visibility = "hidden";
+      document.getElementById('selectlayout').style.visibility = "visible";
 
         removedNodes = [];
       let defaults = {
