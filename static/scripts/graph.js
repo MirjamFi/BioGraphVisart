@@ -9,6 +9,7 @@ visualize a graph from .graphml-file
 var removedNodes;
 
 function visualize(graphString) {
+  document.getElementById('loader1').style.visibility = "visibile";
    
    //create cytoscape object; not necessary for json
   if(!isJson){
@@ -312,7 +313,6 @@ function addNodesAndEdges(){
           'border-color' : 'black',
           'border-style' : 'solid',
           'border-width' : '2',
-          // 'label': 'data(symbol)',
           "text-valign" : "center",
           "text-halign" : "center",
           "font-size" : 10,
@@ -381,8 +381,8 @@ function addNodesAndEdges(){
           'font-size':16,
           'text-rotation':'autorotate',
           'font-weight':800,
-          'target-arrow-shape': 'triangle-backcurve',
-          'line-style':'dashed',
+          'target-arrow-shape': 'vee',
+          'line-style':'solid',
         }},
         {selector: 'edge[interaction = \'activation\']',
           style: {
@@ -618,6 +618,7 @@ function showLegend(interactionTypes){
   // show legend and update if necessary
   var table = document.getElementById('arrows');
   var i = 0;
+  var otherisset = false;
   for(var interact of interactionTypes){
     // Insert a row in the table at the last row
     var newRow   = table.insertRow();
@@ -678,8 +679,15 @@ function showLegend(interactionTypes){
       img.src = bindingassociation_dissociation;
     }
     else{
-      var newText  = document.createTextNode('Other');
-      img.src = other;
+      if(!otherisset){
+        var newText  = document.createTextNode('Other');
+        img.src = other;
+        otherisset = true;
+      }
+      else{
+        i++;
+        continue;
+      }
     }
     newInteraction.appendChild(newText);
     newArrow.appendChild(img);
@@ -1151,7 +1159,7 @@ async function listKEGGPathways(){
     //get pathways from KEGG, show loader while doing so
     else{
       document.getElementById('KEGGpaths').style.visibility="visible";
-      document.getElementById('loader').style.visibility = "visible";
+      document.getElementById('loaderSingle').style.visibility = "visible";
       var pathsCount = [];
       allPaths = [];
       colorschemePaths = [];
@@ -1213,14 +1221,14 @@ async function listKEGGPathways(){
       }
       htmlString +="</form>"
       tbody.innerHTML = htmlString;
-      document.getElementById('loader').style.visibility = "hidden";
+      document.getElementById('loaderSingle').style.visibility = "hidden";
     }
   }
   //Hide table, switch button to show
   else {
     document.getElementById('keggpathways').firstChild.data  = "Show KEGG Pathways";
     document.getElementById('KEGGpaths').style.visibility = "hidden";
-    document.getElementById('loader').style.visibility = "hidden";
+    document.getElementById('loaderSingle').style.visibility = "hidden";
     var mergeEdgeschecked = document.getElementById('mergeEdges').checked;
     $('input:checkbox').prop('checked', false);
     if(mergeEdgeschecked){

@@ -122,7 +122,6 @@ function loadDir(){
                 if(j == Object.keys(graphsList).length){ 
                     var overlapDict = calculateOverlap(data);
                     createHeatmap(overlapDict);
-                    document.getElementById("loader").style.display="none";
                     document.getElementById('selectAttribute').style.visibility = "visible";
                 };
               };

@@ -572,8 +572,15 @@ function showLegend(interactionTypes){
       img.src = bindingassociation_dissociation;
     }
     else{
-      var newText  = document.createTextNode('Other');
-      img.src = other;
+      if(!otherisset){
+        var newText  = document.createTextNode('Other');
+        img.src = other;
+        otherisset = true;
+      }
+      else{
+        i++;
+        continue;
+      }
     }
     newInteraction.appendChild(newText);
     newArrow.appendChild(img);
@@ -846,7 +853,6 @@ async function listKEGGPathways(pos, nodesList){
   else{
     document.getElementById('keggpathways'+pos).firstChild.data  = "Show KEGG Pathways";
     document.getElementById('KEGGpaths'+pos).style.visibility = "hidden";
-    document.getElementById('loader'+pos).style.visibility = "hidden";
     $('#form'+pos+' input:checkbox').prop('checked', false);
     if(pos == "Left"){
       layerLeft.resetTransform(ctxLeft);

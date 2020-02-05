@@ -162,4 +162,5 @@ function createHeatmap(heatmapData){
             }]
         })
     });
+    document.getElementById("loader").style.display="none";
 };
