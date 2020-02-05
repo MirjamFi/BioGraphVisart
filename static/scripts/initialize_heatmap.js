@@ -63,11 +63,6 @@ function loadDir(){
   document.getElementById("rightID").innerHTML = "";
 
   cleanSelections();
-  // $.get('/foundFilesInDirectory', $("#directory")).then(function (files) {
-  //   if(files.length == 0){
-  //     alert('Folder does not exist.');
-  //     document.getElementById("loader").style.visibility = "hidden";
-  //   }
 
   var drpLayoutLeft = document.getElementById("selectlayoutLeft")
   var seleLayoutLeft = document.createElement("OPTION");
@@ -95,7 +90,6 @@ function loadDir(){
   });
 
     let foundFiles = document.getElementById('fileName').files;
-
     counterlimit = foundFiles.length;
     var data = {};
     let node_ids = [];
@@ -103,6 +97,7 @@ function loadDir(){
     let j = 0;
     var count = 0;
     var regExp = /\>(.*)\</;
+    graphsList = [];    
     Array.from(foundFiles).forEach(function(file){
       // read file
       var path = file.name;

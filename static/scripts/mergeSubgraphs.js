@@ -31,6 +31,9 @@ function mapValuestoNodeColor(merge_graph, group, pieno, mergeMin, mergeMax, sym
 			// else if(value == 0){
 		  	merge_graph.style().selector('node[graph="'+group+'"][symbol = "'+sym+'"]['+val+' =0]')
 		  		.style('background-color','white').update();
+		  	merge_graph.style()                // update the elements in the graph with the new style            
+		    .selector('node['+val+' = 0]')
+		        .style('color', 'black').update();
 	  	}
 	  	else{
 	  		// if(value false){
@@ -245,7 +248,6 @@ function getmergedGraph(nodesL, nodesR, edgesL, edgesR){
 	    }
 	    return false;
 	}, set));
-	//const [nodesMin, nodesMax] = getNodeValueRange(unionNodes, document.getElementById("selectColorAttribute").value);
 	var minMax = getNodeValueRange(unionNodes, document.getElementById("selectColorAttribute").value);
 	mergeMin = minMax[0];
 	mergeMax = minMax[1];

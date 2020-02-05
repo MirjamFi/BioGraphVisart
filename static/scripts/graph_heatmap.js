@@ -513,7 +513,6 @@ function showLegend(interactionTypes){
   var table = document.getElementById('arrows');
   var i = 0;
   for(var interact of interactionTypes){
-    console.log(interact)
     // Insert a row in the table at the last row
     var newRow   = table.insertRow();
     // Insert a cells
