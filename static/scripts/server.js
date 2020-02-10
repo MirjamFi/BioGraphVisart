@@ -19,14 +19,12 @@ app.get('/about',function(req,res){
 const bodyParser = require('body-parser');
 app.use(bodyParser.text({ type: 'application/xml' }));
 
-var data;
-app.post('/vis', function(req, res) {
-        data = req.body;
-        res.end("done")
-});
-app.get('/vis', function(req, res) {
-        res.send(data)
-});
+app.post('/vis', function(req, res){
+	res.send(req.body)
+})
+app.get('/vis', function(req, res){
+	res.sendFile(path.resolve('../../templates/vis.html'));
+})
 
 app.listen(3000);
 

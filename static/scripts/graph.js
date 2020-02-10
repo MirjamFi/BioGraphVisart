@@ -486,11 +486,14 @@ function addNodesAndEdges(){
   		clickedNode = evt.target;
       if(clickedNode.data().symbol != undefined){
         var targetNode = clickedNode.data().symbol
-        var neighboringgraphml = getGraphforGene(targetNode);
+        // var neighboringgraphml = getGraphforGene(targetNode);
+        var neighboringgraphml = getGraphforGene(targetNode).then(response => neighboringgraphml=response)
       }
       else if(clickedNode.data().name != undefined && clickedNode.data().drugbank_id == undefined){
         var targetNode = clickedNode.data().name
-        var neighboringgraphml = getGraphforGene(targetNode);        
+        var neighboringgraphml = getGraphforGene(targetNode).then(response => {return
+          response
+        });        
       }
       else if(clickedNode.data().drugbank_id != undefined){
         var info = "<div align='left' id='information'><table><tr>"
@@ -517,7 +520,7 @@ function addNodesAndEdges(){
         doc.close();
       }
 		  clickedNodesPosition = cy.$(clickedNode).position();
-      if(neighboringgraphml){
+      neighboringgraphml.then(response => {
         if(document.getElementById('values')){
           document.getElementById('values').disabled = true;
         }
@@ -536,7 +539,7 @@ function addNodesAndEdges(){
         .style('background-width', '45%')
         .style('background-height', '45%')
         .style('background-position-y', '100%')
-      }
+      })
   	});
   }
   else if(collapsed){  // display additional drug info in extra tab/window from database graph
@@ -1018,37 +1021,50 @@ function changeLayout(){
 
 // get graph for gene from Thorsten's database
 function getGraphforGene(name){
-  var networkInventory;
-  var reqNetworks = new XMLHttpRequest();
-  reqNetworks.open('GET', 'http://abidocker:48080/sbml4j/networkInventory', false);
-  reqNetworks.setRequestHeader('user', 'openMTB')
-  reqNetworks.onload = function () {
-    networkInventory = JSON.parse(reqNetworks.responseText);
-    console.log(networkInventory)
-  }
-  reqNetworks.send(document);
-
-  var listofGenes;
-  var reqListofGenes = new XMLHttpRequest();
-  reqListofGenes.open('GET', 'http://abidocker:48080/sbml4j/networkInventory/16c75fe8-7185-46e0-9a02-26dcc925488a/filterOptions', false);
-  reqListofGenes.setRequestHeader('user', 'user')
-  reqListofGenes.onload = function () {
-    listofGenes = JSON.parse(reqListofGenes.responseText).nodeSymbols;
-   }
-  reqListofGenes.send(document);
-  if(listofGenes.includes(name)){
-    var responsetxt;
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'http://abidocker:48080/sbml4j/context?baseNetworkUUID=16c75fe8-7185-46e0-9a02-26dcc925488a&gene='+name+'&minSize=1&maxSize=1&format=graphml', false);
-    xhr.setRequestHeader('user', 'user')
-
-    xhr.onload = function () {
-      responsetxt = xhr.responseText;
-     }
-    xhr.send(document);
-    return responsetxt;
+  const UrlNetworkInventory = 'http://abidocker:48080/sbml4j/networkInventory';
+  const ParamNetworkInventory = {
+    headers:{
+      'user':'openMTB'
+    },
+    method:'GET'
   }
 
+  return fetch(UrlNetworkInventory, ParamNetworkInventory)
+  .then(response => response.text())
+  .then(data => {
+    const networkInventory = JSON.parse(data)
+    for(let entry of networkInventory){
+      if(entry['networkMappingType'] == 'SIGNALLING'){
+        const UrlListGenes = 'http://abidocker:48080/sbml4j/networkInventory/'+entry['entityUUID']+'/filterOptions'
+        const ParamListGenes = {
+          headers:{
+            'user':'openMTB'
+          },
+          method:'GET'
+        }
+        return fetch(UrlListGenes, ParamListGenes)
+        .then(response => response.text())
+        .then(data => {
+          var listofGenes = JSON.parse(data).nodeSymbols;
+          if(listofGenes.includes(name)){
+            const UrlNetwork = 'http://abidocker:48080/sbml4j/context?baseNetworkUUID='+entry['entityUUID']+'&gene='+name+'&minSize=1&maxSize=1&format=graphml'
+            const ParamNetwork = {
+              headers:{
+                'user':'openMTB'
+              },
+              method:'GET'
+            }
+            return fetch(UrlNetwork, ParamNetwork)
+            .then(response => response.text())
+            .then(data => data)
+            .catch(errors=>{console.log(errors)})
+          }
+        })
+        .catch(errors=>{console.log(errors)})
+      }
+    }
+  })
+  .catch(errors=>{console.log(errors)})
 }
 
 // get pathways of selected gene from kegg using entrez id

@@ -2380,6 +2380,36 @@ nPgo8L3N2Zz4K'>
 		<div class="loader" id="loader" style="visibility: hidden"></div>
 	</div>
 	<div align="left" id= "KEGGpaths" style="visibility: hidden;"></div>
+	<script type="text/javascript">
+		var queryString = decodeURIComponent(window.location.search);
+        queryString = queryString.substring(1);
+        graphString = queryString.replace("?graphString=","")
+
+		var isChromium = window.chrome;
+		var winNav = window.navigator;
+		var vendorName = winNav.vendor;
+		var isOpera = typeof window.opr !== "undefined";
+		var isIEedge = winNav.userAgent.indexOf("Edge") > -1;
+		var isIOSChrome = winNav.userAgent.match("CriOS");
+
+		if (isIOSChrome) {
+		   // is Google Chrome on IOS
+		} else if(
+		  isChromium !== null &&
+		  typeof isChromium !== "undefined" &&
+		  vendorName === "Google Inc." &&
+		  isOpera === false &&
+		  isIEedge === false
+		) {
+		   // is Google Chrome
+		   graphString = graphString.replace(/&lt;/g,"\<")
+
+		}
+        graphString = graphString.split(",")
+        loadFile()
+	</script>
+
+
 </body>
 
 </html>
