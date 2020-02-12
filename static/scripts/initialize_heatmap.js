@@ -1,4 +1,3 @@
-var oldHighlightedNode;
 var allPathsLeft;
 var allPathsRight;
 var allPathsMerge;
@@ -13,25 +12,7 @@ var cavasMerge;
 var ctxMerge;
 var shapeNode;
 
-var highlightedNode = {
-  symbol: '',
-  get getsymbol() { 
-    if(graphLeft){
-    graphLeft.style().selector('node[symbol="'+this.symbol+'"]').style('border-width', 2).style('height', 50).style('width', 50).update();}
-    if(graphRight){
-    graphRight.style().selector('node[symbol="'+this.symbol+'"]').style('border-width', 2).style('height', 50).style('width', 50).update();}
-    if(merge_graph)
-      merge_graph.style().selector('node[symbol="'+this.symbol+'"]').style('border-width', 5).style('height', 50).style('width', 50).update();
-    return this.symbol;
-  },
-  set setsymbol(x) {
-    this.symbol = x;
-    graphLeft.style().selector('node[symbol="'+this.symbol+'"]').style('border-width', 8).style('height', 70).style('width', 70).update();
-    graphRight.style().selector('node[symbol="'+this.symbol+'"]').style('border-width', 8).style('height', 70).style('width', 70).update();
-    if(merge_graph)
-      merge_graph.style().selector('node[symbol="'+this.symbol+'"]').style('border-width', 15).style('height', 80).style('width', 80).update();
-  }
-};
+var highlightedNode; 
 
 var graphsList = [];
 
@@ -53,8 +34,10 @@ function loadDir(){
   document.getElementById("cyRight").innerHTML = "";
   document.getElementById('keggpathwaysLeft').style.visibility = "hidden";
   document.getElementById('KEGGpathsButtonLeft').style.visibility = "hidden";
+  document.getElementById('KEGGpathsLeft').style.visibility = "hidden";
   document.getElementById('keggpathwaysRight').style.visibility = "hidden";
   document.getElementById('KEGGpathsButtonRight').style.visibility = "hidden";
+  document.getElementById('KEGGpathsRight').style.visibility = "hidden";
   document.getElementById('downloadPartLeft').style.visibility = "hidden";
   document.getElementById('downloadPartRight').style.visibility = "hidden";
   document.getElementById('resetLeft').style.visibility = "hidden";
@@ -62,40 +45,25 @@ function loadDir(){
     document.getElementById("leftID").innerHTML = "";
   document.getElementById("rightID").innerHTML = "";
 
-  cleanSelections();
-  // $.get('/foundFilesInDirectory', $("#directory")).then(function (files) {
-  //   if(files.length == 0){
-  //     alert('Folder does not exist.');
-  //     document.getElementById("loader").style.visibility = "hidden";
-  //   }
+  cleanSelectionsHeatmap();
 
   var drpLayoutLeft = document.getElementById("selectlayoutLeft")
-  var seleLayoutLeft = document.createElement("OPTION");
-  seleLayoutLeft.text = "Select Layout";
+  var seleLayoutLeft = createLayoutSele();
   drpLayoutLeft.add(seleLayoutLeft);
+  
 
   var drpLayoutRight = document.getElementById("selectlayoutRight")
-  var seleLayoutRight = document.createElement("OPTION");
-  seleLayoutRight.text = "Select Layout";
+  var seleLayoutRight = createLayoutSele();
   drpLayoutRight.add(seleLayoutRight);
 
-  const layoutArray = ["dagre (default)", "klay", "breadthfirst", "cose-bilkent", "grid"];
-
   layoutArray.forEach(function(s){
-    var graphLayoutLeft = s;
-    var optnLayoutLeft = document.createElement("OPTION");
-    optnLayoutLeft.text=graphLayoutLeft;
-    optnLayoutLeft.value=graphLayoutLeft;
-    var graphLayoutRight = s;
-    var optnLayoutRight = document.createElement("OPTION");
-    optnLayoutRight.text=graphLayoutRight;
-    optnLayoutRight.value=graphLayoutRight;
+    var optnLayoutLeft = addLayoutOptions(s);
+    var optnLayoutRight = addLayoutOptions(s)
     drpLayoutLeft.add(optnLayoutLeft);
     drpLayoutRight.add(optnLayoutRight);
   });
 
     let foundFiles = document.getElementById('fileName').files;
-
     counterlimit = foundFiles.length;
     var data = {};
     let node_ids = [];
@@ -103,6 +71,7 @@ function loadDir(){
     let j = 0;
     var count = 0;
     var regExp = /\>(.*)\</;
+    graphsList = [];    
     Array.from(foundFiles).forEach(function(file){
       // read file
       var path = file.name;
@@ -127,7 +96,6 @@ function loadDir(){
                 if(j == Object.keys(graphsList).length){ 
                     var overlapDict = calculateOverlap(data);
                     createHeatmap(overlapDict);
-                    document.getElementById("loader").style.display="none";
                     document.getElementById('selectAttribute').style.visibility = "visible";
                 };
               };
@@ -168,7 +136,7 @@ function calculateOverlap(data){
 var drpValues = [];
 var shapeAttributes = [];
 function loadGraphml(sampleLeft, sampleRight) {
-  cleanSelections();
+  cleanSelectionsHeatmap();
   samples = [sampleLeft, sampleRight];
   samples.forEach(function (sample){
     var graphString;
@@ -207,9 +175,7 @@ function loadGraphml(sampleLeft, sampleRight) {
   var drp = document.getElementById("values");      // node attributes
   removeOptions(drp);
 
-  var sele = document.createElement("OPTION");    
-  sele.text = "Choose node's attribute";
-  sele.value = "";
+  var sele = createSele();
   drp.add(sele);
 
   drpValues = Array.from(new Set(drpValues)); 
@@ -239,71 +205,27 @@ function loadGraphml(sampleLeft, sampleRight) {
     })
     drpShapeAttr.style.visibility = "visible";
   }
-  if(!!path_right){
-      clickMerge();
-      merge();
-  }
 };
 
-function cleanSelections(){
+function cleanSelectionsHeatmap(){
   if(shapeNode){
     shapeNode.elements().remove();
   }
-  usedShapeAttributes = [];
-    // if it is not the first graph read, delete all selectable options
-  document.getElementById('arrows').innerHTML = "";
-  document.getElementById('KEGGpathsLeft').innerHTML = "";
   document.getElementById('keggpathwaysLeft').firstChild.data = "Show KEGG Pathways";
-  document.getElementById('KEGGpathsLeft').style.visibility = "hidden";
-  document.getElementById('KEGGpathsRight').innerHTML = "";
+  //document.getElementById('KEGGpathsLeft').style.visibility = "hidden";
+  document.getElementById('KEGGpathsLeft').innerHTML = "";
   document.getElementById('keggpathwaysRight').firstChild.data = "Show KEGG Pathways";
-  document.getElementById('KEGGpathsRight').style.visibility = "hidden";
+  //document.getElementById('KEGGpathsRight').style.visibility = "hidden";
+  document.getElementById('KEGGpathsRight').innerHTML = "";
   if(document.getElementById('keggpathwaysMerge')){
     document.getElementById('keggpathwaysMerge').style.visibility = "hidden";
   }
-  allPathsLeft = null;
-  allPathsRight = null;
-  allPathsMerge = null;
-  // document.getElementById('merged_graph').innerHTML = "";
-  leftEdges = [];
-  rightEdges = [];
-  leftNodes = [];
-  rightNodes = [];
+  document.getElementById('selectlayoutLeft').value = 'Select Layout';
+  document.getElementById('selectlayoutRight').value = 'Select Layout';
 
-  oldHighlightedNode = null;
-  layerLeft = null;
-  canvasLeft = null;
-  ctxLeft = null;
-  layerRight = null;
-  canvasRight = null;
-  ctxRight= null;
-  layerMerge = null;
-  cavasMerge = null;
-  ctxMerge = null;
-
-  graphLeft = null;
-  graphRight= null;
   path= null;
-  nodes= null;
-  colorschemePathsLeft = [];
-  colorschemePathsRight = [];
-  colorschemePathsMerge = [];
-  leftEdges = [];
-  rightEdges = [];
 
-  leftNodesMin = -1;
-  leftNodesMax = 1;
-  rightNodesMin = -1;
-  rightNodesMax = 1;
-  leftOldMin =null;
-  leftOldMax =null;
-  rightOldMin =null;
-  rightOldMax =null;
   leftGraph = false;
-  leftNodes = [];
-  rightNodes = [];
-  leftEdges = [];
-  rightEdges = [];
   graphStringLeft =null;
   graphStringRight =null;
   path_left =null;
@@ -315,14 +237,11 @@ function cleanSelections(){
   firstShape = true;
   usedShapeAttributes = [];
   getDrpDwnFiles = true;
-  leftNodeValuesNum = [];
-  rightNodeValuesNum = [];
-  merge_graph =null;
 
 }
 
 // initiate cytoscape graph 
-function createCyObject(cyDiv, nodesMin, nodesMax){
+function createCyObject(cyDiv, nodesMin, nodesMax, val){
   document.getElementById(cyDiv).innerHTML = "";
   return cytoscape({
     container: document.getElementById(cyDiv),
@@ -330,149 +249,84 @@ function createCyObject(cyDiv, nodesMin, nodesMax){
           },
     style: [
          // style nodes
+      basicstyle,
       {selector: 'node',
-        style: {
-          width: 50,
-          height: 50,
-          shape: 'ellipse',
-          'background-color': 'white',
-          'border-color' : 'black',
-          'border-style' : 'solid',
-          'border-width' : '2',
-          label: 'data(symbol)',
-          "text-valign" : "center",
-          "text-halign" : "center",
-          "font-size" : 12,
-          "color":"black",
-          'curve-style' : 'bezier'
+      style:{
+        'label':'data(symbol)'
       }},
       // attributes with numbers
-      {selector: 'node[val <0]',
+      {selector: 'node['+val+' <0]',
         style: {
           'background-color': 'mapData(val,'+ nodesMin+', 0, #006cf0, white)',
           'color': 'black'
       }},
-      {selector: 'node[val <='+0.5*nodesMin+']',
+      {selector: 'node['+val+'<='+0.5*nodesMin+']',
         style: {
           'color': 'white'
       }},
-      {selector: 'node[val >0]',
+      {selector: 'node['+val+'>0]',
         style: {
           'background-color': 'mapData(val, 0,'+ nodesMax+', white, #d50000)',
           'color': 'black'
       }},
-      {selector: 'node[val >='+0.5*nodesMax+']',
+      {selector: 'node['+val+'>='+0.5*nodesMax+']',
         style: {
           'color': 'white'
       }},
-      {selector: 'node[val = 0]',
+      {selector: 'node['+val+'= 0]',
         style: {
           'background-color': 'white',
           'color':'black'
       }},
 
       // attributes with boolean
-      {selector: 'node[val = "false"]',
+      {selector: 'node['+val+'= "false"]',
         style: {
           'background-color': '#006cf0',
           'color':'white'
       }},
-      {selector: 'node[val = "true"]',
+      {selector: 'node['+val+'= "true"]',
         style: {
           'background-color': '#d50000',
           'color':'white'
       }},
 
-     // style edges
-      {selector: 'edge',
-        style: {
-          // 'target-arrow-shape': 'triangle',
-          'arrow-scale' : 2,
-          'curve-style' : 'bezier',
-          // 'label':'data(interactionShort)',
-          'font-size':16,
-          'text-rotation':'autorotate',
-          'font-weight':800,
-          'target-arrow-shape' : 'vee'
-          
-        }},
-        {selector: 'edge[interaction = \'activation\']',
-          style: {
-            'target-arrow-shape': 'triangle',
-        }},
-        {selector: 'edge[interaction = \'expression\']',
-          style: {
-            'target-arrow-shape': 'triangle',
-        }},
-        {selector: 'edge[interaction = \'inhibition\']',
-          style: {
-            'target-arrow-shape': 'tee',
-        }},
-        {selector: 'edge[interaction = \'repression\']',
-          style: {
-            'target-arrow-shape': 'tee',
-        }},
-        {selector: 'edge[interaction = \'binding/association\']',
-          style: {
-            'target-arrow-shape': 'triangle-cross',
-        }},
-        {selector: 'edge[interaction = \'dissociation\']',
-          style: {
-            'target-arrow-shape': 'triangle-cross',
-        }},
-        {selector: 'edge[interaction = \'compound\']',
-          style: {
-            'target-arrow-shape': 'circle',
-        }},
-      {selector: 'edge[interaction = \'indirect effect\']',
-        style: {
-          'line-style': 'dotted',
-          'target-arrow-shape': 'triangle'
-        }},
-      {selector: 'edge[interaction = \'missing interaction\']',
-        style: {
-          'line-style': 'dashed',
-          'target-arrow-shape': 'triangle'
-        }},
-        {selector: 'edge[interaction = \'state change\']',
-          style: {
-            'target-arrow-shape': 'square',
-        }},
+      {selector: '.highlighted',
+            style:{
+                'border-width': 8,
+                'height':70,
+                width:70
+      }},
 
-      {selector: 'edge[interaction = \'phosphorylation\']',
-        style: {
-          'target-arrow-shape': 'diamond',
-          'target-label':'+p',
-          'target-text-offset':20
-        }},
-      {selector: 'edge[interaction = \'dephosphorylation\']',
-          style: {
-            'target-arrow-shape': 'diamond',
-            'target-label':'-p',
-          'target-text-offset':20
-        }},
-      {selector: 'edge[interaction = \'glycosylation\']',
-          style: {
-           'target-arrow-shape': 'diamond',
-           'target-label':'+g',
-          'target-text-offset':20
-        }},      
-      {selector: 'edge[interaction = \'ubiquitination\']',
-          style: {
-            'target-arrow-shape': 'diamond',
-            'target-label':'+u',
-          'target-text-offset':20
-        }},
-      {selector: 'edge[interaction = \'methylation\']',
-          style: {
-            'target-arrow-shape': 'diamond',
-            'target-label':'+m',
-          'target-text-offset':20
-        }}
+     // style edges
+      basicedgestyle,
+      actstyle,
+      expstyle,
+      inhistyle, 
+      reprstyle,
+      bindstyle,
+      dissostyle,
+      compstyle,
+      indeffstyle,
+      missstyle,
+      statestyle,
+      phosphostyle,
+      dephosphostyle,
+      glycostyle,
+      ubiquistyle,
+      methystyle
       ],
-  }).on('tap', 'node',function(evt){
-    highlightedNode.getsymbol;
-    highlightedNode.setsymbol = this.data("symbol");
-    })
+  })
+}
+
+function highlightNodeTapped(symbol, graphL=undefined, graphR=undefined){
+  if(graphL){
+    graphL.$('node').removeClass('highlighted')
+    graphL.$('node[symbol="'+symbol+'"]').addClass('highlighted')
+  }
+  if(graphR){
+    graphR.$('node').removeClass('highlighted')
+    graphR.$('node[symbol="'+symbol+'"]').addClass('highlighted')
+  }
 }
 

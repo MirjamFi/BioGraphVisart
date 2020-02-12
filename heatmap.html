@@ -29,6 +29,10 @@
          <script src="https://rawcdn.githack.com/MirjamFi/BioGraphVisart/1ebdad7d2d5ee59906b8c89227d3f92e0288bbb5/static/scripts/cytoscape-svg.js"></script>
         <script type="application/javascript" src="https://rawcdn.githack.com/MirjamFi/BioGraphVisart/1ebdad7d2d5ee59906b8c89227d3f92e0288bbb5/static/scripts/cytoscape-no-overlap.js"></script>
 
+        <script type="text/javascript" src="https://raw.githack.com/MirjamFi/BioGraphVisart/f3aa0cbd92bcb872c71896f59dfa4cee45d7effb/static/scripts/commonfunctions.js"></script>
+        <script type="text/javascript" src="https://raw.githack.com/MirjamFi/BioGraphVisart/f3aa0cbd92bcb872c71896f59dfa4cee45d7effb/static/scripts/constants.js"></script>
+        <script type="text/javascript" src="https://raw.githack.com/MirjamFi/BioGraphVisart/f3aa0cbd92bcb872c71896f59dfa4cee45d7effb/static/scripts/download_comparison.js"></script>
+        <script type="text/javascript" src="https://raw.githack.com/MirjamFi/BioGraphVisart/f3aa0cbd92bcb872c71896f59dfa4cee45d7effb/static/scripts/keggpathways.js"></script>
 
         <script type="text/javascript" src="https://rawcdn.githack.com/MirjamFi/BioGraphVisart/0316eb87bb53c839c9f032eb847bf6c6a45e994c/static/scripts/jquery.csv.js"></script> 
 
@@ -105,7 +109,7 @@
          seleShapeAttr.value = "";
          drpShapes.add(seleShapeAttr);
        </script>
-       <select name= "nodeShapes" id="nodeShapes" onchange="changeNodeShapes()" style="visibility: hidden;"> </select>
+       <select name= "nodeShapes" id="nodeShapes" style="visibility: hidden;"> </select>
        <script type="text/javascript">
         // shapes dropdown
         var drpShape = document.getElementById("nodeShapes");
@@ -125,7 +129,7 @@
          });
        </script>
         <input type="text" name="searchgene" id="searchgene" width="30" style="visibility: hidden" value="Search gene">
-        <button class="butn" id="searchbutton" onclick="highlightSearchedGene()" style="visibility: hidden">Search</button>
+        <button class="butn" id="searchbutton" style="visibility: hidden">Search</button>
 
         <input name="outputFile" type="text" maxlength="512" id="outputNameHeatmap" value="File name" style="visibility: hidden"/>
         <button  class= 'butn' id="downloadPDF" onclick="downloadPDF()" disabled="disabled" id="downloadPDF" style="visibility: hidden">.pdf</button>
@@ -159,13 +163,13 @@
             </div>
         </div>
         <div id="resetLeft" style="visibility: hidden">
-          <button class= 'butn' id="resetLeftLayout" onclick="resetLayout(graphLeft, 'Left')">Reset layout</button>
-          <select id ="selectlayoutLeft" onchange="changeLayout(graphLeft, 'Left', prevLayoutLeft)">Select Layout</select>
+          <button class= 'butn' id="resetLeftLayout">Reset layout</button>
+           <select id ="selectlayoutLeft">Select Layout</select>
         </div>
         <div id="downloadPartLeft" style="visibility: hidden">
           <input name="outputFileLeft" type="text" maxlength="512" id="outputNameLeft" value="File name"/>
-          <button class= 'butn' id="downloadLeftPNG" onclick="downloadPNGLeft()" disabled="disabled">.png</button>
-          <button class= 'butn' id="downloadLeftSVG" onclick="downloadSVGLeft()" disabled="disabled">.svg</button>
+          <button class= 'butn' id="downloadLeftPNG" disabled="disabled">.png</button>
+           <button class= 'butn' id="downloadLeftSVG" disabled="disabled">.svg</button>
         </div>
         <p></p>
         <div align="left" id="right">
@@ -178,13 +182,13 @@
             </div>
         </div>
         <div id="resetRight" style="visibility: hidden">
-          <button class = "butn" id="resetRightLayout" onclick="resetLayout(graphRight, 'Right')">Reset layout</button>
-          <select id ="selectlayoutRight" onchange="changeLayout(graphRight, 'Right', prevLayoutRight)">Select Layout</select>
+          <button class = "butn" id="resetRightLayout">Reset layout</button>
+           <select id ="selectlayoutRight" onchange="changeLayout(graphRight, 'Right')">Select Layout</select>
         </div>
         <div id="downloadPartRight" style="visibility: hidden">
           <input name="outputFileRight" type="text" maxlength="512" id="outputNameRight" value="File name"/>
-          <button class= 'butn' id="downloadRightPNG" onclick="downloadPNGRight()" disabled="disabled">.png</button>
-          <button class= 'butn' id="downloadRightSVG" onclick="downloadSVGRight()" disabled="disabled">.svg</button>
+          <button class= 'butn' id="downloadRightPNG" disabled="disabled">.png</button>
+           <button class= 'butn' id="downloadRightSVG" disabled="disabled">.svg</button>
         </div>
         <div class="clear"></div>
     </div>

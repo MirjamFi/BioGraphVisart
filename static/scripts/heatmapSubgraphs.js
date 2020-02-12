@@ -106,7 +106,7 @@ function createHeatmap(heatmapData){
                                 
                             }
                             loadGraphml(left, right);
-                            visualize();
+                            visualize(true);
                         }
                     }
                 }
@@ -162,4 +162,5 @@ function createHeatmap(heatmapData){
             }]
         })
     });
+    document.getElementById("loader").style.display="none";
 };

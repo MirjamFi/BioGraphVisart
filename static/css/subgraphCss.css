@@ -205,7 +205,7 @@ input:hover{
 }
 #KEGGpathsMerge{
   position: absolute;
-  top: 170px;
+  top: 185px;
   left:86%;
 }
 
@@ -241,7 +241,6 @@ input:hover{
   top: 10px;
 }
 
-}
 .loader {
     border: 16px solid #f3f3f3; 
     border-top: 16px solid #3498db; 
@@ -251,6 +250,36 @@ input:hover{
     animation: spin 5s linear infinite;
     margin: 0 auto;
 }
+#loaderSingle {
+    position: absolute; 
+    top: 370px; 
+    left: 85%; 
+    right: 0; 
+}
+
+#loaderLeft {
+    position: absolute; 
+    top: 50px; 
+    left: 85%; 
+    right: 0; 
+    bottom: 0;
+}
+
+#loaderRight {
+    position: absolute; 
+    top: 50px; 
+    left: 85%; 
+    right: 0; 
+    bottom: 0;
+}
+
+#loaderMerge {
+    position: absolute; 
+    top: 250px; 
+    left: 81%; 
+    right: 0; 
+}
+
 
 @keyframes spin {
     0% { transform: rotate(0deg); }
