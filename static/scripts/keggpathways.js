@@ -30,7 +30,7 @@ async function listKEGGPathways(ctx, cy, nodes, layer, canvas, pos = "", posL = 
     }
     //get pathways from KEGG, show loader while doing so
     else{
-      document.getElementById('loader'+posL).style.visibility = "visible";
+      document.getElementById('loader'+pos).style.visibility = "visible";
       document.getElementById('keggpathways'+pos).disabled = true;
       var pathsCount = [];
       allPaths = [];
