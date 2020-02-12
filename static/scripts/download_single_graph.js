@@ -54,15 +54,15 @@ function downloadPDF () {
     var divWidth = window.innerWidth
     var ratio = divHeight / divWidth;
   
-    var doc = new jsPDF("l", "mm", "a4");
+    var doc = new jsPDF("l", "mm");
     var width = doc.internal.pageSize.getWidth();
     var height = (ratio * width);
 
     html2canvas($("#everything").get(0), { onclone: (document) => {
       document.getElementById('nav').style.visibility = 'hidden'
+      document.getElementById('description').style.visibility = 'hidden'
       document.getElementById('downloadPart').style.visibility = 'hidden' 
       document.getElementById('resetLayout').style.visibility = 'hidden'
-      document.getElementById('description').style.visibility = 'hidden'
       document.getElementById('loadGraphml').style.visibility = 'hidden'
       document.getElementById('keggpathways').style.visibility = 'hidden'
       document.getElementById('footer').style.visibility = 'hidden'

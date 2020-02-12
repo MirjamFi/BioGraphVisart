@@ -24,7 +24,7 @@ function downloadMergePDF(){
 	var divWidth = window.innerWidth
 	var ratio = divHeight / divWidth;
 
-	var doc = new jsPDF("l", "mm", "a4");
+	var doc = new jsPDF("l", "mm");
 	var width = doc.internal.pageSize.getWidth();
 	var height = (ratio * width);
 
@@ -33,6 +33,7 @@ function downloadMergePDF(){
 	    document.getElementById('resetMerge').style.visibility = 'hidden'
 	    document.getElementById('nav').style.visibility = 'hidden';
 	    document.getElementById('merged_graph_buttons').style.visibility = 'hidden'
+	    document.getElementById('keggpathwaysMerge').style.visibility = 'hidden'
 	    document.getElementById('footer').style.visibility = 'hidden'
 	    document.getElementById('searchbutn').style.visibility = 'hidden'
 	    if(document.getElementById('searchgene').value == "Search gene"){
