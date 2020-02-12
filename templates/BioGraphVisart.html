@@ -28,7 +28,11 @@
 
 	<script data-main="http://localhost:3000/static/scripts/initialize" src="http://127.0.0.1:3000/static/scripts/node_modules/requirejs/require.js"></script>
 	<script type="text/javascript" src="http://127.0.0.1:3000/static/legends/interactiontypes.js"></script>
+	<script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/constants.js"></script>
+	<script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/commonfunctions.js"></script>
+    <script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/keggpathways.js"></script>
 	<script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/initialize.js"></script>
+	<script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/download_single_graph.js"></script>
 	<script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/icons.js"></script>
 	<script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/graph.js"></script>
 
@@ -126,7 +130,7 @@
 	<div class="loader" id="loader1" style="visibility: hidden"></div>
 	<div align="left" id="cy"></div>
 	<div align="left" id="KEGGpathsButton" style="visibility: hidden">
-		<button class="butn" id="keggpathways" onclick="listKEGGPathways()">Show KEGG Pathways</button></p>
+		<button class="butn" id="keggpathways">Show KEGG Pathways</button></p>
 		<div class="loader" id="loaderSingle" style="visibility: hidden"></div>
 	</div>
 	<div align="left" id= "KEGGpaths" style="visibility: hidden;"></div>

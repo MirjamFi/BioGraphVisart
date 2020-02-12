@@ -106,7 +106,7 @@ function createHeatmap(heatmapData){
                                 
                             }
                             loadGraphml(left, right);
-                            visualize();
+                            visualize(true);
                         }
                     }
                 }
