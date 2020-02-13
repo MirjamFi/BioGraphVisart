@@ -62,7 +62,7 @@ function visualize(graphString, noOptn) {
   var layer = createLayoutKeggPathways(cy, allPaths)
   var canvas = layer.getCanvas();
   var ctx = canvas.getContext('2d');
-  document.getElementById('keggpathways').onclick = function(){listKEGGPathways(ctx, cy, nodes, layer, canvas, "","Single")};
+  document.getElementById('keggpathways').onclick = function(){listKEGGPathways(ctx, cy, nodes, layer, canvas, "")};
   var defaultVal = false;
   document.getElementById('loader1').style.visibility = "hidden";
 

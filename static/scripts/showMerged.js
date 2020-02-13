@@ -266,7 +266,7 @@ const nodesEdges = getmergedGraph(leftNodes, rightNodes, leftEdges, rightEdges, 
   canvasMerge = layerMerge.getCanvas();
   ctxMerge = canvasMerge.getContext('2d');
 
-	document.getElementById("keggpathwaysMerge").addEventListener('click', function(){listKEGGPathways(ctxMerge, merge_graph, mergedNodes, layerMerge, canvasMerge, 'Merge', 'Merge');});
+	document.getElementById("keggpathwaysMerge").addEventListener('click', function(){listKEGGPathways(ctxMerge, merge_graph, mergedNodes, layerMerge, canvasMerge, 'Merge');});
 	document.getElementById("keggpathwaysMerge").style.visibility = "visible";
 	document.getElementById('KEGGpathsMerge').style.visibility = "visible";
 

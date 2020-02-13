@@ -197,7 +197,7 @@ function showConfigurationParts(pos, cy, name){
 
 function showKEGGParts(pos, ctx, cy, nodes, layer, canvas){
   document.getElementById("keggpathways"+pos).addEventListener('click', 
-    function(){listKEGGPathways(ctx, cy, nodes, layer, canvas, pos, pos);});
+    function(){listKEGGPathways(ctx, cy, nodes, layer, canvas, pos);});
   document.getElementById('KEGGpaths'+pos).style.visibility = "visible";
 
 }
