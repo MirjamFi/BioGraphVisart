@@ -250,7 +250,7 @@ input:hover{
     animation: spin 5s linear infinite;
     margin: 0 auto;
 }
-#loaderSingle {
+#loader{
     position: absolute; 
     top: 370px; 
     left: 85%; 

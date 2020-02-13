@@ -111,7 +111,7 @@ async function listKEGGPathways(ctx, cy, nodes, layer, canvas, pos = "", posL = 
         keggForm.appendChild(document.createElement("br"))
       }
       tbody.appendChild(keggForm)
-      document.getElementById('loader'+posL).style.visibility = "hidden";
+      document.getElementById('loader'+pos).style.visibility = "hidden";
       document.getElementById('keggpathways'+pos).disabled = false;
       document.getElementById('KEGGpaths'+pos).style.visibility = "visible";
     }
@@ -121,7 +121,7 @@ async function listKEGGPathways(ctx, cy, nodes, layer, canvas, pos = "", posL = 
     document.getElementById('keggpathways'+pos)
     	.firstChild.data  = "Show KEGG Pathways";
     document.getElementById('KEGGpaths'+pos).style.visibility = "hidden";
-    document.getElementById('loader'+posL).style.visibility = "hidden";
+    document.getElementById('loader'+pos).style.visibility = "hidden";
     var mergeEdgeschecked = document.getElementById('mergeEdges').checked;
     $('#form'+pos+' input:checkbox').prop('checked', false);
     if(mergeEdgeschecked){
