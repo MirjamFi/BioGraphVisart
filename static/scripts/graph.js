@@ -70,6 +70,8 @@ function visualize(graphString, noOptn) {
     .selector('node['+document.getElementById('nodeShapesAttr').value+' ="true"]')        
     .style('shape', document.getElementById('nodeShapes').value)
     .update();
+
+  document.getElementById('resetLayout').onclick= function(){changeLayout(cy)};
 }
 
 //add nodes and edges to cy-object (update if attribute has changed)
