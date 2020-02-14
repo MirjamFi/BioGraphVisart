@@ -464,8 +464,9 @@ function loadFile() {
       nodeVal = drp.options[1].value;
       document.getElementById('values').value = nodeVal;
       defaultVal = true;
+      noOptn = false;
       if(!isJson){
-        visualize(graphString), noOptn;
+        visualize(graphString, noOptn);
       }
     }
   }

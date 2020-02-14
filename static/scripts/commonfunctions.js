@@ -259,7 +259,7 @@ function mergeEdges(cy, cy2=undefined){
 }
 
 // get nodes and edges grom graphml string
-function getNodesAndEdges(graphString, graphpos = undefined, noOptn = undefined){
+function getNodesAndEdges(graphString, graphpos = undefined, noOptn = false){
   	var nodes = [];
   	var edges = [];
   	var nodeValuesNum = [];
@@ -294,7 +294,7 @@ function getNodesAndEdges(graphString, graphpos = undefined, noOptn = undefined)
       		if(graphString[i].includes("key=\"v_") && 
       			!graphString[i].includes("v_id")){
         		var attrname = graphString[i].split("v_")[1].split("\">")[0]
-        		var val = regExp.exec(graphString[i])[1]
+        		var val = graphString[i].split(/\>/)[1].split(/\</)[0]
 	        	if(!isNaN(parseFloat(val))){
 	          		curNode[attrname] = parseFloat(val);
 	        	}

@@ -7,7 +7,6 @@ visualize a graph from .graphml-file
 */
 
 var removedNodes;
-
 function visualize(graphString, noOptn) {
   document.getElementById('loader1').style.visibility = "visibile";
    
@@ -18,7 +17,7 @@ function visualize(graphString, noOptn) {
     }
 
     // get nodes and edges
-    var nodesAndEdges = getNodesAndEdges(graphString, noOptn);
+    var nodesAndEdges = getNodesAndEdges(graphString, "", noOptn);
     var nodes = nodesAndEdges[0];
     var edges = nodesAndEdges[1]; 
     var nodeValuesNum = nodesAndEdges[2];
@@ -66,11 +65,12 @@ function visualize(graphString, noOptn) {
   var defaultVal = false;
   document.getElementById('loader1').style.visibility = "hidden";
 
-  cy.style()
-    .selector('node['+document.getElementById('nodeShapesAttr').value+' ="true"]')        
-    .style('shape', document.getElementById('nodeShapes').value)
-    .update();
-
+  if(document.getElementById('nodeShapesAttr')){
+    cy.style()
+      .selector('node['+document.getElementById('nodeShapesAttr').value+' ="true"]')        
+      .style('shape', document.getElementById('nodeShapes').value)
+      .update();
+  }
   document.getElementById('resetLayout').onclick= function(){changeLayout(cy)};
 }
 
