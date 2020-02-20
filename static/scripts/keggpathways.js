@@ -32,29 +32,42 @@ async function listKEGGPathways(ctx, cy, nodes, layer, canvas, pos = ""){
     else{
       document.getElementById('loader'+pos).style.visibility = "visible";
       document.getElementById('keggpathways'+pos).disabled = true;
-      var pathsCount = [];
-      allPaths = [];
-      colorschemePaths = [];
+      var entrezIDs = [];
       for(var n of nodes){
         if(n["data"]["symbol"]!="legend"){
           if(n["data"]["entrezID"] != undefined){
             var entrezID = n["data"]["entrezID"].toString();
+            entrezIDs.push(entrezID)
+
           }
           else if(n["data"]["entrez"] != undefined){
-            var entrezID = n["data"]["entrez"].toString();            
+            var entrezID = n["data"]["entrez"].toString();    
+            entrezIDs.push(entrezID)
+        
           }
-          let keggpaths = await getPathwaysFromKEGG(entrezID);
-          keggpaths = keggpaths.split("\n")
+        }
+      }
+      var keggpathways = getPathwaysFromKEGG(entrezIDs).then(response => keggpathways = response.text())
+       keggpathways.then(keggpathways => {
+        keggpathways = keggpathways.split("|")
+        var allPaths = {};
+        var pathsCount = {};
+        var colorschemePaths = {};
+        for(keggpath of keggpathways){
+          keggpaths = keggpath.split("\n")
           var line = 0;
           while(line < keggpaths.length){
+            if(keggpaths[line].includes("<title>KEGG T01001: ")){
+              entrezID = keggpaths[line].split("<title>KEGG T01001: ")[1].split("<")[0]
+            }
             if(keggpaths[line].includes("<nobr>Pathway</nobr>")){
               line++;
               var splitarray =keggpaths[line].split("</td>")
               for(var i = 1; i < splitarray.length-2; i=i+2){
                 let hsa = "hsa"+splitarray[i-1].split(">hsa")[1].split("</a>")[0]
                 let p = splitarray[i].split("<td>")[1]
-                p = hsa+" "+p;
                 if(p != undefined){
+                  p = hsa+" "+p;
                   if(typeof allPaths[p] == 'undefined'){
                     allPaths[p]=[];
                   }
@@ -72,66 +85,66 @@ async function listKEGGPathways(ctx, cy, nodes, layer, canvas, pos = ""){
             else{
               line++;
             }
-          }
+          } 
         }
-      }
-          // only get top 5 of pathways (most genes in)
-      var props = Object.keys(pathsCount).map(function(key) {
-        return { key: key, value: this[key] };}, pathsCount);
-      props = props.sort(function(p1, p2) { return p2.value - p1.value; });
-      var topFive = props.slice(0, 5);
-          //show table of pathways
-      var tbody = document.getElementById("KEGGpaths"+pos);
-      var keggForm = document.createElement('form');
-      keggForm.id = "form"+pos
-   
-      var headerKegg = document.createElement ("h3");
-      headerKegg.innerHTML = "KEGG Pathways:"
-      keggForm.appendChild(headerKegg)
-      // var htmlString ="<form> <h3>KEGG Pathways:</h3><br>";
-      var colors = ["#66c2a5","#dfc27d","#8da0cb","#e78ac3","#a6d854"]
+        // only get top 5 of pathways (most genes in)
+        var props = Object.keys(pathsCount).map(function(key) {
+          return { key: key, value: this[key] };}, pathsCount);
+        props = props.sort(function(p1, p2) { return p2.value - p1.value; });
+        var topFive = props.slice(0, 5);
+            //show table of pathways
+        var tbody = document.getElementById("KEGGpaths"+pos);
+        var keggForm = document.createElement('form');
+        keggForm.id = "form"+pos
+     
+        var headerKegg = document.createElement ("h3");
+        headerKegg.innerHTML = "KEGG Pathways:"
+        keggForm.appendChild(headerKegg)
+        // var htmlString ="<form> <h3>KEGG Pathways:</h3><br>";
+        var colors = ["#66c2a5","#dfc27d","#8da0cb","#e78ac3","#a6d854"]
 
-      for (var i = 0; i < topFive.length; i++) {
-        colorschemePaths[topFive[i].key] = colors[i];
-        var checkboxKegg = document.createElement('input');
-        checkboxKegg.type = 'checkbox';
-        checkboxKegg.value = topFive[i].key
-        checkboxKegg.onclick=
-        	function(){highlightKEGGpaths(ctx, canvas, cy, layer, pos, allPaths, 
-        		colorschemePaths)};
-        var label = document.createElement('label')
-        label.innerHTML = topFive[i].key;
-        label.style.color = colors[i];
-        label.id = topFive[i].key; 
-        label.style.fontWeight = "bold";
-        // label.appendChild(checkboxKegg);  
-        keggForm.appendChild(checkboxKegg);
-        keggForm.appendChild(label)
-        keggForm.appendChild(document.createElement("br"))
-        keggForm.appendChild(document.createElement("br"))
+        for (var i = 0; i < topFive.length; i++) {
+          colorschemePaths[topFive[i].key] = colors[i];
+          var checkboxKegg = document.createElement('input');
+          checkboxKegg.type = 'checkbox';
+          checkboxKegg.value = topFive[i].key
+          checkboxKegg.onclick=
+           function(){highlightKEGGpaths(ctx, canvas, cy, layer, pos, allPaths, 
+             colorschemePaths)};
+          var label = document.createElement('label')
+          label.innerHTML = topFive[i].key;
+          label.style.color = colors[i];
+          label.id = topFive[i].key; 
+          label.style.fontWeight = "bold";
+          // label.appendChild(checkboxKegg);  
+          keggForm.appendChild(checkboxKegg);
+          keggForm.appendChild(label)
+          keggForm.appendChild(document.createElement("br"))
+          keggForm.appendChild(document.createElement("br"))
+        }
+        tbody.appendChild(keggForm)
+        document.getElementById('loader'+pos).style.visibility = "hidden";
+        document.getElementById('keggpathways'+pos).disabled = false;
+        document.getElementById('KEGGpaths'+pos).style.visibility = "visible";
+        })
       }
-      tbody.appendChild(keggForm)
+    }
+    //Hide table, switch button to show
+    else {
+      document.getElementById('keggpathways'+pos)
+      	.firstChild.data  = "Show KEGG Pathways";
+      document.getElementById('KEGGpaths'+pos).style.visibility = "hidden";
       document.getElementById('loader'+pos).style.visibility = "hidden";
-      document.getElementById('keggpathways'+pos).disabled = false;
-      document.getElementById('KEGGpaths'+pos).style.visibility = "visible";
+      var mergeEdgeschecked = document.getElementById('mergeEdges').checked;
+      $('#form'+pos+' input:checkbox').prop('checked', false);
+      if(mergeEdgeschecked){
+        document.getElementById('mergeEdges').checked = true;
+      }
+      layer.resetTransform(ctx);
+      ctx.clearRect(0,0,canvas.width, canvas.height);          
+      layer.setTransform(ctx);
+      ctx.save();
     }
-  }
-  //Hide table, switch button to show
-  else {
-    document.getElementById('keggpathways'+pos)
-    	.firstChild.data  = "Show KEGG Pathways";
-    document.getElementById('KEGGpaths'+pos).style.visibility = "hidden";
-    document.getElementById('loader'+pos).style.visibility = "hidden";
-    var mergeEdgeschecked = document.getElementById('mergeEdges').checked;
-    $('#form'+pos+' input:checkbox').prop('checked', false);
-    if(mergeEdgeschecked){
-      document.getElementById('mergeEdges').checked = true;
-    }
-    layer.resetTransform(ctx);
-    ctx.clearRect(0,0,canvas.width, canvas.height);          
-    layer.setTransform(ctx);
-    ctx.save();
-  }
 }
 
 // show rectangles for selected pathways
@@ -263,30 +276,19 @@ function getCheckedBoxes(chkboxName) {
   return checkboxesChecked.length > 0 ? checkboxesChecked : null;
 }
 
-// make httprequest to kegg
-async function getPathwaysFromKEGG(name) {
-     return new Promise(function (resolve, reject) {
-         let xhr = new XMLHttpRequest();
-         xhr.open('GET', "https://www.kegg.jp/entry/hsa:" + name);
-         xhr.onload = function () {
-             if (this.status >= 200 && this.status < 300) {
-                 resolve(xhr.response);
-             } else {
-                 reject({
-                     status: this.status,
-                     statusText: xhr.statusText
-                 });
-             }
-         };
-         xhr.onerror = function () {
-             reject({
-                 status: this.status,
-                 statusText: xhr.statusText
-             });
-         };
-         xhr.send();
-     });
- }
+async function getPathwaysFromKEGG(name){
+  var data = {'name':name};
+  const response = await fetch("http://localhost:3000/BioGraphVisart/kegg", {
+    method: 'POST', // *GET, POST, PUT, DELETE, etc.
+    mode: 'cors', // no-cors, *cors, same-origin
+    //credentials: 'same-origin', // include, *same-origin, omit
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data) // body data type must match "Content-Type" header
+  });
+  return await response; // parses JSON response into native JavaScript objects
+}
 
 // get neighbored nodes in same pathway for each node
 function getNeighbors(cp, cy){
