@@ -4,18 +4,10 @@ var http = require("http"),
     fs = require("fs"),
     express = require("express");
 var app     = express();
-var bodyParser = require('body-parser');
-const axios = require('axios').default;
 
 var foundFiles = [];
 var prevdirectory = "";
 app.use(express.static('../../'));
-app.use(
-  bodyParser.urlencoded({
-    extended: true
-  })
-)
-app.use(bodyParser.json())
 
 app.get('/BioGraphVisart',function(req,res){
   res.sendFile(path.resolve('../../templates/BioGraphVisart.html'));
@@ -79,42 +71,6 @@ function fromDir(startPath, filter){
         };
     };
     return foundFiles
-}
-
-app.post('/BioGraphVisart/kegg', function(req, res){
-    var findRequests = [];
-    for (let name of req.body.name) {
-        findRequests.push(getKEGGPathways(name));
-    }
-    axios
-        .all(findRequests)
-        .then(responseArray => {
-            var body = "";
-
-            for (var i = 0; i < responseArray.length; i++) {
-                if (!(typeof responseArray[i] == "undefined")) {
-                  // parse the information of the response
-                  var lines = responseArray[i].data;
-                  body += lines +"|";
-                }
-            }
-            console.log(body)
-            res.writeHead(200, { "Content-Type": "text/html" });
-            res.end(body);
-        })
-        .catch(error => {
-            console.log(error);
-        });
-})
-
-
-async function getKEGGPathways(name){
-    const url = "https://www.kegg.jp/entry/hsa:" + name;
-     return axios.get(url, {
-        validateStatus: function (status) {
-          return status < 500;
-        }
-    })
 }
 
 app.listen(3000);
