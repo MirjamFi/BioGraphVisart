@@ -278,7 +278,7 @@ function getCheckedBoxes(chkboxName) {
 
 async function getPathwaysFromKEGG(name){
   var data = {'name':name};
-  const response = await fetch("http://localhost:3000/BioGraphVisart/kegg", {
+  const response = await fetch("/BioGraphVisart/kegg", {
     method: 'POST', // *GET, POST, PUT, DELETE, etc.
     mode: 'cors', // no-cors, *cors, same-origin
     //credentials: 'same-origin', // include, *same-origin, omit
