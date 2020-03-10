@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns
+         http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
+<!-- Created by igraph -->
+  <key id="v_name" for="node" attr.name="name" attr.type="string"/>
+  <key id="v_entrez" for="node" attr.name="entrez" attr.type="string"/>
+  <key id="v_ensembl" for="node" attr.name="ensembl" attr.type="string"/>
+  <key id="v_symbol" for="node" attr.name="symbol" attr.type="string"/>
+  <key id="v_id" for="node" attr.name="id" attr.type="string"/>
+  <key id="v_deregnet_score" for="node" attr.name="deregnet_score" attr.type="double"/>
+  <key id="v_S02_tumor_T1__S02_liver_T1" for="node" attr.name="S02_tumor_T1__S02_liver_T1" attr.type="double"/>
+  <key id="v_S02_tumor_T2__S02_tumor_T1" for="node" attr.name="S02_tumor_T2__S02_tumor_T1" attr.type="double"/>
+  <key id="v_S05_tumor_T1__S05_liver_T1" for="node" attr.name="S05_tumor_T1__S05_liver_T1" attr.type="double"/>
+  <key id="v_S05_tumor_T2__S05_liver_T2" for="node" attr.name="S05_tumor_T2__S05_liver_T2" attr.type="double"/>
+  <key id="v_S05_tumor_T2__S05_tumor_T1" for="node" attr.name="S05_tumor_T2__S05_tumor_T1" attr.type="double"/>
+  <key id="v_S06_tumor_T1__S06_liver_T1" for="node" attr.name="S06_tumor_T1__S06_liver_T1" attr.type="double"/>
+  <key id="v_S06_tumor_T2__S06_tumor_T1" for="node" attr.name="S06_tumor_T2__S06_tumor_T1" attr.type="double"/>
+  <key id="v_S07_tumor_T2__S07_liver_T2" for="node" attr.name="S07_tumor_T2__S07_liver_T2" attr.type="double"/>
+  <key id="v_S07_tumor_T2__S07_tumor_T1" for="node" attr.name="S07_tumor_T2__S07_tumor_T1" attr.type="double"/>
+  <key id="v_S09_tumor_T1__S09_liver_T1" for="node" attr.name="S09_tumor_T1__S09_liver_T1" attr.type="double"/>
+  <key id="v_S11_tumor_T2__S11_tumor_T1" for="node" attr.name="S11_tumor_T2__S11_tumor_T1" attr.type="double"/>
+  <key id="e_interaction" for="edge" attr.name="interaction" attr.type="string"/>
+  <graph id="G" edgedefault="directed">
+    <node id="n0">
+      <data key="v_name">149233</data>
+      <data key="v_entrez">149233</data>
+      <data key="v_ensembl">ENSG00000162594</data>
+      <data key="v_symbol">IL23R</data>
+      <data key="v_id">n20</data>
+      <data key="v_deregnet_score">2.09648876373894</data>
+      <data key="v_S02_tumor_T1__S02_liver_T1">-0.808327655436456</data>
+      <data key="v_S02_tumor_T2__S02_tumor_T1">1.21012608248011</data>
+      <data key="v_S05_tumor_T1__S05_liver_T1">-0.0648747396487099</data>
+      <data key="v_S05_tumor_T2__S05_liver_T2">-0.398778603268964</data>
+      <data key="v_S05_tumor_T2__S05_tumor_T1">0.598633708237038</data>
+      <data key="v_S06_tumor_T1__S06_liver_T1">-1.4972301871336</data>
+      <data key="v_S06_tumor_T2__S06_tumor_T1">-1.75788705287593</data>
+      <data key="v_S07_tumor_T2__S07_liver_T2">1.47136291334481</data>
+      <data key="v_S07_tumor_T2__S07_tumor_T1">1.03998091017272</data>
+      <data key="v_S09_tumor_T1__S09_liver_T1">2.09648876373894</data>
+      <data key="v_S11_tumor_T2__S11_tumor_T1">0.457787720406716</data>
+    </node>
+    <node id="n1">
+      <data key="v_name">1233</data>
+      <data key="v_entrez">1233</data>
+      <data key="v_ensembl">ENSG00000183813</data>
+      <data key="v_symbol">CCR4</data>
+      <data key="v_id">n21</data>
+      <data key="v_deregnet_score">3.21096106236531</data>
+      <data key="v_S02_tumor_T1__S02_liver_T1">-0.541029383708159</data>
+      <data key="v_S02_tumor_T2__S02_tumor_T1">-0.702218444300005</data>
+      <data key="v_S05_tumor_T1__S05_liver_T1">0.623599873281531</data>
+      <data key="v_S05_tumor_T2__S05_liver_T2">0.925630007983067</data>
+      <data key="v_S05_tumor_T2__S05_tumor_T1">-0.470491165807465</data>
+      <data key="v_S06_tumor_T1__S06_liver_T1">0.322597160234361</data>
+      <data key="v_S06_tumor_T2__S06_tumor_T1">-0.576228596795394</data>
+      <data key="v_S07_tumor_T2__S07_liver_T2">-1.10150173398324</data>
+      <data key="v_S07_tumor_T2__S07_tumor_T1">0.51317770193379</data>
+      <data key="v_S09_tumor_T1__S09_liver_T1">3.21096106236531</data>
+      <data key="v_S11_tumor_T2__S11_tumor_T1">0.682462705692934</data>
+    </node>
+    <node id="n2">
+      <data key="v_name">3977</data>
+      <data key="v_entrez">3977</data>
+      <data key="v_ensembl">ENSG00000113594</data>
+      <data key="v_symbol">LIFR</data>
+      <data key="v_id">n512</data>
+      <data key="v_deregnet_score">2.09648876373894</data>
+      <data key="v_S02_tumor_T1__S02_liver_T1">-1.77727398490453</data>
+      <data key="v_S02_tumor_T2__S02_tumor_T1">-0.399294043902002</data>
+      <data key="v_S05_tumor_T1__S05_liver_T1">0.329698805535045</data>
+      <data key="v_S05_tumor_T2__S05_liver_T2">-2.08143673113049</data>
+      <data key="v_S05_tumor_T2__S05_tumor_T1">-0.752930104718481</data>
+      <data key="v_S06_tumor_T1__S06_liver_T1">-2.23392552488066</data>
+      <data key="v_S06_tumor_T2__S06_tumor_T1">1.82710886183851</data>
+      <data key="v_S07_tumor_T2__S07_liver_T2">0.106168270654973</data>
+      <data key="v_S07_tumor_T2__S07_tumor_T1">-0.325213732517111</data>
+      <data key="v_S09_tumor_T1__S09_liver_T1">2.09648876373894</data>
+      <data key="v_S11_tumor_T2__S11_tumor_T1">0.148581679883231</data>
+    </node>
+    <node id="n3">
+      <data key="v_name">468</data>
+      <data key="v_entrez">468</data>
+      <data key="v_ensembl">ENSG00000128272</data>
+      <data key="v_symbol">ATF4</data>
+      <data key="v_id">n1266</data>
+      <data key="v_deregnet_score">-2.99036351570306</data>
+      <data key="v_S02_tumor_T1__S02_liver_T1">0.106689501142342</data>
+      <data key="v_S02_tumor_T2__S02_tumor_T1">-0.340443198378158</data>
+      <data key="v_S05_tumor_T1__S05_liver_T1">-0.317762561927282</data>
+      <data key="v_S05_tumor_T2__S05_liver_T2">-0.460846906351847</data>
+      <data key="v_S05_tumor_T2__S05_tumor_T1">-0.466715489126758</data>
+      <data key="v_S06_tumor_T1__S06_liver_T1">0.365995399490692</data>
+      <data key="v_S06_tumor_T2__S06_tumor_T1">-3.26937672024955</data>
+      <data key="v_S07_tumor_T2__S07_liver_T2">0.27276032605497</data>
+      <data key="v_S07_tumor_T2__S07_tumor_T1">-0.145066042584698</data>
+      <data key="v_S09_tumor_T1__S09_liver_T1">-2.99036351570306</data>
+      <data key="v_S11_tumor_T2__S11_tumor_T1">0.266223768990521</data>
+    </node>
+    <node id="n4">
+      <data key="v_name">30009</data>
+      <data key="v_entrez">30009</data>
+      <data key="v_ensembl">ENSG00000073861</data>
+      <data key="v_symbol">TBX21</data>
+      <data key="v_id">n1691</data>
+      <data key="v_deregnet_score">3.05838202435757</data>
+      <data key="v_S02_tumor_T1__S02_liver_T1">-1.60462277625249</data>
+      <data key="v_S02_tumor_T2__S02_tumor_T1">0.652877790147561</data>
+      <data key="v_S05_tumor_T1__S05_liver_T1">-0.612668511474249</data>
+      <data key="v_S05_tumor_T2__S05_liver_T2">-0.882120297904894</data>
+      <data key="v_S05_tumor_T2__S05_tumor_T1">-0.253942610572907</data>
+      <data key="v_S06_tumor_T1__S06_liver_T1">-0.683425418110838</data>
+      <data key="v_S06_tumor_T2__S06_tumor_T1">0.0107460563522446</data>
+      <data key="v_S07_tumor_T2__S07_liver_T2">-0.474767805129534</data>
+      <data key="v_S07_tumor_T2__S07_tumor_T1">1.66538532047683</data>
+      <data key="v_S09_tumor_T1__S09_liver_T1">3.05838202435757</data>
+      <data key="v_S11_tumor_T2__S11_tumor_T1">-0.0374671569208339</data>
+    </node>
+    <node id="n5">
+      <data key="v_name">836</data>
+      <data key="v_entrez">836</data>
+      <data key="v_ensembl">ENSG00000164305</data>
+      <data key="v_symbol">CASP3</data>
+      <data key="v_id">n1806</data>
+      <data key="v_deregnet_score">2.09648876373894</data>
+      <data key="v_S02_tumor_T1__S02_liver_T1">2.62935315415718</data>
+      <data key="v_S02_tumor_T2__S02_tumor_T1">-0.938631838823593</data>
+      <data key="v_S05_tumor_T1__S05_liver_T1">-0.106593909943653</data>
+      <data key="v_S05_tumor_T2__S05_liver_T2">-0.313062228928768</data>
+      <data key="v_S05_tumor_T2__S05_tumor_T1">0.301941757695764</data>
+      <data key="v_S06_tumor_T1__S06_liver_T1">-0.997070864683907</data>
+      <data key="v_S06_tumor_T2__S06_tumor_T1">0.365664925599101</data>
+      <data key="v_S07_tumor_T2__S07_liver_T2">-0.210956924660535</data>
+      <data key="v_S07_tumor_T2__S07_tumor_T1">-0.477434174891409</data>
+      <data key="v_S09_tumor_T1__S09_liver_T1">2.09648876373894</data>
+      <data key="v_S11_tumor_T2__S11_tumor_T1">0.514130250679554</data>
+    </node>
+    <node id="n6">
+      <data key="v_name">108</data>
+      <data key="v_entrez">108</data>
+      <data key="v_ensembl">ENSG00000078295</data>
+      <data key="v_symbol">ADCY2</data>
+      <data key="v_id">n1952</data>
+      <data key="v_deregnet_score">2.64843605572591</data>
+      <data key="v_S02_tumor_T1__S02_liver_T1">-0.253764462582541</data>
+      <data key="v_S02_tumor_T2__S02_tumor_T1">-0.399294043902002</data>
+      <data key="v_S05_tumor_T1__S05_liver_T1">8.53438178864342</data>
+      <data key="v_S05_tumor_T2__S05_liver_T2">3.47090537239461</data>
+      <data key="v_S05_tumor_T2__S05_tumor_T1">-4.88347854140604</data>
+      <data key="v_S06_tumor_T1__S06_liver_T1">-0.641070762939956</data>
+      <data key="v_S06_tumor_T2__S06_tumor_T1">1.02131168718461</data>
+      <data key="v_S07_tumor_T2__S07_liver_T2">1.72949641808977</data>
+      <data key="v_S07_tumor_T2__S07_tumor_T1">1.72866970443853</data>
+      <data key="v_S09_tumor_T1__S09_liver_T1">2.64843605572591</data>
+      <data key="v_S11_tumor_T2__S11_tumor_T1">-1.96924376828345</data>
+    </node>
+    <node id="n7">
+      <data key="v_name">5291</data>
+      <data key="v_entrez">5291</data>
+      <data key="v_ensembl">ENSG00000051382</data>
+      <data key="v_symbol">PIK3CB</data>
+      <data key="v_id">n2768</data>
+      <data key="v_deregnet_score">-1.28191506947926</data>
+      <data key="v_S02_tumor_T1__S02_liver_T1">-1.85362342953048</data>
+      <data key="v_S02_tumor_T2__S02_tumor_T1">1.95193383768154</data>
+      <data key="v_S05_tumor_T1__S05_liver_T1">0.350048389662947</data>
+      <data key="v_S05_tumor_T2__S05_liver_T2">-0.304320462133023</data>
+      <data key="v_S05_tumor_T2__S05_tumor_T1">-0.530332029356001</data>
+      <data key="v_S06_tumor_T1__S06_liver_T1">0.274168461110877</data>
+      <data key="v_S06_tumor_T2__S06_tumor_T1">-1.12308739343561</data>
+      <data key="v_S07_tumor_T2__S07_liver_T2">-0.6998264312365</data>
+      <data key="v_S07_tumor_T2__S07_tumor_T1">0.112641520811398</data>
+      <data key="v_S09_tumor_T1__S09_liver_T1">-1.28191506947926</data>
+      <data key="v_S11_tumor_T2__S11_tumor_T1">0.894437526961347</data>
+    </node>
+    <node id="n8">
+      <data key="v_name">4352</data>
+      <data key="v_entrez">4352</data>
+      <data key="v_ensembl">ENSG00000117400</data>
+      <data key="v_symbol">MPL</data>
+      <data key="v_id">n2784</data>
+      <data key="v_deregnet_score">3.35843447594136</data>
+      <data key="v_S02_tumor_T1__S02_liver_T1">0.087283133906727</data>
+      <data key="v_S02_tumor_T2__S02_tumor_T1">-1.04689387909012</data>
+      <data key="v_S05_tumor_T1__S05_liver_T1">-0.818378002352936</data>
+      <data key="v_S05_tumor_T2__S05_liver_T2">0.292493665993647</data>
+      <data key="v_S05_tumor_T2__S05_tumor_T1">0.424199284044815</data>
+      <data key="v_S06_tumor_T1__S06_liver_T1">-0.756401891099247</data>
+      <data key="v_S06_tumor_T2__S06_tumor_T1">-0.730487038875556</data>
+      <data key="v_S07_tumor_T2__S07_liver_T2">-0.427065167164111</data>
+      <data key="v_S07_tumor_T2__S07_tumor_T1">0.799618917865112</data>
+      <data key="v_S09_tumor_T1__S09_liver_T1">3.35843447594136</data>
+      <data key="v_S11_tumor_T2__S11_tumor_T1">0.391597323380141</data>
+    </node>
+    <node id="n9">
+      <data key="v_name">6708</data>
+      <data key="v_entrez">6708</data>
+      <data key="v_ensembl">ENSG00000163554</data>
+      <data key="v_symbol">SPTA1</data>
+      <data key="v_id">n3012</data>
+      <data key="v_deregnet_score">3.7630374552969</data>
+      <data key="v_S02_tumor_T1__S02_liver_T1">-1.92613462913338</data>
+      <data key="v_S02_tumor_T2__S02_tumor_T1">1.0018084993743</data>
+      <data key="v_S05_tumor_T1__S05_liver_T1">1.72637303777985</data>
+      <data key="v_S05_tumor_T2__S05_liver_T2">4.6535834001283</data>
+      <data key="v_S05_tumor_T2__S05_tumor_T1">3.50174074767193</data>
+      <data key="v_S06_tumor_T1__S06_liver_T1">1.3796879077371</data>
+      <data key="v_S06_tumor_T2__S06_tumor_T1">-1.27255496816928</data>
+      <data key="v_S07_tumor_T2__S07_liver_T2">0.23043922106962</data>
+      <data key="v_S07_tumor_T2__S07_tumor_T1">-0.190992939003444</data>
+      <data key="v_S09_tumor_T1__S09_liver_T1">3.7630374552969</data>
+      <data key="v_S11_tumor_T2__S11_tumor_T1">-1.47237543722207</data>
+    </node>
+    <node id="n10">
+      <data key="v_name">3458</data>
+      <data key="v_entrez">3458</data>
+      <data key="v_ensembl">ENSG00000111537</data>
+      <data key="v_symbol">IFNG</data>
+      <data key="v_id">n3842</data>
+      <data key="v_deregnet_score">2.86125510577117</data>
+      <data key="v_S02_tumor_T1__S02_liver_T1">-0.976357654733464</data>
+      <data key="v_S02_tumor_T2__S02_tumor_T1">-0.169855860538845</data>
+      <data key="v_S05_tumor_T1__S05_liver_T1">0.0960465035697204</data>
+      <data key="v_S05_tumor_T2__S05_liver_T2">-0.758891165986176</data>
+      <data key="v_S05_tumor_T2__S05_tumor_T1">-0.541752602132041</data>
+      <data key="v_S06_tumor_T1__S06_liver_T1">-0.0446818160946542</data>
+      <data key="v_S06_tumor_T2__S06_tumor_T1">0.32873816811121</data>
+      <data key="v_S07_tumor_T2__S07_liver_T2">-0.474115870122456</data>
+      <data key="v_S07_tumor_T2__S07_tumor_T1">0.148312284111318</data>
+      <data key="v_S09_tumor_T1__S09_liver_T1">2.86125510577117</data>
+      <data key="v_S11_tumor_T2__S11_tumor_T1">0.148581679883231</data>
+    </node>
+    <node id="n11">
+      <data key="v_name">207</data>
+      <data key="v_entrez">207</data>
+      <data key="v_ensembl">ENSG00000142208</data>
+      <data key="v_symbol">AKT1</data>
+      <data key="v_id">n4783</data>
+      <data key="v_deregnet_score">1.62493273137348</data>
+      <data key="v_S02_tumor_T1__S02_liver_T1">-1.64968668297706</data>
+      <data key="v_S02_tumor_T2__S02_tumor_T1">0.756112038707824</data>
+      <data key="v_S05_tumor_T1__S05_liver_T1">-0.173562576232984</data>
+      <data key="v_S05_tumor_T2__S05_liver_T2">0.386325964358277</data>
+      <data key="v_S05_tumor_T2__S05_tumor_T1">0.186115073995341</data>
+      <data key="v_S06_tumor_T1__S06_liver_T1">0.592616645954176</data>
+      <data key="v_S06_tumor_T2__S06_tumor_T1">-0.148284677010872</data>
+      <data key="v_S07_tumor_T2__S07_liver_T2">0.562684334631994</data>
+      <data key="v_S07_tumor_T2__S07_tumor_T1">-1.03886542971626</data>
+      <data key="v_S09_tumor_T1__S09_liver_T1">1.62493273137348</data>
+      <data key="v_S11_tumor_T2__S11_tumor_T1">-1.80121222758495</data>
+    </node>
+    <node id="n12">
+      <data key="v_name">3674</data>
+      <data key="v_entrez">3674</data>
+      <data key="v_ensembl">ENSG00000005961</data>
+      <data key="v_symbol">ITGA2B</data>
+      <data key="v_id">n5029</data>
+      <data key="v_deregnet_score">3.21096106236531</data>
+      <data key="v_S02_tumor_T1__S02_liver_T1">-3.01524715223497</data>
+      <data key="v_S02_tumor_T2__S02_tumor_T1">1.55371353186203</data>
+      <data key="v_S05_tumor_T1__S05_liver_T1">0.0224228138865539</data>
+      <data key="v_S05_tumor_T2__S05_liver_T2">-0.60037058788754</data>
+      <data key="v_S05_tumor_T2__S05_tumor_T1">-0.943260751867577</data>
+      <data key="v_S06_tumor_T1__S06_liver_T1">0.521085869249172</data>
+      <data key="v_S06_tumor_T2__S06_tumor_T1">-2.47223858559785</data>
+      <data key="v_S07_tumor_T2__S07_liver_T2">-0.242457674420383</data>
+      <data key="v_S07_tumor_T2__S07_tumor_T1">-0.595297723031685</data>
+      <data key="v_S09_tumor_T1__S09_liver_T1">3.21096106236531</data>
+      <data key="v_S11_tumor_T2__S11_tumor_T1">-0.414282415030633</data>
+    </node>
+    <node id="n13">
+      <data key="v_name">5506</data>
+      <data key="v_entrez">5506</data>
+      <data key="v_ensembl">ENSG00000154415</data>
+      <data key="v_symbol">PPP1R3A</data>
+      <data key="v_id">n5193</data>
+      <data key="v_deregnet_score">3.21096106236531</data>
+      <data key="v_S02_tumor_T1__S02_liver_T1">0.658701759441077</data>
+      <data key="v_S02_tumor_T2__S02_tumor_T1">-0.399294043902002</data>
+      <data key="v_S05_tumor_T1__S05_liver_T1">10.2688948854879</data>
+      <data key="v_S05_tumor_T2__S05_liver_T2">3.84685212454644</data>
+      <data key="v_S05_tumor_T2__S05_tumor_T1">-5.83866422466276</data>
+      <data key="v_S06_tumor_T1__S06_liver_T1">0.661205852413321</data>
+      <data key="v_S06_tumor_T2__S06_tumor_T1">1.41695759209879</data>
+      <data key="v_S07_tumor_T2__S07_liver_T2">0.154872208173425</data>
+      <data key="v_S07_tumor_T2__S07_tumor_T1">0.154045494522191</data>
+      <data key="v_S09_tumor_T1__S09_liver_T1">3.21096106236531</data>
+      <data key="v_S11_tumor_T2__S11_tumor_T1">-3.69555981166179</data>
+    </node>
+    <node id="n14">
+      <data key="v_name">3576</data>
+      <data key="v_entrez">3576</data>
+      <data key="v_ensembl">ENSG00000169429</data>
+      <data key="v_symbol">CXCL8</data>
+      <data key="v_id">n5368</data>
+      <data key="v_deregnet_score">-1.76445861017272</data>
+      <data key="v_S02_tumor_T1__S02_liver_T1">-3.58302126289549</data>
+      <data key="v_S02_tumor_T2__S02_tumor_T1">0.624141351558466</data>
+      <data key="v_S05_tumor_T1__S05_liver_T1">2.22206482379224</data>
+      <data key="v_S05_tumor_T2__S05_liver_T2">4.40552620265477</data>
+      <data key="v_S05_tumor_T2__S05_tumor_T1">1.34461448831965</data>
+      <data key="v_S06_tumor_T1__S06_liver_T1">0.821411188868186</data>
+      <data key="v_S06_tumor_T2__S06_tumor_T1">-0.931128194940757</data>
+      <data key="v_S07_tumor_T2__S07_liver_T2">-0.655546297345688</data>
+      <data key="v_S07_tumor_T2__S07_tumor_T1">-0.325213732517111</data>
+      <data key="v_S09_tumor_T1__S09_liver_T1">-1.76445861017272</data>
+      <data key="v_S11_tumor_T2__S11_tumor_T1">0.967584072590853</data>
+    </node>
+    <edge source="n2" target="n7">
+      <data key="e_interaction">activation</data>
+    </edge>
+    <edge source="n3" target="n3">
+      <data key="e_interaction">state change</data>
+    </edge>
+    <edge source="n3" target="n14">
+      <data key="e_interaction">expression</data>
+    </edge>
+    <edge source="n4" target="n10">
+      <data key="e_interaction">expression</data>
+    </edge>
+    <edge source="n5" target="n9">
+      <data key="e_interaction">inhibition</data>
+    </edge>
+    <edge source="n7" target="n5">
+      <data key="e_interaction">activation</data>
+    </edge>
+    <edge source="n7" target="n5">
+      <data key="e_interaction">indirect effect</data>
+    </edge>
+    <edge source="n7" target="n11">
+      <data key="e_interaction">phosphorylation</data>
+    </edge>
+    <edge source="n7" target="n11">
+      <data key="e_interaction">compound</data>
+    </edge>
+    <edge source="n7" target="n11">
+      <data key="e_interaction">indirect effect</data>
+    </edge>
+    <edge source="n7" target="n11">
+      <data key="e_interaction">activation</data>
+    </edge>
+    <edge source="n7" target="n11">
+      <data key="e_interaction">expression</data>
+    </edge>
+    <edge source="n7" target="n12">
+      <data key="e_interaction">activation</data>
+    </edge>
+    <edge source="n7" target="n12">
+      <data key="e_interaction">indirect effect</data>
+    </edge>
+    <edge source="n10" target="n0">
+      <data key="e_interaction">activation</data>
+    </edge>
+    <edge source="n10" target="n2">
+      <data key="e_interaction">activation</data>
+    </edge>
+    <edge source="n10" target="n8">
+      <data key="e_interaction">activation</data>
+    </edge>
+    <edge source="n11" target="n3">
+      <data key="e_interaction">activation</data>
+    </edge>
+    <edge source="n11" target="n3">
+      <data key="e_interaction">phosphorylation</data>
+    </edge>
+    <edge source="n11" target="n6">
+      <data key="e_interaction">activation</data>
+    </edge>
+    <edge source="n11" target="n13">
+      <data key="e_interaction">indirect effect</data>
+    </edge>
+    <edge source="n14" target="n1">
+      <data key="e_interaction">binding/association</data>
+    </edge>
+    <edge source="n14" target="n1">
+      <data key="e_interaction">activation</data>
+    </edge>
+  </graph>
+</graphml>
