@@ -418,14 +418,11 @@ function getNodesAndEdgesSIF(graphString, graphpos = undefined, noOptn = false){
 
   	var el = graphString.find(a =>a.includes("\t"));  	
   	for (var i = 0; i <= graphString.length - 1; i++) {	
-  		console.log(el)
   		if(el){
 			var nodesAndInteraction = graphString[i].split("\t");
-			console.log(nodesAndInteraction)
 		}
 		else{
 			var nodesAndInteraction = graphString[i].split(" ");
-			console.log(nodesAndInteraction)
 		}
 		var n1 = nodesAndInteraction[0].trim();
 		nodesSet.add(n1);
@@ -442,11 +439,41 @@ function getNodesAndEdgesSIF(graphString, graphpos = undefined, noOptn = false){
 		else{ 
   			interactionTypes.add(interact);
 		}
-
+	}
+	var nodesWIDs = {};
+	var j = 0;
+	for(var node of nodesSet){
+		var curNode = {};
+		curNode.id = "n"+j;
+		curNode.name = node;
+		nodesWIDs[node] = curNode.id;
+		j++;
+		if(graphpos == "left"){
+			curNode.graph = "g1";
+			leftNodes.push({data: curNode});
+		}
+		else if(graphpos == "right"){
+			curNode.graph = "g2";
+			rightNodes.push({data: curNode});
+		}
+		nodes.push({data: curNode});
+	}
+	for (var i = 0; i <= graphString.length - 1; i++) {	
 		var curEdge = {};
-		curEdge.id = n1.concat(n2)
-		curEdge.source = n1.trim();
-		curEdge.target = n2.trim();
+		if(el){
+			var nodesAndInteraction = graphString[i].split("\t");
+		}
+		else{
+			var nodesAndInteraction = graphString[i].split(" ");
+		}
+		var n1 = nodesAndInteraction[0].trim();
+		var interact = nodesAndInteraction[1].trim();
+		var n2 = nodesAndInteraction[2].trim();
+		var s = nodesWIDs[n1];
+		var t = nodesWIDs[n2];
+		curEdge.id = s.concat(t)
+		curEdge.source = s;
+		curEdge.target = t;
 		if(prevId == curEdge.id){                       // multiple edges between two nodes
       		if(!Array.isArray(edges[pos-1].data.interaction)){
         		curEdge.interaction=
@@ -494,32 +521,13 @@ function getNodesAndEdgesSIF(graphString, graphpos = undefined, noOptn = false){
 
   		prevId = curEdge.id;
   		pos = pos +1;
-	}
-	var j = 0;
-	console.log(nodesSet)
-	for(var node of nodesSet){
-		console.log(node)
-		var curNode = {};
-		curNode.id = node;
-		curNode.name = node;
-		j++;
-		if(graphpos == "left"){
-			curNode.graph = "g1";
-			leftNodes.push({data: curNode});
-		}
-		else if(graphpos == "right"){
-			curNode.graph = "g2";
-			rightNodes.push({data: curNode});
-		}
-		nodes.push({data: curNode});
-	}
+  	}
   	if(!noOptn){
 		var legendNode = {};
 		    legendNode.id = "l1";
 		    legendNode.symbol = "legend";
 		    nodes.push({data:legendNode});
 	}
-	console.log(nodes, edges)
   	return [nodes, edges, [], interactionTypes];
 }
 

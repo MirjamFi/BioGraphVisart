@@ -59,7 +59,12 @@ function visualize(firstTime=false) {
     if(cyO == 'cyLeft'){
       leftGraph = true;
       graphString = graphStringLeft;
-      var leftnodesAndEdges = getNodesAndEdges(graphString, 'left');
+      if(isSIF){
+        var leftnodesAndEdges = getNodesAndEdgesSIF(graphString, 'left');
+      }
+      else{
+        var leftnodesAndEdges = getNodesAndEdges(graphString, 'left');
+      }
       leftNodes = leftnodesAndEdges[0];
       leftEdges = leftnodesAndEdges[1]; 
       var leftNodeValuesNum = leftnodesAndEdges[2];
@@ -101,7 +106,12 @@ function visualize(firstTime=false) {
     else if(cyO = 'cyRight'){
       leftGraph = false;
       graphString = graphStringRight;
-      var rightnodesAndEdges = getNodesAndEdges(graphString, 'right');
+      if(isSIF){
+        var rightnodesAndEdges = getNodesAndEdgesSIF(graphString, 'right');
+      }
+      else{
+        var rightnodesAndEdges = getNodesAndEdges(graphString, 'right');
+      }
       rightNodes = rightnodesAndEdges[0];
       rightEdges = rightnodesAndEdges[1]; 
       var rightNodeValuesNum = rightnodesAndEdges[2];
@@ -226,6 +236,35 @@ function addNodesAndEdges(cyObject, nodes, edges, firstTime, nodesMin, nodesMax)
   cyObject.layout({
     name: 'dagre'
   }).run();
+
+  if(nodes.every(function(x){return(x.data["symbol"])})){
+    for(n=0; n < nodes.length; n++){
+      cyObject.batch(function(){
+        var labelText = nodes[n].data.symbol;
+        var oldLabelText = nodes[n].data.symbol;
+          while(getTextWidth(labelText, fontSize +" arial") > 49){
+            oldLabelText = oldLabelText.slice(0,-1);
+            labelText = oldLabelText+'...';
+          }
+         // }
+         cyObject.$('node[id =\''  + nodes[n].data.id + '\']').style("label", labelText);
+      });
+    }
+  }
+  else{
+    for(n=0; n < nodes.length; n++){
+      cyObject.batch(function(){
+        var labelText = nodes[n].data.name;
+        var oldLabelText = nodes[n].data.name;
+          while(getTextWidth(labelText, fontSize +" arial") > 49){
+            oldLabelText = oldLabelText.slice(0,-1);
+            labelText = oldLabelText+'...';
+          }
+         // }
+         cyObject.$('node[id =\''  + nodes[n].data.id + '\']').style("label",labelText);
+      });
+    }
+  }
   // update node values if tracer or values change
   if(!firstTime){
     for(n=0; n < nodes.length; n++){

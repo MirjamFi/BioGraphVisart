@@ -16,6 +16,8 @@ var highlightedNode;
 
 var graphsList = [];
 
+var isSIF = false;
+
 function getAllIndexes(arr, val) {
 
     var indexes = [];
@@ -62,7 +64,7 @@ function loadDir(){
     drpLayoutLeft.add(optnLayoutLeft);
     drpLayoutRight.add(optnLayoutRight);
   });
-
+isSIF = false;
     let foundFiles = document.getElementById('fileName').files;
     counterlimit = foundFiles.length;
     var data = {};
@@ -85,21 +87,50 @@ function loadDir(){
           for(g in graphsList){
             var graphml = graphsList[g];
             j ++;
-            let keyList = getAllIndexes(graphml,'symbol')
-            keyList.forEach(function(key){ // get keys
-              if(key.includes('data')){
-                var symbol = regExp.exec(key)[1];
-                if(data[g] == undefined){
-                  data[g] = []
-                }
-                data[g].push(symbol);
-                if(j == Object.keys(graphsList).length){ 
-                    var overlapDict = calculateOverlap(data);
-                    createHeatmap(overlapDict);
-                    document.getElementById('selectAttribute').style.visibility = "visible";
+            if(file.name.endsWith("graphml")){
+              let keyList = getAllIndexes(graphml,'symbol')
+              keyList.forEach(function(key){ // get keys
+                if(key.includes('data')){
+                  var symbol = regExp.exec(key)[1];
+                  if(data[g] == undefined){
+                    data[g] = []
+                  }
+                  data[g].push(symbol);
+                  if(j == Object.keys(graphsList).length){ 
+                      var overlapDict = calculateOverlap(data);
+                      createHeatmap(overlapDict);
+                      document.getElementById('selectAttribute').style.visibility = "visible";
+                  };
                 };
+              });
+            }
+            else if(file.name.endsWith("sif")){
+              isSIF = true;
+              if(data[g] == undefined){
+                    data[g] = []
+              }
+              var nodesSet = new Set();
+
+              var el = graphml.find(a =>a.includes("\t"));    
+              for (var i = 0; i <= graphml.length - 1; i++) { 
+                if(el){
+                var nodesAndInteraction = graphml[i].split("\t");
+                }
+                else{
+                  var nodesAndInteraction = graphml[i].split(" ");
+                }
+                var n1 = nodesAndInteraction[0].trim();
+                nodesSet.add(n1);
+                var n2 = nodesAndInteraction[2].trim();
+                nodesSet.add(n2);
+              }
+              data[g] = Array.from(nodesSet);
+              if(j == Object.keys(graphsList).length){
+                var overlapDict = calculateOverlap(data);
+                createHeatmap(overlapDict);
+                document.getElementById('selectAttribute').style.visibility = "visible";
               };
-            });
+            }
           };
         }
       };
@@ -153,6 +184,7 @@ function loadGraphml(sampleLeft, sampleRight) {
         }
 
       // put node atttributes into dropdown select object
+      if(!isSIF){
         for (var i = 0; i <= graphString.length - 1; i++) {
           if(graphString[i].includes("for=\"node\"") && 
             (graphString[i].includes("attr.type=\"double\"") || 
@@ -168,6 +200,7 @@ function loadGraphml(sampleLeft, sampleRight) {
           };
         };
       }
+    }
     else{
       return;
     }

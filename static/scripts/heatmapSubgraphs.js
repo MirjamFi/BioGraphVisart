@@ -90,8 +90,14 @@ function createHeatmap(heatmapData){
                 series: {
                     events: {
                         click: function (event) {
-                            left = leftSelect+'.graphml';
-                            right=rightSelect+'.graphml';
+                            if(isSIF){
+                                left = leftSelect+'.sif';
+                                right=rightSelect+'.sif';
+                            }
+                            else{
+                                left = leftSelect+'.graphml';
+                                right=rightSelect+'.graphml';
+                            }
                             document.getElementById("leftID").innerHTML = "";
                             document.getElementById("rightID").innerHTML = "";
                             document.getElementById('values').setAttribute('style','visibility:visible');

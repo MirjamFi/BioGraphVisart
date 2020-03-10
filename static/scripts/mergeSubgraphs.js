@@ -165,7 +165,7 @@ function getmergedGraph(nodesL, nodesR, edgesL, edgesR, interactionTypes){
 	  	var n1 = nodes1[i];
 	  	for(var j = 0; j < nodes2.length; j++){
 	  		var n2 = nodes2[j];
-	  		if(n1.data.symbol == n2.data.symbol){
+	  		if(n1.data.symbol == n2.data.symbol || n1.data.name == n2.data.name){
 	  			mergedNodes[i] = n1;
 	  			mergedNodes[i].data.graph = "both";
 	  			for(let d in n1.data){
@@ -176,40 +176,41 @@ function getmergedGraph(nodesL, nodesR, edgesL, edgesR, interactionTypes){
 				        }
 	  				}
 	  			}
-		        for(var j=0; j < edges2.length; j++){
-		          if(edges2[j].data.source == n2.data.id){
-		            edges2[j].data.source = n1.data.id;
-		            edges2[j].data.id = edges2[j].data.source+edges2[j].data.target;
+		        for(var k=0; k < edges2.length; k++){
+		          if(edges2[k].data.source == n2.data.id){
+		            edges2[k].data.source = n1.data.id;
+		            edges2[k].data.id = edges2[k].data.source+edges2[k].data.target;
 
 		          }
-		          if(edges2[j].data.target == n2.data.id){
-		            edges2[j].data.target = n1.data.id;
-		            edges2[j].data.id = edges2[j].data.source+edges2[j].data.target;
+		          if(edges2[k].data.target == n2.data.id){
+		            edges2[k].data.target = n1.data.id;
+		            edges2[k].data.id = edges2[k].data.source+edges2[k].data.target;
 		          }
 		        }
 		        nodes2.splice(j,1);
+		        break;
 	  		}
-	  		if(mergedNodes[i] == undefined|| mergedNodes[i].data.id != n1.data.id){
-		  		mergedNodes.push(n1);
-		  	}
 	  	}
+	  	if(mergedNodes[i] == undefined|| mergedNodes[i].data.id != n1.data.id){
+			mergedNodes.push(n1);
+		}
 	}
-	for(var k = 0; k < nodes2.length; k++){
-		mergedNodes.push(nodes2[k])
+	for(var l = 0; l < nodes2.length; l++){
+		mergedNodes.push(nodes2[l])
 	}
-	var legendNode = [];
+	var legendNode = {};
 	legendNode.data = {};
 	legendNode.data.id = "l1";
 	legendNode.data.symbol = "legend";
 	mergedNodes.push(legendNode);
 
-	var g1Legend = [];
+	var g1Legend = {};
 	g1Legend.data={};
 	g1Legend.data.id = "g1";
 	g1Legend.data.graph = "g1";
 	g1Legend.data.symbol = window.opener.leftID;
 	mergedNodes.push(g1Legend);
-	var g2Legend = [];
+	var g2Legend = {};
 	g2Legend.data={};
 	g2Legend.data.id = "g2";
 	g2Legend.data.graph = "g2";
@@ -219,11 +220,20 @@ function getmergedGraph(nodesL, nodesR, edgesL, edgesR, interactionTypes){
   	// mergedArray have duplicates, lets remove the duplicates using Set
   	let set = new Set();
   	unionNodes = Array.from(mergedNodes.filter(item => {
-	    if (!set.has(item.data.symbol)) {
-	      set.add(item.data.symbol);
-	      return true;
-	    }
-	    return false;
+  		if(item.data.symbol){
+		    if (!set.has(item.data.symbol)) {
+		      set.add(item.data.symbol);
+		      return true;
+		    }
+		    return false;
+		}
+		else{
+			if (!set.has(item.data.name)) {
+		      set.add(item.data.name);
+		      return true;
+		    }
+		    return false;
+		}
 	}, set));
 	const mergedEdges = [...edges1, ...edges2];
 	for(var i = 0; i<mergedEdges.length; i++){

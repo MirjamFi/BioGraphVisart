@@ -10,7 +10,7 @@ var cystyle =  [
           'border-color' : 'black',
           'border-style' : 'solid',
           'border-width' : '2',
-          label: 'data(symbol)',
+          // label: 'data(symbol)',
           "text-valign" : "center",
           "text-halign" : "center",
           "font-size" : 12,
@@ -196,35 +196,53 @@ const nodesEdges = getmergedGraph(leftNodes, rightNodes, leftEdges, rightEdges, 
       merge_graph.add(mergedEdges)
       merge_graph.nodes().noOverlap({ padding: 5 });
 
-      // calculate label position for legend and style legend
-	  var fontSize = 10;
-	  var labelVal = document.getElementById("selectColorAttribute").value;
-	  
+  for(n=0; n < mergedNodes.length; n++){
+    merge_graph.batch(function(){
+      if(mergedNodes[n].data.symbol){
+        var labelText = mergedNodes[n].data.symbol;
+        var oldLabelText = mergedNodes[n].data.symbol;
+      }
+      else{
+        var labelText = mergedNodes[n].data.name;
+        var oldLabelText = mergedNodes[n].data.name;
+      }
+      while(getTextWidth(labelText, fontSize +" arial") > 49){
+        oldLabelText = oldLabelText.slice(0,-1);
+        labelText = oldLabelText+'...';
+      }
+       merge_graph.$('node[id =\''  + mergedNodes[n].data.id + '\']').style("label", labelText);
+    });
+  }
 
-      merge_graph.style(cystyle);
+    // calculate label position for legend and style legend
+  var fontSize = 10;
+  var labelVal = document.getElementById("selectColorAttribute").value;
+  
 
-      // get symbols and values for GA
-      symbolsLeft = {};
-      leftNodes.forEach(function( ele ){
-		  symbolsLeft[ele["data"]['symbol']]=ele["data"]['val'];
-		});
-
-
-  	var arrLeft = Object.values(symbolsLeft);
-  	var filteredLeft = arrLeft.filter(function (el) {
-	  return el != null;
-	});
+    merge_graph.style(cystyle);
 
     // get symbols and values for GA
-    symbolsRight = {};
-    rightNodes.forEach(function( ele ){
-		 symbolsRight[ele["data"]['symbol']]=ele["data"]['val'];
+    symbolsLeft = {};
+    leftNodes.forEach(function( ele ){
+	  symbolsLeft[ele["data"]['symbol']]=ele["data"]['val'];
 	});
 
-  	var arrRight = Object.values(symbolsRight);
-	var filteredRight = arrRight.filter(function (el) {
-	  return el != null;
-	});
+
+	var arrLeft = Object.values(symbolsLeft);
+	var filteredLeft = arrLeft.filter(function (el) {
+  return el != null;
+});
+
+  // get symbols and values for GA
+  symbolsRight = {};
+  rightNodes.forEach(function( ele ){
+	 symbolsRight[ele["data"]['symbol']]=ele["data"]['val'];
+});
+
+	var arrRight = Object.values(symbolsRight);
+var filteredRight = arrRight.filter(function (el) {
+  return el != null;
+});
 
 	// legend node
 	mergeColorLegend(merge_graph, mergeMin, labelVal, mergeMax)
@@ -270,10 +288,12 @@ const nodesEdges = getmergedGraph(leftNodes, rightNodes, leftEdges, rightEdges, 
 	document.getElementById("keggpathwaysMerge").style.visibility = "visible";
 	document.getElementById('KEGGpathsMerge').style.visibility = "visible";
 
-  merge_graph.style()
-        .selector('node['+document.getElementById('nodeShapesAttr').value+' ="true"]')        
-        .style('shape', document.getElementById('nodeShapes').value)
-        .update();
+  if(document.getElementById('nodeShapesAttr')){
+    merge_graph.style()
+          .selector('node['+document.getElementById('nodeShapesAttr').value+' ="true"]')        
+          .style('shape', document.getElementById('nodeShapes').value)
+          .update();
+  }
 
 }
 
