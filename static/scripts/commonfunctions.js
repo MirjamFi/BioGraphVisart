@@ -400,6 +400,129 @@ function getNodesAndEdges(graphString, graphpos = undefined, noOptn = false){
   return [nodes, edges, nodeValuesNum, interactionTypes];
 }
 
+// get nodes and edges grom sif string
+function getNodesAndEdgesSIF(graphString, graphpos = undefined, noOptn = false){
+  	var nodes = [];
+  	var edges = [];
+  	var interactionTypes = new Set();
+  	if(graphpos == "left"){
+      	var leftNodes = [];
+  	}
+  	else if(graphpos == "right"){
+      	var rightNodes = [];
+  	}
+
+  	var prevId = "";
+  	var pos = 0;
+  	var nodesSet = new Set();
+
+  	var el = graphString.find(a =>a.includes("\t"));  	
+  	for (var i = 0; i <= graphString.length - 1; i++) {	
+  		console.log(el)
+  		if(el){
+			var nodesAndInteraction = graphString[i].split("\t");
+			console.log(nodesAndInteraction)
+		}
+		else{
+			var nodesAndInteraction = graphString[i].split(" ");
+			console.log(nodesAndInteraction)
+		}
+		var n1 = nodesAndInteraction[0].trim();
+		nodesSet.add(n1);
+		var interact = nodesAndInteraction[1].trim();
+		var n2 = nodesAndInteraction[2].trim();
+		nodesSet.add(n2);
+
+		if(interact.includes(",")){
+  			var interactarray = interact.split(",")
+  			for(let inter of interactarray){
+    			interactionTypes.add(inter);
+  			}
+		}
+		else{ 
+  			interactionTypes.add(interact);
+		}
+
+		var curEdge = {};
+		curEdge.id = n1.concat(n2)
+		curEdge.source = n1.trim();
+		curEdge.target = n2.trim();
+		if(prevId == curEdge.id){                       // multiple edges between two nodes
+      		if(!Array.isArray(edges[pos-1].data.interaction)){
+        		curEdge.interaction=
+        			[edges[pos-1].data.interaction, interact]
+        		if(graphpos == "left"){
+          			leftEdges.splice(pos-1,1)
+        		}
+        		else if(graphpos == "right"){
+          			rightEdges.splice(pos-1,1)
+        		}
+        		edges.splice(pos-1,1)
+        		pos = pos -1
+      		}
+      		else{
+        		edges[pos-1].data.interaction.push(interact)
+        		if(graphpos == "left"){
+          			if(!Array.isArray(leftEdges[pos-1].data.interaction)){
+            			leftEdges[pos-1].data.interaction = 
+            				[leftEdges[pos-1].data.interaction]
+          			}
+          			leftEdges[pos-1].data.interaction.push(interact);
+        		}
+	    		else if(graphpos == "right"){
+	      			if(!Array.isArray(rightEdges[pos-1].data.interaction)){
+	        			rightEdges[pos-1].data.interaction = 
+	        				[rightEdges[pos-1].data.interaction]
+	      			}
+	      			rightEdges[pos-1].data.interaction.push(interact)
+	    		}
+	    		continue;
+  			}
+    	}
+  		else{
+    		curEdge.interaction = interact;
+  		}
+  		if(graphpos == "left"){
+    		curEdge.graph = "g1";
+    		leftEdges.push({data: curEdge});
+  		}
+  		else if(graphpos == "right"){
+    		curEdge.graph = "g2";
+    		rightEdges.push({data: curEdge});
+  		}
+  		edges.push({data: curEdge} );
+
+  		prevId = curEdge.id;
+  		pos = pos +1;
+	}
+	var j = 0;
+	console.log(nodesSet)
+	for(var node of nodesSet){
+		console.log(node)
+		var curNode = {};
+		curNode.id = node;
+		curNode.name = node;
+		j++;
+		if(graphpos == "left"){
+			curNode.graph = "g1";
+			leftNodes.push({data: curNode});
+		}
+		else if(graphpos == "right"){
+			curNode.graph = "g2";
+			rightNodes.push({data: curNode});
+		}
+		nodes.push({data: curNode});
+	}
+  	if(!noOptn){
+		var legendNode = {};
+		    legendNode.id = "l1";
+		    legendNode.symbol = "legend";
+		    nodes.push({data:legendNode});
+	}
+	console.log(nodes, edges)
+  	return [nodes, edges, [], interactionTypes];
+}
+
 //set legends range by min and max of nodes' attributes
 function legendsRange(nodeValuesNum){
   if(!isEmpty(nodeValuesNum)){

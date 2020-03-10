@@ -17,13 +17,20 @@ function visualize(graphString, noOptn) {
     }
 
     // get nodes and edges
-    var nodesAndEdges = getNodesAndEdges(graphString, "", noOptn);
-    var nodes = nodesAndEdges[0];
-    var edges = nodesAndEdges[1]; 
-    var nodeValuesNum = nodesAndEdges[2];
-    interactionTypes = nodesAndEdges[3];
-
-    // nodeValuesNum = transform01toTF(nodeValuesNum);
+    if(isSIF){
+    	var nodesAndEdges = getNodesAndEdgesSIF(graphString, "", noOptn);
+	    var nodes = nodesAndEdges[0];
+	    var edges = nodesAndEdges[1]; 
+	    var nodeValuesNum = nodesAndEdges[2];
+	    interactionTypes = nodesAndEdges[3];
+    }
+    else{
+	    var nodesAndEdges = getNodesAndEdges(graphString, "", noOptn);
+	    var nodes = nodesAndEdges[0];
+	    var edges = nodesAndEdges[1]; 
+	    var nodeValuesNum = nodesAndEdges[2];
+	    interactionTypes = nodesAndEdges[3];
+	}
 
     if(!noOptn){
       // set min and max for legend

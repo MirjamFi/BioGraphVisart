@@ -17,6 +17,7 @@ var clicked = false;
 var clickedNode;
 var clickedNodesPosition;
 var defaultVal = false;
+var isSIF = false;
 
 function isJsonFile(){
   document.getElementById('loader1').style.visibility = "visible";
@@ -31,7 +32,7 @@ function isJsonFile(){
     readJson(file);
     document.getElementById('loader1').style.visibility = "hidden";
   }
-  else if(file["name"].endsWith("graphml")){
+  else if(file["name"].endsWith("graphml") || file["name"].endsWith("sif")){
     readFile(file);
   }
   else{
@@ -324,10 +325,9 @@ function readFile(file, layer = undefined) {
     shapeNode.elements().remove();
   }
 
-  // IS file a graphml?
-  if(!file["name"].endsWith("graphml")){
-    alert('Please select a .graphml-file.');
-    return;
+  // // IS file a graphml?
+  if(file["name"].endsWith("sif")){
+    isSIF = true;
   }
 
   // read file
@@ -433,7 +433,7 @@ function loadFile() {
   document.getElementById("undobutn").className = 'butn';  
   undobutn.onclick = undoDeletion;
 
-  if(! isJson){
+  if(!isJson && ! isSIF){
     // get attributes for coloring -> double/boolean and shape -> boolean
     for (var i = 0; i <= graphString.length - 1; i++) {
       if(graphString[i].includes("for=\"node\"") && 
@@ -470,6 +470,7 @@ function loadFile() {
       }
     }
   }
+
   // if no attributes found for coloring/shape, remove dropdown menus and visualize
   if(noOptn && noDrpShapes){
     drp.parentNode.removeChild(drp);
