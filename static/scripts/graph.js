@@ -58,6 +58,8 @@ function visualize(graphString, noOptn) {
   document.getElementById('loader1').style.visibility = "hidden";
   document.getElementById('selectlayout').setAttribute('style','visibility:visible');
 
+  document.getElementById('resetLayout').onclick= function(){changeLayout(cy)};
+
   if(! noDrpShapes && !isJson){
     activateNodeShapeChange();
   }
@@ -79,7 +81,6 @@ function visualize(graphString, noOptn) {
       .style('shape', document.getElementById('nodeShapes').value)
       .update();
   }
-  document.getElementById('resetLayout').onclick= function(){changeLayout(cy)};
 }
 
 //add nodes and edges to cy-object (update if attribute has changed)
