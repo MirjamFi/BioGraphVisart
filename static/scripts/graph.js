@@ -55,6 +55,7 @@ function visualize(graphString, noOptn) {
     document.getElementById('downloadPart').style.visibility = "visible";
   }
   showMetaInfo(noOptn);
+  document.getElementById('loader1').style.visibility = "hidden";
   document.getElementById('selectlayout').setAttribute('style','visibility:visible');
 
   if(! noDrpShapes && !isJson){
@@ -70,7 +71,7 @@ function visualize(graphString, noOptn) {
   var ctx = canvas.getContext('2d');
   document.getElementById('keggpathways').onclick = function(){listKEGGPathways(ctx, cy, nodes, layer, canvas, "")};
   var defaultVal = false;
-  document.getElementById('loader1').style.visibility = "hidden";
+  
 
   if(document.getElementById('nodeShapesAttr')){
     cy.style()
