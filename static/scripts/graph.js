@@ -65,7 +65,7 @@ function visualize(graphString, noOptn) {
   document.getElementById('KEGGpaths').style.visibility ="visible";
 
     // set background layer to hoghlight pathways
-  var layer = createLayoutKeggPathways(cy, allPaths)
+  var layer = createLayoutKeggPathways(cy, nodes, allPaths)
   var canvas = layer.getCanvas();
   var ctx = canvas.getContext('2d');
   document.getElementById('keggpathways').onclick = function(){listKEGGPathways(ctx, cy, nodes, layer, canvas, "")};
@@ -273,7 +273,6 @@ function showMetaInfo(noOptn){
                '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2)}
              else if(this.data('name') != undefined){
                return '<b>'+ this.data('name')+'</b><br>' +
-               '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal] +
                '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2)}
              } //numbers          
           else{
