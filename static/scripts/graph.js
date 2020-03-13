@@ -7,7 +7,6 @@ visualize a graph from .graphml-file
 */
 
 var removedNodes;
-
 function visualize(graphString, noOptn) {
   document.getElementById('loader1').style.visibility = "visibile";
    
@@ -18,13 +17,20 @@ function visualize(graphString, noOptn) {
     }
 
     // get nodes and edges
-    var nodesAndEdges = getNodesAndEdges(graphString, noOptn);
-    var nodes = nodesAndEdges[0];
-    var edges = nodesAndEdges[1]; 
-    var nodeValuesNum = nodesAndEdges[2];
-    interactionTypes = nodesAndEdges[3];
-
-    // nodeValuesNum = transform01toTF(nodeValuesNum);
+    if(isSIF){
+    	var nodesAndEdges = getNodesAndEdgesSIF(graphString, "", noOptn);
+	    var nodes = nodesAndEdges[0];
+	    var edges = nodesAndEdges[1]; 
+	    var nodeValuesNum = nodesAndEdges[2];
+	    interactionTypes = nodesAndEdges[3];
+    }
+    else{
+	    var nodesAndEdges = getNodesAndEdges(graphString, "", noOptn);
+	    var nodes = nodesAndEdges[0];
+	    var edges = nodesAndEdges[1]; 
+	    var nodeValuesNum = nodesAndEdges[2];
+	    interactionTypes = nodesAndEdges[3];
+	}
 
     if(!noOptn){
       // set min and max for legend
@@ -59,18 +65,19 @@ function visualize(graphString, noOptn) {
   document.getElementById('KEGGpaths').style.visibility ="visible";
 
     // set background layer to hoghlight pathways
-  var layer = createLayoutKeggPathways(cy, allPaths)
+  var layer = createLayoutKeggPathways(cy, nodes, allPaths)
   var canvas = layer.getCanvas();
   var ctx = canvas.getContext('2d');
-  document.getElementById('keggpathways').onclick = function(){listKEGGPathways(ctx, cy, nodes, layer, canvas, "","Single")};
+  document.getElementById('keggpathways').onclick = function(){listKEGGPathways(ctx, cy, nodes, layer, canvas, "")};
   var defaultVal = false;
   document.getElementById('loader1').style.visibility = "hidden";
 
-  cy.style()
-    .selector('node['+document.getElementById('nodeShapesAttr').value+' ="true"]')        
-    .style('shape', document.getElementById('nodeShapes').value)
-    .update();
-
+  if(document.getElementById('nodeShapesAttr')){
+    cy.style()
+      .selector('node['+document.getElementById('nodeShapesAttr').value+' ="true"]')        
+      .style('shape', document.getElementById('nodeShapes').value)
+      .update();
+  }
   document.getElementById('resetLayout').onclick= function(){changeLayout(cy)};
 }
 
@@ -266,7 +273,6 @@ function showMetaInfo(noOptn){
                '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2)}
              else if(this.data('name') != undefined){
                return '<b>'+ this.data('name')+'</b><br>' +
-               '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal] +
                '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2)}
              } //numbers          
           else{

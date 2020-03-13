@@ -18,7 +18,7 @@ function createLayoutKeggPathways(cy, allPaths, pos=""){
 }
 
 // create list of top 5 KEGG  pathways of the displayed nodes
-async function listKEGGPathways(ctx, cy, nodes, layer, canvas, pos = "", pos = ""){
+async function listKEGGPathways(ctx, cy, nodes, layer, canvas, pos = ""){
   //swap button "Hide"/"show"
   if(document.getElementById('keggpathways'+pos)
   		.firstChild.data == "Show KEGG Pathways"){

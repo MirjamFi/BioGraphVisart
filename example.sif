@@ -1,0 +1,31 @@
+CYP2E1 	compound	UGT2B15
+CYP2E1 	compound 	PLA2G2A
+CYP2E1 	compound 	HSD11B1
+MAPK1 	inhibition	HRAS
+MAPK1	phosphorylation	HRAS
+MAPK1 	activation 	ESR1
+MAPK1 	phosphorylation	ESR1
+MAPK1 	activation 	PLA2G2A
+MAPK1 	activation 	FOS
+MAPK1 	indirect effect	FOS
+MAPK1	phosphorylation	FOS
+MAPK1	expression 	FOS
+MAPK1	activation	CREB3L3
+MAPK1	indirect effect	CREB3L3
+MAPK1	phosphorylation	CREB3L3
+HRAS	activation	MAPK1
+HRAS	indirect effect	MAPK1
+HRAS	phosphorylation	MAPK1
+HRAS	indirect effect	FOS
+FGFR2	activation	HRAS
+FGFR2	indirect effect	HRAS
+ESR1	expression	TFF1
+ESR1	binding/association	FOS
+PLA2G2A	compound	CYP2E1
+FOS	expression	MMP1
+HSD11B1	compound	UGT2B15
+NPY	activation	NPY1R
+NPY	activation	SUCNR1
+CREB3L3	expression	FOS
+CREB3L3	expression	NPY
+CREB3L3	state change	CREB3L3
