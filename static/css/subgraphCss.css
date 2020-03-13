@@ -257,6 +257,22 @@ input:hover{
     right: 0; 
 }
 
+.loader1 {
+    border: 16px solid #f3f3f3; 
+    border-top: 16px solid #3498db; 
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    animation: spin 5s linear infinite;
+    margin: 0 auto;
+}
+.loader1{
+    position: absolute; 
+    top: 370px; 
+    left: 50%; 
+    right: 0; 
+}
+
 #loaderLeft {
     position: absolute; 
     top: 50px; 
