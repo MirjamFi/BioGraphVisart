@@ -305,7 +305,8 @@ function getNodesAndEdges(graphString, graphpos = undefined, noOptn = false){
 	      	if(graphString[i].includes("\"v_"+nodeVal+"\"\>")){
 	        	var val = regExp.exec(graphString[i])[1]; // if availabe get node value
 	        	if(!isNaN(parseFloat(val))){
-		         	attrID = graphString[i].split(" ")[7].split("\"")[1];
+	        		var splitGraphString = graphString[i].split(" ")
+		         	attrID = splitGraphString.filter(s => s.includes('key'))[0].split("\"")[1];
 		          	currVal = {};
 		          	currVal.val = parseFloat(val);
 		          	nodeValuesNum.push(currVal.val);
