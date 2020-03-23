@@ -81,7 +81,7 @@ function visualize(firstTime=false) {
       showConfigurationParts('Left', graphLeft, left);
       showMetaInfo(graphLeft, document.getElementById('values').value);
       // set background layer to hoghlight pathways
-      var layerLeft = createLayoutKeggPathways(graphLeft, allPathsLeft, "Left")
+      var layerLeft = createLayoutKeggPathways(graphLeft, leftNodes, allPathsLeft, "Left")
       var canvasLeft = layerLeft.getCanvas();
       var ctxLeft = canvasLeft.getContext('2d');
       showKEGGParts('Left', ctxLeft, graphLeft, leftNodes, layerLeft, canvasLeft)
@@ -130,7 +130,7 @@ function visualize(firstTime=false) {
       document.getElementById('rightID').style.visibility = "visible";
       showMetaInfo(graphRight, document.getElementById('values').value);
       // set background layer to hoghlight pathways
-      var layerRight = createLayoutKeggPathways(graphRight, allPathsRight,"Right")
+      var layerRight = createLayoutKeggPathways(graphRight, rightNodes, allPathsRight,"Right")
       var canvasRight = layerRight.getCanvas();
       var ctxRight = canvasRight.getContext('2d');
       showKEGGParts('Right',ctxRight, graphRight, rightNodes, layerRight, canvasRight);
