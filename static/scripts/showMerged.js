@@ -1,4 +1,4 @@
-function createMerged(leftNodes, leftEdges, rightNodes, rightEdges, interactionTypes){
+function createMerged(leftNodes, leftEdges, rightNodes, rightEdges, interactionTypes, edgesToMerge){
 // cystyle
 var cystyle =  [
     {selector: 'node',
@@ -189,7 +189,7 @@ var cystyle =  [
 }
 
 merge_graph = createCyObject('merged_graph', -1,1, document.getElementById('selectColorAttribute').value)
-const nodesEdges = getmergedGraph(leftNodes, rightNodes, leftEdges, rightEdges, interactionTypes);
+const nodesEdges = getmergedGraph(leftNodes, rightNodes, leftEdges, rightEdges, interactionTypes, edgesToMerge);
   var mergedNodes = nodesEdges[0];
   var mergedEdges = nodesEdges[1];
       merge_graph.add(mergedNodes)

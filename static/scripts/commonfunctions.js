@@ -71,7 +71,7 @@ function calculateLabelColorLegend(labelVal, fontSize, cy, nodesMin, nodesMax){
 }
 
 // create legend for edges
-function createInteractionLegend(interactionTypes, graphLeft, graphRight=null) {
+function createInteractionLegend(interactionTypes, graphLeft, edgesToMerge, graphRight=null, edgesToMergeRight = null) {
 	if(interactionTypes.has("activation") && 
 		interactionTypes.has("expression")){
 	  interactionTypes.delete("expression")
@@ -164,7 +164,7 @@ function createInteractionLegend(interactionTypes, graphLeft, graphRight=null) {
 		    newArrow.appendChild(img);
 		    i++;
 		}
-		if(i == interactionTypes.size){
+		if(i == interactionTypes.size && (edgesToMerge || edgesToMergeRight)){
 		    var newRow = table.insertRow();
 		    var multipleInteractions = table.insertRow();
 		    var checkMultiple = newRow.insertCell(0);
@@ -264,6 +264,7 @@ function getNodesAndEdges(graphString, graphpos = undefined, noOptn = false){
   	var edges = [];
   	var nodeValuesNum = [];
   	var interactionTypes = new Set();
+  	var edgesToMerge = false;
   	if(graphpos == "left"){
       	var leftNodes = [];
   	}
@@ -373,6 +374,7 @@ function getNodesAndEdges(graphString, graphpos = undefined, noOptn = false){
 	            		}
 	            		continue;
 	          		}
+	          		edgesToMerge = true;
 	        	}
 	      		else{
 	        		curEdge.interaction = interact;
@@ -398,7 +400,7 @@ function getNodesAndEdges(graphString, graphpos = undefined, noOptn = false){
 		    legendNode.symbol = "legend";
 		    nodes.push({data:legendNode});
 	}
-  return [nodes, edges, nodeValuesNum, interactionTypes];
+  return [nodes, edges, nodeValuesNum, interactionTypes, edgesToMerge];
 }
 
 // get nodes and edges grom sif string
@@ -406,6 +408,7 @@ function getNodesAndEdgesSIF(graphString, graphpos = undefined, noOptn = false){
   	var nodes = [];
   	var edges = [];
   	var interactionTypes = new Set();
+  	 var edgesToMerge = false;
   	if(graphpos == "left"){
       	var leftNodes = [];
   	}
@@ -506,6 +509,7 @@ function getNodesAndEdgesSIF(graphString, graphpos = undefined, noOptn = false){
 	    		}
 	    		continue;
   			}
+  			edgesToMerge = true;
     	}
   		else{
     		curEdge.interaction = interact;
@@ -529,7 +533,7 @@ function getNodesAndEdgesSIF(graphString, graphpos = undefined, noOptn = false){
 		    legendNode.symbol = "legend";
 		    nodes.push({data:legendNode});
 	}
-  	return [nodes, edges, [], interactionTypes];
+  	return [nodes, edges, [], interactionTypes, edgesToMerge];
 }
 
 //set legends range by min and max of nodes' attributes

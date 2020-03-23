@@ -19,18 +19,15 @@ function visualize(graphString, noOptn) {
     // get nodes and edges
     if(isSIF){
     	var nodesAndEdges = getNodesAndEdgesSIF(graphString, "", noOptn);
-	    var nodes = nodesAndEdges[0];
-	    var edges = nodesAndEdges[1]; 
-	    var nodeValuesNum = nodesAndEdges[2];
-	    interactionTypes = nodesAndEdges[3];
     }
     else{
 	    var nodesAndEdges = getNodesAndEdges(graphString, "", noOptn);
-	    var nodes = nodesAndEdges[0];
-	    var edges = nodesAndEdges[1]; 
-	    var nodeValuesNum = nodesAndEdges[2];
-	    interactionTypes = nodesAndEdges[3];
-	}
+    }
+    var nodes = nodesAndEdges[0];
+    var edges = nodesAndEdges[1]; 
+    var nodeValuesNum = nodesAndEdges[2];
+    interactionTypes = nodesAndEdges[3];
+    var edgesToMerge = nodesAndEdges[4]
 
     if(!noOptn){
       // set min and max for legend
@@ -49,7 +46,7 @@ function visualize(graphString, noOptn) {
     $('#downloadJSON').removeAttr('disabled');
 
     document.getElementById('arrows').innerHTML = "";
-    createInteractionLegend(interactionTypes, cy);
+    createInteractionLegend(interactionTypes, cy, edgesToMerge);
     document.getElementById('legend').setAttribute('style','visibility:visible');
 
     document.getElementById('downloadPart').style.visibility = "visible";

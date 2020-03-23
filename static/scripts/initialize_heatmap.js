@@ -89,6 +89,9 @@ isSIF = false;
             j ++;
             if(file.name.endsWith("graphml")){
               let keyList = getAllIndexes(graphml,'symbol')
+              if(keyList.length == 0){
+                keyList = getAllIndexes(graphml, 'name')
+              }
               keyList.forEach(function(key){ // get keys
                 if(key.includes('data')){
                   var symbol = regExp.exec(key)[1];

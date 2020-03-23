@@ -133,7 +133,7 @@ function getNodeValueRange(nodes, val){
 }
 
 var unionNodes;
-function getmergedGraph(nodesL, nodesR, edgesL, edgesR, interactionTypes){
+function getmergedGraph(nodesL, nodesR, edgesL, edgesR, interactionTypes, edgesToMerge){
 	var nodes1 = nodesL;
 	var nodes2 = nodesR;
 	var edges1 = edgesL;
@@ -259,7 +259,7 @@ function getmergedGraph(nodesL, nodesR, edgesL, edgesR, interactionTypes){
 	var minMax = getNodeValueRange(unionNodes, document.getElementById("selectColorAttribute").value);
 	mergeMin = minMax[0];
 	mergeMax = minMax[1];
-	createInteractionLegend(interactionTypes, merge_graph);
+	createInteractionLegend(interactionTypes, merge_graph, edgesToMerge);
 	if(!document.getElementById('heatmap_shapes') && document.getElementById("nodeShapesAttr")){
 		var shapelegend = document.createElement("div")
 	    shapelegend.id = "heatmap_shapes";
@@ -277,14 +277,19 @@ function merge(){
 	document.getElementById('searchbutton').style.visibility = "visible";
 }
 
-function clickMerge(leftN, leftE, rightN, rightE, interacts){
+function clickMerge(leftN, leftE, rightN, rightE, interacts, edgesToMerge, edgesToMergeRight){
 	leftID = document.getElementById('leftID').innerHTML;
     rightID = document.getElementById('rightID').innerHTML;
+    var edgesMerge = false;
+    if(edgesToMerge || edgesToMergeRight){
+    	edgesMerge = true
+    }
 
     var queryString = "?leftNodes=" + JSON.stringify(leftN)+ "&leftEdges=" + 
     	JSON.stringify(leftE) + "&rightNodes=" + 
     	JSON.stringify(rightN) + "&rightEdges=" + JSON.stringify(rightE) + 
-    	"&interactionTypes=" + JSON.stringify(Array. from(interacts));
+    	"&interactionTypes=" + JSON.stringify(Array. from(interacts)) +
+    	"&edgesToMerge=" + JSON.stringify(edgesMerge);
     window.open('/BioGraphVisart/merge'+queryString);
 }
 

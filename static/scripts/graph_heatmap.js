@@ -54,6 +54,8 @@ function visualize(firstTime=false) {
   var rightEdges;
   var graphLeft;
   var graphRight;
+  var edgesToMergeLeft;
+  var edgesToMergeRight;
   cys.forEach(function(cyO){
     // get nodes and edges 
     if(cyO == 'cyLeft'){
@@ -69,6 +71,7 @@ function visualize(firstTime=false) {
       leftEdges = leftnodesAndEdges[1]; 
       var leftNodeValuesNum = leftnodesAndEdges[2];
       interactionTypes = leftnodesAndEdges[3];
+      edgesToMergeLeft = leftnodesAndEdges[4]
       // set min and max for legend  and add nodes and edges to graph
       var leftRange = legendsRange(leftNodeValuesNum);
       var leftNodesMin = leftRange[0];
@@ -116,6 +119,8 @@ function visualize(firstTime=false) {
       rightEdges = rightnodesAndEdges[1]; 
       var rightNodeValuesNum = rightnodesAndEdges[2];
       var interactionTypesRight = rightnodesAndEdges[3];
+      edgesToMergeRight = rightnodesAndEdges[4]
+
       interactionTypes = interactionTypes.add(...interactionTypesRight);
       // set min and max for legend  and add nodes and edges to graph
       var rightRange = legendsRange(rightNodeValuesNum);
@@ -150,7 +155,7 @@ function visualize(firstTime=false) {
     }
   });
   document.getElementById("arrows").innerHTML = "";
-  createInteractionLegend(interactionTypes, graphLeft, graphRight);
+  createInteractionLegend(interactionTypes, graphLeft, edgesToMergeLeft, graphRight, edgesToMergeRight);
   if(document.getElementById('nodeShapesAttr')){
     if(!document.getElementById('heatmap_shapes')){
       var shapelegend = document.createElement("div")
@@ -178,7 +183,7 @@ function visualize(firstTime=false) {
   }
   if(firstTime && graphRight){
     firstTime = false;
-    clickMerge(leftNodes, leftEdges, rightNodes, rightEdges, interactionTypes);
+    clickMerge(leftNodes, leftEdges, rightNodes, rightEdges, interactionTypes, edgesToMergeLeft, edgesToMergeRight);
   }
   document.getElementById('legend_heatmap').setAttribute('style','visibility:visible');
   document.getElementById('searchgene').setAttribute('style','visibility:visible');
