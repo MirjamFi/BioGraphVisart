@@ -27,7 +27,7 @@ var  leftNodeValuesNum = [];
 var  rightNodeValuesNum = [];
 var merge_graph;
 
-function createHeatmap(heatmapData){
+function createHeatmap(heatmapData, foundFiles){
     /*
         get axes labels (samples) and overlap values
     */
@@ -111,8 +111,17 @@ function createHeatmap(heatmapData){
                                 document.getElementById("rightID").innerHTML = rightSelect;
                                 
                             }
+                            var files = []
+                            for(file of foundFiles){
+                                if(file.name == left){
+                                    files.push(file)
+                                }
+                                else if(file.name == right){
+                                    files.push(file)
+                                }
+                            }
                             loadGraphml(left, right);
-                            visualize(true);
+                            visualize(true, files);
                         }
                     }
                 }

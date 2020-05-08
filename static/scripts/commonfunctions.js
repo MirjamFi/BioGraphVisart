@@ -259,7 +259,7 @@ function mergeEdges(cy, cy2=undefined){
 }
 
 // get nodes and edges grom graphml string
-function getNodesAndEdges(graphString, graphpos = undefined, noOptn = false){
+function getNodesAndEdges(graphString, nodeVal,graphpos = undefined, noOptn = false){
   	var nodes = [];
   	var edges = [];
   	var nodeValuesNum = [];

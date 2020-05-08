@@ -101,7 +101,7 @@ isSIF = false;
                   data[g].push(symbol);
                   if(j == Object.keys(graphsList).length){ 
                       var overlapDict = calculateOverlap(data);
-                      createHeatmap(overlapDict);
+                      createHeatmap(overlapDict, foundFiles);
                       document.getElementById('selectAttribute').style.visibility = "visible";
                   };
                 };

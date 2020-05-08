@@ -11,7 +11,7 @@ var rightEdges = [];
 /*
 visualize a graph from .graphml-file
 */
-function visualize(firstTime=false) { 
+function visualize(firstTime=false, files) { 
   nodeVal = document.getElementById('values').value;
 
   // move edge legend when scrolling
@@ -65,7 +65,7 @@ function visualize(firstTime=false) {
         var leftnodesAndEdges = getNodesAndEdgesSIF(graphString, 'left');
       }
       else{
-        var leftnodesAndEdges = getNodesAndEdges(graphString, 'left');
+        var leftnodesAndEdges = getNodesAndEdges(graphString,nodeVal,'left');
       }
       leftNodes = leftnodesAndEdges[0];
       leftEdges = leftnodesAndEdges[1]; 
@@ -113,7 +113,7 @@ function visualize(firstTime=false) {
         var rightnodesAndEdges = getNodesAndEdgesSIF(graphString, 'right');
       }
       else{
-        var rightnodesAndEdges = getNodesAndEdges(graphString, 'right');
+        var rightnodesAndEdges = getNodesAndEdges(graphString, nodeVal, 'right');
       }
       rightNodes = rightnodesAndEdges[0];
       rightEdges = rightnodesAndEdges[1]; 
@@ -183,7 +183,7 @@ function visualize(firstTime=false) {
   }
   if(firstTime && graphRight){
     firstTime = false;
-    clickMerge(leftNodes, leftEdges, rightNodes, rightEdges, interactionTypes, edgesToMergeLeft, edgesToMergeRight);
+    clickMerge(files, nodeVal);
   }
   document.getElementById('legend_heatmap').setAttribute('style','visibility:visible');
   document.getElementById('searchgene').setAttribute('style','visibility:visible');

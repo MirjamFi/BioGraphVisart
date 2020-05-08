@@ -1,4 +1,3 @@
- var leftID, rightID;
  // map values to node color for GA
 function mapValuestoNodeColor(merge_graph, group, pieno, mergeMin, mergeMax, val){
 
@@ -208,13 +207,13 @@ function getmergedGraph(nodesL, nodesR, edgesL, edgesR, interactionTypes, edgesT
 	g1Legend.data={};
 	g1Legend.data.id = "g1";
 	g1Legend.data.graph = "g1";
-	g1Legend.data.symbol = window.opener.leftID;
+	g1Legend.data.symbol = leftID;
 	mergedNodes.push(g1Legend);
 	var g2Legend = {};
 	g2Legend.data={};
 	g2Legend.data.id = "g2";
 	g2Legend.data.graph = "g2";
-	g2Legend.data.symbol = window.opener.rightID;
+	g2Legend.data.symbol = rightID;
 	mergedNodes.push(g2Legend);
 
   	// mergedArray have duplicates, lets remove the duplicates using Set
@@ -277,19 +276,11 @@ function merge(){
 	document.getElementById('searchbutton').style.visibility = "visible";
 }
 
-function clickMerge(leftN, leftE, rightN, rightE, interacts, edgesToMerge, edgesToMergeRight){
-	leftID = document.getElementById('leftID').innerHTML;
-    rightID = document.getElementById('rightID').innerHTML;
-    var edgesMerge = false;
-    if(edgesToMerge || edgesToMergeRight){
-    	edgesMerge = true
-    }
-
-    var queryString = "?leftNodes=" + JSON.stringify(leftN)+ "&leftEdges=" + 
-    	JSON.stringify(leftE) + "&rightNodes=" + 
-    	JSON.stringify(rightN) + "&rightEdges=" + JSON.stringify(rightE) + 
-    	"&interactionTypes=" + JSON.stringify(Array. from(interacts)) +
-    	"&edgesToMerge=" + JSON.stringify(edgesMerge);
-    window.open('/BioGraphVisart/merge'+queryString);
+async function clickMerge(files,val){
+	var leftID = document.getElementById('leftID').innerHTML;
+    var rightID = document.getElementById('rightID').innerHTML;
+    const objectURL1 = URL.createObjectURL(files[0]);
+    const objectURL2 = URL.createObjectURL(files[1]);
+    window.open('/BioGraphVisart/merge?leftID='+leftID+'&rightID='+rightID +'&file1='+objectURL1+'&file2='+objectURL2+'&nodeVal='+val);
 }
 

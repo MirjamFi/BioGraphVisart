@@ -18,10 +18,10 @@ function visualize(graphString, noOptn) {
 
     // get nodes and edges
     if(isSIF){
-    	var nodesAndEdges = getNodesAndEdgesSIF(graphString, "", noOptn);
+    	var nodesAndEdges = getNodesAndEdgesSIF(graphString, nodeVal, "", noOptn);
     }
     else{
-	    var nodesAndEdges = getNodesAndEdges(graphString, "", noOptn);
+	    var nodesAndEdges = getNodesAndEdges(graphString, nodeVal,"", noOptn);
     }
     var nodes = nodesAndEdges[0];
     var edges = nodesAndEdges[1]; 
