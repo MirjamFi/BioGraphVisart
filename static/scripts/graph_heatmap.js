@@ -13,7 +13,6 @@ visualize a graph from .graphml-file
 */
 function visualize(firstTime=false, files) { 
   nodeVal = document.getElementById('values').value;
-
   // move edge legend when scrolling
   if(!!right){
     var cys = ['cyLeft', 'cyRight'];
@@ -234,13 +233,6 @@ function addNodesAndEdges(cyObject, nodes, edges, firstTime, nodesMin, nodesMax)
   cyObject.nodes().noOverlap({ padding: 5 });
   // calculate label position for legend and style legend
   var fontSize = 10;
-  calculateLabelColorLegend(nodeVal, fontSize, cyObject, nodesMin, nodesMax);
-
-  addcolorlegend(cyObject)
-
-  cyObject.layout({
-    name: 'dagre'
-  }).run();
 
   if(nodes.every(function(x){return(x.data["symbol"])})){
     for(n=0; n < nodes.length; n++){
@@ -279,6 +271,12 @@ function addNodesAndEdges(cyObject, nodes, edges, firstTime, nodesMin, nodesMax)
       });
     }
   }
+  calculateLabelColorLegend(nodeVal, fontSize, cyObject, nodesMin, nodesMax);
+
+  addcolorlegend(cyObject)
+  cyObject.layout({
+    name: 'dagre'
+  }).run();
 
 }
 
