@@ -14,6 +14,7 @@ a{
   float: right;
   width: 5vw;
   margin-right: 4vw;
+  border-radius:4px;
 }
 .dropdown .dropbtn {
   font-size: 1vw;  
@@ -135,6 +136,8 @@ a:visited{color: blue}
 }
 select {
   cursor: pointer;
+  border: 0.5px solid #BDBDBD;
+  border-radius:4px;
 }
 
 input {
@@ -142,6 +145,8 @@ input {
     background-color: #BDBDBD;
     color: black;
     padding: 5px 8px;
+    border: 0.5px solid #BDBDBD;
+    border-radius:4px;
 }
 
 input:hover{
