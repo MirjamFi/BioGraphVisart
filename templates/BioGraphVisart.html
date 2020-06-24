@@ -135,7 +135,12 @@
 	</div>
 	<div align="left" id= "KEGGpaths" style="visibility: hidden;"></div>
 	<script type="text/javascript">
+		var i = 0
 		$.get("/BioGraphVisart/vis", function(data){
+			if(i == 0){
+				window.location.reload()
+				i++;
+			}
 			if(data){
 				var parser = new DOMParser;
 				var dom = parser.parseFromString(
