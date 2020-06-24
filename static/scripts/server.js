@@ -3,14 +3,23 @@ var http = require("http"),
     path = require("path"),
     fs = require("fs"),
     express = require("express");
+var bodyParser = require('body-parser');
 var app     = express();
 
 var foundFiles = [];
 var prevdirectory = "";
 app.use(express.static('../../'));
+app.use(bodyParser())
 
+var data;
 app.get('/BioGraphVisart',function(req,res){
   res.sendFile(path.resolve('../../templates/BioGraphVisart.html'));
+});
+
+app.get('/BioGraphVisart/vis',function(req,res){
+  console.log(req.body)
+  console.log(data)
+  res.send(JSON.stringify(data));
 });
 
 app.get('/BioGraphVisart/about',function(req,res){
@@ -35,6 +44,12 @@ app.get('/BioGraphVisart/contact',function(req,res){
 app.get('/BioGraphVisart/merge', function(req, res){
 	res.sendFile(path.resolve('../../templates/merge.html'));
 })
+
+app.post('/BioGraphVisart/vis',function(req,res){
+  data = req.body;
+  // res.send(data)
+});
+
 
 app.listen(3000);
 
