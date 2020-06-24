@@ -69,131 +69,192 @@ function calculateLabelColorLegend(labelVal, fontSize, cy, nodesMin, nodesMax){
       	+' '.repeat(neededWhitespace) + nodesMax)
 
 }
+  function appendText(text, interact){
+    if(text != ""){
+      text = text + ", "
+    }
+    text  = text + capitalize(interact);
+    return text;
+  }
 
+  function createImg(){
+    var img = document.createElement('img');
+    img.width =40;
+    img.height =30;
+    return img;
+  }
+    const capitalize = (s) => {
+    if (typeof s !== 'string') return ''
+    return s.charAt(0).toUpperCase() + s.slice(1)
+  }
+
+    function appendToInteractionLegend(table, text, img){
+    // Insert a row in the table at the last row
+    var newRow   = table.insertRow();
+    // Insert a cells
+    var newInteraction  = newRow.insertCell(0);
+    var newArrow  = newRow.insertCell(1);
+    var newText  = document.createTextNode(text);
+    newInteraction.appendChild(newText);
+    newArrow.appendChild(img);
+  }
 // create legend for edges
 function createInteractionLegend(interactionTypes, graphLeft, edgesToMerge, graphRight=null, edgesToMergeRight = null) {
-	if(interactionTypes.has("activation") && 
-		interactionTypes.has("expression")){
-	  interactionTypes.delete("expression")
-	}
-	if(interactionTypes.has("inhibition") && 
-		interactionTypes.has("repression")){
-	  interactionTypes.delete("repression")
-	}
-	if(interactionTypes.has("binding/association") && 
-		interactionTypes.has("dissociation")){
-	  interactionTypes.delete("dissociation")
-	}
 	// show legend and update if necessary
-	var table = document.getElementById('arrows');
-	if(table.rows.length == 0){
-		var i = 0;
-		var otherisset = false;
-		for(var interact of interactionTypes){
-			// Insert a row in the table at the last row
-			var newRow   = table.insertRow();
-			// Insert a cells
-			var newInteraction  = newRow.insertCell(0);
-			var newArrow  = newRow.insertCell(1);
+    var table = document.getElementById('arrows');
+    if(table.rows.length == 0){
+      var i = 0;
+      var otherisset = false;
+      var firstText = "";
+      var secondText = "";
+      var thirdText = "";
+      var fourthText = "";
+      var fifthText = "";
+      var sixthText = "";
+      var seventhText = "";
+      var eightthText = "";
+      var ninethText = "";
+      var tenthText = "";
+      var eleventhText = "";
+      var twelvethText = "";
 
-		    var img = document.createElement('img');
-		    img.width =40;
-		    img.height =30;
+      var firstimg = createImg();
+      var secondimg = createImg();
+      var thirdimg = createImg();
+      var fourthimg = createImg();
+      var fifthimg = createImg();
+      var sixthimg = createImg();
+      var seventhimg = createImg();
+      var seventhimg = createImg();
+      var eightthimg = createImg();
+      var ninethimg = createImg();
+      var tenthimg = createImg();
+      var eleventhimg = createImg();
+      var twelvethimg = createImg();
+      for(var interact of interactionTypes){
+        if(["activation", "expression", "stimulation", "targets"].includes(interact)){
+          firstText = appendText(firstText, interact)
+          firstimg.src = activation_expression;
+        }
+        else if(["inhibition", "repression"].includes(interact)){
+          secondText  = appendText(secondText, interact)
+          secondimg.src = inhibition_repression;
+        }
+        else if(["compound", "non-covalent binding", "molecular interaction"].includes(interact)){
+          thirdText  = appendText(thirdText, interact)
+          thirdimg.src = compound;
+        }
+        else if(["binding/association", "dissociation"].includes(interact)){
+          fourthText = appendText(fourthText, interact)
+          fourthimg.src = bindingassociation_dissociation;
+        }
+        else if(["state change, control"].includes(interact)){
+          fifthText  = appendText(fifthText, interact)
+          fifthimg.src = statechange;
+        }
+        else if(["indirect effect"].includes(interact)){
+          sixthText = appendText(sixthText, interact)
+          sixthimg.src = indirecteffect;
+        }
+        else if(["missing interaction"].includes(interact)){
+          seventhText = appendText(seventhText, interact)
+          seventhimg.src = missinginteraction;
+        }
+        else if(["phosphorylation"].includes(interact)){
+          eightthText = appendText(eigtthText, interact)
+          eightthimg.src = phosphorylation;
+        }
+        else if(["dephosphorylation"].includes(interact)){
+          ninethText = appendText(ninethText, interact)
+          ninethimg.src = dephosphorylation;
+        }
+        else if(["glycosylation"].includes(interact)){
+          tenthText = appendText(tenthText, interact)
+          tenthimg.src = glycosylation;
+        }
+        else if(["methylation"].includes(interact)){
+          eleventhText = appendText(eleventhText, interact)
+          eleventhimg.src = methylation;
+        }
+        else if(["ubiquitination"].includes(interact)){
+          twelvethText = appendText(twelvethText, interact)
+          twelvethimg.src = ubiquitination;
+        }
+        else{
+          otherisset = true;
+        }
+        i++;
+      }
+      if(i == interactionTypes.size){
+        if(firstText != ""){
+          appendToInteractionLegend(table, firstText, firstimg)
+        }
+        if(secondText != ""){
+          appendToInteractionLegend(table, secondText, secondimg)
+        }
+        if(thirdText != ""){
+          appendToInteractionLegend(table, thirdText, thirdimg)
+        }
+        if(fourthText != ""){
+          appendToInteractionLegend(table, fourthText, fourthimg)
+        }
+        if(fifthText != ""){
+          appendToInteractionLegend(table, fifthText, fifthimg)
+        }
+        if(sixthText != ""){
+          appendToInteractionLegend(table, sixthText, sixthimg)
+        }
+        if(seventhText != ""){
+          appendToInteractionLegend(table, seventhText, seventhimg)
+        }
+        if(eightthText != ""){
+          appendToInteractionLegend(table, eighthText, eighthimg)
+        }
+        if(ninethText != ""){
+          appendToInteractionLegend(table, ninethText, ninethimg)
+        }
+        if(tenthText != ""){
+          appendToInteractionLegend(table, tenthText, tenthimg)
+        }
+        if(eleventhText != ""){
+          appendToInteractionLegend(table, eleventhText, eleventhimg)
+        }
+        if(twelvethText != ""){
+          appendToInteractionLegend(table, twelvethText, twelvethimg)
+        }
+        if(otherisset){
+          var img = createImg();
+          img.source = other;
+          appendToInteractionLegend(table, 'Other', img)
+        }
 
-		    if(["activation", "expression"].includes(interact)){
-		      var newText  = document.createTextNode("Activation, Expression");
-		      img.src = activation_expression;
-		    }
-		    else if(["inhibition", "repression"].includes(interact)){
-		      var newText  = document.createTextNode("Inhibition, Repression");
-		      img.src = inhibition_repression;
-		    }
-		    else if(["compound"].includes(interact)){
-		      var newText  = document.createTextNode('Compound');
-		      img.src = compound;
-		    }
-		    else if(["indirect effect"].includes(interact)){
-		      var newText  = document.createTextNode('Indirect effect');
-		      img.src = indirecteffect;
-		    }
-		    else if(["state change"].includes(interact)){
-		      var newText  = document.createTextNode('State change');
-		      img.src = statechange;
-		    }
-		    else if(["missing interaction"].includes(interact)){
-		      var newText  = document.createTextNode('Missing interaction');
-		      img.src = missinginteraction;
-		    }
-		    else if(["phosphorylation"].includes(interact)){
-		      var newText  = document.createTextNode('Phosphorylation');
-		      img.src = phosphorylation;
-		    }
-		    else if(["dephosphorylation"].includes(interact)){
-		      var newText  = document.createTextNode('Dephosphorylation');
-		      img.src = dephosphorylation;
-		    }
-		    else if(["glycosylation"].includes(interact)){
-		      var newText  = document.createTextNode('Glycosylation');
-		      img.src = glycosylation;
-		    }
-		    else if(["methylation"].includes(interact)){
-		      var newText  = document.createTextNode('Methylation');
-		      img.src = methylation;
-		    }
-		    else if(["ubiquitination"].includes(interact)){
-		      var newText  = document.createTextNode('Ubiquitination');
-		      img.src = ubiquitination;
-		    }
-		    else if(["binding/association", "dissociation"].includes(interact)){
-		      var newText  = 
-		      	document.createTextNode('Binding/association, dissociation');
-		      img.src = bindingassociation_dissociation;
-		    }
-		    else{
-		      if(!otherisset){
-		        var newText  = document.createTextNode('Other');
-		        img.src = other;
-		        otherisset = true;
-		      }
-		      else{
-		        i++;
-		        continue;
-		      }
-		    }
-		    newInteraction.appendChild(newText);
-		    newArrow.appendChild(img);
-		    i++;
-		}
-		if(i == interactionTypes.size && (edgesToMerge || edgesToMergeRight)){
-		    var newRow = table.insertRow();
-		    var multipleInteractions = table.insertRow();
-		    var checkMultiple = newRow.insertCell(0);
-		    var newArrow = newRow.insertCell(1);
+        if(i == interactionTypes.size && (edgesToMerge || edgesToMergeRight)){
+	        var newRow = table.insertRow();
+	        var multipleInteractions = table.insertRow();
+	        var checkMultiple = newRow.insertCell(0);
+	        var newArrow = newRow.insertCell(1);
 
-		    var newCheckMultiple = document.createElement('input');
-		    newCheckMultiple.type = "checkbox";
-		    newCheckMultiple.id = "mergeEdges";
-		    newCheckMultiple.checked = true;
-		    newCheckMultiple.addEventListener('click', function(){
-		      mergeEdges(graphLeft, graphRight);
-		    });
+	        var newCheckMultiple = document.createElement('input');
+	        newCheckMultiple.type = "checkbox";
+	        newCheckMultiple.id = "mergeEdges";
+	        newCheckMultiple.checked = true;
+	        newCheckMultiple.addEventListener('click', function(){
+	          mergeEdges(cy, noOptn, nodeVal);
+	        });
 
-		    var label = document.createElement('label')
-		    label.htmlFor = "mergeEdges";
-		    label.appendChild(document.createTextNode('Multiple interactions'));
+	        var label = document.createElement('label')
+	        label.htmlFor = "mergeEdges";
+	        label.appendChild(document.createTextNode('Multiple interactions'));
 
-		    checkMultiple.appendChild(newCheckMultiple);
-		    checkMultiple.appendChild(label)
+	        checkMultiple.appendChild(newCheckMultiple);
+	        checkMultiple.appendChild(label)
 
-
-		    var img = document.createElement('img');
-		    img.width =40;
-		    img.height =30;
-		    img.src = multipleinteractions;
-		    newArrow.appendChild(img);
-			
-		}
-	}
+	        var img = createImg();
+	        img.src = multipleinteractions;
+	        newArrow.appendChild(img);
+    	}
+      }
+    }
 }
 
 // merging of multiple edges between two nodes

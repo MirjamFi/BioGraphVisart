@@ -29,11 +29,19 @@ const basicedgestyle = {selector: 'edge',
 const actstyle = {selector: 'edge[interaction = \'activation\']',
           style: {
             'target-arrow-shape': 'triangle',
-        }}
+        }};
+const stimstyle = {selector: 'edge[interaction = \'stimulation\']',
+          style: {
+            'target-arrow-shape': 'triangle',
+        }};
+const targetsstyle = {selector: 'edge[interaction = \'targets\']',
+        style: {
+          'target-arrow-shape': 'triangle',
+      }};
 const expstyle = {selector: 'edge[interaction = \'expression\']',
           style: {
             'target-arrow-shape': 'triangle',
-        }}
+        }};
 const inhistyle = {selector: 'edge[interaction = \'inhibition\']',
           style: {
             'target-arrow-shape': 'tee',
@@ -54,6 +62,14 @@ const compstyle = {selector: 'edge[interaction = \'compound\']',
           style: {
             'target-arrow-shape': 'circle',
         }}
+const noncovstyle = {selector: 'edge[interaction = \'non-covalent binding\']',
+          style: {
+            'target-arrow-shape': 'circle',
+        }}
+const molinteractstyle = {selector: 'edge[interaction = \'molecular interaction\']',
+          style: {
+            'target-arrow-shape': 'circle',
+        }}
 const indeffstyle = {selector: 'edge[interaction = \'indirect effect\']',
         style: {
           'line-style': 'dotted',
@@ -65,6 +81,10 @@ const missstyle = {selector: 'edge[interaction = \'missing interaction\']',
           'target-arrow-shape': 'triangle'
         }}
 const statestyle = {selector: 'edge[interaction = \'state change\']',
+          style: {
+            'target-arrow-shape': 'square',
+        }}
+const controlstyle = {selector: 'edge[interaction = \'control\']',
           style: {
             'target-arrow-shape': 'square',
         }}
