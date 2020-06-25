@@ -18,19 +18,16 @@ function visualize(graphString, noOptn) {
 
     // get nodes and edges
     if(isSIF){
-    	var nodesAndEdges = getNodesAndEdgesSIF(graphString, "", noOptn);
-	    var nodes = nodesAndEdges[0];
-	    var edges = nodesAndEdges[1]; 
-	    var nodeValuesNum = nodesAndEdges[2];
-	    interactionTypes = nodesAndEdges[3];
+    	var nodesAndEdges = getNodesAndEdgesSIF(graphString, nodeVal, "", noOptn);
     }
     else{
-	    var nodesAndEdges = getNodesAndEdges(graphString, "", noOptn);
-	    var nodes = nodesAndEdges[0];
-	    var edges = nodesAndEdges[1]; 
-	    var nodeValuesNum = nodesAndEdges[2];
-	    interactionTypes = nodesAndEdges[3];
-	}
+	    var nodesAndEdges = getNodesAndEdges(graphString, nodeVal,"", noOptn);
+    }
+    var nodes = nodesAndEdges[0];
+    var edges = nodesAndEdges[1]; 
+    var nodeValuesNum = nodesAndEdges[2];
+    interactionTypes = nodesAndEdges[3];
+    var edgesToMerge = nodesAndEdges[4]
 
     if(!noOptn){
       // set min and max for legend
@@ -49,7 +46,7 @@ function visualize(graphString, noOptn) {
     $('#downloadJSON').removeAttr('disabled');
 
     document.getElementById('arrows').innerHTML = "";
-    createInteractionLegend(interactionTypes, cy);
+    createInteractionLegend(interactionTypes, cy, edgesToMerge);
     document.getElementById('legend').setAttribute('style','visibility:visible');
 
     document.getElementById('downloadPart').style.visibility = "visible";
@@ -68,10 +65,12 @@ function visualize(graphString, noOptn) {
   document.getElementById('KEGGpaths').style.visibility ="visible";
 
     // set background layer to hoghlight pathways
-  var layer = createLayoutKeggPathways(cy, nodes, allPaths)
-  var canvas = layer.getCanvas();
-  var ctx = canvas.getContext('2d');
-  document.getElementById('keggpathways').onclick = function(){listKEGGPathways(ctx, cy, nodes, layer, canvas, "")};
+  if(allPaths){
+    var layer = createLayoutKeggPathways(cy, nodes, allPaths)
+    var canvas = layer.getCanvas();
+    var ctx = canvas.getContext('2d');
+    document.getElementById('keggpathways').onclick = function(){listKEGGPathways(ctx, cy, nodes, layer, canvas, "")};
+  }
   var defaultVal = false;
   
 

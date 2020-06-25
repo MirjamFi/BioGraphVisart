@@ -118,20 +118,17 @@
 
     </div>
     <script type="text/javascript">
+
         var queryString = decodeURIComponent(window.location.search);
         queryString = queryString.substring(1);
         var queries = queryString.split("&");
-        leftNodes = queries[0].split("=")[1]
-        leftNodes = JSON.parse(leftNodes)
-        leftEdges = queries[1].split("=")[1];
-        leftEdges = JSON.parse(leftEdges);
-        rightNodes = queries[2].split("=")[1];
-        rightNodes = JSON.parse(rightNodes);
-        rightEdges = queries[3].split("=")[1];
-        rightEdges = JSON.parse(rightEdges);
-        interactionTypes = queries[4].split("=")[1];
-        interactionTypes = new Set(JSON.parse(interactionTypes));
-    createMerged(leftNodes, leftEdges, rightNodes, rightEdges, interactionTypes)</script>
+        var leftID = queries[0].split('=')[1];
+        var rightID = queries[1].split('=')[1];
+        var file1 = queries[2].split('=')[1].split("blob:")[1];
+        var file2 = queries[3].split('=')[1].split("blob:")[1];
+        var val = queries[4].split('=')[1]
+        createMerged(file1, file2, val, leftID, rightID)
+    </script>
 </div>
 <footer id="footer">
     <div class="containerMerged">

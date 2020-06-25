@@ -160,7 +160,6 @@ function drawPathwayRectangles(ctx, cy, nodes, allPaths, colorschemePaths, pos="
         var nearest_groups = getNeighbors(cp, cy);
         // merge group of neighboring nodes if they intersect
         var merged_nodes = mergeNodeGroups(nearest_groups, cp);
-        console.log(merged_nodes)
         //mark connected nodes in pathway
         ctx.globalAlpha = 0.6;
         var merged_nodes_grouped = Object.values(merged_nodes)
@@ -229,13 +228,18 @@ function drawPathwayRectangles(ctx, cy, nodes, allPaths, colorschemePaths, pos="
             centroid = {"x": most_x, "y":most_y}
             var breaked = false;
             for(var node of nodes){
-              var testposition =  cy.$("node[entrez ="+node.data['entrez']+"]").renderedPosition();
-
-              if(!grouped_nodes.has(node.data["symbol"]) && 
+              if(cy.$("node[entrez ="+node.data['entrez']+"]")){
+                var testposition =  cy.$("node[entrez ="+node.data['entrez']+"]").renderedPosition();}
+              else if(cy.$("node[entrezID ="+node.data['entrezID']+"]")){
+                var testposition =  cy.$("node[entrezID ="+node.data['entrezID']+"]").renderedPosition();}
+              if(!grouped_nodes.has(node.data["symbol"]) && testposition &&
                 testposition['x'] > centroid['x']-(0.5*renderedWidth) && testposition['x'] < centroid['x']-(0.5*renderedWidth) + max_dist_x &&
                 testposition['y'] > centroid['y']-(0.5*renderedWidth) && testposition['y'] < centroid['y']-(0.5*renderedWidth) + max_dist_y){
                 for(var n of grouped_nodes){
-                  var npos = cy.$("node[entrez ="+n+"]").position();
+                  if(cy.$("node[entrez ="+n+"]")){
+                    var npos = cy.$("node[entrez ="+n+"]").position();}
+                  else if(cy.$("node[entrezID ="+n+"]")){
+                    var npos = cy.$("node[entrezID ="+n+"]").position();}
                   merged_nodes_grouped.push(new Set([n]));
                 }
                 breaked = true;

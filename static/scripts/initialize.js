@@ -18,6 +18,7 @@ var clickedNode;
 var clickedNodesPosition;
 var defaultVal = false;
 var isSIF = false;
+allPaths=null
 
 function isJsonFile(){
   document.getElementById('loader1').style.visibility = "visible";

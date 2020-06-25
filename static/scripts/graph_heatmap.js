@@ -11,9 +11,8 @@ var rightEdges = [];
 /*
 visualize a graph from .graphml-file
 */
-function visualize(firstTime=false) { 
+function visualize(firstTime=false, files) { 
   nodeVal = document.getElementById('values').value;
-
   // move edge legend when scrolling
   if(!!right){
     var cys = ['cyLeft', 'cyRight'];
@@ -54,6 +53,8 @@ function visualize(firstTime=false) {
   var rightEdges;
   var graphLeft;
   var graphRight;
+  var edgesToMergeLeft;
+  var edgesToMergeRight;
   cys.forEach(function(cyO){
     // get nodes and edges 
     if(cyO == 'cyLeft'){
@@ -63,12 +64,13 @@ function visualize(firstTime=false) {
         var leftnodesAndEdges = getNodesAndEdgesSIF(graphString, 'left');
       }
       else{
-        var leftnodesAndEdges = getNodesAndEdges(graphString, 'left');
+        var leftnodesAndEdges = getNodesAndEdges(graphString,nodeVal,'left');
       }
       leftNodes = leftnodesAndEdges[0];
       leftEdges = leftnodesAndEdges[1]; 
       var leftNodeValuesNum = leftnodesAndEdges[2];
       interactionTypes = leftnodesAndEdges[3];
+      edgesToMergeLeft = leftnodesAndEdges[4]
       // set min and max for legend  and add nodes and edges to graph
       var leftRange = legendsRange(leftNodeValuesNum);
       var leftNodesMin = leftRange[0];
@@ -110,12 +112,14 @@ function visualize(firstTime=false) {
         var rightnodesAndEdges = getNodesAndEdgesSIF(graphString, 'right');
       }
       else{
-        var rightnodesAndEdges = getNodesAndEdges(graphString, 'right');
+        var rightnodesAndEdges = getNodesAndEdges(graphString, nodeVal, 'right');
       }
       rightNodes = rightnodesAndEdges[0];
       rightEdges = rightnodesAndEdges[1]; 
       var rightNodeValuesNum = rightnodesAndEdges[2];
       var interactionTypesRight = rightnodesAndEdges[3];
+      edgesToMergeRight = rightnodesAndEdges[4]
+
       interactionTypes = interactionTypes.add(...interactionTypesRight);
       // set min and max for legend  and add nodes and edges to graph
       var rightRange = legendsRange(rightNodeValuesNum);
@@ -150,7 +154,7 @@ function visualize(firstTime=false) {
     }
   });
   document.getElementById("arrows").innerHTML = "";
-  createInteractionLegend(interactionTypes, graphLeft, graphRight);
+  createInteractionLegend(interactionTypes, graphLeft, edgesToMergeLeft, graphRight, edgesToMergeRight);
   if(document.getElementById('nodeShapesAttr')){
     if(!document.getElementById('heatmap_shapes')){
       var shapelegend = document.createElement("div")
@@ -178,7 +182,7 @@ function visualize(firstTime=false) {
   }
   if(firstTime && graphRight){
     firstTime = false;
-    clickMerge(leftNodes, leftEdges, rightNodes, rightEdges, interactionTypes);
+    clickMerge(files, nodeVal);
   }
   document.getElementById('legend_heatmap').setAttribute('style','visibility:visible');
   document.getElementById('searchgene').setAttribute('style','visibility:visible');
@@ -229,13 +233,6 @@ function addNodesAndEdges(cyObject, nodes, edges, firstTime, nodesMin, nodesMax)
   cyObject.nodes().noOverlap({ padding: 5 });
   // calculate label position for legend and style legend
   var fontSize = 10;
-  calculateLabelColorLegend(nodeVal, fontSize, cyObject, nodesMin, nodesMax);
-
-  addcolorlegend(cyObject)
-
-  cyObject.layout({
-    name: 'dagre'
-  }).run();
 
   if(nodes.every(function(x){return(x.data["symbol"])})){
     for(n=0; n < nodes.length; n++){
@@ -274,6 +271,12 @@ function addNodesAndEdges(cyObject, nodes, edges, firstTime, nodesMin, nodesMax)
       });
     }
   }
+  calculateLabelColorLegend(nodeVal, fontSize, cyObject, nodesMin, nodesMax);
+
+  addcolorlegend(cyObject)
+  cyObject.layout({
+    name: 'dagre'
+  }).run();
 
 }
 
