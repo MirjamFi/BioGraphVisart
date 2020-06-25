@@ -208,7 +208,7 @@ function createInteractionLegend(interactionTypes, graphLeft, edgesToMerge, grap
           appendToInteractionLegend(table, seventhText, seventhimg)
         }
         if(eightthText != ""){
-          appendToInteractionLegend(table, eighthText, eighthimg)
+          appendToInteractionLegend(table, eightthText, eightthimg)
         }
         if(ninethText != ""){
           appendToInteractionLegend(table, ninethText, ninethimg)
