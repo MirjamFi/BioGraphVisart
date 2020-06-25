@@ -161,7 +161,7 @@ function createInteractionLegend(interactionTypes, graphLeft, edgesToMerge, grap
           seventhimg.src = missinginteraction;
         }
         else if(["phosphorylation"].includes(interact)){
-          eightthText = appendText(eigtthText, interact)
+          eightthText = appendText(eightthText, interact)
           eightthimg.src = phosphorylation;
         }
         else if(["dephosphorylation"].includes(interact)){
