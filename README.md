@@ -1,4 +1,4 @@
-#BioGraphVisart
+# BioGraphVisart
 This is a web-based tool to interactively visualize networks, especially with biological background. It is written in javascript based on [cytoscape.js](http://js.cytoscape.org). It is available under [biographvisart.org](http://biographvisart.org).
 
 ## How to run it locally
@@ -43,7 +43,7 @@ You need to have [nodejs](nodejs.org) installed.
 	- **Firefox**
 		* install the Firefox Add-on [*cors-plugin*](https://addons.mozilla.org/en-US/firefox/addon/cors-plugin/) and activate it.
 
-## Embedding other web applications
+## Embedding in other web applications
 Import the BioGraphVisart main html into your html:
 
 		<head>
