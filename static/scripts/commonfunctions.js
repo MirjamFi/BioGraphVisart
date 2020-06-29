@@ -99,7 +99,7 @@ function calculateLabelColorLegend(labelVal, fontSize, cy, nodesMin, nodesMax){
     newArrow.appendChild(img);
   }
 // create legend for edges
-function createInteractionLegend(interactionTypes, graphLeft, edgesToMerge, graphRight=null, edgesToMergeRight = null) {
+function createInteractionLegend(interactionTypes, graphLeft, edgesToMerge, noOptn=false, graphRight=null, edgesToMergeRight = null) {
 	// show legend and update if necessary
     var table = document.getElementById('arrows');
     if(table.rows.length == 0){
@@ -224,7 +224,7 @@ function createInteractionLegend(interactionTypes, graphLeft, edgesToMerge, grap
         }
         if(otherisset){
           var img = createImg();
-          img.source = other;
+          img.src = other;
           appendToInteractionLegend(table, 'Other', img)
         }
 
@@ -239,7 +239,7 @@ function createInteractionLegend(interactionTypes, graphLeft, edgesToMerge, grap
 	        newCheckMultiple.id = "mergeEdges";
 	        newCheckMultiple.checked = true;
 	        newCheckMultiple.addEventListener('click', function(){
-	          mergeEdges(cy, noOptn, nodeVal);
+	          mergeEdges(cy);
 	        });
 
 	        var label = document.createElement('label')
