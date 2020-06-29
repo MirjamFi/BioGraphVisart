@@ -85,7 +85,7 @@ function cleanSelections(layer = undefined){
       undobutn.parentNode.removeChild(undobutn); }
   if(document.getElementById('mergeEdges'))
     document.getElementById('mergeEdges').checked = true;
-  var noOptn = true;
+  noOptn = true;
   noDrpShapes = true;
   nodeVal = undefined;
 }

@@ -46,7 +46,7 @@ function visualize(graphString, noOptn) {
     $('#downloadJSON').removeAttr('disabled');
 
     document.getElementById('arrows').innerHTML = "";
-    createInteractionLegend(interactionTypes, cy, edgesToMerge);
+    createInteractionLegend(interactionTypes, cy, edgesToMerge, noOptn);
     document.getElementById('legend').setAttribute('style','visibility:visible');
 
     document.getElementById('downloadPart').style.visibility = "visible";
