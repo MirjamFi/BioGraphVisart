@@ -12,7 +12,12 @@ app.use(express.static('../../'));
 app.use(bodyParser())
 
 var data;
-app.get('/BioGraphVisart',function(req,res){
+
+app.get('/', function(req,res){
+  res.sendFile(path.resolve('../../templates/default.html'));
+});
+
+app.get('/BioGraphVisart/',function(req,res){
   res.sendFile(path.resolve('../../templates/BioGraphVisart.html'));
 });
 
@@ -49,6 +54,7 @@ app.post('/BioGraphVisart/vis',function(req,res){
   data = req.body;
   // res.send(data)
 });
+
 
 
 app.listen(3000);

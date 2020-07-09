@@ -234,7 +234,6 @@ function readJson(file, layer = undefined) {
             data: { id: "l1", symbol: "legend" },
             position: legendPosition
           });
-          addcolorlegend(cy);
 
 
         // get min and max for legend node

@@ -80,6 +80,7 @@ function visualize(graphString, noOptn) {
       .style('shape', document.getElementById('nodeShapes').value)
       .update();
   }
+  addcolorlegend(cy);
 }
 
 //add nodes and edges to cy-object (update if attribute has changed)
