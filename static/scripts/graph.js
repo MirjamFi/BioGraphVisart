@@ -71,6 +71,14 @@ function visualize(graphString, noOptn) {
     var ctx = canvas.getContext('2d');
     document.getElementById('keggpathways').onclick = function(){listKEGGPathways(ctx, cy, nodes, layer, canvas, "")};
   }
+  else{
+    var layer = layer = cy.cyCanvas({
+            zIndex: -1,
+          });
+    var canvas = layer.getCanvas();
+    var ctx = canvas.getContext('2d');
+    document.getElementById('keggpathways').onclick = function(){listKEGGPathways(ctx, cy, nodes, layer, canvas, "")};
+  }
   var defaultVal = false;
   
 
