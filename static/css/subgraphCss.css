@@ -96,6 +96,11 @@ a:visited{color: blue}
   font-weight: 500;
 }
 
+.vl {
+  border-left: thin solid #BDBDBD;
+  height: 500px;
+}
+
 #description{
   font-size: 18px;
   text-align: left;

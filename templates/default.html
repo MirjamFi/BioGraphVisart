@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> 
+    <title>BioGraphVisart</title>
+	
+
+	<link rel="stylesheet" type="text/css" href="http://127.0.0.1:3000/static/css/subgraphCss.css">
+	   	
+	
+</head>
+
+
+<body id="everything">
+	<script type="text/javascript">
+		if (window.File && window.FileReader && window.FileList && window.Blob) {
+		  // Great success! All the File APIs are supported.
+		} else {
+		  alert('The File APIs are not fully supported in this browser.');
+		}
+	</script>
+	<div class="content">
+	<div class="topnav" id="nav">
+		<div class="topnav-left">
+		    <a class="page-link" href="heatmap">Comparison</a>
+		</div>
+		<div class="topnav-centered">
+			<a class="page-link" href="BioGraphVisart">BioGraphVisart</a>
+		</div>
+	    <div class="dropdown topnav-right">
+          <button class="dropbtn"><a href="about" class="page-link">About</a>  
+            <i class="fa fa-caret-down"></i>
+          </button>
+          <div class="dropdown-content">
+            <a class="page-link" href="documentation">Documentation</a>
+            <a class="page-link" href="contact">Contact</a>
+          </div>
+      </div>
+	</div>
+	 <script>
+        // Add active class to the current button (highlight it)
+        var header = document.getElementById("nav");
+        var btns = header.getElementsByClassName("page-link");
+        for (var i = 0; i < btns.length; i++) {
+          btns[i].addEventListener("click", function() {
+          var current = document.getElementsByClassName("active");
+          current[0].className = current[0].className.replace(" active", "");
+          this.className += " active";
+          });
+        }
+    </script>
+    <div style="width: 100%">
+      <div style="width: 49%;  float:left;">
+        <p style=" font-size:20px; float:left; margin-left: 10px;"><a href="/BioGraphVisart/"><strong>BioGraphVisart</strong></a> is a web-based tool to interactively visualize networks, especially with biological background. It is written in javascript based on <a href="http://js.cytoscape.org">Cytoscape.js</a>. <br><br>
+        The input is a graphml-file (<a href="https://raw.githubusercontent.com/MirjamFi/BioGraphVisart/master/example.graphml">graphml-example</a>) or sif-file (<a href="https://raw.githubusercontent.com/MirjamFi/BioGraphVisart/master/example.sif">sif-example</a>). 
+        In addition to nodes and edges (genes and interaction types, respectively), GraphML can store information such as expression values as node attributes (more on <a href="http://graphml.graphdrawing.org">GraphML Format</a>). 
+        SIF cannot store additional information (more on <a href="http://www.cbmc.it/fastcent/doc/SifFormat.htm">SIF Format</a>).</p>
+      </div>
+        <div  class="vl" style="width: 49%; float: right;" >
+          <p style="font-size:20px;float:right; margin-left: 5%; margin-right: 10px;" >For direct <a href="BioGraphVisart/heatmap"><strong>Comparison of network graphs</strong></a> the node overlap can be calculated and be displayed in a heatmap. Also a merged network graph of two selected network graphs can be generated.
+          The input are multiple graphml-files. 
+        </div>
+      </p>
+      </div>
+    </div>
+<footer id="footer">
+    <div class="containerMerged">
+        <a href="imprint">Imprint</a><br>
+        <a href="datenschutzerklarung" aria-current="page">Datenschutzerklärung</a>   
+    </div>  
+</footer>
+</body>
+
+</html>
