@@ -359,11 +359,8 @@ function loadFile() {
   drp.onchange = function(){
     nodeVal = document.getElementById('values').value;
     var newValues = []
-    console.log(cy.filter('node').size());
     for(var i = 0; i < cy.filter('node').size(); i++){
-      console.log(cy.nodes()[i])
       if(cy.nodes()[i].data()[nodeVal]){
-        console.log(cy.nodes()[i].data()[nodeVal])
         newValues.push(cy.nodes()[i].data()[nodeVal])
       }
     }
