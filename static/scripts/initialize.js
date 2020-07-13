@@ -359,6 +359,7 @@ function loadFile() {
   drp.onchange = function(){
     nodeVal = document.getElementById('values').value;
     var newValues = []
+    console.log(cy.nodes())
     for(var n of cy.nodes()){
       if(n.data()[nodeVal]){
         newValues.push(n.data()[nodeVal])
