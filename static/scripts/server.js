@@ -22,8 +22,6 @@ app.get('/BioGraphVisart/',function(req,res){
 });
 
 app.get('/BioGraphVisart/vis',function(req,res){
-  console.log(req.body)
-  console.log(data)
   res.send(JSON.stringify(data));
 });
 

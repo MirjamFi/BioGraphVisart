@@ -18,7 +18,7 @@ var clickedNode;
 var clickedNodesPosition;
 var defaultVal = false;
 var isSIF = false;
-allPaths=null
+var allPaths;
 
 function isJsonFile(){
   document.getElementById('loader1').style.visibility = "visible";
@@ -356,7 +356,53 @@ function loadFile() {
   // node attributes
   var sele = createSele();
   drp.add(sele);
-  drp.onchange = function(){visualize(graphString, noOptn)};
+  drp.onchange = function(){
+    nodeVal = document.getElementById('values').value;
+    var newValues = []
+    for(var n of cy.nodes()){
+      if(n.data()[nodeVal]){
+        newValues.push(n.data()[nodeVal])
+      }
+    }
+    var range = legendsRange(newValues);
+    var nodesMin = range[0];
+    var nodesMax = range[1];
+    cy.style().selector('node[!'+nodeVal+']').style({
+          'background-color': 'white',
+          'color':'black'
+      }).update()
+      // attributes with numbers
+    cy.style().selector('node['+nodeVal+' < "0"]').style({
+          'background-color': 'mapData('+nodeVal+','+ nodesMin+', 0, #006cf0, white)',
+          'color': 'black'
+      }).update()
+     cy.style().selector('node['+nodeVal+' <='+0.5*nodesMin+']').style({
+          'color': 'white'
+      }).update()
+     cy.style().selector('node['+nodeVal+' > "0"]').style({
+          'background-color': 'mapData('+nodeVal+', 0,'+ nodesMax+', white, #d50000)',
+          'color': 'black'
+      }).update()
+      cy.style().selector('node['+nodeVal+' >='+0.5*nodesMax+']').style({
+          'color': 'white'
+      }).update()
+      cy.style().selector('node['+nodeVal+' = "0"]').style({
+          'background-color': 'white',
+          'color':'black'
+      }).update()
+
+      // attributes with boolean
+      cy.style().selector('node['+nodeVal+' = "false"]').style({
+          'background-color': '#006cf0',
+          'color':'white'
+      }).update()
+      cy.style().selector('node['+nodeVal+' = "true"]').style({
+          'background-color': '#d50000',
+          'color':'white'
+      }).update()
+      var fontSize = 10;
+      calculateLabelColorLegend(nodeVal, fontSize, cy, nodesMin, nodesMax);
+  };
 
 
   // layout dropdown
