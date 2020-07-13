@@ -104,6 +104,7 @@ function visualize(firstTime=false, files) {
           }
         }
       });
+      changeLayout(graphLeft, 'Left')
     }
     else if(cyO = 'cyRight'){
       leftGraph = false;
@@ -151,6 +152,7 @@ function visualize(firstTime=false, files) {
             graphRight.$('node').removeClass('highlighted')
           }
         });
+      changeLayout(graphRight, "Right")
     }
   });
   document.getElementById("arrows").innerHTML = "";
