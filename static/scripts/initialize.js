@@ -359,9 +359,9 @@ function loadFile() {
   drp.onchange = function(){
     nodeVal = document.getElementById('values').value;
     var newValues = []
-    for(var n of cy.nodes()){
-      if(n.data()[nodeVal]){
-        newValues.push(n.data()[nodeVal])
+    for(var i = 0; i < cy.filter('node').size(); i++){
+      if(cy.nodes()[i].data()[nodeVal]){
+        newValues.push(cy.nodes()[i].data()[nodeVal])
       }
     }
     var range = legendsRange(newValues);

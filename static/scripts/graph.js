@@ -83,6 +83,7 @@ function visualize(graphString, noOptn) {
 
 //add nodes and edges to cy-object (update if attribute has changed)
 function addNodesAndEdges(nodes, edges, nodesMin, nodesMax, noOptn){
+  console.log(nodeVal)
   cy = cytoscape({
     container: document.getElementById('cy'),
     ready: function(){
@@ -97,37 +98,37 @@ function addNodesAndEdges(nodes, edges, nodesMin, nodesMax, noOptn){
           'color':'black'
       }},
       // attributes with numbers
-      {selector: 'node['+nodeVal+' < "0"]',
+      {selector: 'node['+nodeVal+']['+nodeVal+' < "0"]',
         style: {
           'background-color': 'mapData('+nodeVal+','+ nodesMin+', 0, #006cf0, white)',
           'color': 'black'
       }},
-      {selector: 'node['+nodeVal+' <='+0.5*nodesMin+']',
+      {selector: 'node['+nodeVal+']['+nodeVal+' <='+0.5*nodesMin+']',
         style: {
           'color': 'white'
       }},
-      {selector: 'node['+nodeVal+' > "0"]',
+      {selector: 'node['+nodeVal+']['+nodeVal+' > "0"]',
         style: {
           'background-color': 'mapData('+nodeVal+', 0,'+ nodesMax+', white, #d50000)',
           'color': 'black'
       }},
-      {selector: 'node['+nodeVal+' >='+0.5*nodesMax+']',
+      {selector: 'node['+nodeVal+']['+nodeVal+' >='+0.5*nodesMax+']',
         style: {
           'color': 'white'
       }},
-      {selector: 'node['+nodeVal+' = "0"]',
+      {selector: 'node['+nodeVal+']['+nodeVal+' = "0"]',
         style: {
           'background-color': 'white',
           'color':'black'
       }},
 
       // attributes with boolean
-      {selector: 'node['+nodeVal+' = "false"]',
+      {selector: 'node['+nodeVal+']['+nodeVal+' = "false"]',
         style: {
           'background-color': '#006cf0',
           'color':'white'
       }},
-      {selector: 'node['+nodeVal+' = "true"]',
+      {selector: 'node['+nodeVal+']['+nodeVal+' = "true"]',
         style: {
           'background-color': '#d50000',
           'color':'white'
