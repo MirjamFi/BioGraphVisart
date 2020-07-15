@@ -22,18 +22,18 @@
 	<div class="content">
 	<div class="topnav" id="nav">
 		<div class="topnav-left">
-		    <a class="page-link" href="heatmap">Comparison</a>
+		    <a class="page-link" href="BioGraphVisart/heatmap">Comparison</a>
 		</div>
 		<div class="topnav-centered">
 			<a class="page-link" href="BioGraphVisart">BioGraphVisart</a>
 		</div>
 	    <div class="dropdown topnav-right">
-          <button class="dropbtn"><a href="about" class="page-link">About</a>  
+          <button class="dropbtn"><a href="BioGraphVisart/about" class="page-link">About</a>  
             <i class="fa fa-caret-down"></i>
           </button>
           <div class="dropdown-content">
-            <a class="page-link" href="documentation">Documentation</a>
-            <a class="page-link" href="contact">Contact</a>
+            <a class="page-link" href="BioGraphVisart/documentation">Documentation</a>
+            <a class="page-link" href="BioGraphVisart/contact">Contact</a>
           </div>
       </div>
 	</div>
@@ -49,20 +49,40 @@
           });
         }
     </script>
-    <div style="width: 100%">
-      <div style="width: 49%;  float:left;">
-        <p style=" font-size:20px; float:left; margin-left: 10px;"><a href="/BioGraphVisart/"><strong>BioGraphVisart</strong></a> is a web-based tool to interactively visualize networks, especially with biological background. It is written in javascript based on <a href="http://js.cytoscape.org">Cytoscape.js</a>. <br><br>
-        The input is a graphml-file (<a href="https://raw.githubusercontent.com/MirjamFi/BioGraphVisart/master/example.graphml">graphml-example</a>) or sif-file (<a href="https://raw.githubusercontent.com/MirjamFi/BioGraphVisart/master/example.sif">sif-example</a>). 
+
+    <div class="entry-content">
+      <article class="post-content">
+
+<!--       <p style="width: 25%;margin-top:40px; float: left">
+        <a href="#GeneralDoc" style="color:black; font-weight: 600; font-size: 18px;">General</a><br>
+        <a href="#NodesDoc" class="tab"style="color:black; font-weight: 500; font-size: 16px;">Comparison</a><br>
+      </p> -->
+      <!-- <p style="width: 50%; margin-left:25%; font-size:30px;margin-top:40px" id="GeneralDoc">General</p> -->
+      <p style="width: 50%; margin-left:25%; margin-top:40px">
+
+        <a href="/BioGraphVisart/"><strong>BioGraphVisart</strong></a> is a web-based tool to interactively visualize networks, especially with biological background. <br><br>
+        It is written in javascript based on <a href="http://js.cytoscape.org">Cytoscape.js</a>. 
+        The input is a graphml-file (<a href="https://raw.githubusercontent.com/MirjamFi/BioGraphVisart/master/example.graphml">graphml-example</a>) or sif-file (<a href="https://raw.githubusercontent.com/MirjamFi/BioGraphVisart/master/example.sif">sif-example</a>). <br>
         In addition to nodes and edges (genes and interaction types, respectively), GraphML can store information such as expression values as node attributes (more on <a href="http://graphml.graphdrawing.org">GraphML Format</a>). 
-        SIF cannot store additional information (more on <a href="http://www.cbmc.it/fastcent/doc/SifFormat.htm">SIF Format</a>).</p>
-      </div>
-        <div  class="vl" style="width: 49%; float: right;" >
-          <p style="font-size:20px;float:right; margin-left: 5%; margin-right: 10px;" >For direct <a href="BioGraphVisart/heatmap"><strong>Comparison of network graphs</strong></a> the node overlap can be calculated and be displayed in a heatmap. Also a merged network graph of two selected network graphs can be generated.
-          The input are multiple graphml-files. 
-        </div>
+        SIF cannot store additional information (more on <a href="http://www.cbmc.it/fastcent/doc/SifFormat.htm">SIF Format</a>).<br><br>
+        Fig. 1 shows the network graph of the <a href="https://raw.githubusercontent.com/MirjamFi/BioGraphVisart/master/example.graphml">graphml-example</a>. <a href="/BioGraphVisart/example"><strong>Here</strong></a> the example is displayed in BioGraphVisart. <br><br>
+
+        A more detailed description is given in the <a href="/BioGraphVisart/documentation">Documentation</a>.<br><br>
+        <img class="center" src="templates/overview_annotated.png"width="80%" height="100%" style="margin-top: 10px;" /><br>
+         <small>Figure 1. The red and blue numbers indicate static sections and interactive sections modifying the representation of network graph, respectively: (1) upload, (2) selection of node color attribute, (3) node color legend, (4) selection of node shape attribute, (5) selection of node shape for the selected attribute, (6) node shape legend, (7) edge type legend, (8) option to collapse multiple edges between two nodes into one edge, (9) selection of graph layout, (10) reset layout, (11) withdrawal of node deletion, (12) mouseover node, and (13) node search, (14) legend and selection of pathways to highlight, (15) download.</small>
       </p>
-      </div>
-    </div>
+      <hr style="width: 50%; margin-left:25%;">
+      <p style="width: 50%; margin-left:25%; font-size:30px;" id="NodesDoc">Comparison</p>
+        <p style="width: 50%; margin-left:25%">
+          For direct <a href="BioGraphVisart/heatmap"><strong>Comparison of network graphs</strong></a> the node overlap can be calculated and be displayed in a heatmap. Also a merged network graph of two selected network graphs can be generated.<br><br>
+          The input are multiple graphml-files. 
+          <br><br>
+          <a href="/BioGraphVisart/exampleComparison"><strong>Here</strong></a> an example with four network graphs is displayed in BioGraphVisart.
+
+        </p>
+  </article>
+</div>
+
 <footer id="footer">
     <div class="containerMerged">
         <a href="imprint">Imprint</a><br>

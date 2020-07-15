@@ -11,7 +11,7 @@ var rightEdges = [];
 /*
 visualize a graph from .graphml-file
 */
-function visualize(firstTime=false, files) { 
+function visualize(firstTime=false, files, example) { 
   nodeVal = document.getElementById('values').value;
   // move edge legend when scrolling
   if(!!right){
@@ -156,6 +156,8 @@ function visualize(firstTime=false, files) {
     }
   });
   document.getElementById("arrows").innerHTML = "";
+  console.log(graphLeft)
+  console.log(graphRight)
   createInteractionLegend(interactionTypes, graphLeft, edgesToMergeLeft, graphRight, edgesToMergeRight);
   if(document.getElementById('nodeShapesAttr')){
     if(!document.getElementById('heatmap_shapes')){
@@ -184,8 +186,9 @@ function visualize(firstTime=false, files) {
   }
   if(firstTime && graphRight){
     firstTime = false;
-    clickMerge(files, nodeVal);
+    clickMerge(files, nodeVal, example);
   }
+
   document.getElementById('legend_heatmap').setAttribute('style','visibility:visible');
   document.getElementById('searchgene').setAttribute('style','visibility:visible');
   document.getElementById('searchbutton').setAttribute('style','visibility:visible');

@@ -27,7 +27,7 @@ var  leftNodeValuesNum = [];
 var  rightNodeValuesNum = [];
 var merge_graph;
 
-function createHeatmap(heatmapData, foundFiles){
+function createHeatmap(heatmapData, foundFiles, graphsList, example=false){
     /*
         get axes labels (samples) and overlap values
     */
@@ -112,16 +112,28 @@ function createHeatmap(heatmapData, foundFiles){
                                 
                             }
                             var files = []
-                            for(file of foundFiles){
-                                if(file.name == left){
-                                    files.push(file)
-                                }
-                                else if(file.name == right){
-                                    files.push(file)
+                            if(example){
+                                for(file of foundFiles){
+                                    if(file.name.includes(left)){
+                                        files.push(file)
+                                    }
+                                    else if(file.name.includes(right)){
+                                        files.push(file)
+                                    }
                                 }
                             }
-                            loadGraphml(left, right);
-                            visualize(true, files);
+                            else{
+                                for(file of foundFiles){
+                                    if(file.name == left){
+                                        files.push(file)
+                                    }
+                                    else if(file.name == right){
+                                        files.push(file)
+                                    }
+                                }
+                            }
+                            loadGraphml(left, right, graphsList);
+                            visualize(true, files, example);
                         }
                     }
                 }

@@ -18,6 +18,8 @@ var graphsList = [];
 
 var isSIF = false;
 
+var example = false;
+
 function getAllIndexes(arr, val) {
 
     var indexes = [];
@@ -101,7 +103,7 @@ isSIF = false;
                   data[g].push(symbol);
                   if(j == Object.keys(graphsList).length){ 
                       var overlapDict = calculateOverlap(data);
-                      createHeatmap(overlapDict, foundFiles);
+                      createHeatmap(overlapDict, foundFiles, graphsList);
                       document.getElementById('selectAttribute').style.visibility = "visible";
                   };
                 };
@@ -130,7 +132,7 @@ isSIF = false;
               data[g] = Array.from(nodesSet);
               if(j == Object.keys(graphsList).length){
                 var overlapDict = calculateOverlap(data);
-                createHeatmap(overlapDict);
+                createHeatmap(overlapDict, foundFiles, graphsList);
                 document.getElementById('selectAttribute').style.visibility = "visible";
               };
             }
@@ -141,6 +143,70 @@ isSIF = false;
     reader.readAsText(file);
   })
 };
+
+
+/* 
+ files from directory */
+function loadExample(){
+  example = true;
+  var drpLayoutLeft = document.getElementById("selectlayoutLeft")
+  var seleLayoutLeft = createLayoutSele();
+  drpLayoutLeft.add(seleLayoutLeft);
+  
+  var drpLayoutRight = document.getElementById("selectlayoutRight")
+  var seleLayoutRight = createLayoutSele();
+  drpLayoutRight.add(seleLayoutRight);
+
+  layoutArray.forEach(function(s){
+    var optnLayoutLeft = addLayoutOptions(s);
+    var optnLayoutRight = addLayoutOptions(s)
+    drpLayoutLeft.add(optnLayoutLeft);
+    drpLayoutRight.add(optnLayoutRight);
+  });
+  isSIF = false;
+  var foundFiles =[{name:"https://raw.githubusercontent.com/MirjamFi/BioGraphVisart/master/TvsL_rooted/S02.graphml"}, {name:"https://raw.githubusercontent.com/MirjamFi/BioGraphVisart/master/TvsL_rooted/S05.graphml"}, {name:"https://raw.githubusercontent.com/MirjamFi/BioGraphVisart/master/TvsL_rooted/S06.graphml"},{name:"https://raw.githubusercontent.com/MirjamFi/BioGraphVisart/master/TvsL_rooted/S09.graphml"}]
+  graphsList=[]
+  var regExp = /\>(.*)\</;
+  var data = {};
+  for(let file of foundFiles){
+    var request = new XMLHttpRequest();
+    request.open('GET', file["name"], false);
+    request.onreadystatechange = function () {
+      if (request.readyState === 4 && request.status === 200) {
+          var type = request.getResponseHeader('Content-Type');
+          if (type.indexOf("text") !== 1) {
+            graphString = request.responseText.split("\n")
+            isJson = false;
+            var filesplit = file["name"].split("/")
+            graphsList[filesplit[filesplit.length-1]] = graphString
+          }
+      }
+    }
+    request.send(null);
+  }
+  for(g in graphsList){
+    var graphml = graphsList[g]
+    let keyList = getAllIndexes(graphml,'symbol')
+    if(keyList.length == 0){
+      keyList = getAllIndexes(graphml, 'name')
+    }
+    keyList.forEach(function(key){ // get keys
+      if(key.includes('data')){
+        var symbol = regExp.exec(key)[1];
+        if(data[g] == undefined){
+          data[g] = []
+        }
+        data[g].push(symbol);
+        if(g == Object.keys(graphsList)[Object.keys(graphsList).length-1]){ 
+            var overlapDict = calculateOverlap(data);
+            createHeatmap(overlapDict, foundFiles, graphsList, example);
+            document.getElementById('selectAttribute').style.visibility = "visible";
+        };
+      };
+    });
+  };
+}
+
 
 /* 
 calculate overlap between loaded graohs
@@ -169,7 +235,7 @@ function calculateOverlap(data){
 
 var drpValues = [];
 var shapeAttributes = [];
-function loadGraphml(sampleLeft, sampleRight) {
+function loadGraphml(sampleLeft, sampleRight, graphsList) {
   cleanSelectionsHeatmap();
   samples = [sampleLeft, sampleRight];
   samples.forEach(function (sample){

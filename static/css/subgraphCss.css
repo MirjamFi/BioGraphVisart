@@ -106,6 +106,10 @@ a:visited{color: blue}
   text-align: left;
 }
 
+img.center {
+    display: block;
+    margin: 0 auto;
+}
 
 .butn {
   cursor: pointer;

@@ -276,11 +276,18 @@ function merge(){
 	document.getElementById('searchbutton').style.visibility = "visible";
 }
 
-async function clickMerge(files,val){
+async function clickMerge(files,val, example){
 	var leftID = document.getElementById('leftID').innerHTML;
     var rightID = document.getElementById('rightID').innerHTML;
-    const objectURL1 = URL.createObjectURL(files[0]);
-    const objectURL2 = URL.createObjectURL(files[1]);
-    window.open('/BioGraphVisart/merge?leftID='+leftID+'&rightID='+rightID +'&file1='+objectURL1+'&file2='+objectURL2+'&nodeVal='+val);
+	if(example){
+		var objectURL1 =files[0]["name"];
+		var objectURL2 = files[1]["name"];
+	}
+	else{
+		var objectURL1 = URL.createObjectURL(files[0]);
+		var objectURL2 = URL.createObjectURL(files[1]);
+	}
+	
+    window.open('/BioGraphVisart/merge?leftID='+leftID+'&rightID='+rightID +'&file1='+objectURL1+'&file2='+objectURL2+'&nodeVal='+val+'&example='+example);
 }
 
