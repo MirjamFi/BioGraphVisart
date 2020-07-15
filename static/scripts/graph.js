@@ -83,7 +83,6 @@ function visualize(graphString, noOptn) {
 
 //add nodes and edges to cy-object (update if attribute has changed)
 function addNodesAndEdges(nodes, edges, nodesMin, nodesMax, noOptn){
-  console.log(nodeVal)
   cy = cytoscape({
     container: document.getElementById('cy'),
     ready: function(){

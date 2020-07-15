@@ -21,6 +21,14 @@ app.get('/BioGraphVisart/',function(req,res){
   res.sendFile(path.resolve('../../templates/BioGraphVisart.html'));
 });
 
+app.get('/BioGraphVisart/example',function(req,res){
+  res.sendFile(path.resolve('../../templates/example.html'));
+});
+
+app.get('/BioGraphVisart/exampleComparison',function(req,res){
+  res.sendFile(path.resolve('../../templates/exampleComparison.html'));
+});
+
 app.get('/BioGraphVisart/vis',function(req,res){
   res.send(JSON.stringify(data));
 });

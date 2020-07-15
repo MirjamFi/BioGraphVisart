@@ -121,10 +121,20 @@
         var queries = queryString.split("&");
         var leftID = queries[0].split('=')[1];
         var rightID = queries[1].split('=')[1];
-        var file1 = queries[2].split('=')[1].split("blob:")[1];
-        var file2 = queries[3].split('=')[1].split("blob:")[1];
+        // var file1 = queries[2].split('=')[1].split("blob:")[1];
+        // var file2 = queries[3].split('=')[1].split("blob:")[1];
         var val = queries[4].split('=')[1]
-        createMerged(file1, file2, val, leftID, rightID)
+        var example = queries[5].split('=')[1]
+        if(example == 'true'){
+            var file1 = queries[2].split('=')[1];
+            var file2 = queries[3].split('=')[1];
+            createMergedExample(file1, file2, val, leftID, rightID)
+        }
+        else{
+            var file1 = queries[2].split('=')[1].split("blob:")[1];
+            var file2 = queries[3].split('=')[1].split("blob:")[1];
+            createMerged(file1, file2, val, leftID, rightID)
+        }
     </script>
 </div>
 <footer id="footer">

@@ -1,11 +1,51 @@
-async function createMerged(file1, file2, nodeVal, leftID, rightID){
-  let file1_prom = await fetch("blob:"+file1).then(r => r.blob()).then(blobFile => new File([blobFile], "file1", { type: "html" }))
-  let file2_prom = await fetch("blob:"+file2).then(r => r.blob()).then(blobFile => new File([blobFile], "file2", { type: "html" }))
+var cystyle =  [
+            {selector: 'node',
+                style: {
+                  width: 50,
+                  height: 50,
+                  shape: 'ellipse',
+                  'background-color': 'white',
+                  'border-color' : 'black',
+                  'border-style' : 'solid',
+                  'border-width' : '2',
+                  // label: 'data(symbol)',
+                  "text-valign" : "center",
+                  "text-halign" : "center",
+                  "font-size" : 12,
+                  "color":"black"
+            }},
+               // style edges
+              basicedgestyle,
+              actstyle,
+              expstyle,
+              inhistyle, 
+              reprstyle,
+              bindstyle,
+              dissostyle,
+              compstyle,
+              indeffstyle,
+              missstyle,
+              statestyle,
+              phosphostyle,
+              dephosphostyle,
+              glycostyle,
+              ubiquistyle,
+              methystyle,
+            {
+              selector: 'node:selected',
+              css: {
+                'border-width': 10,
+                'width':70,
+                'height':70
+              }
+            }
+          ];
+async function createMerged(file1, file2, nodeVal, leftID, rightID, example){
+
+  var file1_prom = await fetch("blob:"+file1).then(r => r.blob()).then(blobFile => new File([blobFile], "file1", { type: "html" }))
+  var file2_prom = await fetch("blob:"+file2).then(r => r.blob()).then(blobFile => new File([blobFile], "file2", { type: "html" }))
   var files=[file1_prom, file2_prom]
   counterlimit = files.length;
-    var data = {};
-    let node_ids = [];
-    let node_attributes = {};
     let j = 0;
     var count = 0;
     var regExp = /\>(.*)\</;
@@ -42,77 +82,101 @@ async function createMerged(file1, file2, nodeVal, leftID, rightID){
               rightEdges = nodesAndEdges[1]; 
               rightNodeValuesNum = nodesAndEdges[2];
               interactionTypes= new Set([...interactionTypes, ...nodesAndEdges[3]])
-              // cystyle
-              var cystyle =  [
-                  {selector: 'node',
-                      style: {
-                        width: 50,
-                        height: 50,
-                        shape: 'ellipse',
-                        'background-color': 'white',
-                        'border-color' : 'black',
-                        'border-style' : 'solid',
-                        'border-width' : '2',
-                        // label: 'data(symbol)',
-                        "text-valign" : "center",
-                        "text-halign" : "center",
-                        "font-size" : 12,
-                        "color":"black"
-                  }},
-              	     // style edges
-                    basicedgestyle,
-                    actstyle,
-                    expstyle,
-                    inhistyle, 
-                    reprstyle,
-                    bindstyle,
-                    dissostyle,
-                    compstyle,
-                    indeffstyle,
-                    missstyle,
-                    statestyle,
-                    phosphostyle,
-                    dephosphostyle,
-                    glycostyle,
-                    ubiquistyle,
-                    methystyle,
-                  {
-                    selector: 'node:selected',
-                    css: {
-                      'border-width': 10,
-                      'width':70,
-                      'height':70
-                  	}
-                	}
-              	];
-            	//buttons: reset, merge, download
+
+            setbuttons();
+
+            mergeFunction(leftNodes, rightNodes, leftEdges, rightEdges, interactionTypes, edgesToMerge);
+        };
+      }
+    };
+    };}
+    reader.readAsText(file);
+  })
+
+}
+
+async function createMergedExample(file1, file2, nodeVal, leftID, rightID){
+  var files=[file1, file2]
+  graphsList = []
+  for(let file of files){
+    var request = new XMLHttpRequest();
+    request.open('GET', file, false);
+    request.onreadystatechange = function () {
+      if (request.readyState === 4 && request.status === 200) {
+          var type = request.getResponseHeader('Content-Type');
+          if (type.indexOf("text") !== 1) {
+            graphString = request.responseText.split("\n")
+            isJson = false;
+            var filesplit = file.split("/")
+            graphsList[filesplit[filesplit.length-1]] = graphString
+          }
+      }
+    }
+    request.send(null);
+  }
+
+  let j = 0;
+  var regExp = /\>(.*)\</;
+  var leftNodes;
+  var leftEdges;
+  var interactionTypes = [];
+  var rightNodes;
+  var rightEdges;
+  var edgesToMerge=true;
+  for(g in graphsList){
+    var graphml = graphsList[g];
+    if(j == 0){
+      var nodesAndEdges = getNodesAndEdges(graphml,nodeVal, 'left');
+      leftNodes = nodesAndEdges[0];
+      leftEdges = nodesAndEdges[1]; 
+      leftNodeValuesNum = nodesAndEdges[2];
+      interactionTypes= new Set([...interactionTypes, ...nodesAndEdges[3]])
+      j ++;
+    }
+    else if(j == 1){
+      var nodesAndEdges = getNodesAndEdges(graphml,nodeVal, 'right');
+      rightNodes = nodesAndEdges[0];
+      rightEdges = nodesAndEdges[1]; 
+      rightNodeValuesNum = nodesAndEdges[2];
+      interactionTypes= new Set([...interactionTypes, ...nodesAndEdges[3]])
+      // cystyle
+      
+      setbuttons()
+
+      mergeFunction(leftNodes, rightNodes, leftEdges, rightEdges, interactionTypes, edgesToMerge)
+    };
+  }
+}
+
+function setbuttons(){
+  //buttons: reset, merge, download
               if(!document.getElementById("outputNameMerge")){
-            	  d3.select('#merged_graph_buttons')  
-            	    .append('p')
+                d3.select('#merged_graph_buttons')  
+                  .append('p')
 
-              	d3.select('#merged_graph_buttons')  
-              	  .append('input')
-              	  .attr('name', 'outputFileMerge')
-              	  .attr('type', 'text')
-              	  .attr('maxlength', '512')
-              	  .attr('id', 'outputNameMerge')
-              	  .attr('value', 'File name')
+                d3.select('#merged_graph_buttons')  
+                  .append('input')
+                  .attr('name', 'outputFileMerge')
+                  .attr('type', 'text')
+                  .attr('maxlength', '512')
+                  .attr('id', 'outputNameMerge')
+                  .attr('value', 'File name')
 
-              	d3.select('#merged_graph_buttons')  
-              	  .append('button')
-              	  .attr('type', 'button')
-              	  .attr('class', 'butn')
-              	  .attr('id','downloadMergePNG')
-              	  .text('.png')
-              	  .on('click', function(){downloadMergePNG()});
+                d3.select('#merged_graph_buttons')  
+                  .append('button')
+                  .attr('type', 'button')
+                  .attr('class', 'butn')
+                  .attr('id','downloadMergePNG')
+                  .text('.png')
+                  .on('click', function(){downloadMergePNG()});
 
-              	d3.select('#merged_graph_buttons')  
-              	  .append('button')
-              	  .attr('type', 'button')
-              	  .attr('class', 'butn')
-              	  .attr('id','downloadMergeSVG')
-              	  .text('.svg')
-              	  .on('click', function(){downloadMergeSVG()});
+                d3.select('#merged_graph_buttons')  
+                  .append('button')
+                  .attr('type', 'button')
+                  .attr('class', 'butn')
+                  .attr('id','downloadMergeSVG')
+                  .text('.svg')
+                  .on('click', function(){downloadMergeSVG()});
 
                 d3.select('#merged_graph_buttons')
                   .append('button')
@@ -226,8 +290,10 @@ async function createMerged(file1, file2, nodeVal, leftID, rightID){
                 document.getElementById("searchbutn").className = 'butn';  
                 searchbutn.onclick = highlightSearchedGene;
               }
+}
 
-              merge_graph = createCyObject('merged_graph', -1,1, document.getElementById('selectColorAttribute').value)
+function mergeFunction(leftNodes, rightNodes, leftEdges, rightEdges, interactionTypes, edgesToMerge){
+  merge_graph = createCyObject('merged_graph', -1,1, document.getElementById('selectColorAttribute').value)
               const nodesEdges = getmergedGraph(leftNodes, rightNodes, leftEdges, rightEdges, interactionTypes, edgesToMerge);
               var mergedNodes = nodesEdges[0];
               var mergedEdges = nodesEdges[1];
@@ -263,28 +329,28 @@ async function createMerged(file1, file2, nodeVal, leftID, rightID){
               // get symbols and values for GA
               symbolsLeft = {};
               leftNodes.forEach(function( ele ){
-            	 symbolsLeft[ele["data"]['symbol']]=ele["data"]['val'];
+               symbolsLeft[ele["data"]['symbol']]=ele["data"]['val'];
               });
 
 
-            	var arrLeft = Object.values(symbolsLeft);
-            	var filteredLeft = arrLeft.filter(function (el) {
+              var arrLeft = Object.values(symbolsLeft);
+              var filteredLeft = arrLeft.filter(function (el) {
                 return el != null;
               });
 
             // get symbols and values for GA
             symbolsRight = {};
             rightNodes.forEach(function( ele ){
-            	 symbolsRight[ele["data"]['symbol']]=ele["data"]['val'];
+               symbolsRight[ele["data"]['symbol']]=ele["data"]['val'];
             });
 
-          	var arrRight = Object.values(symbolsRight);
+            var arrRight = Object.values(symbolsRight);
             var filteredRight = arrRight.filter(function (el) {
               return el != null;
             });
 
-          	// legend node
-          	mergeColorLegend(merge_graph, mergeMin, labelVal, mergeMax)
+            // legend node
+            mergeColorLegend(merge_graph, mergeMin, labelVal, mergeMax)
 
             // circle nodes only in GA orange
             merge_graph.nodes('[graph="g1"]').style('border-width', 5).style('border-color', '#fdae61');
@@ -306,26 +372,26 @@ async function createMerged(file1, file2, nodeVal, leftID, rightID){
 
             // on mpuse-over show value of selected attribute
             let filenameSplitLeft = window.opener.left.split("/")
-        	  filenameSplitLeft = filenameSplitLeft[filenameSplitLeft.length-1].split('.')[0];
+            filenameSplitLeft = filenameSplitLeft[filenameSplitLeft.length-1].split('.')[0];
 
             let filenameSplitRight = window.opener.right.split("/")
             filenameSplitRight = filenameSplitRight[filenameSplitRight.length-1].split('.')[0];
-          		 
-          	mergeMousover(merge_graph,'g1', document.getElementById("selectColorAttribute").value, filenameSplitLeft);
-          	mergeMousover(merge_graph,'g2', document.getElementById("selectColorAttribute").value, filenameSplitRight);
+               
+            mergeMousover(merge_graph,'g1', document.getElementById("selectColorAttribute").value, filenameSplitLeft);
+            mergeMousover(merge_graph,'g2', document.getElementById("selectColorAttribute").value, filenameSplitRight);
 
-          	// createLegendMerge(mergeMin, mergeMax);
+            // createLegendMerge(mergeMin, mergeMax);
             mergeMousoverShared(merge_graph, document.getElementById("selectColorAttribute").value, filenameSplitLeft, filenameSplitRight);
-          	merge_graph.layout({name: 'dagre'}).run();   
-          	document.getElementById('KEGGpathsButtonMerge').style.visibility ="visible";
-          	// set background layer to hoghlight pathways
+            merge_graph.layout({name: 'dagre'}).run();   
+            document.getElementById('KEGGpathsButtonMerge').style.visibility ="visible";
+            // set background layer to hoghlight pathways
             layerMerge = createLayoutKeggPathways(merge_graph, allPathsMerge, 'Merge')
             canvasMerge = layerMerge.getCanvas();
             ctxMerge = canvasMerge.getContext('2d');
 
-          	document.getElementById("keggpathwaysMerge").addEventListener('click', function(){listKEGGPathways(ctxMerge, merge_graph, mergedNodes, layerMerge, canvasMerge, 'Merge');});
-          	document.getElementById("keggpathwaysMerge").style.visibility = "visible";
-          	document.getElementById('KEGGpathsMerge').style.visibility = "visible";
+            document.getElementById("keggpathwaysMerge").addEventListener('click', function(){listKEGGPathways(ctxMerge, merge_graph, mergedNodes, layerMerge, canvasMerge, 'Merge');});
+            document.getElementById("keggpathwaysMerge").style.visibility = "visible";
+            document.getElementById('KEGGpathsMerge').style.visibility = "visible";
 
             if(document.getElementById('nodeShapesAttr')){
               merge_graph.style()
@@ -333,14 +399,6 @@ async function createMerged(file1, file2, nodeVal, leftID, rightID){
                     .style('shape', document.getElementById('nodeShapes').value)
                     .update();
             }
-          }
-        };
-      }
-    };
-    };
-    reader.readAsText(file);
-  })
-
 }
 
 function highlightSearchedGene(){
@@ -464,3 +522,4 @@ function mergeColorLegend(merge_graph, mergeMin, labelVal, mergeMax){
     .style('text-max-width', 200)
 
 }
+
