@@ -156,8 +156,6 @@ function visualize(firstTime=false, files, example) {
     }
   });
   document.getElementById("arrows").innerHTML = "";
-  console.log(graphLeft)
-  console.log(graphRight)
   createInteractionLegend(interactionTypes, graphLeft, edgesToMergeLeft, graphRight, edgesToMergeRight);
   if(document.getElementById('nodeShapesAttr')){
     if(!document.getElementById('heatmap_shapes')){

@@ -646,16 +646,6 @@ function isEmpty(obj) {
     return true;
 }
 
-//remove all options of dropdown
-function removeOptions(selectbox){
-    var i;
-    for(i = selectbox.options.length - 1 ; i >= 0 ; i--)
-    {
-        selectbox.remove(i);
-    }
-}
-
-
 // show drop downs for nodes' shapes attribute and shape itself
 function activateNodeShapeChange(){
   document.getElementById('nodeShapesAttr')
