@@ -150,146 +150,146 @@ async function createMergedExample(file1, file2, nodeVal, leftID, rightID){
 
 function setbuttons(){
   //buttons: reset, merge, download
-              if(!document.getElementById("outputNameMerge")){
-                d3.select('#merged_graph_buttons')  
-                  .append('p')
+  if(!document.getElementById("outputNameMerge")){
+    d3.select('#merged_graph_buttons')  
+      .append('p')
 
-                d3.select('#merged_graph_buttons')  
-                  .append('input')
-                  .attr('name', 'outputFileMerge')
-                  .attr('type', 'text')
-                  .attr('maxlength', '512')
-                  .attr('id', 'outputNameMerge')
-                  .attr('value', 'File name')
+    d3.select('#merged_graph_buttons')  
+      .append('input')
+      .attr('name', 'outputFileMerge')
+      .attr('type', 'text')
+      .attr('maxlength', '512')
+      .attr('id', 'outputNameMerge')
+      .attr('value', 'File name')
 
-                d3.select('#merged_graph_buttons')  
-                  .append('button')
-                  .attr('type', 'button')
-                  .attr('class', 'butn')
-                  .attr('id','downloadMergePNG')
-                  .text('.png')
-                  .on('click', function(){downloadMergePNG()});
+    d3.select('#merged_graph_buttons')  
+      .append('button')
+      .attr('type', 'button')
+      .attr('class', 'butn')
+      .attr('id','downloadMergePNG')
+      .text('.png')
+      .on('click', function(){downloadMergePNG()});
 
-                d3.select('#merged_graph_buttons')  
-                  .append('button')
-                  .attr('type', 'button')
-                  .attr('class', 'butn')
-                  .attr('id','downloadMergeSVG')
-                  .text('.svg')
-                  .on('click', function(){downloadMergeSVG()});
+    d3.select('#merged_graph_buttons')  
+      .append('button')
+      .attr('type', 'button')
+      .attr('class', 'butn')
+      .attr('id','downloadMergeSVG')
+      .text('.svg')
+      .on('click', function(){downloadMergeSVG()});
 
-                d3.select('#merged_graph_buttons')
-                  .append('button')
-                  .attr('class', 'butn')
-                  .attr('id', 'downloadPDF')
-                  .text('.pdf')
-                  .on('click', function(){downloadMergePDF()})
+    d3.select('#merged_graph_buttons')
+      .append('button')
+      .attr('class', 'butn')
+      .attr('id', 'downloadPDF')
+      .text('.pdf')
+      .on('click', function(){downloadMergePDF()})
 
-                // color options dropdown
-                var drpColor = document.createElement("select");
-                drpColor.id = "selectColorAttribute";
-                drpColor.name = "selectColor";
-                document.getElementById("merged_graph_buttons").appendChild(drpColor);
-                drpColor.style.visibility = "visible";
-                drpColor.onchange = function(){updateColorMerged(merge_graph, symbolsLeft, symbolsRight, filenameSplitLeft, filenameSplitRight)};
+    // color options dropdown
+    var drpColor = document.createElement("select");
+    drpColor.id = "selectColorAttribute";
+    drpColor.name = "selectColor";
+    document.getElementById("merged_graph_buttons").appendChild(drpColor);
+    drpColor.style.visibility = "visible";
+    drpColor.onchange = function(){updateColorMerged(merge_graph, symbolsLeft, symbolsRight, filenameSplitLeft, filenameSplitRight)};
 
-                var sele = document.createElement("OPTION");    
-                sele.text = "Choose node's attribute";
-                sele.value = window.opener.drpValues[0];
-                drpColor.add(sele);
-                window.opener.drpValues.forEach(function(val){
-                  var optn = document.createElement("OPTION");
-                  optn.text=val;
-                  optn.value=val;
-                  drpColor.add(optn);
-                }); 
-                drpColor.value = sele.value;
+    var sele = document.createElement("OPTION");    
+    sele.text = "Choose node's attribute";
+    sele.value = window.opener.drpValues[0];
+    drpColor.add(sele);
+    window.opener.drpValues.forEach(function(val){
+      var optn = document.createElement("OPTION");
+      optn.text=val;
+      optn.value=val;
+      drpColor.add(optn);
+    }); 
+    drpColor.value = sele.value;
 
-                // node shape drop dpwn
-                if(window.opener.shapeAttributes.length > 0){
-                  var nodeShapesAttr = document.createElement("select")
-                  nodeShapesAttr.id = "nodeShapesAttr"
-                  nodeShapesAttr.name = "nodeShapesAttr"
-                  document.getElementById("merged_graph_buttons").appendChild(nodeShapesAttr)
-                  nodeShapesAttr.onchange = activateShapes;
+    // node shape drop dpwn
+    if(window.opener.shapeAttributes.length > 0){
+      var nodeShapesAttr = document.createElement("select")
+      nodeShapesAttr.id = "nodeShapesAttr"
+      nodeShapesAttr.name = "nodeShapesAttr"
+      document.getElementById("merged_graph_buttons").appendChild(nodeShapesAttr)
+      nodeShapesAttr.onchange = activateShapes;
 
-                  var drpShapes = document.getElementById("nodeShapesAttr");
-                  var seleShapeAttr = document.createElement("OPTION");    
-                  seleShapeAttr.text = "Select Shape Attribute";
-                  seleShapeAttr.value = "";
-                  drpShapes.add(seleShapeAttr);
+      var drpShapes = document.getElementById("nodeShapesAttr");
+      var seleShapeAttr = document.createElement("OPTION");    
+      seleShapeAttr.text = "Select Shape Attribute";
+      seleShapeAttr.value = "";
+      drpShapes.add(seleShapeAttr);
 
-                  shapeAttributes = Array.from(new Set(window.opener.shapeAttributes)); 
-                  if(shapeAttributes.length > 0){
-                    shapeAttributes.forEach(function(val){
-                      var optn = document.createElement("OPTION");
-                      optn.text=val;
-                      optn.value=val;
-                      drpShapes.add(optn);
-                    })
-                  }
+      shapeAttributes = Array.from(new Set(window.opener.shapeAttributes)); 
+      if(shapeAttributes.length > 0){
+        shapeAttributes.forEach(function(val){
+          var optn = document.createElement("OPTION");
+          optn.text=val;
+          optn.value=val;
+          drpShapes.add(optn);
+        })
+      }
 
-                  var nodeShapes = document.createElement("select")
-                  nodeShapes.name= "nodeShapes" 
-                  nodeShapes.id="nodeShapes" 
-                  document.getElementById("merged_graph_buttons").appendChild(nodeShapes);
-                  nodeShapes.onchange= function(){changeNodeShapes(merge_graph, 'heatmap_shapes')};
-                  
+      var nodeShapes = document.createElement("select")
+      nodeShapes.name= "nodeShapes" 
+      nodeShapes.id="nodeShapes" 
+      document.getElementById("merged_graph_buttons").appendChild(nodeShapes);
+      nodeShapes.onchange= function(){changeNodeShapes(merge_graph, 'heatmap_shapes')};
+      
 
-                  // shapes dropdown
-                  var drpShape = document.getElementById("nodeShapes");
-                  drpShape.style.visibility = "hidden";
-                  var seleShape = document.createElement("OPTION");
-                  seleShape.text = "Select Shape";
-                  seleShape.value = "ellipse";
-                  drpShape.add(seleShape);
+      // shapes dropdown
+      var drpShape = document.getElementById("nodeShapes");
+      drpShape.style.visibility = "hidden";
+      var seleShape = document.createElement("OPTION");
+      seleShape.text = "Select Shape";
+      seleShape.value = "ellipse";
+      drpShape.add(seleShape);
 
-                  const shapesArray = ["rectangle", "octagon", "rhomboid", "pentagon", "tag"];
+      const shapesArray = ["rectangle", "octagon", "rhomboid", "pentagon", "tag"];
 
-                  shapesArray.forEach(function(s){
-                    var nodeShape = s;
-                    var optnShape = document.createElement("OPTION");
-                    optnShape.text=nodeShape;
-                    optnShape.value=nodeShape;
-                    drpShape.add(optnShape);
-                  });
-                }
+      shapesArray.forEach(function(s){
+        var nodeShape = s;
+        var optnShape = document.createElement("OPTION");
+        optnShape.text=nodeShape;
+        optnShape.value=nodeShape;
+        drpShape.add(optnShape);
+      });
+    }
 
-                // layout dropdown
-                var drpLayout = document.createElement("select");
-                drpLayout.id = "selectlayoutMerge";
-                drpLayout.name = "selectlayout";
-                document.getElementById("merged_graph_buttons").appendChild(drpLayout);
-                drpLayout.style.visibility = "visible";
-                drpLayout.onchange = function(){changeLayout(merge_graph, 'Merge')};
+    // layout dropdown
+    var drpLayout = document.createElement("select");
+    drpLayout.id = "selectlayoutMerge";
+    drpLayout.name = "selectlayout";
+    document.getElementById("merged_graph_buttons").appendChild(drpLayout);
+    drpLayout.style.visibility = "visible";
+    drpLayout.onchange = function(){changeLayout(merge_graph, 'Merge')};
 
-                var seleLayout = document.createElement("OPTION");
-                seleLayout.text = "Select Layout";
-                drpLayout.add(seleLayout);
+    var seleLayout = document.createElement("OPTION");
+    seleLayout.text = "Select Layout";
+    drpLayout.add(seleLayout);
 
-                const layoutArray = ["dagre (default)", "klay", "breadthfirst", "cose-bilkent", "grid"];
+    const layoutArray = ["dagre (default)", "klay", "breadthfirst", "cose-bilkent", "grid"];
 
-                layoutArray.forEach(function(s){
-                  var graphLayout = s;
-                  var optnLayout = document.createElement("OPTION");
-                  optnLayout.text=graphLayout;
-                  optnLayout.value=graphLayout;
-                  drpLayout.add(optnLayout);
-                });
+    layoutArray.forEach(function(s){
+      var graphLayout = s;
+      var optnLayout = document.createElement("OPTION");
+      optnLayout.text=graphLayout;
+      optnLayout.value=graphLayout;
+      drpLayout.add(optnLayout);
+    });
 
-                var searchgene = document.createElement("input");
-                searchgene.id = "searchgene";
-                searchgene.value = "Search gene"
-                document.getElementById("merged_graph_buttons").appendChild(searchgene);
-                searchgene.setAttribute("type", "text");
-                searchgene.setAttribute("width", 30);
-                var searchbutn = document.createElement("button");
-                searchbutn.id = "searchbutn";
-                searchbutn.innerHTML = "Search";
-                document.getElementById("merged_graph_buttons").appendChild(searchbutn);
-                document.getElementById("searchbutn").className = 'butn';  
-                searchbutn.onclick = highlightSearchedGene;
-              }
+    var searchgene = document.createElement("input");
+    searchgene.id = "searchgene";
+    searchgene.value = "Search gene"
+    document.getElementById("merged_graph_buttons").appendChild(searchgene);
+    searchgene.setAttribute("type", "text");
+    searchgene.setAttribute("width", 30);
+    var searchbutn = document.createElement("button");
+    searchbutn.id = "searchbutn";
+    searchbutn.innerHTML = "Search";
+    document.getElementById("merged_graph_buttons").appendChild(searchbutn);
+    document.getElementById("searchbutn").className = 'butn';  
+    searchbutn.onclick = highlightSearchedGene;
+  }
 }
 
 function mergeFunction(leftNodes, rightNodes, leftEdges, rightEdges, interactionTypes, edgesToMerge){
