@@ -100,7 +100,7 @@ function calculateLabelColorLegend(labelVal, fontSize, cy, nodesMin, nodesMax){
   }
 // create legend for edges
 function createInteractionLegend(interactionTypes, graphLeft, edgesToMerge, graphRight=undefined, edgesToMergeRight = null) {
-	// show legend and update if necessary
+  // show legend and update if necessary
     var table = document.getElementById('arrows');
     if(table.rows.length == 0){
       var i = 0;
