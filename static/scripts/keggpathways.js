@@ -366,19 +366,6 @@ Math.getDistance = function( x1, y1, x2, y2 ) {
 };
 
 
-
-//remove elment by value from array
-function removeA(arr) {
-    var what, a = arguments, L = a.length, ax;
-    while (L > 1 && arr.length) {
-        what = a[--L];
-        while ((ax= arr.indexOf(what)) !== -1) {
-            arr.splice(ax, 1);
-        }
-    }
-    return arr;
-}
-
 // merge groups if they intersect
 function mergeNodeGroups(nearest_groups, cp_copy){
   var merged_nodes={};

@@ -33,7 +33,6 @@
     <script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/keggpathways.js"></script>
 	<script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/initialize.js"></script>
 	<script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/download_single_graph.js"></script>
-	<script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/icons.js"></script>
 	<script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/graph.js"></script>
 
 	<link rel="stylesheet" type="text/css" href="http://127.0.0.1:3000/static/css/subgraphCss.css">
@@ -84,9 +83,9 @@
     </script>
 
 	<div  class="datapart" id="dataPart">
-		<input type="file" accept=".graphml,.json,.sif" id="fileName" name="file" />
+		<input type="file" accept=".graphml,.sif, .json" id="fileName" name="file" />
 
-		<button class= 'butn' onclick="isJsonFile()" id="loadGraphml" >Load file</button>
+		<button class= 'butn' onclick="isFile()" id="loadGraphml" >Load file</button>
 		<p></p>
 
 	</div> 

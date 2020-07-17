@@ -11,34 +11,51 @@ function visualize(graphString, noOptn) {
   document.getElementById('loader1').style.visibility = "visibile";
    
    //create cytoscape object; not necessary for json
-  if(!isJson){
+  // if(!isJson){
     if(!noOptn && !clicked && !defaultVal){
       nodeVal = document.getElementById('values').value;
     }
-
-    // get nodes and edges
-    if(isSIF){
-    	var nodesAndEdges = getNodesAndEdgesSIF(graphString, nodeVal, "", noOptn);
+    if(isJson){
+      var nodes = graphString.elements.nodes;
+      var edges = graphString.elements.edges;
+      var nodeValuesNum = []
+      for(let n of nodes){
+        if(n.data[nodeVal]){
+          nodeValuesNum.push(n.data[nodeVal])
+        }
+      }
+      var interactionTypes=[]
+      for(let e of edges){
+        interactionTypes.push(e.data.interaction)
+      }
+      interactionTypes = interactionTypes.flat();
+      interactionTypes = new Set(interactionTypes)
+      var edgesToMerge = true;
     }
     else{
-	    var nodesAndEdges = getNodesAndEdges(graphString, nodeVal,"", noOptn);
+      // get nodes and edges
+      if(isSIF){
+      	var nodesAndEdges = getNodesAndEdgesSIF(graphString, nodeVal, "", noOptn);
+      }
+      else{
+  	    var nodesAndEdges = getNodesAndEdges(graphString, nodeVal,"", noOptn);
+      }
+      var nodes = nodesAndEdges[0];
+      var edges = nodesAndEdges[1]; 
+      var nodeValuesNum = nodesAndEdges[2];
+      interactionTypes = nodesAndEdges[3];
+      var edgesToMerge = nodesAndEdges[4]
     }
-    var nodes = nodesAndEdges[0];
-    var edges = nodesAndEdges[1]; 
-    var nodeValuesNum = nodesAndEdges[2];
-    interactionTypes = nodesAndEdges[3];
-    var edgesToMerge = nodesAndEdges[4]
-
     if(!noOptn){
-      // set min and max for legend
-      var range = legendsRange(nodeValuesNum);
-      var nodesMin = range[0];
-      var nodesMax = range[1];
-    };
+        // set min and max for legend
+        var range = legendsRange(nodeValuesNum);
+        var nodesMin = range[0];
+        var nodesMax = range[1];
+      };
     // add nodes and edges to graph
     addNodesAndEdges(nodes, edges, nodesMin, nodesMax, noOptn);
 
-  }
+  // }
   if(!clicked){
     $('#downloadPDF').removeAttr('disabled');
     $('#downloadPNG').removeAttr('disabled');
@@ -48,7 +65,6 @@ function visualize(graphString, noOptn) {
     document.getElementById('arrows').innerHTML = "";
     createInteractionLegend(interactionTypes, cy, edgesToMerge, noOptn);
     document.getElementById('legend').setAttribute('style','visibility:visible');
-
     document.getElementById('downloadPart').style.visibility = "visible";
   }
   showMetaInfo(noOptn);
@@ -57,7 +73,7 @@ function visualize(graphString, noOptn) {
 
   document.getElementById('resetLayout').onclick= function(){changeLayout(cy)};
 
-  if(! noDrpShapes && !isJson){
+  if(! noDrpShapes){
     activateNodeShapeChange();
   }
   
