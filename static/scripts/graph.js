@@ -10,8 +10,7 @@ var removedNodes;
 function visualize(graphString, noOptn) {
   document.getElementById('loader1').style.visibility = "visibile";
    
-   //create cytoscape object; not necessary for json
-  // if(!isJson){
+   //create cytoscape object
     if(!noOptn && !clicked && !defaultVal){
       nodeVal = document.getElementById('values').value;
     }
@@ -54,8 +53,6 @@ function visualize(graphString, noOptn) {
       };
     // add nodes and edges to graph
     addNodesAndEdges(nodes, edges, nodesMin, nodesMax, noOptn);
-
-  // }
   if(!clicked){
     $('#downloadPDF').removeAttr('disabled');
     $('#downloadPNG').removeAttr('disabled');
@@ -315,7 +312,7 @@ function showMetaInfo(noOptn){
          },
          });
    }
-   else if(!isJson && noOptn){
+   else if(noOptn){
      cy.elements('node').qtip({       // show node attibute value by mouseover
          show: {   
            event: 'mouseover', 

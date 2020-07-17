@@ -294,111 +294,111 @@ function setbuttons(){
 
 function mergeFunction(leftNodes, rightNodes, leftEdges, rightEdges, interactionTypes, edgesToMerge){
   merge_graph = createCyObject('merged_graph', -1,1, document.getElementById('selectColorAttribute').value)
-              const nodesEdges = getmergedGraph(leftNodes, rightNodes, leftEdges, rightEdges, interactionTypes, edgesToMerge);
-              var mergedNodes = nodesEdges[0];
-              var mergedEdges = nodesEdges[1];
-                  merge_graph.add(mergedNodes)
-                  merge_graph.add(mergedEdges)
-                  merge_graph.nodes().noOverlap({ padding: 5 });
+  const nodesEdges = getmergedGraph(leftNodes, rightNodes, leftEdges, rightEdges, interactionTypes, edgesToMerge);
+  var mergedNodes = nodesEdges[0];
+  var mergedEdges = nodesEdges[1];
+      merge_graph.add(mergedNodes)
+      merge_graph.add(mergedEdges)
+      merge_graph.nodes().noOverlap({ padding: 5 });
 
-              for(n=0; n < mergedNodes.length; n++){
-                merge_graph.batch(function(){
-                  if(mergedNodes[n].data.symbol){
-                    var labelText = mergedNodes[n].data.symbol;
-                    var oldLabelText = mergedNodes[n].data.symbol;
-                  }
-                  else{
-                    var labelText = mergedNodes[n].data.name;
-                    var oldLabelText = mergedNodes[n].data.name;
-                  }
-                  while(getTextWidth(labelText, fontSize +" arial") > 49){
-                    oldLabelText = oldLabelText.slice(0,-1);
-                    labelText = oldLabelText+'...';
-                  }
-                   merge_graph.$('node[id =\''  + mergedNodes[n].data.id + '\']').style("label", labelText);
-                });
-              }
+  for(n=0; n < mergedNodes.length; n++){
+    merge_graph.batch(function(){
+      if(mergedNodes[n].data.symbol){
+        var labelText = mergedNodes[n].data.symbol;
+        var oldLabelText = mergedNodes[n].data.symbol;
+      }
+      else{
+        var labelText = mergedNodes[n].data.name;
+        var oldLabelText = mergedNodes[n].data.name;
+      }
+      while(getTextWidth(labelText, fontSize +" arial") > 49){
+        oldLabelText = oldLabelText.slice(0,-1);
+        labelText = oldLabelText+'...';
+      }
+       merge_graph.$('node[id =\''  + mergedNodes[n].data.id + '\']').style("label", labelText);
+    });
+  }
 
-              // calculate label position for legend and style legend
-              var fontSize = 10;
-              var labelVal = document.getElementById("selectColorAttribute").value;
-            
-
-              merge_graph.style(cystyle);
-
-              // get symbols and values for GA
-              symbolsLeft = {};
-              leftNodes.forEach(function( ele ){
-               symbolsLeft[ele["data"]['symbol']]=ele["data"]['val'];
-              });
+  // calculate label position for legend and style legend
+  var fontSize = 10;
+  var labelVal = document.getElementById("selectColorAttribute").value;
 
 
-              var arrLeft = Object.values(symbolsLeft);
-              var filteredLeft = arrLeft.filter(function (el) {
-                return el != null;
-              });
+  merge_graph.style(cystyle);
 
-            // get symbols and values for GA
-            symbolsRight = {};
-            rightNodes.forEach(function( ele ){
-               symbolsRight[ele["data"]['symbol']]=ele["data"]['val'];
-            });
-
-            var arrRight = Object.values(symbolsRight);
-            var filteredRight = arrRight.filter(function (el) {
-              return el != null;
-            });
-
-            // legend node
-            mergeColorLegend(merge_graph, mergeMin, labelVal, mergeMax)
-
-            // circle nodes only in GA orange
-            merge_graph.nodes('[graph="g1"]').style('border-width', 5).style('border-color', '#fdae61');
-            merge_graph.nodes('[symbol = "'+leftID+'"]').style('border-width', 13).style('width', 50)
-            .style('height', 50).style('font-weight', 'bold').style('font-size',16);
-            // circle nodes only in GB light blue
-            merge_graph.nodes('[graph="g2"]').style('border-width', 5).style('border-color', '#abd9e9');
-            merge_graph.nodes('[symbol = "'+rightID+'"]').style('border-width', 13)
-            .style('width', 50).style('height', 50).style('font-weight', 'bold').style('font-size',16);
-            // circle nodes common in both graphs black double line
-            merge_graph.nodes('[graph="both"]').style('border-width', 5).style('border-color', 'black');
+  // get symbols and values for GA
+  symbolsLeft = {};
+  leftNodes.forEach(function( ele ){
+   symbolsLeft[ele["data"]['symbol']]=ele["data"]['val'];
+  });
 
 
-            // map values to node color for GA
-            mapValuestoNodeColor(merge_graph, 'g1', '1', mergeMin, mergeMax, document.getElementById("selectColorAttribute").value);
+  var arrLeft = Object.values(symbolsLeft);
+  var filteredLeft = arrLeft.filter(function (el) {
+    return el != null;
+  });
 
-            // map values to node color for GB
-            mapValuestoNodeColor(merge_graph, 'g2', '2', mergeMin, mergeMax,  document.getElementById("selectColorAttribute").value);
+// get symbols and values for GA
+symbolsRight = {};
+rightNodes.forEach(function( ele ){
+   symbolsRight[ele["data"]['symbol']]=ele["data"]['val'];
+});
 
-            // on mpuse-over show value of selected attribute
-            let filenameSplitLeft = window.opener.left.split("/")
-            filenameSplitLeft = filenameSplitLeft[filenameSplitLeft.length-1].split('.')[0];
+var arrRight = Object.values(symbolsRight);
+var filteredRight = arrRight.filter(function (el) {
+  return el != null;
+});
 
-            let filenameSplitRight = window.opener.right.split("/")
-            filenameSplitRight = filenameSplitRight[filenameSplitRight.length-1].split('.')[0];
-               
-            mergeMousover(merge_graph,'g1', document.getElementById("selectColorAttribute").value, filenameSplitLeft);
-            mergeMousover(merge_graph,'g2', document.getElementById("selectColorAttribute").value, filenameSplitRight);
+// legend node
+mergeColorLegend(merge_graph, mergeMin, labelVal, mergeMax)
 
-            // createLegendMerge(mergeMin, mergeMax);
-            mergeMousoverShared(merge_graph, document.getElementById("selectColorAttribute").value, filenameSplitLeft, filenameSplitRight);
-            merge_graph.layout({name: 'dagre'}).run();   
-            document.getElementById('KEGGpathsButtonMerge').style.visibility ="visible";
-            // set background layer to hoghlight pathways
-            layerMerge = createLayoutKeggPathways(merge_graph, allPathsMerge, 'Merge')
-            canvasMerge = layerMerge.getCanvas();
-            ctxMerge = canvasMerge.getContext('2d');
+// circle nodes only in GA orange
+merge_graph.nodes('[graph="g1"]').style('border-width', 5).style('border-color', '#fdae61');
+merge_graph.nodes('[symbol = "'+leftID+'"]').style('border-width', 13).style('width', 50)
+.style('height', 50).style('font-weight', 'bold').style('font-size',16);
+// circle nodes only in GB light blue
+merge_graph.nodes('[graph="g2"]').style('border-width', 5).style('border-color', '#abd9e9');
+merge_graph.nodes('[symbol = "'+rightID+'"]').style('border-width', 13)
+.style('width', 50).style('height', 50).style('font-weight', 'bold').style('font-size',16);
+// circle nodes common in both graphs black double line
+merge_graph.nodes('[graph="both"]').style('border-width', 5).style('border-color', 'black');
 
-            document.getElementById("keggpathwaysMerge").addEventListener('click', function(){listKEGGPathways(ctxMerge, merge_graph, mergedNodes, layerMerge, canvasMerge, 'Merge');});
-            document.getElementById("keggpathwaysMerge").style.visibility = "visible";
-            document.getElementById('KEGGpathsMerge').style.visibility = "visible";
 
-            if(document.getElementById('nodeShapesAttr')){
-              merge_graph.style()
-                    .selector('node['+document.getElementById('nodeShapesAttr').value+' ="true"]')        
-                    .style('shape', document.getElementById('nodeShapes').value)
-                    .update();
-            }
+// map values to node color for GA
+mapValuestoNodeColor(merge_graph, 'g1', '1', mergeMin, mergeMax, document.getElementById("selectColorAttribute").value);
+
+// map values to node color for GB
+mapValuestoNodeColor(merge_graph, 'g2', '2', mergeMin, mergeMax,  document.getElementById("selectColorAttribute").value);
+
+// on mpuse-over show value of selected attribute
+let filenameSplitLeft = window.opener.left.split("/")
+filenameSplitLeft = filenameSplitLeft[filenameSplitLeft.length-1].split('.')[0];
+
+let filenameSplitRight = window.opener.right.split("/")
+filenameSplitRight = filenameSplitRight[filenameSplitRight.length-1].split('.')[0];
+   
+mergeMousover(merge_graph,'g1', document.getElementById("selectColorAttribute").value, filenameSplitLeft);
+mergeMousover(merge_graph,'g2', document.getElementById("selectColorAttribute").value, filenameSplitRight);
+
+// createLegendMerge(mergeMin, mergeMax);
+mergeMousoverShared(merge_graph, document.getElementById("selectColorAttribute").value, filenameSplitLeft, filenameSplitRight);
+merge_graph.layout({name: 'dagre'}).run();   
+document.getElementById('KEGGpathsButtonMerge').style.visibility ="visible";
+// set background layer to hoghlight pathways
+layerMerge = createLayoutKeggPathways(merge_graph, allPathsMerge, 'Merge')
+canvasMerge = layerMerge.getCanvas();
+ctxMerge = canvasMerge.getContext('2d');
+
+document.getElementById("keggpathwaysMerge").addEventListener('click', function(){listKEGGPathways(ctxMerge, merge_graph, mergedNodes, layerMerge, canvasMerge, 'Merge');});
+document.getElementById("keggpathwaysMerge").style.visibility = "visible";
+document.getElementById('KEGGpathsMerge').style.visibility = "visible";
+
+if(document.getElementById('nodeShapesAttr')){
+  merge_graph.style()
+        .selector('node['+document.getElementById('nodeShapesAttr').value+' ="true"]')        
+        .style('shape', document.getElementById('nodeShapes').value)
+        .update();
+}
 }
 
 function highlightSearchedGene(){
