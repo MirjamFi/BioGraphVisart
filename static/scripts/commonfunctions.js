@@ -360,7 +360,7 @@ function getNodesAndEdges(graphString, nodeVal,graphpos = undefined, noOptn = fa
       			!graphString[i].includes("v_id")){
         		var attrname = graphString[i].split("v_")[1].split("\">")[0]
         		var val = graphString[i].split(/\>/)[1].split(/\</)[0]
-	        	if(!isNaN(parseFloat(val))){
+	        	if(!isNaN(parseFloat(val)) && attrname != "name"){
 	          		curNode[attrname] = parseFloat(val);
 	        	}
 	        	else{
@@ -375,7 +375,6 @@ function getNodesAndEdges(graphString, nodeVal,graphpos = undefined, noOptn = fa
 		          	currVal = {};
 		          	currVal.val = parseFloat(val);
 		          	nodeValuesNum.push(currVal.val);
-		          	curNode.val = parseFloat(val);
 	        	}
 	        	else if(val === "false" || val === "true"){
 	         	 	currVal = {};
