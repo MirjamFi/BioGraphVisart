@@ -6,7 +6,7 @@ function createLayoutKeggPathways(cy, nodes, allPaths, pos=""){
 	var canvas = layer.getCanvas();
 	var ctx = canvas.getContext('2d');
   if(document.getElementById("keggpathways"+pos)){
-	var b = $.extend( [], document.getElementById("keggpathways"+pos)
+	var b = jQuery.extend( [], document.getElementById("keggpathways"+pos)
 		.firstChild.data).join("");
   	if(b == "Hide KEGG Pathways" && allPaths){
   	    // highlightKEGGpaths(ctx, cy, layer, canvas);
@@ -125,7 +125,7 @@ async function listKEGGPathways(ctx, cy, nodes, layer, canvas, pos = ""){
     document.getElementById('KEGGpaths'+pos).style.visibility = "hidden";
     document.getElementById('loader'+pos).style.visibility = "hidden";
     var mergeEdgeschecked = document.getElementById('mergeEdges').checked;
-    $('#form'+pos+' input:checkbox').prop('checked', false);
+    jQuery('#form'+pos+' input:checkbox').prop('checked', false);
     if(mergeEdgeschecked){
       document.getElementById('mergeEdges').checked = true;
     }

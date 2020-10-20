@@ -11,6 +11,7 @@ var layerMerge;
 var cavasMerge;
 var ctxMerge;
 var shapeNode;
+var nodeVal;
 
 var highlightedNode; 
 
@@ -51,21 +52,6 @@ function loadDir(){
 
   cleanSelectionsHeatmap();
 
-  var drpLayoutLeft = document.getElementById("selectlayoutLeft")
-  var seleLayoutLeft = createLayoutSele();
-  drpLayoutLeft.add(seleLayoutLeft);
-  
-
-  var drpLayoutRight = document.getElementById("selectlayoutRight")
-  var seleLayoutRight = createLayoutSele();
-  drpLayoutRight.add(seleLayoutRight);
-
-  layoutArray.forEach(function(s){
-    var optnLayoutLeft = addLayoutOptions(s);
-    var optnLayoutRight = addLayoutOptions(s)
-    drpLayoutLeft.add(optnLayoutLeft);
-    drpLayoutRight.add(optnLayoutRight);
-  });
 isSIF = false;
     let foundFiles = document.getElementById('fileName').files;
     counterlimit = foundFiles.length;
@@ -149,20 +135,72 @@ isSIF = false;
  files from directory */
 function loadExample(){
   example = true;
+
+  // layout dropdown
   var drpLayoutLeft = document.getElementById("selectlayoutLeft")
-  var seleLayoutLeft = createLayoutSele();
-  drpLayoutLeft.add(seleLayoutLeft);
-  
+   drpLayoutLeft.classList.add("Menu")
+  drpLayoutLeft.classList.add("-horizontal")
+
   var drpLayoutRight = document.getElementById("selectlayoutRight")
-  var seleLayoutRight = createLayoutSele();
-  drpLayoutRight.add(seleLayoutRight);
+   drpLayoutRight.classList.add("Menu")
+  drpLayoutRight.classList.add("-horizontal")
+  drpLayoutRight.id = "selectlayoutRight";
+
+  var labelLayoutLeft = document.createElement("li")
+  labelLayoutLeft.classList.add("-hasSubmenu")
+  labelLayoutLeft.innerHTML = "<a href='#'>Layout</a>"
+  drpLayoutLeft.appendChild(labelLayoutLeft)
+  var ulLayoutLeft = document.createElement("ul")
+  labelLayoutLeft.appendChild(ulLayoutLeft)
+
+  var labelLayoutRight = document.createElement("li")
+  labelLayoutRight.classList.add("-hasSubmenu")
+  labelLayoutRight.innerHTML = "<a href='#'>Layout</a>"
+  drpLayoutRight.appendChild(labelLayoutRight)
+  var ulLayoutRight = document.createElement("ul")
+  labelLayoutRight.appendChild(ulLayoutRight)
 
   layoutArray.forEach(function(s){
-    var optnLayoutLeft = addLayoutOptions(s);
-    var optnLayoutRight = addLayoutOptions(s)
-    drpLayoutLeft.add(optnLayoutLeft);
-    drpLayoutRight.add(optnLayoutRight);
+    var optnLayoutLeft = addLayoutOptions(s, "layoutOptLeft");
+    optnLayoutLeft.onclick = function(){
+      selectedLayoutLeft = s; 
+      changeLayout(graphLeft, s);
+      document.querySelectorAll('.fa-check').forEach(function(e){
+        if(e.classList.contains('layoutOptLeft')){
+        e.remove()}});
+      optnLayoutLeft.innerHTML = "<a href='#'><i class='fas fa-check layoutOptLeft' style='margin-right:5px'></i>"+s+"</a>"
+    };
+    ulLayoutLeft.appendChild(optnLayoutLeft);
+    var optnLayoutRight= addLayoutOptions(s, "layoutOptRight");
+    optnLayoutRight.onclick = function(){
+      selectedLayoutRight = s; 
+      changeLayout(graphRight, s);
+      document.querySelectorAll('.fa-check').forEach(function(e){
+        if(e.classList.contains('layoutOptRight')){
+        e.remove()}});
+      optnLayoutRight.innerHTML = "<a href='#'><i class='fas fa-check layoutOptRight style='margin-right:5px'></i>"+s+"</a>"
+    };
+    ulLayoutRight.appendChild(optnLayoutRight);
   });
+  forEach($(".Menu li.-hasSubmenu"), function(e){
+      e.showMenu = showMenu;
+      e.hideMenu = hideMenu;
+  });
+
+  forEach($(".Menu > li.-hasSubmenu"), function(e){
+      e.addEventListener("click", showMenu);
+  });
+
+  forEach($(".Menu > li.-hasSubmenu li"), function(e){
+      e.addEventListener("mouseenter", hideAllInactiveMenus);
+  });
+
+  forEach($(".Menu > li.-hasSubmenu li.-hasSubmenu"), function(e){
+      e.addEventListener("click", showMenu);
+  });
+
+  document.addEventListener("click", hideAllInactiveMenus);
+
   isSIF = false;
   var foundFiles =[{name:"https://raw.githubusercontent.com/MirjamFi/BioGraphVisart/master/TvsL_rooted/S02.graphml"}, {name:"https://raw.githubusercontent.com/MirjamFi/BioGraphVisart/master/TvsL_rooted/S05.graphml"}, {name:"https://raw.githubusercontent.com/MirjamFi/BioGraphVisart/master/TvsL_rooted/S06.graphml"},{name:"https://raw.githubusercontent.com/MirjamFi/BioGraphVisart/master/TvsL_rooted/S09.graphml"}]
   graphsList=[]
@@ -238,7 +276,11 @@ var shapeAttributes = [];
 function loadGraphml(sampleLeft, sampleRight, graphsList) {
   cleanSelectionsHeatmap();
   samples = [sampleLeft, sampleRight];
-  samples.forEach(function (sample){
+  var onceAttr = false
+  var firstVal = true;
+  var onceShapes = false
+  var onceSearch=false;
+  samples.forEach(sample=>{
     var graphString;
     if(!!sample){
         if(sample == sampleLeft){
@@ -251,62 +293,197 @@ function loadGraphml(sampleLeft, sampleRight, graphsList) {
           graphString = graphsList[path_right];
           graphStringRight = graphsList[path_right];
         }
-
       // put node atttributes into dropdown select object
       if(!isSIF){
+
         for (var i = 0; i <= graphString.length - 1; i++) {
           if(graphString[i].includes("for=\"node\"") && 
             (graphString[i].includes("attr.type=\"double\"") || 
               (graphString[i].includes("attr.type=\"boolean\"")))){
             var nodeattr = graphString[i].split("attr.name=")[1].split(" ")[0].replace(/"/g, "");
-            drpValues.push(nodeattr);
-            if(graphString[i].includes("attr.type=\"boolean\"")){
-              shapeAttributes.push(nodeattr);
+            if(!drpValues.includes(nodeattr)){
+              drpValues.push(nodeattr);
+              if(!onceAttr){
+                var drp = document.getElementById("values")
+                drp.classList.add("Menu")
+                drp.classList.add("-horizontal")
+                drp.id = "values";
+                drp.style.visibility = "visible";
+
+                var labelDrp = document.createElement("li")
+                labelDrp.classList.add("-hasSubmenu")
+                labelDrp.innerHTML = "<a href='#'>Color attribute</a>"
+                drp.appendChild(labelDrp)
+                var ulDrp = document.createElement("ul")
+                ulDrp.id="ulDrp"
+                labelDrp.appendChild(ulDrp)
+                onceAttr = true
+              }
+              var ulDrp = document.getElementById("ulDrp")
+              var optnDrp = document.createElement("li");
+              optnDrp.id=nodeattr;
+
+              if(firstVal){
+                optnDrp.innerHTML="<a href='#'><i class='fas fa-check optnDrp' style='margin-right:5px'></i>"+optnDrp.id+"</a>"
+                nodeVal = optnDrp.id
+                firstVal = false;
+              }
+              else{
+                optnDrp.innerHTML="<a href='#'>"+nodeattr+"</a>";}
+                ulDrp.appendChild(optnDrp)
+                optnDrp.onclick = function(){
+                document.querySelectorAll('.fa-check').forEach(e =>{
+                  if(e.classList.contains('optnDrp')){
+                    e.remove()}});
+                  this.innerHTML = "<a href='#'><i class='fas fa-check optnDrp' style='margin-right:5px'></i>"+this.id+"</a>"
+                  nodeVal = this.id
+                  visualize()
+              }
+              if(graphString[i].includes("attr.type=\"boolean\"")){
+                shapeAttributes.push(nodeattr);
+                console.log(onceShapes)
+                if(!onceShapes){
+                  console.log(onceShapes)
+                  var drpShapes = document.createElement("ul")
+                  drpShapes.id="nodeShapesAttr"
+                  drpShapes.classList.add("Menu")
+                  drpShapes.classList.add("-horizontal")
+                  drpShapes.style.visibility = "visible"
+                  document.getElementById("config").appendChild("drpShapes")
+                  var labelShape = document.createElement("li")
+                  labelShape.classList.add("-hasSubmenu")
+                  labelShape.innerHTML = "<a href='#'>Node shape</a>"
+                  drpShapes.appendChild(labelShape)
+                  var ulShapes = document.createElement("ul")
+                  labelShape.appendChild(ulShapes)
+                  const shapesArray = ["rectangle", "octagon", "rhomboid", "pentagon", "tag"];
+                  onceShapes = true
+                }
+                var liShape = document.createElement("li")
+                liShape.classList.add("-hasSubmenu")
+                liShape.innerHTML = "<a href='#'>"+nodeattr+"</a>"
+                liShape.id= nodeattr
+                liShape.id="nodeShapes"
+                ulShapes.appendChild(liShape)
+                var ulShape = document.createElement("ul")
+                ulShape.id = nodeattrShape
+                liShape.appendChild(ulShape)
+                shapesArray.forEach(function(s){
+                var optnShape = document.createElement("li")
+                optnShape.innerHTML = "<a hre='#'>"+s+"</a>"
+                optnShape.id= s
+                ulShape.appendChild(optnShape)
+                optnShape.onclick=function(){
+                  document.querySelectorAll('.fa-check').forEach(function(e){
+                    if(e.classList.contains('optnShape')){
+                      e.remove()}});
+                  optnShape.innerHTML = "<a href='#'><i class='fas fa-check optnShape' style='margin-right:5px'></i>"+s+"</a>"
+                  // optnShape.parentElement.innerHTML = "<a href='#'><i class='fas fa-check liShape' style='margin-right:5px'></i>"+optnShape.parentElement.id+"</a>"
+                  changeNodeShapes(graphLeft, "heatmapcontainer", optnShape.parentElement.id, this.id)
+                  changeNodeShapes(graphRight, "heatmapcontainer", optnShape.parentElement.id, this.id)
+                  hideMenu(document.getElementById("nodeShapesAttr"))}
+                })
+              }
             }
           };
           if(graphString[i].includes("<node id=\"n0\">")){
             break;
           };
         };
+        if(!onceSearch){
+          var searchgeneInput = document.createElement("input")
+          searchgeneInput.type = "text"
+          searchgeneInput.id = "searchgene"
+          searchgeneInput.width = "20"
+          searchgeneInput.style.visibility = "hidden"
+          searchgeneInput.value = "Node label"
+          document.getElementById("config").appendChild(searchgeneInput)
+          var searchgenebtn = document.createElement("button")
+          searchgenebtn.classList.add("butn")
+          searchgenebtn.id = "searchbutton"
+          searchgenebtn.style.visibility = "hidden"
+          searchgenebtn.innerHTML = "Search"
+          document.getElementById("config").appendChild(searchgenebtn)
+          var downloadbtn = document.createElement("button")
+          downloadbtn.classList.add("butn")
+          downloadbtn.id = "downloadPDF"
+          downloadbtn.onclick=downloadPDF;
+          // downloadbtn.disabled="disabled"
+          // downloadbtn.style.visibility ="hidden"
+          downloadbtn.innerHTML="<i class='fas fa-file-download fa-lg'></i>"
+          document.getElementById("config").appendChild(downloadbtn)
+          onceSearch = true;
+        }
       }
     }
     else{
       return;
     }
   });
-  var drp = document.getElementById("values");      // node attributes
-  removeOptions(drp);
+    // layout dropdown
+  var drpLayoutLeft = document.getElementById("selectlayoutLeft")
+   drpLayoutLeft.classList.add("Menu")
+  drpLayoutLeft.classList.add("-horizontal")
 
-  var sele = createSele();
-  drp.add(sele);
+  var drpLayoutRight = document.getElementById("selectlayoutRight")
+   drpLayoutRight.classList.add("Menu")
+  drpLayoutRight.classList.add("-horizontal")
+  drpLayoutRight.id = "selectlayoutRight";
 
-  drpValues = Array.from(new Set(drpValues)); 
-  drpValues.forEach(function(val){
-    var optn = document.createElement("OPTION");
-    optn.text=val;
-    optn.value=val;
-    drp.add(optn);
-  })
-  document.getElementById('values').value = drpValues[0];
+  var labelLayoutLeft = document.createElement("li")
+  labelLayoutLeft.classList.add("-hasSubmenu")
+  labelLayoutLeft.innerHTML = "<a href='#'>Layout</a>"
+  drpLayoutLeft.appendChild(labelLayoutLeft)
+  var ulLayoutLeft = document.createElement("ul")
+  labelLayoutLeft.appendChild(ulLayoutLeft)
 
-  var drpShapeAttr = document.getElementById("nodeShapesAttr"); // boolean attributes
-  removeOptions(drpShapeAttr); 
+  var labelLayoutRight = document.createElement("li")
+  labelLayoutRight.classList.add("-hasSubmenu")
+  labelLayoutRight.innerHTML = "<a href='#'>Layout</a>"
+  drpLayoutRight.appendChild(labelLayoutRight)
+  var ulLayoutRight = document.createElement("ul")
+  labelLayoutRight.appendChild(ulLayoutRight)
 
-  var sele = document.createElement("OPTION");    
-  sele.text = "Choose node's attribute";
-  sele.value = "";
-  drpShapeAttr.add(sele);
+  layoutArray.forEach(function(s){
+    var optnLayoutLeft = addLayoutOptions(s, "layoutOptLeft");
+    optnLayoutLeft.onclick = function(){
+      selectedLayoutLeft = s; 
+      changeLayout(graphLeft, s);
+      document.querySelectorAll('.fa-check').forEach(function(e){
+        if(e.classList.contains('layoutOptLeft')){
+        e.remove()}});
+      optnLayoutLeft.innerHTML = "<a ><i class='fas fa-check layoutOptLeft' style='margin-right:5px'></i>"+s+"</a>"
+    };
+    ulLayoutLeft.appendChild(optnLayoutLeft);
+    var optnLayoutRight= addLayoutOptions(s, "layoutOptRight");
+    optnLayoutRight.onclick = function(){
+      selectedLayoutRight = s; 
+      changeLayout(graphRight, s);
+      document.querySelectorAll('.fa-check').forEach(function(e){
+        if(e.classList.contains('layoutOptRight')){
+        e.remove()}});
+      optnLayoutRight.innerHTML = "<a><i class='fas fa-check layoutOptRight style='margin-right:5px'></i>"+s+"</a>"
+    };
+    ulLayoutRight.appendChild(optnLayoutRight);
+  });
+  forEach($(".Menu li.-hasSubmenu"), function(e){
+      e.showMenu = showMenu;
+      e.hideMenu = hideMenu;
+  });
 
-  shapeAttributes = Array.from(new Set(shapeAttributes)); 
-  if(shapeAttributes.length > 0){
-    shapeAttributes.forEach(function(val){
-      var optn = document.createElement("OPTION");
-      optn.text=val;
-      optn.value=val;
-      drpShapeAttr.add(optn);
-    })
-    drpShapeAttr.style.visibility = "visible";
-  }
+  forEach($(".Menu > li.-hasSubmenu"), function(e){
+      e.addEventListener("click", showMenu);
+  });
+
+  forEach($(".Menu > li.-hasSubmenu li"), function(e){
+      e.addEventListener("mouseenter", hideAllInactiveMenus);
+  });
+
+  forEach($(".Menu > li.-hasSubmenu li.-hasSubmenu"), function(e){
+      e.addEventListener("click", showMenu);
+  });
+
+  document.addEventListener("click", hideAllInactiveMenus);
 };
 
 //remove all options of dropdown
@@ -331,8 +508,8 @@ function cleanSelectionsHeatmap(){
   if(document.getElementById('keggpathwaysMerge')){
     document.getElementById('keggpathwaysMerge').style.visibility = "hidden";
   }
-  document.getElementById('selectlayoutLeft').value = 'Select Layout';
-  document.getElementById('selectlayoutRight').value = 'Select Layout';
+  document.getElementById('selectlayoutLeft').innerHTML = "";
+  document.getElementById('selectlayoutRight').innerHTML = "";
 
   path= null;
 
@@ -361,14 +538,14 @@ function createCyObject(cyDiv, nodesMin, nodesMax, val){
     style: [
          // style nodes
       basicstyle,
-      {selector: 'node',
-      style:{
-        'label':'data(symbol)'
-      }},
+      // {selector: 'node',
+      // style:{
+      //   'label':'data(symbol)'
+      // }},
       // attributes with numbers
       {selector: 'node['+val+' <0]',
         style: {
-          'background-color': 'mapData(val,'+ nodesMin+', 0, #006cf0, white)',
+          'background-color': 'mapData('+val+','+ nodesMin+', 0, #006cf0, white)',
           'color': 'black'
       }},
       {selector: 'node['+val+'<='+0.5*nodesMin+']',
@@ -377,7 +554,7 @@ function createCyObject(cyDiv, nodesMin, nodesMax, val){
       }},
       {selector: 'node['+val+'>0]',
         style: {
-          'background-color': 'mapData(val, 0,'+ nodesMax+', white, #d50000)',
+          'background-color': 'mapData('+val+', 0,'+ nodesMax+', white, #d50000)',
           'color': 'black'
       }},
       {selector: 'node['+val+'>='+0.5*nodesMax+']',

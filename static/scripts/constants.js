@@ -1,4 +1,4 @@
-const layoutArray = ["dagre (default)", "klay", "breadthfirst", "cose-bilkent", "grid"];
+const layoutArray = ["dagre", "klay", "breadthfirst", "cose-bilkent", "grid"];
 const basicstyle = {selector: 'node',
         style: {
           width: 50,

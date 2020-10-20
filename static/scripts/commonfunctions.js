@@ -1,31 +1,34 @@
 // create dropdown for node attributes
 function createSele(){
-	var sele = document.createElement("OPTION");    
-	sele.text = "Choose node's attribute";
-	sele.value = "";
+  var sele = document.createElement("OPTION");    
+  sele.text = "Color attribute";
+  sele.value = "";
+  sele.disabled = true
 
-	return sele;
+  return sele;
 }
 
 //create dropdown for layout
 function createLayoutSele(){
-	var seleLayout =document.createElement("OPTION");
-	seleLayout.text = "Select Layout";
-	return seleLayout;
+  var seleLayout =document.createElement("OPTION");
+  seleLayout.text = "Layout";
+  return seleLayout;
 }
 
 // add layout options
-function addLayoutOptions(s){
-    var graphLayout = s;
-    var optnLayout = document.createElement("OPTION");
-    optnLayout.text=graphLayout;
-    optnLayout.value=graphLayout;
+function addLayoutOptions(graphLayout, layoutOpt){
+    var optnLayout = document.createElement("li");
+    optnLayout.innerHTML="<a href='#'>"+graphLayout+"</a>";
+    if(graphLayout == "cose-bilkent"){
+      optnLayout.innerHTML="<a href='#'><i class='fas fa-check "+ layoutOpt+"' style='margin-right:5px'></i>"+graphLayout+"</a>";
+    }
+    optnLayout.id=graphLayout;
     return optnLayout;
 }
 
 // add legend for node color
 function addcolorlegend(cy){
-	cy.$('node[id = "l1"]')
+  cy.$('node[id = "l1"]')
           .style('color', 'black')
           .style('background-height',50)
           .style('background-width',200)
@@ -40,23 +43,23 @@ function addcolorlegend(cy){
 
 // create label for color legend
 function calculateLabelColorLegend(labelVal, fontSize, cy, nodesMin, nodesMax){
-	var whitespace = getTextWidth(' ', fontSize +" arial");
-	var minspace = getTextWidth(nodesMin, fontSize +" arial");
-	var valspace = getTextWidth(labelVal, fontSize +" arial");
-	var maxspace = getTextWidth(nodesMax, fontSize +" arial");
-	var neededWhitespace = 
-		((200-(minspace+whitespace+valspace+whitespace+maxspace))/whitespace)/2;
-	if(neededWhitespace <= 0){
-	    while(neededWhitespace <= 0){
-	    	labelVal = labelVal.slice(0, -1);
-	    	valspace = getTextWidth(labelVal+'...', fontSize +" arial");
-	    	neededWhitespace = 
-	    		((200-(minspace+whitespace+valspace+whitespace+maxspace))/
-	    			whitespace)/2;
-	    }
-	    labelVal = labelVal+'...';
-	}
-	if(!isNaN(nodesMin)){
+  var whitespace = getTextWidth(' ', fontSize +" arial");
+  var minspace = getTextWidth(nodesMin, fontSize +" arial");
+  var valspace = getTextWidth(labelVal, fontSize +" arial");
+  var maxspace = getTextWidth(nodesMax, fontSize +" arial");
+  var neededWhitespace = 
+    ((200-(minspace+whitespace+valspace+whitespace+maxspace))/whitespace)/2;
+  if(neededWhitespace <= 0){
+      while(neededWhitespace <= 0){
+        labelVal = labelVal.slice(0, -1);
+        valspace = getTextWidth(labelVal+'...', fontSize +" arial");
+        neededWhitespace = 
+          ((200-(minspace+whitespace+valspace+whitespace+maxspace))/
+            whitespace)/2;
+      }
+      labelVal = labelVal+'...';
+  }
+  if(!isNaN(nodesMin)){
       cy.$('node[id = "l1"]')
         .style('background-image',backgroundimg_num)
     }
@@ -66,7 +69,7 @@ function calculateLabelColorLegend(labelVal, fontSize, cy, nodesMin, nodesMax){
     }
      cy.$('node[id = "l1"]')
       .style('label', nodesMin+' '+' '.repeat(neededWhitespace)+ labelVal +' '
-      	+' '.repeat(neededWhitespace) + nodesMax)
+        +' '.repeat(neededWhitespace) + nodesMax)
 
 }
   function appendText(text, interact){
@@ -229,33 +232,33 @@ function createInteractionLegend(interactionTypes, graphLeft, edgesToMerge, grap
         }
 
         if(i == interactionTypes.size && (edgesToMerge || edgesToMergeRight)){
-	        var newRow = table.insertRow();
-	        var multipleInteractions = table.insertRow();
-	        var checkMultiple = newRow.insertCell(0);
-	        var newArrow = newRow.insertCell(1);
+          var newRow = table.insertRow();
+          var multipleInteractions = table.insertRow();
+          var checkMultiple = newRow.insertCell(0);
+          var newArrow = newRow.insertCell(1);
 
-	        var newCheckMultiple = document.createElement('input');
-	        newCheckMultiple.type = "checkbox";
-	        newCheckMultiple.id = "mergeEdges";
-	        newCheckMultiple.checked = true;
-	        newCheckMultiple.addEventListener('click', function(){
-	          mergeEdges(graphLeft);
+          var newCheckMultiple = document.createElement('input');
+          newCheckMultiple.type = "checkbox";
+          newCheckMultiple.id = "mergeEdges";
+          newCheckMultiple.checked = true;
+          newCheckMultiple.addEventListener('click', function(){
+            mergeEdges(graphLeft);
             if(graphRight){
               mergeEdges(graphRight)
             }
-	        });
+          });
 
-	        var label = document.createElement('label')
-	        label.htmlFor = "mergeEdges";
-	        label.appendChild(document.createTextNode('Multiple interactions'));
+          var label = document.createElement('label')
+          label.htmlFor = "mergeEdges";
+          label.appendChild(document.createTextNode('Multiple interactions'));
 
-	        checkMultiple.appendChild(newCheckMultiple);
-	        checkMultiple.appendChild(label)
+          checkMultiple.appendChild(newCheckMultiple);
+          checkMultiple.appendChild(label)
 
-	        var img = createImg();
-	        img.src = multipleinteractions;
-	        newArrow.appendChild(img);
-    	}
+          var img = createImg();
+          img.src = multipleinteractions;
+          newArrow.appendChild(img);
+      }
       }
     }
 }
@@ -279,7 +282,7 @@ function mergeEdges(cy, cy2=undefined){
             if(cy.edges()[j].data().id == e.id+'_'+interact.trim()){
               //show single edge
               cy.edges('edge[id = "'+e.id+'_'+interact.trim()+'"]')
-              	.style('display', 'element').update;
+                .style('display', 'element').update;
               continue loopInteraction;
             }
           }
@@ -287,14 +290,14 @@ function mergeEdges(cy, cy2=undefined){
           cy.add({
             group: 'edges',
             data: { id:e.id+'_'+interact.trim(), source:e.source, 
-            	target:e.target, interaction:interact.trim()},
+              target:e.target, interaction:interact.trim()},
           });
         }
       }
       else if(e.interaction.includes(",")){
         cy.edges()[i].data().interaction = e.interaction.split(",");
         cy.edges()[i].style('target-arrow-shape', 'vee')
-        	.style('line-style','solid').update;
+          .style('line-style','solid').update;
         i--;
       }
     }
@@ -307,15 +310,15 @@ function mergeEdges(cy, cy2=undefined){
       // show merged edges
       if(edge.hidden()){
         edge.style('display', 'element').style('target-arrow-shape', 'vee')
-        	.style('line-style','solid');
+          .style('line-style','solid');
       }
       // hide single edges
       else if(edge.data().id.includes(edge.data().interaction) || 
-      	edge.data().id.includes(',')){
+        edge.data().id.includes(',')){
           edge.style('display', 'none');
-        }
       }
-    
+    }
+      
   }
   if(cy2 != undefined){
     mergeEdges(cy2);
@@ -324,279 +327,294 @@ function mergeEdges(cy, cy2=undefined){
 
 // get nodes and edges grom graphml string
 function getNodesAndEdges(graphString, nodeVal,graphpos = undefined, noOptn = false){
-  	var nodes = [];
-  	var edges = [];
-  	var nodeValuesNum = [];
-  	var interactionTypes = new Set();
-  	var edgesToMerge = false;
-  	if(graphpos == "left"){
-      	var leftNodes = [];
-  	}
-  	else if(graphpos == "right"){
-      	var rightNodes = [];
-  	}
+    var nodes = [];
+    var edges = [];
+    var nodeValuesNum = [];
+    var interactionTypes = new Set();
+    var edgesToMerge = false;
+    var drugnodes = [];
+    var drugedges = [];
+    var drugtargets = {};
+    if(graphpos == "left"){
+        var leftNodes = [];
+    }
+    else if(graphpos == "right"){
+        var rightNodes = [];
+    }
 
-  	var prevId = "";
-  	var pos = 0;
+    var prevId = "";
+    var pos = 0;
 
-  	var regExp = /\>([^)]+)\</; // get symbol name between > <
+    var regExp = /\>([^)]+)\</; // get symbol name between > <
 
-  	for (var i = 0; i <= graphString.length - 1; i++) {
-    	if(graphString[i].includes("node id")){   // get node id
-      		var curNode = {};
-      		curNode.id = graphString[i].split("\"")[1]  ;
-      		if(graphpos == "left"){
-        		curNode.graph = "g1";
-        		leftNodes.push({data: curNode});
-      		}
-      		else if(graphpos == "right"){
-        		curNode.graph = "g2";
-        		rightNodes.push({data: curNode});
-      		}
-      		nodes.push({data: curNode});
-    	}
-    	if(!isEmpty(curNode)){
-      		if(graphString[i].includes("key=\"v_") && 
-      			!graphString[i].includes("v_id")){
-        		var attrname = graphString[i].split("v_")[1].split("\">")[0]
-        		var val = graphString[i].split(/\>/)[1].split(/\</)[0]
-	        	if(!isNaN(parseFloat(val)) && attrname != "name"){
-	          		curNode[attrname] = parseFloat(val);
-	        	}
-	        	else{
-	          		curNode[attrname] = val;
-	        	}
-	      	}
-	      	if(graphString[i].includes("\"v_"+nodeVal+"\"\>")){
-	        	var val = regExp.exec(graphString[i])[1]; // if availabe get node value
-	        	if(!isNaN(parseFloat(val))){
-	        		var splitGraphString = graphString[i].split(" ")
-		         	attrID = splitGraphString.filter(s => s.includes('key'))[0].split("\"")[1];
-		          	currVal = {};
-		          	currVal.val = parseFloat(val);
-		          	nodeValuesNum.push(currVal.val);
-	        	}
-	        	else if(val === "false" || val === "true"){
-	         	 	currVal = {};
-	          		currVal[val] = val;
-	          		currVal.attr = "boolean";
-	          		nodeValuesNum.push(currVal);
-	          		curNode.val = val;
-	        	}
-	      	}
-    	}   
-    	if(graphString[i].includes("edge source")){     // get edges
-      		var curEdge = {};
-      		s = graphString[i].split("\"")[1];
-      		t = graphString[i].split("\"")[3];
-      		curEdge.id = s.concat(t);
-      		curEdge.source = s;
-      		curEdge.target = t;
-    	}
-    	if(!isEmpty(curEdge)){
-      		if(graphString[i].includes("e_interaction")){     // get edges interaction type
-        		var interact = regExp.exec(graphString[i])[1]; 
-        		if(interact.includes(",")){
-          			var interactarray = interact.split(",")
-          			for(let inter of interactarray){
-            			interactionTypes.add(inter);
-          			}
-        		}
-        		else{ 
-          			interactionTypes.add(interact);
-        		}
+    for (var i = 0; i <= graphString.length - 1; i++) {
+      if(graphString[i].includes("node id")){   // get node id
+          var curNode = {};
+          curNode.id = graphString[i].split("\"")[1]  ;
+          if(graphpos == "left"){
+            curNode.graph = "g1";
+            leftNodes.push({data: curNode});
+          }
+          else if(graphpos == "right"){
+            curNode.graph = "g2";
+            rightNodes.push({data: curNode});
+          }
+          nodes.push({data: curNode});
+      }
+      if(!isEmpty(curNode)){
+          if(graphString[i].includes("key=\"v_") && 
+            !graphString[i].includes("v_id")){
+            var attrname = graphString[i].split("v_")[1].split("\">")[0]
+            var val = graphString[i].split(/\>/)[1].split(/\</)[0]
+            if(attrname == "entrez_gene" && val.includes("http")){
+              val = val.split("/").pop()
+            }
+            if(!isNaN(parseFloat(val)) && attrname != "name"){
+                curNode[attrname] = parseFloat(val);
+            }
+            else{
+                curNode[attrname] = val;
+            }
+          }
+          if(graphString[i].includes("\"v_"+nodeVal+"\"\>")){
+            var val = regExp.exec(graphString[i])[1]; // if availabe get node value
+            if(!isNaN(parseFloat(val))){
+              var splitGraphString = graphString[i].split(" ")
+              attrID = splitGraphString.filter(s => s.includes('key'))[0].split("\"")[1];
+                currVal = {};
+                currVal.val = parseFloat(val);
+                nodeValuesNum.push(currVal.val);
+            }
+            else if(val === "false" || val === "true"){
+              currVal = {};
+                currVal[val] = val;
+                currVal.attr = "boolean";
+                nodeValuesNum.push(currVal);
+                curNode.val = val;
+            }
+          }
+          if(graphString[i].includes("\"v_midrug_id\"\>")){
+            drugnodes.push(curNode.id)
+          }
+      }   
+      if(graphString[i].includes("edge source")){     // get edges
+          var curEdge = {};
+          s = graphString[i].split("\"")[1];
+          t = graphString[i].split("\"")[3];
+          curEdge.id = s.concat(t);
+          curEdge.source = s;
+          curEdge.target = t;
+          if(drugnodes.includes(curEdge.source)){
+            if(!drugedges[curEdge.target]){
+              drugedges[curEdge.target] = []
+            }
+            drugedges[curEdge.target].push(curEdge.source)
+          }
+      }
+      if(!isEmpty(curEdge)){
+          if(graphString[i].includes("e_interaction")){     // get edges interaction type
+            var interact = regExp.exec(graphString[i])[1]; 
+            if(interact.includes(",")){
+                var interactarray = interact.split(",")
+                for(let inter of interactarray){
+                  interactionTypes.add(inter);
+                }
+            }
+            else{ 
+                interactionTypes.add(interact);
+            }
 
-	        	if(prevId == curEdge.id){                       // multiple edges between two nodes
-	          		if(!Array.isArray(edges[pos-1].data.interaction)){
-	            		curEdge.interaction=
-	            			[edges[pos-1].data.interaction, interact]
-	            		if(graphpos == "left"){
-	              			leftEdges.splice(pos-1,1)
-	            		}
-	            		else if(graphpos == "right"){
-	              			rightEdges.splice(pos-1,1)
-	            		}
-	            		edges.splice(pos-1,1)
-	            		pos = pos -1
-	          		}
-	          		else{
-	            		edges[pos-1].data.interaction.push(interact)
-	            		if(graphpos == "left"){
-	              			if(!Array.isArray(leftEdges[pos-1].data.interaction)){
-	                			leftEdges[pos-1].data.interaction = 
-	                				[leftEdges[pos-1].data.interaction]
-	              			}
-	              			leftEdges[pos-1].data.interaction.push(interact);
-	            		}
-	            		else if(graphpos == "right"){
-	              			if(!Array.isArray(rightEdges[pos-1].data.interaction)){
-	                			rightEdges[pos-1].data.interaction = 
-	                				[rightEdges[pos-1].data.interaction]
-	              			}
-	              			rightEdges[pos-1].data.interaction.push(interact)
-	            		}
-	            		continue;
-	          		}
-	          		edgesToMerge = true;
-	        	}
-	      		else{
-	        		curEdge.interaction = interact;
-	      		}
-	      		if(graphpos == "left"){
-	        		curEdge.graph = "g1";
-	        		leftEdges.push({data: curEdge});
-	      		}
-	      		else if(graphpos == "right"){
-	        		curEdge.graph = "g2";
-	        		rightEdges.push({data: curEdge});
-	      		}
-	      		edges.push({data: curEdge} );
+            if(prevId == curEdge.id){                       // multiple edges between two nodes
+                if(!Array.isArray(edges[pos-1].data.interaction)){
+                  curEdge.interaction=
+                    [edges[pos-1].data.interaction, interact]
+                  if(graphpos == "left"){
+                      leftEdges.splice(pos-1,1)
+                  }
+                  else if(graphpos == "right"){
+                      rightEdges.splice(pos-1,1)
+                  }
+                  edges.splice(pos-1,1)
+                  pos = pos -1
+                }
+                else{
+                  edges[pos-1].data.interaction.push(interact)
+                  if(graphpos == "left"){
+                      if(!Array.isArray(leftEdges[pos-1].data.interaction)){
+                        leftEdges[pos-1].data.interaction = 
+                          [leftEdges[pos-1].data.interaction]
+                      }
+                      leftEdges[pos-1].data.interaction.push(interact);
+                  }
+                  else if(graphpos == "right"){
+                      if(!Array.isArray(rightEdges[pos-1].data.interaction)){
+                        rightEdges[pos-1].data.interaction = 
+                          [rightEdges[pos-1].data.interaction]
+                      }
+                      rightEdges[pos-1].data.interaction.push(interact)
+                  }
+                  continue;
+                }
+                edgesToMerge = true;
+            }
+            else{
+              curEdge.interaction = interact;
+            }
+            if(graphpos == "left"){
+              curEdge.graph = "g1";
+              leftEdges.push({data: curEdge});
+            }
+            else if(graphpos == "right"){
+              curEdge.graph = "g2";
+              rightEdges.push({data: curEdge});
+            }
+            edges.push({data: curEdge} );
 
-	      		prevId = curEdge.id;
-	      		pos = pos +1;
-	      	}
-    	}
-  	}
-  	if(!noOptn){
-		var legendNode = {};
-		    legendNode.id = "l1";
-		    legendNode.symbol = "legend";
-		    nodes.push({data:legendNode});
-	}
-  return [nodes, edges, nodeValuesNum, interactionTypes, edgesToMerge];
+            prevId = curEdge.id;
+            pos = pos +1;
+          }
+      }
+    }
+    if(!noOptn){
+    var legendNode = {};
+        legendNode.id = "l1";
+        legendNode.symbol = "legend";
+        nodes.push({data:legendNode});
+  }
+  return [nodes, edges, nodeValuesNum, interactionTypes, edgesToMerge, drugedges];
 }
 
 // get nodes and edges grom sif string
 function getNodesAndEdgesSIF(graphString, graphpos = undefined, noOptn = false){
-  	var nodes = [];
-  	var edges = [];
-  	var interactionTypes = new Set();
-  	 var edgesToMerge = false;
-  	if(graphpos == "left"){
-      	var leftNodes = [];
-  	}
-  	else if(graphpos == "right"){
-      	var rightNodes = [];
-  	}
+    var nodes = [];
+    var edges = [];
+    var interactionTypes = new Set();
+     var edgesToMerge = false;
+    if(graphpos == "left"){
+        var leftNodes = [];
+    }
+    else if(graphpos == "right"){
+        var rightNodes = [];
+    }
 
-  	var prevId = "";
-  	var pos = 0;
-  	var nodesSet = new Set();
+    var prevId = "";
+    var pos = 0;
+    var nodesSet = new Set();
 
-  	var el = graphString.find(a =>a.includes("\t"));  	
-  	for (var i = 0; i <= graphString.length - 1; i++) {	
-  		if(el){
-			var nodesAndInteraction = graphString[i].split("\t");
-		}
-		else{
-			var nodesAndInteraction = graphString[i].split(" ");
-		}
-		var n1 = nodesAndInteraction[0].trim();
-		nodesSet.add(n1);
-		var interact = nodesAndInteraction[1].trim();
-		var n2 = nodesAndInteraction[2].trim();
-		nodesSet.add(n2);
+    var el = graphString.find(a =>a.includes("\t"));    
+    for (var i = 0; i <= graphString.length - 1; i++) { 
+      if(el){
+      var nodesAndInteraction = graphString[i].split("\t");
+    }
+    else{
+      var nodesAndInteraction = graphString[i].split(" ");
+    }
+    var n1 = nodesAndInteraction[0].trim();
+    nodesSet.add(n1);
+    var interact = nodesAndInteraction[1].trim();
+    var n2 = nodesAndInteraction[2].trim();
+    nodesSet.add(n2);
 
-		if(interact.includes(",")){
-  			var interactarray = interact.split(",")
-  			for(let inter of interactarray){
-    			interactionTypes.add(inter);
-  			}
-		}
-		else{ 
-  			interactionTypes.add(interact);
-		}
-	}
-	var nodesWIDs = {};
-	var j = 0;
-	for(var node of nodesSet){
-		var curNode = {};
-		curNode.id = "n"+j;
-		curNode.name = node;
-		nodesWIDs[node] = curNode.id;
-		j++;
-		if(graphpos == "left"){
-			curNode.graph = "g1";
-			leftNodes.push({data: curNode});
-		}
-		else if(graphpos == "right"){
-			curNode.graph = "g2";
-			rightNodes.push({data: curNode});
-		}
-		nodes.push({data: curNode});
-	}
-	for (var i = 0; i <= graphString.length - 1; i++) {	
-		var curEdge = {};
-		if(el){
-			var nodesAndInteraction = graphString[i].split("\t");
-		}
-		else{
-			var nodesAndInteraction = graphString[i].split(" ");
-		}
-		var n1 = nodesAndInteraction[0].trim();
-		var interact = nodesAndInteraction[1].trim();
-		var n2 = nodesAndInteraction[2].trim();
-		var s = nodesWIDs[n1];
-		var t = nodesWIDs[n2];
-		curEdge.id = s.concat(t)
-		curEdge.source = s;
-		curEdge.target = t;
-		if(prevId == curEdge.id){                       // multiple edges between two nodes
-      		if(!Array.isArray(edges[pos-1].data.interaction)){
-        		curEdge.interaction=
-        			[edges[pos-1].data.interaction, interact]
-        		if(graphpos == "left"){
-          			leftEdges.splice(pos-1,1)
-        		}
-        		else if(graphpos == "right"){
-          			rightEdges.splice(pos-1,1)
-        		}
-        		edges.splice(pos-1,1)
-        		pos = pos -1
-      		}
-      		else{
-        		edges[pos-1].data.interaction.push(interact)
-        		if(graphpos == "left"){
-          			if(!Array.isArray(leftEdges[pos-1].data.interaction)){
-            			leftEdges[pos-1].data.interaction = 
-            				[leftEdges[pos-1].data.interaction]
-          			}
-          			leftEdges[pos-1].data.interaction.push(interact);
-        		}
-	    		else if(graphpos == "right"){
-	      			if(!Array.isArray(rightEdges[pos-1].data.interaction)){
-	        			rightEdges[pos-1].data.interaction = 
-	        				[rightEdges[pos-1].data.interaction]
-	      			}
-	      			rightEdges[pos-1].data.interaction.push(interact)
-	    		}
-	    		continue;
-  			}
-  			edgesToMerge = true;
-    	}
-  		else{
-    		curEdge.interaction = interact;
-  		}
-  		if(graphpos == "left"){
-    		curEdge.graph = "g1";
-    		leftEdges.push({data: curEdge});
-  		}
-  		else if(graphpos == "right"){
-    		curEdge.graph = "g2";
-    		rightEdges.push({data: curEdge});
-  		}
-  		edges.push({data: curEdge} );
+    if(interact.includes(",")){
+        var interactarray = interact.split(",")
+        for(let inter of interactarray){
+          interactionTypes.add(inter);
+        }
+    }
+    else{ 
+        interactionTypes.add(interact);
+    }
+  }
+  var nodesWIDs = {};
+  var j = 0;
+  for(var node of nodesSet){
+    var curNode = {};
+    curNode.id = "n"+j;
+    curNode.name = node;
+    nodesWIDs[node] = curNode.id;
+    j++;
+    if(graphpos == "left"){
+      curNode.graph = "g1";
+      leftNodes.push({data: curNode});
+    }
+    else if(graphpos == "right"){
+      curNode.graph = "g2";
+      rightNodes.push({data: curNode});
+    }
+    nodes.push({data: curNode});
+  }
+  for (var i = 0; i <= graphString.length - 1; i++) { 
+    var curEdge = {};
+    if(el){
+      var nodesAndInteraction = graphString[i].split("\t");
+    }
+    else{
+      var nodesAndInteraction = graphString[i].split(" ");
+    }
+    var n1 = nodesAndInteraction[0].trim();
+    var interact = nodesAndInteraction[1].trim();
+    var n2 = nodesAndInteraction[2].trim();
+    var s = nodesWIDs[n1];
+    var t = nodesWIDs[n2];
+    curEdge.id = s.concat(t)
+    curEdge.source = s;
+    curEdge.target = t;
+    if(prevId == curEdge.id){                       // multiple edges between two nodes
+          if(!Array.isArray(edges[pos-1].data.interaction)){
+            curEdge.interaction=
+              [edges[pos-1].data.interaction, interact]
+            if(graphpos == "left"){
+                leftEdges.splice(pos-1,1)
+            }
+            else if(graphpos == "right"){
+                rightEdges.splice(pos-1,1)
+            }
+            edges.splice(pos-1,1)
+            pos = pos -1
+          }
+          else{
+            edges[pos-1].data.interaction.push(interact)
+            if(graphpos == "left"){
+                if(!Array.isArray(leftEdges[pos-1].data.interaction)){
+                  leftEdges[pos-1].data.interaction = 
+                    [leftEdges[pos-1].data.interaction]
+                }
+                leftEdges[pos-1].data.interaction.push(interact);
+            }
+          else if(graphpos == "right"){
+              if(!Array.isArray(rightEdges[pos-1].data.interaction)){
+                rightEdges[pos-1].data.interaction = 
+                  [rightEdges[pos-1].data.interaction]
+              }
+              rightEdges[pos-1].data.interaction.push(interact)
+          }
+          continue;
+        }
+        edgesToMerge = true;
+      }
+      else{
+        curEdge.interaction = interact;
+      }
+      if(graphpos == "left"){
+        curEdge.graph = "g1";
+        leftEdges.push({data: curEdge});
+      }
+      else if(graphpos == "right"){
+        curEdge.graph = "g2";
+        rightEdges.push({data: curEdge});
+      }
+      edges.push({data: curEdge} );
 
-  		prevId = curEdge.id;
-  		pos = pos +1;
-  	}
-  	if(!noOptn){
-		var legendNode = {};
-		    legendNode.id = "l1";
-		    legendNode.symbol = "legend";
-		    nodes.push({data:legendNode});
-	}
-  	return [nodes, edges, [], interactionTypes, edgesToMerge];
+      prevId = curEdge.id;
+      pos = pos +1;
+    }
+    if(!noOptn){
+    var legendNode = {};
+        legendNode.id = "l1";
+        legendNode.symbol = "legend";
+        nodes.push({data:legendNode});
+  }
+    return [nodes, edges, [], interactionTypes, edgesToMerge];
 }
 
 //set legends range by min and max of nodes' attributes
@@ -648,35 +666,32 @@ function isEmpty(obj) {
 // show drop downs for nodes' shapes attribute and shape itself
 function activateNodeShapeChange(){
   document.getElementById('nodeShapesAttr')
-  	.setAttribute('style','visibility:visible');
+    .setAttribute('style','visibility:visible');
 }
 
 function activateShapes(){
   document.getElementById('nodeShapes')
-  	.setAttribute('style','visibility:visible');
+    .setAttribute('style','visibility:visible');
 }
 
 // change node shape of nodes with given attribute
-function changeNodeShapes(cy, container){
-  	var shapeAttribute = document.getElementById('nodeShapesAttr').value;
-  	var shape = document.getElementById('nodeShapes').value;
+function changeNodeShapes(cy, container, shapeAttribute, shape){
+    // select nodes with given attribute
+    if(cy.nodes().filter('node['+shapeAttribute+' ="true"]').length > 0){
+    cy.style()
+        .selector('node['+shapeAttribute+' ="true"]')        
+        .style('shape', shape)
+        .update();
+  }
 
-  	// select nodes with given attribute
-  	if(cy.nodes().filter('node['+shapeAttribute+' ="true"]').length > 0){
-		cy.style()
-	      .selector('node['+shapeAttribute+' ="true"]')        
-	      .style('shape', shape)
-	      .update();
-	}
-
-	// list all shapes already used
-	usedShapes = []
-	for (var key in usedShapeAttributes) {
-		if (Object.prototype.hasOwnProperty.call(usedShapeAttributes, key)) {
-	        var val = usedShapeAttributes[key];
-	        usedShapes[val] = key;
-	    }
-	}
+  // list all shapes already used
+  usedShapes = []
+  for (var key in usedShapeAttributes) {
+    if (Object.prototype.hasOwnProperty.call(usedShapeAttributes, key)) {
+          var val = usedShapeAttributes[key];
+          usedShapes[val] = key;
+      }
+  }
 
   // no shapes have been used so far
   if(isEmpty(usedShapeAttributes)){
@@ -723,14 +738,14 @@ function changeNodeShapes(cy, container){
   else if(Object.keys(usedShapes).includes(shape)){
     if(usedShapes[shape] == shapeAttribute) return;
     var replace = 
-    	confirm("Shape is already used. Do you want to replace "+
-    		usedShapes[shape]+" by "+ shapeAttribute+"?")
+      confirm("Shape is already used. Do you want to replace "+
+        usedShapes[shape]+" by "+ shapeAttribute+"?")
 
     // is shape has been used change previous attributes shape back to ellipse
     if(replace){
       delete(usedShapeAttributes[usedShapes[shape]]);
       ycoord = shapeNode.$('node[id ="'+usedShapes[shape]+'"]')
-      	.position()['y']-35;
+        .position()['y']-35;
       shapeNode.remove('node[id ="'+usedShapes[shape]+'"]');
     }
     else return;
@@ -757,11 +772,11 @@ function changeNodeShapes(cy, container){
 
   // add new shape and attribute
   else if(!isEmpty(usedShapeAttributes) && 
-  		!usedShapeAttributes.hasOwnProperty(shapeAttribute)){
+      !usedShapeAttributes.hasOwnProperty(shapeAttribute)){
     ycoord = ycoord + 35;
     usedShapeAttributes[shapeAttribute] = shape;
     shapeNode.add( { group: "nodes", data: { id: shapeAttribute}, 
-    	position:{'x':80, 'y':ycoord}});
+      position:{'x':80, 'y':ycoord}});
     shapeNode.style()
         .selector('node[id ="'+shapeAttribute+'"]')        
         .style('shape', shape)
@@ -777,16 +792,16 @@ function changeNodeShapes(cy, container){
 function getTextWidth(text, font) {
     // re-use canvas object for better performance
     var canvas = getTextWidth.canvas || (getTextWidth.canvas = 
-    	document.createElement("canvas"));
+      document.createElement("canvas"));
     var context = canvas.getContext("2d");
     context.font = font;
     var metrics = context.measureText(text);
     return metrics.width;
 } 
 
-function changeLayout(cy, pos=""){
+function changeLayout(cy, selectedLayout){
   var animateLayout = true;
-  var selectedLayout = document.getElementById('selectlayout'+pos).value;
+  // var selectedLayout = document.getElementById('selectlayout'+pos).id;
   if(selectedLayout == "klay"){
     var options = {
       animate: animateLayout, // Whether to transition the node positions
@@ -813,7 +828,7 @@ function changeLayout(cy, pos=""){
         animate: animateLayout
       }).run();
   }
-  else if(selectedLayout == "dagre (default)"){
+  else if(selectedLayout == "dagre"){
     cy.layout({
         name: "dagre",
         animate: animateLayout
@@ -824,7 +839,8 @@ function changeLayout(cy, pos=""){
         name: "cose-bilkent",
         // Gravity range (constant)
         gravityRange: 1.3,
-        animate: true
+        animate: true,
+        randomize: false
       }).run();
   }
   else if(selectedLayout == "grid"){
@@ -836,10 +852,12 @@ function changeLayout(cy, pos=""){
   }
   else{
     cy.layout({
-        name: "dagre",
-        animate: animateLayout
+        name: "cose-bilkent",
+        // Gravity range (constant)
+        gravityRange: 1.3,
+        animate: true,
+        randomize: false
       }).run();
-    document.getElementById('selectlayout'+pos).value = "dagre (default)";
   }
 }
 
@@ -850,8 +868,8 @@ function highlightSearchedGene(cy, secondcy=undefined){
     cy.$('node').style("border-width", 2); 
     cy.$('node[id = "l1"]').style("border-width", 1); 
     if(secondcy){
-    	secondcy.$('node').style("border-width", 2); 
-    	secondcy.$('node[id = "l1"]').style("border-width", 1);
+      secondcy.$('node').style("border-width", 2); 
+      secondcy.$('node[id = "l1"]').style("border-width", 1);
     } 
     document.getElementById('searchgene').value = "Search gene"
   }
@@ -860,9 +878,9 @@ function highlightSearchedGene(cy, secondcy=undefined){
     cy.$('node[symbol =\''  + gene + '\']').style("border-width", 10);
     cy.$('node[id = "l1"]').style("border-width", 1);
     if(secondcy && secondcy.$('node[symbol=\''  + gene + '\']').length>0){
-	   	secondcy.$('node').style("border-width", 2);
-	    secondcy.$('node[symbol =\''  + gene + '\']').style("border-width", 10);
-	    secondcy.$('node[id = "l1"]').style("border-width", 1);
+      secondcy.$('node').style("border-width", 2);
+      secondcy.$('node[symbol =\''  + gene + '\']').style("border-width", 10);
+      secondcy.$('node[id = "l1"]').style("border-width", 1);
     }
   }
   else if(cy.$('node[name =\''  + gene + '\']').length>0){
@@ -870,9 +888,9 @@ function highlightSearchedGene(cy, secondcy=undefined){
     cy.$('node[name =\''  + gene + '\']').style("border-width", 10);
     cy.$('node[id = "l1"]').style("border-width", 1);
     if(secondcy && secondcy.$('node[name =\''  + gene + '\']').length>0){
-    	secondcy.$('node').style("border-width", 2);
-    	secondcy.$('node[name =\''  + gene + '\']').style("border-width", 10);
-    	secondcy.$('node[id = "l1"]').style("border-width", 1);
+      secondcy.$('node').style("border-width", 2);
+      secondcy.$('node[name =\''  + gene + '\']').style("border-width", 10);
+      secondcy.$('node[id = "l1"]').style("border-width", 1);
     }
   }
   else{

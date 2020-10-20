@@ -9,6 +9,7 @@
         <script src="https://code.highcharts.com/highcharts.js"></script>
         <script src="https://code.highcharts.com/modules/heatmap.js"></script>
         <script src="https://code.highcharts.com/modules/exporting.js"></script>
+        <script src="https://kit.fontawesome.com/342fe75ec3.js" crossorigin="anonymous"></script>
 
         <script src="http://d3js.org/d3.v3.min.js"></script> 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.debug.js" integrity="sha384-THVO/sM0mFD9h7dfSndI6TS0PgAGavwKvB5hAxRRvc0o9cPLohB0wb/PTA7LdUHs" crossorigin="anonymous"></script>
@@ -35,14 +36,16 @@
         <script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/download_comparison.js"></script>
         <script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/keggpathways.js"></script>
         <script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/commonfunctions.js"></script>
-        <script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/legend.js"></script>
+        <!-- <script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/legend.js"></script> -->
 
-        <script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/icons.js"></script>
+        <!-- <script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/icons.js"></script> -->
         <script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/graph_heatmap.js"></script>
 
         <script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/mergeSubgraphs.js"></script>
 
         <script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/heatmapSubgraphs.js"></script>
+        <link rel="stylesheet" href="http://127.0.0.1:3000/static/css/menu.css">
+        <script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/external/menu.js"></script>
 
         <style>
   </style>
@@ -50,37 +53,33 @@
 
     <body>
        <div class="content"> 
-    <div class="topnav" id ="nav">
+    <div class="topnav" id ="nav" style="margin-bottom: 20px">
 
-      <div class="topnav-left">
-            <a class="page-link active" href="/BioGraphVisart/heatmap">Comparison</a>
+        <div class="dropdown topnav-left">
+          <button class="dropbtn_topnav"><i class="fas fa-bars"></i>  
+          </button>
+          <div class="dropdown-content">
+            <a class="page-link" href="/BioGraphVisart/heatmap">Comparison</a>
+      <a class="page-link"href="/BioGraphVisart/about" class="page-link">About</a>            
+      <a class="page-link" href="/BioGraphVisart/documentation">Documentation</a>
+            <a class="page-link" href="/BioGraphVisart/contact">Contact</a>
+          </div>
         </div>
         <div class="topnav-centered">
             <a class="page-link" href="/BioGraphVisart">BioGraphVisart</a>
         </div>
-        <div class="dropdown topnav-right">
-          <button class="dropbtn"><a href="/BioGraphVisart/about" class="page-link">About</a>  
-            <i class="fa fa-caret-down"></i>
-          </button>
-          <div class="dropdown-content">
-            <!-- <a href="/BioGraphVisart/about" class="page-link active">About</a> -->
-            <a class="page-link" href="/BioGraphVisart/documentation">Documentation</a>
-            <a class="page-link" href="/BioGraphVisart/contact">Contact</a>
+        <div class="topnav-right">
+            <div id="downloadPart" style="visibility: hidden" class="dropdown">
+          <button class="dropbtnright"><i class="fas fa-file-download fa-sm"></i></button>
+          <div id="downloadTypes" class="dropdown-content">
+            <a onClick="downloadPDF()">PDF</a>
+            <a onclick="downloadPNG()">PNG</a>
+            <a onclick="downloadSVG()">SVG</a>
+            <!--<a onclick="downloadJSON()">JSON</a>-->
           </div>
       </div>
+        </div>
     </div>
-    <script>
-        // Add active class to the current button (highlight it)
-        var header = document.getElementById("nav");
-        var btns = header.getElementsByClassName("page-link");
-        for (var i = 0; i < btns.length; i++) {
-          btns[i].addEventListener("click", function() {
-          var current = document.getElementsByClassName("active");
-          current[0].className = current[0].className.replace(" active", "");
-          this.className += " active";
-          });
-        }
-    </script>
 
     <p id="description" style="font-size: 14px">Compare networks by calculating the node overlap displayed in a heatmap. Input are multiple .graphml-files.
     </p>
@@ -91,36 +90,9 @@
     <div>
         <p id="selectAttribute" style="visibility: hidden"> Select two networks for direct comparison by clicking on a cell in the heatmap. The merged network will open in a new tab.</p>
 
-        <select name="values" id="values" onchange="visualize()" style="visibility: hidden">
-            <option value="" selected disabled hidden>Choose node's attribute</option>
-        </select>
-   <select name= "nodeShapesAttr" id="nodeShapesAttr" onchange="activateShapes()" style="visibility: hidden;"> </select>
-  <script type="text/javascript">
-    var drpShapes = document.getElementById("nodeShapesAttr");
-    var seleShapeAttr = document.createElement("OPTION");    
-    seleShapeAttr.text = "Select Shape Attribute";
-    seleShapeAttr.value = "";
-    drpShapes.add(seleShapeAttr);
-  </script>
-  <select name= "nodeShapes" id="nodeShapes" style="visibility: hidden;"> </select>
-  <script type="text/javascript">
-   // shapes dropdown
-   var drpShape = document.getElementById("nodeShapes");
-    var seleShape = document.createElement("OPTION");
-    seleShape.text = "Select Shape";
-    seleShape.value = "ellipse";
-    drpShape.add(seleShape);
-
-    const shapesArray = ["rectangle", "octagon", "rhomboid", "pentagon", "tag"];
-
-    shapesArray.forEach(function(s){
-      var nodeShape = s;
-      var optnShape = document.createElement("OPTION");
-      optnShape.text=nodeShape;
-      optnShape.value=nodeShape;
-      drpShape.add(optnShape);
-    });
-    </script>
+        <ul name="values" id="values" onchange="visualize()" style="visibility: hidden">
+        </ul>
+   <ul name= "nodeShapesAttr" id="nodeShapesAttr" onchange="activateShapes()" style="visibility: hidden;"> </ul>
         <input type="text" name="searchgene" id="searchgene" width="30" style="visibility: hidden" value="Search gene">
         <button class="butn" id="searchbutton" style="visibility: hidden">Search</button>
 
@@ -156,7 +128,7 @@
         </div>
         <div id="resetLeft" style="visibility: hidden">
           <button class= 'butn' id="resetLeftLayout">Reset layout</button>
-          <select id ="selectlayoutLeft">Select Layout</select>
+          <ul id ="selectlayoutLeft"></ul>
         </div>
         <div id="downloadPartLeft" style="visibility: hidden">
           <input name="outputFileLeft" type="text" maxlength="512" id="outputNameLeft" value="File name"/>
@@ -175,7 +147,7 @@
         </div>
         <div id="resetRight" style="visibility: hidden">
           <button class = "butn" id="resetRightLayout">Reset layout</button>
-          <select id ="selectlayoutRight" onchange="changeLayout(graphRight, 'Right')">Select Layout</select>
+          <ul id ="selectlayoutRight"></ul>
         </div>
         <div id="downloadPartRight" style="visibility: hidden">
           <input name="outputFileRight" type="text" maxlength="512" id="outputNameRight" value="File name"/>

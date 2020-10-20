@@ -19,6 +19,8 @@ var clickedNodesPosition;
 var defaultVal = false;
 var isSIF = false;
 var allPaths;
+var collapsed = false;
+var selectedLayout;
 
 function isFile(){
   document.getElementById('loader1').style.visibility = "visible";
@@ -44,11 +46,12 @@ function isFile(){
   }
 }
 
+
 /*
 remove old buttons
 */
 function cleanSelections(layer = undefined){
-  // if it is not the first graph read, delete all selectable options
+    // if it is not the first graph read, delete all selectable options
   usedShapeAttributes = [];
   var myNode = document.getElementById("configPart");
   document.getElementById("arrows").innerHTML = "";
@@ -90,10 +93,11 @@ function cleanSelections(layer = undefined){
   noOptn = true;
   noDrpShapes = true;
   nodeVal = undefined;
+  collapsed = false;
 }
 
 /* load example graphml file*/
-function readExample(isjson, layer = undefined){
+function readExample(layer = undefined){
   cleanSelections();
   // read text from URL location
   var request = new XMLHttpRequest();
@@ -148,119 +152,65 @@ function readFile(file, layer = undefined) {
 function loadFile() {
   var noOptn = true;
   // put node atttributes into dropdown select object
-  var drp = document.createElement("select");
+  var drp = document.createElement("ul");
+  drp.classList.add("Menu")
+  drp.classList.add("-horizontal")
   drp.id = "values";
-  drp.name = "values";
   drp.style.visibility = "visible";
   document.getElementById("configPart").appendChild(drp);
-  // node attributes
-  var sele = createSele();
-  drp.add(sele);
-  drp.onchange = function(){
-    nodeVal = document.getElementById('values').value;
-    var newValues = []
-    for(var i = 0; i < cy.filter('node').size(); i++){
-      if(cy.nodes()[i].data()[nodeVal]){
-        newValues.push(cy.nodes()[i].data()[nodeVal])
-      }
-    }
-    var range = legendsRange(newValues);
-    var nodesMin = range[0];
-    var nodesMax = range[1];
-    cy.style().selector('node[!'+nodeVal+']').style({
-          'background-color': 'white',
-          'color':'black'
-      }).update()
-      // attributes with numbers
-    cy.style().selector('node['+nodeVal+' < "0"]').style({
-          'background-color': 'mapData('+nodeVal+','+ nodesMin+', 0, #006cf0, white)',
-          'color': 'black'
-      }).update()
-     cy.style().selector('node['+nodeVal+' <='+0.5*nodesMin+']').style({
-          'color': 'white'
-      }).update()
-     cy.style().selector('node['+nodeVal+' > "0"]').style({
-          'background-color': 'mapData('+nodeVal+', 0,'+ nodesMax+', white, #d50000)',
-          'color': 'black'
-      }).update()
-      cy.style().selector('node['+nodeVal+' >='+0.5*nodesMax+']').style({
-          'color': 'white'
-      }).update()
-      cy.style().selector('node['+nodeVal+' = "0"]').style({
-          'background-color': 'white',
-          'color':'black'
-      }).update()
 
-      // attributes with boolean
-      cy.style().selector('node['+nodeVal+' = "false"]').style({
-          'background-color': '#006cf0',
-          'color':'white'
-      }).update()
-      cy.style().selector('node['+nodeVal+' = "true"]').style({
-          'background-color': '#d50000',
-          'color':'white'
-      }).update()
-      var fontSize = 10;
-      calculateLabelColorLegend(nodeVal, fontSize, cy, nodesMin, nodesMax);
-  };
-
+  var labelDrp = document.createElement("li")
+  labelDrp.classList.add("-hasSubmenu")
+  labelDrp.innerHTML = "<a href='#'>Color attribute</a>"
+  drp.appendChild(labelDrp)
+  var ulDrp = document.createElement("ul")
+  labelDrp.appendChild(ulDrp)
 
   // layout dropdown
-  var drpLayout = document.createElement("select");
+  var drpLayout = document.createElement("ul");
+   drpLayout.classList.add("Menu")
+  drpLayout.classList.add("-horizontal")
   drpLayout.id = "selectlayout";
-  drpLayout.name = "selectlayout";
   document.getElementById("configPart").appendChild(drpLayout);
-  drpLayout.style.visibility = "hidden";
-  drpLayout.onchange = function(){changeLayout(cy)};
-
-  var seleLayout = document.createElement("OPTION");
-  seleLayout.text = "Select Layout";
-  drpLayout.add(seleLayout);
+  var labelLayout = document.createElement("li")
+  labelLayout.classList.add("-hasSubmenu")
+  labelLayout.innerHTML = "<a href='#'>Layout</a>"
+  drpLayout.appendChild(labelLayout)
+  var ulLayout = document.createElement("ul")
+  labelLayout.appendChild(ulLayout)
 
   layoutArray.forEach(function(s){
-    var optnLayout = addLayoutOptions(s);
-    drpLayout.add(optnLayout);
+    var optnLayout = addLayoutOptions(s, "layoutOpt");
+    optnLayout.onclick = function(){
+      selectedLayout = s; 
+      changeLayout(cy, s);
+      document.querySelectorAll('.fa-check').forEach(function(e){
+        if(e.classList.contains('layoutOpt')){
+        e.remove()}});
+      optnLayout.innerHTML = "<a href='#'><i class='fas fa-check layoutOpt' style='margin-right:5px'></i>"+s+"</a>"
+    };
+    ulLayout.appendChild(optnLayout);
   });
 
-  // attributes for changing node shape in dropdown
-  var drpShapes = document.createElement("select");
-  drpShapes.id = "nodeShapesAttr";
-  drpShapes.name = "nodeShapesAttr";
-  document.getElementById("configPart").appendChild(drpShapes);
-  drpShapes.style.visibility = "hidden";
-  drpShapes.onchange=activateShapes;
-
-  var seleShapeAttr = document.createElement("OPTION");    
-  seleShapeAttr.text = "Select Shape Attribute";
-  seleShapeAttr.value = "";
-  drpShapes.add(seleShapeAttr);
-
- // shapes dropdown
-  var drpShape = document.createElement("select");
-  drpShape.id = "nodeShapes";
-  drpShape.name = "nodeShapes";
-  document.getElementById("configPart").appendChild(drpShape);
-  drpShape.style.visibility = "hidden";
-  drpShape.onchange = function(){changeNodeShapes(cy, 'legendNodes')};
-
-  var seleShape = document.createElement("OPTION");
-  seleShape.text = "Select Shape";
-  seleShape.value = "ellipse";
-  drpShape.add(seleShape);
+// dropdown for shape selection
+ var drpShapes = document.createElement("ul")
+ drpShapes.classList.add("Menu")
+ drpShapes.classList.add("-horizontal")
+ drpShapes.id="nodeShapesAttr"
+ document.getElementById("configPart").appendChild(drpShapes);
+ var labelShape = document.createElement("li")
+  labelShape.classList.add("-hasSubmenu")
+  labelShape.innerHTML = "<a href='#'>Node shape</a>"
+  drpShapes.appendChild(labelShape)
+  var ulShapes = document.createElement("ul")
+  labelShape.appendChild(ulShapes)
 
   const shapesArray = ["rectangle", "octagon", "rhomboid", "pentagon", "tag"];
 
-  shapesArray.forEach(function(s){
-    var nodeShape = s;
-    var optnShape = document.createElement("OPTION");
-    optnShape.text=nodeShape;
-    optnShape.value=nodeShape;
-    drpShape.add(optnShape);
-  });
-
+// search gene
   var searchgene = document.createElement("input");
   searchgene.id = "searchgene";
-  searchgene.value = "Search gene"
+  searchgene.value = "Node label"
   document.getElementById("configPart").appendChild(searchgene);
   searchgene.setAttribute("type", "text");
   searchgene.setAttribute("width", 30);
@@ -271,34 +221,125 @@ function loadFile() {
   document.getElementById("searchbutn").className = 'butn';  
   searchbutn.onclick = function(){highlightSearchedGene(cy)};
 
-
+// undo deletion
   var undobutn = document.createElement("button");
   undobutn.id = "undobutn";
   undobutn.innerHTML = "Undo delete";
   document.getElementById("configPart").appendChild(undobutn);
   document.getElementById("undobutn").className = 'butn';  
   undobutn.onclick = undoDeletion;
-
   if(!isJson && ! isSIF){
     // get attributes for coloring -> double/boolean and shape -> boolean
     for (var i = 0; i <= graphString.length - 1; i++) {
       if(graphString[i].includes("for=\"node\"") && 
-        (graphString[i].includes("attr.type=\"double\"") || 
-          (graphString[i].includes("attr.type=\"boolean\"")))){
+        ((graphString[i].includes("attr.type=\"double\"") || 
+          (graphString[i].includes("attr.type=\"boolean\""))))){
         noOptn = false;
         var nodeattr = graphString[i].split("attr.name=")[1].split(" ")[0].replace(/"/g, "");
-        var optn = document.createElement("OPTION");
-        optn.text=nodeattr;
-        optn.value=nodeattr;
-        drp.add(optn);
+
+        var optnDrp = document.createElement("li");
+        optnDrp.innerHTML="<a href='#'>"+nodeattr+"</a>";
+        optnDrp.id=nodeattr;
+        ulDrp.appendChild(optnDrp)
+        optnDrp.onclick = function(){
+        document.querySelectorAll('.fa-check').forEach(function(e){
+          if(e.classList.contains('optnDrp')){
+            e.remove()}});
+        this.innerHTML = "<a href='#'><i class='fas fa-check optnDrp' style='margin-right:5px'></i>"+this.id+"</a>"
+        nodeVal = this.id;
+        var newValues = []
+        for(var i = 0; i < cy.filter('node').size(); i++){
+          if(cy.nodes()[i].data()[nodeVal]){
+            newValues.push(cy.nodes()[i].data()[nodeVal])
+          }
+        }
+        var range = legendsRange(newValues);
+        var nodesMin = range[0];
+        var nodesMa
+        x = range[1];
+        cy.style().selector('node[!'+nodeVal+']').style({
+              'background-color': 'white',
+              'color':'black'
+          }).update()
+          // attributes with numbers
+        cy.style().selector('node['+nodeVal+' < "0"]').style({
+              'background-color': 'mapData('+nodeVal+','+ nodesMin+', 0, #006cf0, white)',
+              'color': 'black'
+          }).update()
+         cy.style().selector('node['+nodeVal+' <='+0.5*nodesMin+']').style({
+              'color': 'white'
+          }).update()
+         cy.style().selector('node['+nodeVal+' > "0"]').style({
+              'background-color': 'mapData('+nodeVal+', 0,'+ nodesMax+', white, #d50000)',
+              'color': 'black'
+          }).update()
+          cy.style().selector('node['+nodeVal+' >='+0.5*nodesMax+']').style({
+              'color': 'white'
+          }).update()
+          cy.style().selector('node['+nodeVal+' = "0"]').style({
+              'background-color': 'white',
+              'color':'black'
+          }).update()
+
+          // attributes with boolean
+          cy.style().selector('node['+nodeVal+' = "false"]').style({
+              'background-color': '#006cf0',
+              'color':'white'
+          }).update()
+          cy.style().selector('node['+nodeVal+' = "true"]').style({
+              'background-color': '#d50000',
+              'color':'white'
+          }).update()
+          var fontSize = 10;
+          calculateLabelColorLegend(nodeVal, fontSize, cy, nodesMin, nodesMax);
+        };
+        
 
         if(graphString[i].includes("attr.type=\"boolean\"")){
           var nodeattrShape = graphString[i].split("attr.name=")[1].split(" ")[0].replace(/"/g, "");
-          var optnShape = document.createElement("OPTION");
-          optnShape.text=nodeattrShape;
-          optnShape.value=nodeattrShape;
-          drpShapes.add(optnShape);
+          var liShape = document.createElement("li")
+          liShape.classList.add("-hasSubmenu")
+          liShape.innerHTML = "<a href='#'>"+nodeattrShape+"</a>"
+          liShape.id= nodeattrShape
+          liShape.id="nodeShapes"
+          ulShapes.appendChild(liShape)
+          var ulShape = document.createElement("ul")
+          ulShape.id = nodeattrShape
+          liShape.appendChild(ulShape)
+          shapesArray.forEach(function(s){
+            var optnShape = document.createElement("li")
+            optnShape.innerHTML = "<a hre='#'>"+s+"</a>"
+            optnShape.id= s
+            ulShape.appendChild(optnShape)
+            optnShape.onclick=function(){
+              document.querySelectorAll('.fa-check').forEach(function(e){
+                if(e.classList.contains('optnShape')){
+                  e.remove()}});
+              optnShape.innerHTML = "<a href='#'><i class='fas fa-check optnShape' style='margin-right:5px'></i>"+s+"</a>"
+              // optnShape.parentElement.innerHTML = "<a href='#'><i class='fas fa-check liShape' style='margin-right:5px'></i>"+optnShape.parentElement.id+"</a>"
+              changeNodeShapes(cy, 'legendNodes', optnShape.parentElement.id,s); 
+              hideMenu(document.getElementById("nodeShapesAttr"))}
+          })
+
           noDrpShapes = false;
+          forEach($(".Menu li.-hasSubmenu"), function(e){
+              e.showMenu = showMenu;
+              e.hideMenu = hideMenu;
+          });
+
+          forEach($(".Menu > li.-hasSubmenu"), function(e){
+              e.addEventListener("click", showMenu);
+          });
+
+          forEach($(".Menu > li.-hasSubmenu li"), function(e){
+              e.addEventListener("mouseenter", hideAllInactiveMenus);
+          });
+
+          forEach($(".Menu > li.-hasSubmenu li.-hasSubmenu"), function(e){
+              e.addEventListener("click", showMenu);
+          });
+
+          document.addEventListener("click", hideAllInactiveMenus);
         }
       };
       // do not search whole file, only header
@@ -306,9 +347,9 @@ function loadFile() {
         break;
       };
     };
-    if(drp.options[1]){
-      nodeVal = drp.options[1].value;
-      document.getElementById('values').value = nodeVal;
+    if(ulDrp.children.length>0){
+      ulDrp.children[0].innerHTML = "<a href='#'><i class='fas fa-check optnDrp' style='margin-right:5px'></i>"+ulDrp.children[0].id+"</a>";
+      nodeVal = ulDrp.children[0].id;
       defaultVal = true;
       noOptn = false;
         visualize(graphString, noOptn);
@@ -353,7 +394,6 @@ function loadFile() {
   if(noOptn && noDrpShapes){
     drp.parentNode.removeChild(drp);
     drpShapes.parentNode.removeChild(drpShapes);
-    drpShape.parentNode.removeChild(drpShape);
     defaultVal = false;
     // if(!isJson){
         visualize(graphString, noOptn);
@@ -361,7 +401,15 @@ function loadFile() {
   }   
   else if(noDrpShapes){
     drpShapes.parentNode.removeChild(drpShapes);
-    drpShape.parentNode.removeChild(drpShape);
   }
   loadGraphCount ++; 
 };
+
+/* undo deletion of nodes */
+function undoDeletion(){
+  entry = removedNodes.pop()
+  if(entry != undefined){
+    entry.restore();
+  }
+}
+

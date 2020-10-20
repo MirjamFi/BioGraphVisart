@@ -8,29 +8,30 @@ var colorschemePathsRight = [];
 var colorschemePathsMerge = [];
 var leftEdges = [];
 var rightEdges = [];
+  var graphLeft;
+  var graphRight;
 /*
 visualize a graph from .graphml-file
 */
 function visualize(firstTime=false, files, example) { 
-  nodeVal = document.getElementById('values').value;
   // move edge legend when scrolling
   if(!!right){
     var cys = ['cyLeft', 'cyRight'];
-    $(window).scroll(function() {
-      if ($(window).scrollTop() >= document.getElementById("right").offsetTop-700 && !!right) {
-          $("#legend_heatmap").css({
+    jQuery(window).scroll(function() {
+      if (jQuery(window).scrollTop() >= document.getElementById("right").offsetTop-700 && !!right) {
+          jQuery("#legend_heatmap").css({
             "top": document.getElementById("right").offsetTop + "px",
-            "left": ($(window).scrollLeft()) + "px",
+            "left": (jQuery(window).scrollLeft()) + "px",
             "position":"absolute",
             "margin-top":0+"px",
             "margin-left":10+"px"
         });
       }
-      else if($(window).scrollTop() <= document.getElementById("left").offsetTop && !!right){
+      else if(jQuery(window).scrollTop() <= document.getElementById("left").offsetTop && !!right){
       // if($(window).scrollTop() <= window.innerHeight/2){
-        $("#legend_heatmap").css({
+        jQuery("#legend_heatmap").css({
           "top": document.getElementById("left").offsetTop +"px",
-          "left": ($(window).scrollLeft()) + "px",
+          "left": (jQuery(window).scrollLeft()) + "px",
           "position":"absolute",
           "margin-top":0+"px",
           "margin-left":10+"px"
@@ -51,8 +52,6 @@ function visualize(firstTime=false, files, example) {
   var leftEdges;
   var rightNodes;
   var rightEdges;
-  var graphLeft;
-  var graphRight;
   var edgesToMergeLeft;
   var edgesToMergeRight;
   cys.forEach(function(cyO){
@@ -75,13 +74,13 @@ function visualize(firstTime=false, files, example) {
       var leftRange = legendsRange(leftNodeValuesNum);
       var leftNodesMin = leftRange[0];
       var leftNodesMax = leftRange[1];
-      graphLeft= createCyObject(cyO, leftNodesMin, leftNodesMax, document.getElementById('values').value);
+      graphLeft= createCyObject(cyO, leftNodesMin, leftNodesMax, nodeVal);
+      console.log(leftNodes)
       addNodesAndEdges(graphLeft, leftNodes, leftEdges, leftFirstTime, leftNodesMin, leftNodesMax);
-      document.getElementById('downloadPDF').style.visibility = "visible";
-      document.getElementById('outputNameHeatmap').style.visibility = "visible";
-      document.getElementById('downloadPDF').disabled = false;
+      // document.getElementById('downloadPDF').style.visibility = "visible";
+      // document.getElementById('downloadPDF').disabled = false;
       showConfigurationParts('Left', graphLeft, left);
-      showMetaInfo(graphLeft, document.getElementById('values').value);
+      showMetaInfo(graphLeft, nodeVal);
       // set background layer to hoghlight pathways
       var layerLeft = createLayoutKeggPathways(graphLeft, allPathsLeft, "Left")
       var canvasLeft = layerLeft.getCanvas();
@@ -126,14 +125,14 @@ function visualize(firstTime=false, files, example) {
       var rightRange = legendsRange(rightNodeValuesNum);
       var rightNodesMin = rightRange[0];
       var rightNodesMax = rightRange[1];
-      graphRight= createCyObject(cyO, rightNodesMin, rightNodesMax, document.getElementById('values').value);
+      graphRight= createCyObject(cyO, rightNodesMin, rightNodesMax, nodeVal);
 
       addNodesAndEdges(graphRight,rightNodes, rightEdges, rightFirstTime, rightNodesMin, rightNodesMax);
       document.getElementById('cyRight').style.visibility = "visible";
       showConfigurationParts('Right', graphRight, right);
       document.getElementById('right').style.visibility = "visibile";
       document.getElementById('rightID').style.visibility = "visible";
-      showMetaInfo(graphRight, document.getElementById('values').value);
+      showMetaInfo(graphRight, nodeVal);
       // set background layer to hoghlight pathways
       var layerRight = createLayoutKeggPathways(graphRight, allPathsRight,"Right")
       var canvasRight = layerRight.getCanvas();
@@ -157,7 +156,7 @@ function visualize(firstTime=false, files, example) {
   });
   document.getElementById("arrows").innerHTML = "";
   createInteractionLegend(interactionTypes, graphLeft, edgesToMergeLeft, graphRight, edgesToMergeRight);
-  if(document.getElementById('nodeShapesAttr')){
+  // if(document.getElementById('nodeShapesAttr')){
     if(!document.getElementById('heatmap_shapes')){
       var shapelegend = document.createElement("div")
       shapelegend.id = "heatmap_shapes";
@@ -165,23 +164,7 @@ function visualize(firstTime=false, files, example) {
       document.getElementById("legend_heatmap").appendChild(shapelegend);
       
     }
-    document.getElementById("nodeShapes").onchange=function(){
-      changeNodeShapes(graphLeft, 'heatmap_shapes');
-      if(graphRight){
-        changeNodeShapes(graphRight, 'heatmap_shapes');
-      }
-    }
-    graphLeft.style()
-        .selector('node['+document.getElementById('nodeShapesAttr').value+' ="true"]')        
-        .style('shape', document.getElementById('nodeShapes').value)
-        .update();
-    if(graphRight){
-      graphRight.style()
-        .selector('node['+document.getElementById('nodeShapesAttr').value+' ="true"]')        
-        .style('shape', document.getElementById('nodeShapes').value)
-        .update();
-    }
-  }
+  // }
   if(firstTime && graphRight){
     firstTime = false;
     clickMerge(files, nodeVal, example);
@@ -208,8 +191,8 @@ function showConfigurationParts(pos, cy, name){
   }
   document.getElementById('KEGGpathsButton'+pos).style.visibility ="visible";
   document.getElementById('keggpathways'+pos).style.visibility = "visible";
-  document.getElementById("selectlayout"+pos).visibility = "visible";
-  document.getElementById("selectlayout"+pos).onchange= function(){changeLayout(cy, pos)}
+  // document.getElementById("selectlayout"+pos).visibility = "visible";
+  // document.getElementById("selectlayout"+pos).onchange= function(){changeLayout(cy, pos)}
 }
 
 function showKEGGParts(pos, ctx, cy, nodes, layer, canvas){
@@ -270,7 +253,7 @@ function addNodesAndEdges(cyObject, nodes, edges, firstTime, nodesMin, nodesMax)
     for(n=0; n < nodes.length; n++){
       cyObject.batch(function(){
       cyObject.$('node[id =\''  + nodes[n].data.id + '\']')
-        .data('val', nodes[n].data.val)
+        .data(nodeVal, nodes[n].data.val)
       });
     }
   }
@@ -291,10 +274,10 @@ function showMetaInfo(cyObject, nodeVal){
       solo: true,
     },
     content: {text : function(){
-      if(!isNaN(parseFloat(this.data('val')))){
-        return '<b>'+nodeVal +'</b>: ' + parseFloat(this.data('val')).toFixed(2); } //numbers
+      if(!isNaN(parseFloat(this.data(nodeVal)))){
+        return '<b>'+nodeVal +'</b>: ' + parseFloat(this.data(nodeVal)).toFixed(2); } //numbers
       else{
-        return '<b>'+nodeVal +'</b>: '+ this.data('val');          //bools
+        return '<b>'+nodeVal +'</b>: '+ this.data(nodeVal);          //bools
       }
     }},
     position: {

@@ -76,10 +76,10 @@ function createHeatmap(heatmapData, foundFiles, graphsList, example=false){
     create heatmap
     */
 
-    $(function () {
+    jQuery(function () {
         var leftSelect;
         var rightSelect;
-        $('#heatmapcontainer').highcharts({
+        jQuery('#heatmapcontainer').highcharts({
             
             chart: {
                 type: 'heatmap',
@@ -100,7 +100,7 @@ function createHeatmap(heatmapData, foundFiles, graphsList, example=false){
                             }
                             document.getElementById("leftID").innerHTML = "";
                             document.getElementById("rightID").innerHTML = "";
-                            document.getElementById('values').setAttribute('style','visibility:visible');
+                            // document.getElementById('values').setAttribute('style','visibility:visible');
                             document.getElementById("leftID").innerHTML = leftSelect;
                             if(left === right){
                                 document.getElementById("rightID").innerHTML = "";
