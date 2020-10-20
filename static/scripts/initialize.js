@@ -322,7 +322,8 @@ function loadFile() {
           })
 
           noDrpShapes = false;
-          forEach($(".Menu li.-hasSubmenu"), function(e){
+        }
+        forEach($(".Menu li.-hasSubmenu"), function(e){
               e.showMenu = showMenu;
               e.hideMenu = hideMenu;
           });
@@ -340,7 +341,6 @@ function loadFile() {
           });
 
           document.addEventListener("click", hideAllInactiveMenus);
-        }
       };
       // do not search whole file, only header
       if(graphString[i].includes("<node id=\"n0\">")){
