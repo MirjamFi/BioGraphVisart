@@ -41,7 +41,6 @@ var cystyle =  [
             }
           ];
 async function createMerged(file1, file2, nodeVal, leftID, rightID, example){
-
   var file1_prom = await fetch("blob:"+file1).then(r => r.blob()).then(blobFile => new File([blobFile], "file1", { type: "html" }))
   var file2_prom = await fetch("blob:"+file2).then(r => r.blob()).then(blobFile => new File([blobFile], "file2", { type: "html" }))
   var files=[file1_prom, file2_prom]
@@ -83,9 +82,9 @@ async function createMerged(file1, file2, nodeVal, leftID, rightID, example){
               rightNodeValuesNum = nodesAndEdges[2];
               interactionTypes= new Set([...interactionTypes, ...nodesAndEdges[3]])
 
-            setbuttons();
 
-            mergeFunction(leftNodes, rightNodes, leftEdges, rightEdges, interactionTypes, edgesToMerge);
+            mergeFunction(leftNodes, rightNodes, leftEdges, rightEdges, interactionTypes, edgesToMerge, nodeVal);
+            setbuttons(nodeVal);
         };
       }
     };
@@ -141,160 +140,175 @@ async function createMergedExample(file1, file2, nodeVal, leftID, rightID){
       interactionTypes= new Set([...interactionTypes, ...nodesAndEdges[3]])
       // cystyle
       
-      setbuttons()
 
-      mergeFunction(leftNodes, rightNodes, leftEdges, rightEdges, interactionTypes, edgesToMerge)
+      mergeFunction(leftNodes, rightNodes, leftEdges, rightEdges, interactionTypes, edgesToMerge, nodeVal)
+      setbuttons(nodeVal)
+
     };
   }
 }
 
-function setbuttons(){
-  //buttons: reset, merge, download
-  if(!document.getElementById("outputNameMerge")){
-    d3.select('#merged_graph_buttons')  
-      .append('p')
-
-    d3.select('#merged_graph_buttons')  
-      .append('input')
-      .attr('name', 'outputFileMerge')
-      .attr('type', 'text')
-      .attr('maxlength', '512')
-      .attr('id', 'outputNameMerge')
-      .attr('value', 'File name')
-
-    d3.select('#merged_graph_buttons')  
-      .append('button')
-      .attr('type', 'button')
-      .attr('class', 'butn')
-      .attr('id','downloadMergePNG')
-      .text('.png')
-      .on('click', function(){downloadMergePNG()});
-
-    d3.select('#merged_graph_buttons')  
-      .append('button')
-      .attr('type', 'button')
-      .attr('class', 'butn')
-      .attr('id','downloadMergeSVG')
-      .text('.svg')
-      .on('click', function(){downloadMergeSVG()});
-
-    d3.select('#merged_graph_buttons')
-      .append('button')
-      .attr('class', 'butn')
-      .attr('id', 'downloadPDF')
-      .text('.pdf')
-      .on('click', function(){downloadMergePDF()})
-
+function setbuttons(val){
     // color options dropdown
-    var drpColor = document.createElement("select");
-    drpColor.id = "selectColorAttribute";
-    drpColor.name = "selectColor";
-    document.getElementById("merged_graph_buttons").appendChild(drpColor);
-    drpColor.style.visibility = "visible";
-    drpColor.onchange = function(){updateColorMerged(merge_graph, symbolsLeft, symbolsRight, filenameSplitLeft, filenameSplitRight)};
+    var drp = document.createElement("ul");
+    drp.classList.add("Menu")
+    drp.classList.add("-horizontal")
+    drp.id = "selectColorAttribute";
+    drp.style.visibility = "visible";
+    document.getElementById("merged_graph_buttons").appendChild(drp);
 
-    var sele = document.createElement("OPTION");    
-    sele.text = "Choose node's attribute";
-    sele.value = window.opener.drpValues[0];
-    drpColor.add(sele);
-    window.opener.drpValues.forEach(function(val){
-      var optn = document.createElement("OPTION");
-      optn.text=val;
-      optn.value=val;
-      drpColor.add(optn);
-    }); 
-    drpColor.value = sele.value;
+    var labelDrp = document.createElement("li")
+    labelDrp.classList.add("-hasSubmenu")
+    labelDrp.innerHTML = "<a href='#'>Color attribute</a>"
+    drp.appendChild(labelDrp)
+    var ulDrp = document.createElement("ul")
+    labelDrp.appendChild(ulDrp)
+    window.opener.drpValues.forEach(function(nodeattr){
+      var optnDrp = document.createElement("li");
+      optnDrp.innerHTML="<a href='#'>"+nodeattr+"</a>";
+      optnDrp.id=nodeattr;
+      if(optnDrp.id == val){
+        optnDrp.innerHTML="<a href='#'><i class='fas fa-check optnDrp' style='margin-right:5px'></i>"+nodeattr+"</a>";
+        // updateColorMerged(merge_graph, symbolsLeft, symbolsRight, window.opener.left.split("/"), window.opener.right.split("/"), this.id)
+      }
+      ulDrp.appendChild(optnDrp)
+      optnDrp.onclick = function(){
+        document.querySelectorAll('.fa-check').forEach(function(e){
+          if(e.classList.contains('optnDrp')){
+            e.remove()}});
+        this.innerHTML = "<a href='#'><i class='fas fa-check optnDrp' style='margin-right:5px'></i>"+this.id+"</a>"
+        updateColorMerged(merge_graph, symbolsLeft, symbolsRight, window.opener.left.split("/"), window.opener.right.split("/"), this.id)
+      }
+    })
 
     // node shape drop dpwn
+
     if(window.opener.shapeAttributes.length > 0){
-      var nodeShapesAttr = document.createElement("select")
-      nodeShapesAttr.id = "nodeShapesAttr"
-      nodeShapesAttr.name = "nodeShapesAttr"
-      document.getElementById("merged_graph_buttons").appendChild(nodeShapesAttr)
-      nodeShapesAttr.onchange = activateShapes;
-
-      var drpShapes = document.getElementById("nodeShapesAttr");
-      var seleShapeAttr = document.createElement("OPTION");    
-      seleShapeAttr.text = "Select Shape Attribute";
-      seleShapeAttr.value = "";
-      drpShapes.add(seleShapeAttr);
-
+      var nodeShapesAttr = document.createElement("ul")
+     nodeShapesAttr.classList.add("Menu")
+     nodeShapesAttr.classList.add("-horizontal")
+     nodeShapesAttr.id="nodeShapesAttr"
+     document.getElementById("merged_graph_buttons").appendChild(nodeShapesAttr);
+     var labelShape = document.createElement("li")
+      labelShape.classList.add("-hasSubmenu")
+      labelShape.innerHTML = "<a href='#'>Node shape</a>"
+      nodeShapesAttr.appendChild(labelShape)
+      var ulShapes = document.createElement("ul")
+      labelShape.appendChild(ulShapes)
+      const shapesArray = ["rectangle", "octagon", "rhomboid", "pentagon", "tag"];
       shapeAttributes = Array.from(new Set(window.opener.shapeAttributes)); 
       if(shapeAttributes.length > 0){
-        shapeAttributes.forEach(function(val){
-          var optn = document.createElement("OPTION");
-          optn.text=val;
-          optn.value=val;
-          drpShapes.add(optn);
-        })
+        for(nodeattrShape of shapeAttributes){
+        var liShape = document.createElement("li")
+        liShape.classList.add("-hasSubmenu")
+        liShape.innerHTML = "<a href='#'>"+nodeattrShape+"</a>"
+        liShape.id= nodeattrShape
+        liShape.id="nodeShapes"
+        ulShapes.appendChild(liShape)
+        var ulShape = document.createElement("ul")
+        ulShape.id = nodeattrShape
+        liShape.appendChild(ulShape)
+        shapesArray.forEach(function(s){
+            var optnShape = document.createElement("li")
+            optnShape.innerHTML = "<a hre='#'>"+s+"</a>"
+            optnShape.id= s
+            ulShape.appendChild(optnShape)
+            optnShape.onclick=function(){
+              document.querySelectorAll('.fa-check').forEach(function(e){
+                if(e.classList.contains('optnShape')){
+                  e.remove()}});
+              optnShape.innerHTML = "<a href='#'><i class='fas fa-check optnShape' style='margin-right:5px'></i>"+s+"</a>"
+              changeNodeShapes(merge_graph, 'heatmap_shapes', optnShape.parentElement.id,s); 
+              hideMenu(document.getElementById("nodeShapesAttr"))}
+          })
+      }
       }
 
-      var nodeShapes = document.createElement("select")
-      nodeShapes.name= "nodeShapes" 
-      nodeShapes.id="nodeShapes" 
-      document.getElementById("merged_graph_buttons").appendChild(nodeShapes);
-      nodeShapes.onchange= function(){changeNodeShapes(merge_graph, 'heatmap_shapes')};
-      
-
-      // shapes dropdown
-      var drpShape = document.getElementById("nodeShapes");
-      drpShape.style.visibility = "hidden";
-      var seleShape = document.createElement("OPTION");
-      seleShape.text = "Select Shape";
-      seleShape.value = "ellipse";
-      drpShape.add(seleShape);
-
-      const shapesArray = ["rectangle", "octagon", "rhomboid", "pentagon", "tag"];
-
-      shapesArray.forEach(function(s){
-        var nodeShape = s;
-        var optnShape = document.createElement("OPTION");
-        optnShape.text=nodeShape;
-        optnShape.value=nodeShape;
-        drpShape.add(optnShape);
-      });
-    }
-
     // layout dropdown
-    var drpLayout = document.createElement("select");
-    drpLayout.id = "selectlayoutMerge";
-    drpLayout.name = "selectlayout";
-    document.getElementById("merged_graph_buttons").appendChild(drpLayout);
-    drpLayout.style.visibility = "visible";
-    drpLayout.onchange = function(){changeLayout(merge_graph, 'Merge')};
+    // var drpLayout = document.createElement("select");
+    // drpLayout.id = "selectlayoutMerge";
+    // drpLayout.name = "selectlayout";
+    // document.getElementById("merged_graph_buttons").appendChild(drpLayout);
+    // drpLayout.style.visibility = "visible";
+    // drpLayout.onchange = function(){changeLayout(merge_graph, 'Merge')};
 
-    var seleLayout = document.createElement("OPTION");
-    seleLayout.text = "Select Layout";
-    drpLayout.add(seleLayout);
+    // var seleLayout = document.createElement("OPTION");
+    // seleLayout.text = "Select Layout";
+    // drpLayout.add(seleLayout);
 
-    const layoutArray = ["dagre (default)", "klay", "breadthfirst", "cose-bilkent", "grid"];
+    const layoutArray = ["dagre", "klay", "breadthfirst", "cose-bilkent", "grid"];
 
-    layoutArray.forEach(function(s){
-      var graphLayout = s;
-      var optnLayout = document.createElement("OPTION");
-      optnLayout.text=graphLayout;
-      optnLayout.value=graphLayout;
-      drpLayout.add(optnLayout);
-    });
+    // layoutArray.forEach(function(s){
+    //   var graphLayout = s;
+    //   var optnLayout = document.createElement("OPTION");
+    //   optnLayout.text=graphLayout;
+    //   optnLayout.value=graphLayout;
+    //   drpLayout.add(optnLayout);
+    // });
+    // layout dropdown
+  var drpLayout = document.createElement("ul");
+  drpLayout.classList.add("Menu")
+  drpLayout.classList.add("-horizontal")
+  drpLayout.id = "selectlayoutMerge";
+  document.getElementById("merged_graph_buttons").appendChild(drpLayout);
+  var labelLayout = document.createElement("li")
+  labelLayout.classList.add("-hasSubmenu")
+  labelLayout.innerHTML = "<a href='#'>Layout</a>"
+  drpLayout.appendChild(labelLayout)
+  var ulLayout = document.createElement("ul")
+  labelLayout.appendChild(ulLayout)
 
+  layoutArray.forEach(function(s){
+    var optnLayout = addLayoutOptions(s, "layoutOpt");
+    optnLayout.onclick = function(){
+      selectedLayout = s; 
+      changeLayout(merge_graph, s);
+      document.querySelectorAll('.fa-check').forEach(function(e){
+        if(e.classList.contains('layoutOpt')){
+        e.remove()}});
+      optnLayout.innerHTML = "<a href='#'><i class='fas fa-check layoutOpt' style='margin-right:5px'></i>"+s+"</a>"
+    };
+    ulLayout.appendChild(optnLayout);
+  });
+
+// search gene
     var searchgene = document.createElement("input");
     searchgene.id = "searchgene";
     searchgene.value = "Search gene"
     document.getElementById("merged_graph_buttons").appendChild(searchgene);
     searchgene.setAttribute("type", "text");
-    searchgene.setAttribute("width", 30);
+    searchgene.setAttribute("size", 10);
     var searchbutn = document.createElement("button");
     searchbutn.id = "searchbutn";
     searchbutn.innerHTML = "Search";
     document.getElementById("merged_graph_buttons").appendChild(searchbutn);
     document.getElementById("searchbutn").className = 'butn';  
     searchbutn.onclick = highlightSearchedGene;
-  }
+
+          forEach($(".Menu li.-hasSubmenu"), function(e){
+        e.showMenu = showMenu;
+        e.hideMenu = hideMenu;
+      });
+
+      forEach($(".Menu > li.-hasSubmenu"), function(e){
+        e.addEventListener("click", showMenu);
+      });
+
+      forEach($(".Menu > li.-hasSubmenu li"), function(e){
+        e.addEventListener("mouseenter", hideAllInactiveMenus);
+      });
+
+      forEach($(".Menu > li.-hasSubmenu li.-hasSubmenu"), function(e){
+        e.addEventListener("click", showMenu);
+      });
+
+      document.addEventListener("click", hideAllInactiveMenus);
+    }
 }
 
-function mergeFunction(leftNodes, rightNodes, leftEdges, rightEdges, interactionTypes, edgesToMerge){
-  merge_graph = createCyObject('merged_graph', -1,1, document.getElementById('selectColorAttribute').value)
-  const nodesEdges = getmergedGraph(leftNodes, rightNodes, leftEdges, rightEdges, interactionTypes, edgesToMerge);
+function mergeFunction(leftNodes, rightNodes, leftEdges, rightEdges, interactionTypes, edgesToMerge, val){
+  merge_graph = createCyObject('merged_graph', -1,1, )
+  const nodesEdges = getmergedGraph(leftNodes, rightNodes, leftEdges, rightEdges, interactionTypes, edgesToMerge, val);
   var mergedNodes = nodesEdges[0];
   var mergedEdges = nodesEdges[1];
       merge_graph.add(mergedNodes)
@@ -321,7 +335,7 @@ function mergeFunction(leftNodes, rightNodes, leftEdges, rightEdges, interaction
 
   // calculate label position for legend and style legend
   var fontSize = 10;
-  var labelVal = document.getElementById("selectColorAttribute").value;
+  var labelVal = val
 
 
   merge_graph.style(cystyle);
@@ -338,67 +352,67 @@ function mergeFunction(leftNodes, rightNodes, leftEdges, rightEdges, interaction
     return el != null;
   });
 
-// get symbols and values for GA
-symbolsRight = {};
-rightNodes.forEach(function( ele ){
-   symbolsRight[ele["data"]['symbol']]=ele["data"]['val'];
-});
+  // get symbols and values for GA
+  symbolsRight = {};
+  rightNodes.forEach(function( ele ){
+     symbolsRight[ele["data"]['symbol']]=ele["data"]['val'];
+  });
 
-var arrRight = Object.values(symbolsRight);
-var filteredRight = arrRight.filter(function (el) {
-  return el != null;
-});
+  var arrRight = Object.values(symbolsRight);
+  var filteredRight = arrRight.filter(function (el) {
+    return el != null;
+  });
 
-// legend node
-mergeColorLegend(merge_graph, mergeMin, labelVal, mergeMax)
+  // legend node
+  mergeColorLegend(merge_graph, mergeMin, labelVal, mergeMax)
 
-// circle nodes only in GA orange
-merge_graph.nodes('[graph="g1"]').style('border-width', 5).style('border-color', '#fdae61');
-merge_graph.nodes('[symbol = "'+leftID+'"]').style('border-width', 13).style('width', 50)
-.style('height', 50).style('font-weight', 'bold').style('font-size',16);
-// circle nodes only in GB light blue
-merge_graph.nodes('[graph="g2"]').style('border-width', 5).style('border-color', '#abd9e9');
-merge_graph.nodes('[symbol = "'+rightID+'"]').style('border-width', 13)
-.style('width', 50).style('height', 50).style('font-weight', 'bold').style('font-size',16);
-// circle nodes common in both graphs black double line
-merge_graph.nodes('[graph="both"]').style('border-width', 5).style('border-color', 'black');
+  // circle nodes only in GA orange
+  merge_graph.nodes('[graph="g1"]').style('border-width', 5).style('border-color', '#fdae61');
+  merge_graph.nodes('[symbol = "'+leftID+'"]').style('border-width', 13).style('width', 50)
+  .style('height', 50).style('font-weight', 'bold').style('font-size',16);
+  // circle nodes only in GB light blue
+  merge_graph.nodes('[graph="g2"]').style('border-width', 5).style('border-color', '#abd9e9');
+  merge_graph.nodes('[symbol = "'+rightID+'"]').style('border-width', 13)
+  .style('width', 50).style('height', 50).style('font-weight', 'bold').style('font-size',16);
+  // circle nodes common in both graphs black double line
+  merge_graph.nodes('[graph="both"]').style('border-width', 5).style('border-color', 'black');
 
 
-// map values to node color for GA
-mapValuestoNodeColor(merge_graph, 'g1', '1', mergeMin, mergeMax, document.getElementById("selectColorAttribute").value);
+  // map values to node color for GA
+  mapValuestoNodeColor(merge_graph, 'g1', '1', mergeMin, mergeMax, val);
 
-// map values to node color for GB
-mapValuestoNodeColor(merge_graph, 'g2', '2', mergeMin, mergeMax,  document.getElementById("selectColorAttribute").value);
+  // map values to node color for GB
+  mapValuestoNodeColor(merge_graph, 'g2', '2', mergeMin, mergeMax, val);
 
-// on mpuse-over show value of selected attribute
-let filenameSplitLeft = window.opener.left.split("/")
-filenameSplitLeft = filenameSplitLeft[filenameSplitLeft.length-1].split('.')[0];
+  // on mpuse-over show value of selected attribute
+  let filenameSplitLeft = window.opener.left.split("/")
+  filenameSplitLeft = filenameSplitLeft[filenameSplitLeft.length-1].split('.')[0];
 
-let filenameSplitRight = window.opener.right.split("/")
-filenameSplitRight = filenameSplitRight[filenameSplitRight.length-1].split('.')[0];
-   
-mergeMousover(merge_graph,'g1', document.getElementById("selectColorAttribute").value, filenameSplitLeft);
-mergeMousover(merge_graph,'g2', document.getElementById("selectColorAttribute").value, filenameSplitRight);
+  let filenameSplitRight = window.opener.right.split("/")
+  filenameSplitRight = filenameSplitRight[filenameSplitRight.length-1].split('.')[0];
+     
+  mergeMousover(merge_graph,'g1', val, filenameSplitLeft);
+  mergeMousover(merge_graph,'g2', val, filenameSplitRight);
 
-// createLegendMerge(mergeMin, mergeMax);
-mergeMousoverShared(merge_graph, document.getElementById("selectColorAttribute").value, filenameSplitLeft, filenameSplitRight);
-merge_graph.layout({name: 'dagre'}).run();   
-document.getElementById('KEGGpathsButtonMerge').style.visibility ="visible";
-// set background layer to hoghlight pathways
-layerMerge = createLayoutKeggPathways(merge_graph, allPathsMerge, 'Merge')
-canvasMerge = layerMerge.getCanvas();
-ctxMerge = canvasMerge.getContext('2d');
+  // createLegendMerge(mergeMin, mergeMax);
+  mergeMousoverShared(merge_graph, val, filenameSplitLeft, filenameSplitRight);
+  merge_graph.layout({name: 'cose-bilkent'}).run();   
+  document.getElementById('KEGGpathsButtonMerge').style.visibility ="visible";
+  // set background layer to hoghlight pathways
+  layerMerge = createLayoutKeggPathways(merge_graph, allPathsMerge, 'Merge')
+  canvasMerge = layerMerge.getCanvas();
+  ctxMerge = canvasMerge.getContext('2d');
 
-document.getElementById("keggpathwaysMerge").addEventListener('click', function(){listKEGGPathways(ctxMerge, merge_graph, mergedNodes, layerMerge, canvasMerge, 'Merge');});
-document.getElementById("keggpathwaysMerge").style.visibility = "visible";
-document.getElementById('KEGGpathsMerge').style.visibility = "visible";
+  document.getElementById("keggpathwaysMerge").addEventListener('click', function(){listKEGGPathways(ctxMerge, merge_graph, mergedNodes, layerMerge, canvasMerge, 'Merge');});
+  document.getElementById("keggpathwaysMerge").style.visibility = "visible";
+  document.getElementById('KEGGpathsMerge').style.visibility = "visible";
 
-if(document.getElementById('nodeShapesAttr')){
-  merge_graph.style()
-        .selector('node['+document.getElementById('nodeShapesAttr').value+' ="true"]')        
-        .style('shape', document.getElementById('nodeShapes').value)
-        .update();
-}
+  if(document.getElementById('nodeShapesAttr')){
+    merge_graph.style()
+          .selector('node['+val+' ="true"]')        
+          .style('shape', document.getElementById('nodeShapes').value)
+          .update();
+  }
 }
 
 function highlightSearchedGene(){
@@ -438,7 +452,6 @@ merge_graph.nodes('[graph = "both"]').qtip({       // show node attibute value b
         solo: true,
       },
       content: {text : function(){
-        var val = document.getElementById("selectColorAttribute").value;
         if(!isNaN(parseFloat(this.data(val+'_g2'))) && !isNaN(parseFloat(this.data(val+'_g1')))){
           return '<b>'+val +' ' +filenameSplitLeft +'</b>: ' + parseFloat(this.data(val+'_g1')).toFixed(2) +
           '<br><b>'+val +' ' +filenameSplitRight +'</b>: ' + parseFloat(this.data(val+'_g2')).toFixed(2)} //numbers
@@ -464,18 +477,17 @@ merge_graph.nodes('[graph = "both"]').qtip({       // show node attibute value b
       },
     });  
    }
-function updateColorMerged(merge_graph, symbolsLeft, symbolsRight, filenameSplitLeft, filenameSplitRight){
-  var minMax = getNodeValueRange(unionNodes, document.getElementById("selectColorAttribute").value);
+function updateColorMerged(merge_graph, symbolsLeft, symbolsRight, filenameSplitLeft, filenameSplitRight, val){
+  var minMax = getNodeValueRange(unionNodes, val);
   mergeMin = minMax[0];
   mergeMax = minMax[1];
-  let val = document.getElementById('selectColorAttribute').value;
   mapValuestoNodeColor(merge_graph, 'g1', '1', mergeMin, mergeMax, val);
   mapValuestoNodeColor(merge_graph, 'g2', '2', mergeMin, mergeMax, val);
   mergeMousover(merge_graph, 'g1', val, filenameSplitLeft)
   mergeMousover(merge_graph, 'g2', val, filenameSplitRight)
   mergeMousoverShared(merge_graph, val, filenameSplitLeft, filenameSplitRight);
   calculateLabelColorLegend(val, 10, merge_graph, mergeMin, mergeMax)
-  mergeColorLegend(merge_graph, mergeMin, val,mergeMax)
+  mergeColorLegend(merge_graph, mergeMin, val, mergeMax)
 }
 
 function mergeColorLegend(merge_graph, mergeMin, labelVal, mergeMax){

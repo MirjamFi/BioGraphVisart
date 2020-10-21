@@ -37,15 +37,16 @@
         <script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/keggpathways.js"></script>
         <script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/commonfunctions.js"></script>
         <script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/initialize_heatmap.js"></script>
-        <script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/legend.js"></script>
 
-        <script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/icons.js"></script>
         <script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/graph_heatmap.js"></script>
 
         <script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/mergeSubgraphs.js"></script>
 
         <script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/heatmapSubgraphs.js"></script>
         <script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/showMerged.js"></script>
+        <link rel="stylesheet" type="text/css" href="http://127.0.0.1:3000/static/css/subgraphCss.css">
+    <link rel="stylesheet" href="http://127.0.0.1:3000/static/css/menu.css">
+    <script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/external/menu.js"></script>
 
         <style>
   </style>
@@ -53,9 +54,7 @@
 
     <body>
         
-    <div class="topnav" id ="nav">
-
-      <div class="topnav" id ="nav" style="margin-bottom: 20px">
+    <div class="topnav" id ="nav" style="margin-bottom: 20px">
 
         <div class="dropdown topnav-left">
           <button class="dropbtn_topnav"><i class="fas fa-bars"></i>  
@@ -71,20 +70,19 @@
             <a class="page-link" href="/BioGraphVisart">BioGraphVisart</a>
         </div>
         <div class="topnav-right">
-            <div id="downloadPart" style="visibility: hidden" class="dropdown">
+            <div id="downloadPart"  class="dropdown">
                 <button class="dropbtnright"><i class="fas fa-file-download fa-sm"></i></button>
                 <div id="downloadTypes" class="dropdown-content">
-                    <a onClick="downloadPDF()">PDF</a>
-                    <a onclick="downloadPNG()">PNG</a>
-                    <a onclick="downloadSVG()">SVG</a>
-                    <!--<a onclick="downloadJSON()">JSON</a>-->
+                    <a onClick="downloadMergePDF()">PDF</a>
+                    <a onclick="downloadMergePNG()">PNG</a>
+                    <a onclick="downloadMergeSVG()">SVG</a>
                 </div>
             </div>
         </div>
     </div>
-    <h1>Merged Graph</h1>
+    <!-- <h1>Merged Graph</h1> -->
 
-            <div id = "merged_graph_buttons"></div>   
+    <div id = "merged_graph_buttons"></div>   
     </div>
     <div id = "legend_merge">
     <table style="width: 50px" id = "legend_interactions">

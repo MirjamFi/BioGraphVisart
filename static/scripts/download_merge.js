@@ -3,19 +3,13 @@
 */
 
 function downloadMergePNG(){
-	outputName = document.getElementById('outputNameMerge').value;
-  	var png64 = merge_graph.png();
-	$('#downloadPNGMerge').attr('href', png64);
-	var download = document.createElement('a');
-	download.href = 'data:image/png;base64;'+png64;
-  	download.download = outputName + '.png';
-	download.click();
+  	var png64 = merge_graph.png({'output': 'blob'});
+  	saveAs(new Blob([png64], {type:"image/png"}));
 }
 
 function downloadMergeSVG(){
-	outputName = document.getElementById('outputNameMerge').value;
   	var svgContent = merge_graph.svg({scale: 1, full: true});
-  	saveAs(new Blob([svgContent], {type:"image/svg+xml;charset=utf-8"}), outputName +".svg");
+  	saveAs(new Blob([svgContent], {type:"image/svg+xml;charset=utf-8"}));
 }
 
 function downloadMergePDF(){
@@ -28,7 +22,7 @@ function downloadMergePDF(){
 	var width = doc.internal.pageSize.getWidth();
 	var height = (ratio * width);
 
-	html2canvas($("#body").get(0), { onclone: (document) => {
+	html2canvas(jQuery("#body").get(0), { onclone: (document) => {
 	    document.getElementById('nav').style.visibility = 'hidden'
 	    document.getElementById('resetMerge').style.visibility = 'hidden'
 	    document.getElementById('nav').style.visibility = 'hidden';
@@ -43,7 +37,6 @@ function downloadMergePDF(){
 	  var imgData = canvas.toDataURL('image/png');
 
 	  doc.addImage(imgData, 'PNG', 0, 0, width, height); 
-	  outputName = document.getElementById('outputNameMerge').value;
-	  doc.save(outputName + '.pdf');
+	  doc.save();
 	})
 }

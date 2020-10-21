@@ -1,8 +1,10 @@
  // map values to node color for GA
 function mapValuestoNodeColor(merge_graph, group, pieno, mergeMin, mergeMax, val){
-
 	if(!shapeAttributes.includes(val)){
 		// if(value < 0){
+		merge_graph.style()                // update the elements in the graph with the new style            
+	    .selector('node')
+	        .style('color', 'black').update();
 		merge_graph.style()                // update the elements in the graph with the new style            
 	    .selector('node['+val+' <0]')
 	        .style('color', 'black').update();
@@ -35,6 +37,9 @@ function mapValuestoNodeColor(merge_graph, group, pieno, mergeMin, mergeMax, val
   	}
   	else{
   		// if(value false){
+  			merge_graph.style()                // update the elements in the graph with the new style            
+	    .selector('node')
+	        .style('color', 'black').update();
 		merge_graph.style()                // update the elements in the graph with the new style            
 	    .selector('node['+val+']')
 	        .style('color', 'white').update();
@@ -109,9 +114,6 @@ function mergeMousover(merge_graph, GA, nodeVal, filenameSplit){
 /*
   Uses canvas.measureText to compute and return the width of the given text of given font in pixels.
  */
-
-
-
 function getNodeValueRange(nodes, val){
   const nodesFilteredNaN = nodes.filter(node => node.data[val]);
   const nodesFilteredNaNg1 = nodes.filter(node => node.data[val+'_g1']);
@@ -132,7 +134,7 @@ function getNodeValueRange(nodes, val){
 }
 
 var unionNodes;
-function getmergedGraph(nodesL, nodesR, edgesL, edgesR, interactionTypes, edgesToMerge){
+function getmergedGraph(nodesL, nodesR, edgesL, edgesR, interactionTypes, edgesToMerge, nodeVal){
 	var nodes1 = nodesL;
 	var nodes2 = nodesR;
 	var edges1 = edgesL;
@@ -255,15 +257,16 @@ function getmergedGraph(nodesL, nodesR, edgesL, edgesR, interactionTypes, edgesT
 	    }
 	    return false;
 	}, set));
-	var minMax = getNodeValueRange(unionNodes, document.getElementById("selectColorAttribute").value);
+	var minMax = getNodeValueRange(unionNodes, nodeVal);
 	mergeMin = minMax[0];
 	mergeMax = minMax[1];
 	createInteractionLegend(interactionTypes, merge_graph, edgesToMerge);
-	if(!document.getElementById('heatmap_shapes') && document.getElementById("nodeShapesAttr")){
+	if(!document.getElementById('heatmap_shapes')){
 		var shapelegend = document.createElement("div")
 	    shapelegend.id = "heatmap_shapes";
 	    shapelegend.visibility = "visible";
 	    document.getElementById("legend_merge").appendChild(shapelegend);
+	    document.getElementById("heatmap_shapes")
 	   }
 	return [unionNodes, unionEdges];
 };
