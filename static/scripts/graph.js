@@ -55,11 +55,6 @@ function visualize(graphString, noOptn) {
     addNodesAndEdges(nodes, edges, drugedges, nodesMin, nodesMax, noOptn);
 
   if(!clicked){
-    // $('#downloadPDF').removeAttr('disabled');
-    // $('#downloadPNG').removeAttr('disabled');
-    // $('#downloadSVG').removeAttr('disabled');
-    // $('#downloadJSON').removeAttr('disabled');
-
     document.getElementById('arrows').innerHTML = "";
     createInteractionLegend(interactionTypes, cy, edgesToMerge, noOptn);
     document.getElementById('legend').setAttribute('style','visibility:visible');

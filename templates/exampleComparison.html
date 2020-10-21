@@ -36,9 +36,6 @@
         <script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/download_comparison.js"></script>
         <script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/keggpathways.js"></script>
         <script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/commonfunctions.js"></script>
-        <!-- <script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/legend.js"></script> -->
-
-        <!-- <script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/icons.js"></script> -->
         <script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/graph_heatmap.js"></script>
 
         <script type="text/javascript" src="http://127.0.0.1:3000/static/scripts/mergeSubgraphs.js"></script>
@@ -87,17 +84,12 @@
     <div class="loader" id="loader" style="display: none;"></div>
     </div>
             <div id="heatmapcontainer"></div>
-    <div>
+    <<div id = "config">
         <p id="selectAttribute" style="visibility: hidden"> Select two networks for direct comparison by clicking on a cell in the heatmap. The merged network will open in a new tab.</p>
 
         <ul name="values" id="values" onchange="visualize()" style="visibility: hidden">
         </ul>
-   <ul name= "nodeShapesAttr" id="nodeShapesAttr" onchange="activateShapes()" style="visibility: hidden;"> </ul>
-        <input type="text" name="searchgene" id="searchgene" width="30" style="visibility: hidden" value="Search gene">
-        <button class="butn" id="searchbutton" style="visibility: hidden">Search</button>
-
-        <input name="outputFile" type="text" maxlength="512" id="outputNameHeatmap" value="File name" style="visibility: hidden"/>
-        <button  class= 'butn' id="downloadPDF" onclick="downloadPDF()" disabled="disabled" id="downloadPDF" style="visibility: hidden">.pdf</button>
+      
     </div>
    <div align="left" id="legend_heatmap" style="visibility: hidden">
     <table >

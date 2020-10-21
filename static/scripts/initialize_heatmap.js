@@ -394,7 +394,7 @@ function loadGraphml(sampleLeft, sampleRight, graphsList) {
           var searchgeneInput = document.createElement("input")
           searchgeneInput.type = "text"
           searchgeneInput.id = "searchgene"
-          searchgeneInput.width = "20"
+          searchgeneInput.size = "10"
           searchgeneInput.style.visibility = "hidden"
           searchgeneInput.value = "Node label"
           document.getElementById("config").appendChild(searchgeneInput)
