@@ -1,5 +1,5 @@
 <!doctype html>
-<html><head>
+tml><head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,80 +11,137 @@
   <link rel="canonical" href="http://www.imtools.org/about/">
   <link rel="alternate" type="application/html" title="BioGraphVisart" href="https://mirjamfi.github.io/BioGraphVisart/">
   <script async="" src="//www.google-analytics.com/analytics.js"></script><script>
-	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-			  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-	  ga('create', 'UA-63281686-1', 'auto');
-	  ga('send', 'pageview');
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-63281686-1', 'auto');
+    ga('send', 'pageview');
   </script>
-  	<link rel="stylesheet" type="text/css" href="https://raw.githack.com/MirjamFi/BioGraphVisart/master/static/css/subgraphCss.css">
-
+    <link rel="stylesheet" type="text/css" href="https://raw.githack.com/MirjamFi/BioGraphVisart/master/static/css/subgraphCss.css">
+    <script src="https://kit.fontawesome.com/342fe75ec3.js" crossorigin="anonymous"></script>
+      
+  
 </head>
 
 
-  <body>
-    <header class="site-header">
+<body id="everything">
+  <script type="text/javascript">
+    if (window.File && window.FileReader && window.FileList && window.Blob) {
+      // Great success! All the File APIs are supported.
+    } else {
+      alert('The File APIs are not fully supported in this browser.');
+    }
+  </script>
+  <div class="content">
+  <div class="topnav" id ="nav" style="margin-bottom: 20px">
 
- 	<div class="topnav">
-		<div class="topnav-left">
-		    <a class="page-link" href="heatmap">Comparison</a>
-		</div>
-		<div class="topnav-centered">
-			<a class="page-link" href="/BioGraphVisart">BioGraphVisart</a>
-		</div>
-    <div class="dropdown topnav-right">
-          <button class="dropbtn"><a href="about" class="page-link active">About</a>  
-            <i class="fa fa-caret-down"></i>
+        <div class="dropdown topnav-left" style="float: left">
+          <button class="dropbtn_topnav"><i class="fas fa-bars"></i>  
           </button>
           <div class="dropdown-content">
-            <a class="page-link" href="documentation">Documentation</a>
-            <a class="page-link" href="contact">Contact</a>
+            <a class="page-link" href="/BioGraphVisart/heatmap">Comparison</a>
+      <a class="page-link"href="/BioGraphVisart/about" class="page-link">About</a>            
+      <a class="page-link" href="/BioGraphVisart/documentation">Documentation</a>
+            <a class="page-link" href="/BioGraphVisart/contact">Contact</a>
+          </div>
+        </div>
+        <div class="topnav-centered">
+            <a class="page-link" href="/BioGraphVisart">BioGraphVisart</a>
+        </div>
+        <div class="topnav-right">
+            <div id="downloadPart" style="visibility: hidden" class="dropdown" style="float: right">
+          <button class="dropbtnright"><i class="fas fa-file-download fa-sm"></i></button>
+          <div id="downloadTypes" class="dropdown-content">
+            <a onClick="downloadPDF()">PDF</a>
+            <a onclick="downloadPNG()">PNG</a>
+            <a onclick="downloadSVG()">SVG</a>
+            <!--<a onclick="downloadJSON()">JSON</a>-->
           </div>
       </div>
-	</div>
-      <script>
-        // Add active class to the current button (highlight it)
-        var header = document.getElementById("nav");
-        var btns = header.getElementsByClassName("page-link");
-        for (var i = 0; i < btns.length; i++) {
-          btns[i].addEventListener("click", function() {
-          var current = document.getElementsByClassName("active");
-          current[0].className = current[0].className.replace(" active", "");
-          this.className += " active";
-          });
-        }
-    </script>
-    <div class="page-content">
-      <div class="wrapper">
-        <div class="post">
-
-  <header class="post-header">
-    <h1 class="post-title">About</h1>
-  </header>
-
-  <article class="post-content">
-
-<p style="margin-top:40px"></p>
-<p style="width: 50%; margin-left:25%"><strong>BioGraphVisart</strong> is a web-based tool to interactively visualize networks, especially with biological background. It is written in Javascript based on <a href="http://js.cytoscape.org">Cytoscape.js</a>. <br> BioGraphVisart can currently read generic networks from various sources through a standardized file format (graphML), which can be generated by many other tools. <br> It offers different automated layout options for the graph and mapping of generic attributes (e.g., expression levels) onto nodes and edges. Node and edge styles for different interaction types according to KEGG, the generation of legends for edge styles and the node coloring by easy selection of an attribute by the user, and grouping with respect to predefined pathways (e.g., from KEGG) are additional features currently implemented. BioGraphVisart can be easily integrated into other web applications by importing its main .html-file into the other application.
-  <br> We simplified the process of analysis and visualization with an interactive user-friendly interface for faster data interpretation. <br>
-
-  </article>
-
-</div>
-
-      </div>
+        </div>
     </div>
 
-<footer>
+  <div  class="datapart" id="dataPart">
+    <input type="file" accept=".graphml,.json,.sif" id="fileName" name="file" />
+
+    <button class= 'butn' onclick="isFile()" id="loadGraphml" >Load file</button>
+    <p></p>
+
+  </div> 
+
+  <div id="configPart">
+    
+  </div>
+  <p></p>
+
+  <div align="left" id="legend" style="visibility: hidden">
+    <table >
+      <tr>
+        <td>
+          <span style="font-size:15px" ><b>Interactions</b></span> 
+        </td>
+        <td>
+          <small><a href="https://www.kegg.jp/kegg/xml/docs/" target="_blank">kegg.jp</a></small>
+        </td>
+      </tr>
+    </table>
+    <table id="arrows">
+    </table>
+    <button class= 'butn' id="resetLayout" onclick="changeLayout()">Reset layout</button>
+    <div id="legendNodes"></div>
+  </div>
+  
+  <div class="loader" id="loader1" style="visibility: hidden"></div>
+  <div align="left" id="cy"></div>
+  <div align="left" id="KEGGpathsButton" style="visibility: hidden">
+    <button class="butn" id="keggpathways">Show KEGG Pathways</button></p>
+    <div class="loader" id="loader" style="visibility: hidden"></div>
+  </div>
+  <div align="left" id= "KEGGpaths" style="visibility: hidden;"></div>
+  <script type="text/javascript">
+    var i = 0
+    jQuery.get("/BioGraphVisart/vis", function(data){
+      if(i == 0){
+        window.location.reload()
+        i++;
+      }
+      if(data){
+        var parser = new DOMParser;
+        var dom = parser.parseFromString(
+             data,
+            'text/html');
+        graphString = []
+        var keytag = dom.body.getElementsByTagName("graphml")[0]
+        var keys = keytag.outerHTML.split(/>/);
+        var n = ''
+        for(var i = 0; i < keys.length-1; i++){
+          var k = keys[i].replace(/\\&quot;/g, '').replace(/\\n\\t/g, '').replace(/\\t\\t/g,'').replace(/\\t/g,'').replace(/\\n/g,'')
+          if(k.startsWith("<node") || k.startsWith("</node")){
+            graphString.push(k +'>')
+          }
+          else if(k.startsWith("<data")){
+            n = k+">"
+          }
+          else if(!k.startsWith("<")){
+            n=n+k
+            graphString.push(n +'>')
+          }
+          else{
+            graphString.push(k +'>')
+          }
+        }
+        loadFile();
+      }
+    })  
+  </script>
+  </div>
+<footer id="footer">
     <div class="containerMerged">
-        <a href="imprint">Imprint</a><br>
-        <a href="datenschutzerklarung" aria-current="page">Datenschutzerklärung</a>   
+        <a class="page-link" href="/imprint/">Imprint</a><br>
+        <a class="page-link" href="/datenschutzerklarung/" aria-current="page">Datenschutzerklärung</a>   
     </div>  
 </footer>
+</body>
 
-
-  
-
-
-</body></html>
+</html>

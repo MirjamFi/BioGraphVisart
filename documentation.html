@@ -11,14 +11,15 @@
   <link rel="canonical" href="http://www.imtools.org/about/">
   <link rel="alternate" type="application/html" title="BioGraphVisart" href="https://mirjamfi.github.io/BioGraphVisart/">
   <script async="" src="//www.google-analytics.com/analytics.js"></script><script>
-	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-			  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-	  ga('create', 'UA-63281686-1', 'auto');
-	  ga('send', 'pageview');
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-63281686-1', 'auto');
+    ga('send', 'pageview');
   </script>
-  	<link rel="stylesheet" type="text/css" href="https://raw.githack.com/MirjamFi/BioGraphVisart/master/static/css/subgraphCss.css">
+    <link rel="stylesheet" type="text/css" href="https://raw.githack.com/MirjamFi/BioGraphVisart/master/static/css/subgraphCss.css">
+    <script src="https://kit.fontawesome.com/342fe75ec3.js" crossorigin="anonymous"></script>
 
 <style type="text/css">
 <!--
@@ -35,48 +36,45 @@
 
   <body>
     <header class="site-header">
-  <div class="topnav" id ="nav">
+  <div class="topnav" id ="nav" style="margin-bottom: 20px">
 
-      <div class="topnav-left">
-            <a class="page-link" href="heatmap">Comparison</a>
+        <div class="dropdown topnav-left">
+          <button class="dropbtn_topnav"><i class="fas fa-bars"></i>  
+          </button>
+          <div class="dropdown-content">
+            <a class="page-link" href="/BioGraphVisart/heatmap">Comparison</a>
+      <a class="page-link"href="/BioGraphVisart/about" class="page-link">About</a>            
+      <a class="page-link" href="/BioGraphVisart/documentation">Documentation</a>
+            <a class="page-link" href="/BioGraphVisart/contact">Contact</a>
+          </div>
         </div>
         <div class="topnav-centered">
             <a class="page-link" href="/BioGraphVisart">BioGraphVisart</a>
         </div>
-        <div class="dropdown topnav-right">
-          <button class="dropbtn"><a href="about" class="page-link active">About</a>  
-            <i class="fa fa-caret-down"></i>
-          </button>
-          <div class="dropdown-content">
-            <!-- <a href="/BioGraphVisart/about" class="page-link active">About</a> -->
-            <a class="page-link active" href="documentation">Documentation</a>
-            <a class="page-link" href="contact">Contact</a>
+        <div class="topnav-right">
+            <div id="downloadPart" style="visibility: hidden" class="dropdown">
+          <button class="dropbtnright"><i class="fas fa-file-download fa-sm"></i></button>
+          <div id="downloadTypes" class="dropdown-content">
+            <a onClick="downloadPDF()">PDF</a>
+            <a onclick="downloadPNG()">PNG</a>
+            <a onclick="downloadSVG()">SVG</a>
+            <!--<a onclick="downloadJSON()">JSON</a>-->
           </div>
       </div>
+        </div>
     </div>
-    <script>
-        // Add active class to the current button (highlight it)
-        var header = document.getElementById("nav");
-        var btns = header.getElementsByClassName("page-link");
-        for (var i = 0; i < btns.length; i++) {
-          btns[i].addEventListener("click", function() {
-          var current = document.getElementsByClassName("active");
-          current[0].className = current[0].className.replace(" active", "");
-          this.className += " active";
-          });
-        }
-    </script>
-  </header>
+
     <div class="page-content">
       <div class="wrapper">
         <div class="post">
+
   <header class="post-header">
     <h1 class="post-title">Documentation</h1>
   </header>
 <div class="entry-content">
   <article class="post-content">
 
-<p style="width: 30%;margin-top:40px; float: left">
+<p style="width: 25%;margin-top:40px; float: left">
   <a href="#GeneralDoc" style="color:black; font-weight: 600; font-size: 18px;">General</a><br>
 
   <a href="#NodesDoc" class="tab"style="color:black; font-weight: 500; font-size: 16px;">Nodes</a><br>
@@ -103,36 +101,35 @@
   <a href="#mergeDoc" class="tab"style="color:black; font-weight: 500; font-size: 16px;">Merge</a><br>
 
 </p>
-<p style="width: 50%; margin-left:32%; font-size:30px;margin-top:40px" id="GeneralDoc">General</p>
-<p style="width: 50%; margin-left:32%">
+<p style="width: 50%; margin-left:25%; font-size:30px;margin-top:40px" id="GeneralDoc">General</p>
+<p style="width: 50%; margin-left:25%">
 
 <strong>BioGraphVisart</strong> is a web-based tool to interactively visualize networks, especially with biological background. It is written in javascript based on <a href="http://js.cytoscape.org">Cytoscape.js</a>. <br><br>
 
   The input is a graphml-file (<a href="https://raw.githubusercontent.com/MirjamFi/BioGraphVisart/master/example.graphml">graphml-example</a>) or sif-file (<a href="https://raw.githubusercontent.com/MirjamFi/BioGraphVisart/master/example.sif">sif-example</a>). 
   In addition to nodes and edges (genes and interaction types, respectibvely), GraphML can store information such as expression values as node attributes (more on <a href="http://graphml.graphdrawing.org">GraphML Format</a>). 
   SIF cannot store additional information (more on <a href="http://www.cbmc.it/fastcent/doc/SifFormat.htm">SIF Format</a>).</p>
-
-<hr style="width: 50%; margin-left:32%;">
-<p style="width: 50%; margin-left:32%; font-size:20px;" id="NodesDoc">Nodes</p>
-<p style="width: 50%; margin-left:32%">
+<hr style="width: 50%; margin-left:25%;">
+<p style="width: 50%; margin-left:25%; font-size:20px;" id="NodesDoc">Nodes</p>
+<p style="width: 50%; margin-left:25%">
 Nodes are usually human genes but can be something different with restricted options of visualisation and additional information.</p>
-<p style="width: 50%; margin-left:32%; font-size:16px;" id="LabelsDoc">Node Labels</p>
-<p style="width: 50%; margin-left:32%">
+<p style="width: 50%; margin-left:25%; font-size:16px;" id="LabelsDoc">Node Labels</p>
+<p style="width: 50%; margin-left:25%">
 The labels of the nodes are taken from the node attribute &lt;data key="v_symbol"&lt;...&lt;/data&gt; (if gene symbols available) or &lt;data key=&lt;"v_name"&gt;...&lt;/data&gt; (otherwise).</p>
 
-<p style="width: 50%; margin-left:32%; font-size:16px;" id="ColorDoc">Node Colour</p>
-<p style="width: 50%; margin-left:32%">
+<p style="width: 50%; margin-left:25%; font-size:16px;" id="ColorDoc">Node Colour</p>
+<p style="width: 50%; margin-left:25%">
 Nodes are colored by numeric or boolean attribute values you can select from the drop-down menu <i>Select Coloring Attribute</i>. By default the nodes are colored by the first attribute listed in the .graphml. If no such attributes are available the nodes are white. The legend node in the graph displays the selected attribute's name and the value range (blue: low values/false, red: high values/true, white: 0 or undefined).</p>
 
-<p style="width: 50%; margin-left:32%; font-size:16px;" id="ShapesDoc">Node Shape</p>
-<p style="width: 50%; margin-left:32%">
+<p style="width: 50%; margin-left:25%; font-size:16px;" id="ShapesDoc">Node Shape</p>
+<p style="width: 50%; margin-left:25%">
 In addition, the node shape can be changed according to boolean node attributes. Select the attribute from the second drop-down menu <i>Select Shape Attribute</i> and select the shape from <i>Select Shape</i> drop-down menu. If the attribute is true for a node, the shape is changed accordingly.</p>
 
-<hr style="width: 50%; margin-left:32%;">
-<p style="width: 50%; margin-left:32%; font-size:20px;" id="EdgesDoc">Edges</p>
-<p style="width: 50%; margin-left:32%">
+<hr style="width: 50%; margin-left:25%;">
+<p style="width: 50%; margin-left:25%; font-size:20px;" id="EdgesDoc">Edges</p>
+<p style="width: 50%; margin-left:25%">
 Edges are interactions between nodes taken from the edge attribute &lt;data key="e_interaction"&gt;...&lt;/data&gt;. Edge arrows representation depends on the interaction type (see <a href="https://www.kegg.jp/kegg/xml/docs/">kegg.js</a>) and is shown in the table <b>Interactions</b>. If two nodes are connected by multiple edges, these edges are collapsed into one by default and can be expanded by activating <i>Multiple interactions</i>.
-<table style="width: 10%; margin-left:32%;">
+<table style="width: 10%; margin-left:25%;">
       <tr>
         <td>
           <span style="font-size:16px" ><b>Interactions</b></span> 
@@ -142,7 +139,7 @@ Edges are interactions between nodes taken from the edge attribute &lt;data key=
         </td>
       </tr>
     </table>
-    <table style="width: 20%; margin-left:32%;"id="arrows">
+    <table style="width: 20%; margin-left:25%;"id="arrows">
       <tr>
         <td>Activation, Expression</td>
         <td><img width='40' height='30' alt='activation_expression.svg' src='data:image/svg+xml;base64,
@@ -2275,11 +2272,11 @@ Edges are interactions between nodes taken from the edge attribute &lt;data key=
         </tr>
     </table></p>
 
-<hr style="width: 50%; margin-left:32%;">
-<p style="width: 50%; margin-left:32%; font-size:20px;" id="LayoutsDoc">Layouts</p>
-<p style="width: 50%; margin-left:32%">
+<hr style="width: 50%; margin-left:25%;">
+<p style="width: 50%; margin-left:25%; font-size:20px;" id="LayoutsDoc">Layouts</p>
+<p style="width: 50%; margin-left:25%">
 There are multiple layouts available: 
-  <ul style="width: 50%; margin-left:32%">
+  <ul style="width: 50%; margin-left:25%">
     <li> <a href="https://github.com/cytoscape/cytoscape.js-dagre">dagre</a> (default): </li>
     <ul>
       <li>DAG (directed acyclic graph) system</li>  
@@ -2318,62 +2315,65 @@ There are multiple layouts available:
     </ul>
   </ul>
 </p>
-
-<hr style="width: 50%; margin-left:32%;">
-<p style="width: 50%; margin-left:32%; font-size:20px;" id="DownloadDoc">Download Visualization</p>
-<p style="width: 50%; margin-left:32%">
+<hr style="width: 50%; margin-left:25%;">
+<p style="width: 50%; margin-left:25%; font-size:20px;" id="DownloadDoc">Download Visualization</p>
+<p style="width: 50%; margin-left:25%">
 The generated graph can be downloaded as <i>png, svg</i> or <i>json</i>. The complete page can be downloaded as <i>.pdf</i>. A file name can be given (without file ending) but it is not necessary. If no file name given, the graph is stored as <i>&lt;filename&gt;_&lt;attribute&gt;&lt;png,svg,json&gt;</i>. The <i>json</i>-file can be used to save the current status of the graph and can be loaded back in again for further interactive visualization instead of loading the native <i>.graphml</i>.</p>
 
-<hr style="width: 50%; margin-left:32%;">
-<p style="width: 50%; margin-left:32%; font-size:20px;" id="InteractionsDoc">Interaction</p>
-<p style="width: 50%; margin-left:32%">
-  <p style="width: 50%; margin-left:32%; font-size:16px;" id="MouseDoc">Mouseover</p>
-<p style="width: 50%; margin-left:32%">
+<hr style="width: 50%; margin-left:25%;">
+<p style="width: 50%; margin-left:25%; font-size:20px;" id="InteractionsDoc">Interaction</p>
+<p style="width: 50%; margin-left:25%">
+  <p style="width: 50%; margin-left:25%; font-size:16px;" id="MouseDoc">Mouseover</p>
+<p style="width: 50%; margin-left:25%">
 Moving the mouse over a node displays the attributes value and the node name, over an edge it displays the interaction type (important if there are multiple interactions for one edge). </p>
-<p style="width: 50%; margin-left:32%; font-size:16px;" id="DragDoc">Dragging and moving</p>
-<p style="width: 50%; margin-left:32%">
+<p style="width: 50%; margin-left:25%; font-size:16px;" id="DragDoc">Dragging and moving</p>
+<p style="width: 50%; margin-left:25%">
 The nodes can be draged and moved around. The graph can be zoomed in and out using the mouse wheel/touch pad and also the layout can be reset(button <i>Reset layout</i>).</p>
 
-<p style="width: 50%; margin-left:32%; font-size:16px;" id="DeletionDoc">Node Deletion</p>
-<p style="width: 50%; margin-left:32%">
+<p style="width: 50%; margin-left:25%; font-size:16px;" id="DeletionDoc">Node Deletion</p>
+<p style="width: 50%; margin-left:25%">
 Delete nodes and related edges by right clicking on the node of interest and selecting "delete node". Undo deletions by clicking <i>Undo delete</i>.</p>
 
-<p style="width: 50%; margin-left:32%; font-size:16px;" id="SearchDoc">Node Search</p>
-<p style="width: 50%; margin-left:32%">
+<p style="width: 50%; margin-left:25%; font-size:16px;" id="SearchDoc">Node Search</p>
+<p style="width: 50%; margin-left:25%">
 Search a node by entering its name into the field <i>Search gene</i>. If the node is present it will be highlighted with a thick border.</p>  
 
-<hr style="width: 50%; margin-left:32%;">
-<p style="width: 50%; margin-left:32%; font-size:20px;" id="KEGGDoc">KEGG Pathways</p>
-<p style="width: 50%; margin-left:32%">
-If the nodes have the EntrezID as attribute (&lt;data key="v_entrez"&gt;...&lt;/data&gt; or &lt;data key="v_entrezID"&gt;...&lt;/data&gt;), clicking on the button <i>Show KEGG pathways</i> the human pathways the displayed genes/nodes are in are collected from <a href="https://www.genome.jp/kegg/">KEGG</a> and the five pathways in which most of the displayed genes are in are listed. These pathways can be selected and the contained genes are highlighted by accordingly colored rectangles. Nodes that are close to each other are assembled in the same rectangle. Depending on the zoom this might cause that nodes are contained that should not be. Zooming in helps to clearify nodes in question. Highlighted pathways can of course be hidden again. <br><br>
+<hr style="width: 50%; margin-left:25%;">
+<p style="width: 50%; margin-left:25%; font-size:20px;" id="KEGGDoc">KEGG Pathways</p>
+<p style="width: 50%; margin-left:25%">
+If the nodes have the EntrezID as attribute (&lt;data key="v_entrez"&gt;...&lt;/data&gt; or &lt;data key="v_entrezID"&gt;...&lt;/data&gt;), clicking on the button <i>Show KEGG pathways</i> the human pathways the displayed genes/nodes are in are collected from <a href="https://www.genome.jp/kegg/">KEGG</a> and the five pathways in which most of the displayed genes are in are listed. These pathways can be selected and the contained genes are highlighted by accordingly colored rectangles. Nodes that are close to each other are assembled in the same rectangle. Depending on the zoom this might cause that nodes are contained that should not be. Zooming in helps to clearify nodes in question. Highlighted pathways can of course be hidden again.<br><br>
 To load the KEGG pathways the Cross-Origin Restrictions need to be disabled. Have a look at the <a href="https://github.com/MirjamFi/BioGraphVisart">README</a> under "How to run it locally" point 4. 
+</p> 
 </p>
-<hr style="width: 50%; margin-left:32%;">
+<hr style="width: 50%; margin-left:25%;">
 
 
-<p style="width: 50%; margin-left:32%; font-size:30px;" id="ComparisonDoc">Graph Comparison</p>
-<p style="width: 50%; margin-left:32%">
+<p style="width: 50%; margin-left:25%; font-size:30px;" id="ComparisonDoc">Graph Comparison</p>
+<p style="width: 50%; margin-left:25%">
   For direct comparison of network graphs the node overlap can be calculated and be displayed in a heatmap. Also a merged network graph of two selected network graphs can be generated.<br><br>
 
   The input are multiple graphml-files. 
 
-<hr style="width: 50%; margin-left:32%;">
-  <p style="width: 50%; margin-left:32%; font-size:20px;" id="HeatmapDoc">Heatmap</p>
-  <p style="width: 50%; margin-left:32%">
+<hr style="width: 50%; margin-left:25%;">
+  <p style="width: 50%; margin-left:25%; font-size:20px;" id="HeatmapDoc">Heatmap</p>
+  <p style="width: 50%; margin-left:25%">
 
   The heatmap (<a href="https://www.highcharts.com/?credits">Highcharts.js</a>) displays the percentage of nodes shared by the networks by name. The heatmap can be downloaded as <i>png, jpeg, pdf, svg</i> selectable in the menu on the top right of the heatmap.<br><br>
 
   Clicking on a cell of the heatmap the networks belonging to this cell are displayed with the same features as described before. </p>
 
-<hr style="width: 50%; margin-left:32%;">
-  <p style="width: 50%; margin-left:32%; font-size:20px;" id="mergeDoc">Merged Graph</p>
-  <p style="width: 50%; margin-left:32%">
+<hr style="width: 50%; margin-left:25%;">
+  <p style="width: 50%; margin-left:25%; font-size:20px;" id="mergeDoc">Merged Graph</p>
+  <p style="width: 50%; margin-left:25%">
   The displayed networks are automatically merged and the new network is dislpayed in a new tab/window. Nodes from the previous top network have a orange border, nodes from the other network have a light blue border, respectively. Shared nodes have a black double border and are colored half with the attributes value of the one network and half the other. The KEGG pathways are now calculated for the new merged network.</p>
 
+
+
   </article>
-<p style="width: 50%; margin-left:32%; margin-top: 20px; font-size: 10px" id="RefDoc">References:<br>
+<p style="width: 50%; margin-left:25%; margin-top: 20px; font-size: 10px" id="RefDoc">References:<br>
   [1] Gansner, Emden R., et al. "A technique for drawing directed graphs." IEEE Transactions on Software Engineering 19.3 (1993): 214-230.<br>
 [2] Christoph Daniel Schulze, Miro Spönemann, and Reinhard von Hanxleden. Drawing layered graphs with port constraints. Journal of  Visual Languages and Computing, Special Issue on on Diagram Aesthetics and Layout, 25(2):89–106, 2014.</p>
+
 </div>
 
       </div>
@@ -2381,8 +2381,8 @@ To load the KEGG pathways the Cross-Origin Restrictions need to be disabled. Hav
 </div>
 <footer>
     <div class="container">
-        <a class="page-link" href="imprint">Imprint</a><br>
-        <a class="page-link" href="datenschutzerklarung" aria-current="page">Datenschutzerklärung</a>   
+        <a class="page-link" href="/imprint/">Imprint</a><br>
+        <a class="page-link" href="/datenschutzerklarung/" aria-current="page">Datenschutzerklärung</a>   
     </div>  
 </footer>
 

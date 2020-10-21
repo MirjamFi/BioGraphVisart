@@ -7,36 +7,46 @@
   <title>Datenschutzerklärung</title>
   <meta name="description" content="">
   </script>
-  	<link rel="stylesheet" type="text/css" href="https://raw.githack.com/MirjamFi/BioGraphVisart/master/static/css/subgraphCss.css">
+    <link rel="stylesheet" type="text/css" href="https://raw.githack.com/MirjamFi/BioGraphVisart/master/static/css/subgraphCss.css">
+    <script src="https://kit.fontawesome.com/342fe75ec3.js" crossorigin="anonymous"></script>
 
 </head>
   <body>
- 	  <div class="topnav" id ="nav">
+  <div class="topnav" id ="nav" style="margin-bottom: 20px">
 
-      <div class="topnav-left">
-            <a class="page-link" href="heatmap">Comparison</a>
+        <div class="dropdown topnav-left">
+          <button class="dropbtn_topnav"><i class="fas fa-bars"></i>  
+          </button>
+          <div class="dropdown-content">
+            <a class="page-link" href="/BioGraphVisart/heatmap">Comparison</a>
+      <a class="page-link"href="/BioGraphVisart/about" class="page-link">About</a>            
+      <a class="page-link" href="/BioGraphVisart/documentation">Documentation</a>
+            <a class="page-link" href="/BioGraphVisart/contact">Contact</a>
+          </div>
         </div>
         <div class="topnav-centered">
             <a class="page-link" href="/BioGraphVisart">BioGraphVisart</a>
         </div>
-        <div class="dropdown topnav-right">
-          <button class="dropbtn"><a href="about" class="page-link">About</a>  
-            <i class="fa fa-caret-down"></i>
-          </button>
-          <div class="dropdown-content">
-            <a class="page-link" href="documentation">Documentation</a>
-            <a class="page-link" href="contact">Contact</a>
+        <div class="topnav-right">
+            <div id="downloadPart" style="visibility: hidden" class="dropdown">
+          <button class="dropbtnright"><i class="fas fa-file-download fa-sm"></i></button>
+          <div id="downloadTypes" class="dropdown-content">
+            <a onClick="downloadPDF()">PDF</a>
+            <a onclick="downloadPNG()">PNG</a>
+            <a onclick="downloadSVG()">SVG</a>
+            <!--<a onclick="downloadJSON()">JSON</a>-->
           </div>
       </div>
+        </div>
     </div>
  <header class="site-header">
     <h1 class="site-title">Datenschutzerklärung</h1>
   </header>
 <div class="entry-content" itemprop="articleBody">
 <p>Sehr geehrte Webseitenbesucher,</p>
-<p>Vielen Dank für Ihren Besuch unserer Webseiten! Wir schätzen Ihr Interesse am BioGraphVisart Projekt. Mittels dieser Datenschutzerklärung möchten wir Sie im Folgenden über die Datenverarbeitung Ihrer personenbezogenen Daten (im Folgenden „Daten“) informieren, die aus dem Besuch oder der Nutzung von Funktionen unserer Webseiten resultieren. Wir bitten Sie, diese Datenschutzerklärung sorgfältig durchzulesen, bevor Sie unsere Webseiten weiter besuchen oder die auf den Webseiten enthaltenen Funktionen nutzen. Mit dem Besuch unserer Webseiten stimmen Sie den im Folgenden beschriebenen Verarbeitungen und Nutzungen Ihrer Daten zu. Unsere Datenschutzerklärung ist nur für unsere Webseiten gültig und nicht für die Webseiten Dritter.</p>
+<p>Vielen Dank für Ihren Besuch unserer Webseiten! Wir schätzen Ihr Interesse am BALL Projekt. Mittels dieser Datenschutzerklärung möchten wir Sie im Folgenden über die Datenverarbeitung Ihrer personenbezogenen Daten (im Folgenden „Daten“) informieren, die aus dem Besuch oder der Nutzung von Funktionen unserer Webseiten resultieren. Wir bitten Sie, diese Datenschutzerklärung sorgfältig durchzulesen, bevor Sie unsere Webseiten weiter besuchen oder die auf den Webseiten enthaltenen Funktionen nutzen. Mit dem Besuch unserer Webseiten stimmen Sie den im Folgenden beschriebenen Verarbeitungen und Nutzungen Ihrer Daten zu. Unsere Datenschutzerklärung ist nur für unsere Webseiten gültig und nicht für die Webseiten Dritter.</p>
 <h4>Datenschutz und Datensicherheit</h4>
-<p>Der Schutz Ihrer Privatsphäre ist uns ein wichtiges Anliegen. Zum Schutz Ihrer Daten trifft das BioGraphVisart Projekt eine Vielzahl an technischen und organisatorischen Maßnahmen, um eine unbefugte Kenntnisnahme und Weitergabe, Manipulation, Verlust und unbefugte Löschung wirksam verhindern zu können.  Die von uns ergriffenen Maßnahmen unterliegen dabei der stetigen Aktualisierung. Wir orientieren uns dabei an den gesetzlichen Vorgaben, Best-Practice-Ansätzen sowie technischen Entwicklungen. Im Folgenden unterrichten wir Sie über Art, Umfang und Zweck der Erhebung, Verarbeitung und Nutzung Ihrer Daten in unserem BioGraphVisart Projekt, sofern dies aus dem Besuch oder der Nutzung der Funktionen unserer Webseiten resultiert.</p>
+<p>Der Schutz Ihrer Privatsphäre ist uns ein wichtiges Anliegen. Zum Schutz Ihrer Daten trifft das BALL Projekt eine Vielzahl an technischen und organisatorischen Maßnahmen, um eine unbefugte Kenntnisnahme und Weitergabe, Manipulation, Verlust und unbefugte Löschung wirksam verhindern zu können.  Die von uns ergriffenen Maßnahmen unterliegen dabei der stetigen Aktualisierung. Wir orientieren uns dabei an den gesetzlichen Vorgaben, Best-Practice-Ansätzen sowie technischen Entwicklungen. Im Folgenden unterrichten wir Sie über Art, Umfang und Zweck der Erhebung, Verarbeitung und Nutzung Ihrer Daten in unserem BALL Projekt, sofern dies aus dem Besuch oder der Nutzung der Funktionen unserer Webseiten resultiert.</p>
 <h4>Verantwortlicher für diese Datenschutzerklärung und diesen Onlineauftritt</h4>
 <p>Prof. Dr. Oliver Kohlbacher<br />
 Sand 14<br />
@@ -91,7 +101,7 @@ Sand 14<br />
 <h4>Datenübermittlung ins Ausland</h4>
 <p>Eine Übermittlung Ihrer Daten an Stellen in Länder außerhalb der Europäischen Union ist aufgrund unserer Tätigkeiten nicht erforderlich und findet daher derzeit nicht statt.</p>
 <h4>Auskunftsrecht</h4>
-<p>Webseitenbesucher unseres Onlineauftritts haben gemäß Art. 15 DSGVO das Recht, auf Anfrage, jederzeit und kostenfrei Auskunft über Ihre im BioGraphVisart Projekt zu Ihrer Person verarbeiteten Daten zu erhalten. Der Umfang der Auskunft ergibt sich aus Art. 15 DSGVO. Ihr Auskunftsbegehren richten Sie bitte via Mail oder per Post an den oben genannten Ansprechpartner für Datenschutz.</p>
+<p>Webseitenbesucher unseres Onlineauftritts haben gemäß Art. 15 DSGVO das Recht, auf Anfrage, jederzeit und kostenfrei Auskunft über Ihre im BALL Projekt zu Ihrer Person verarbeiteten Daten zu erhalten. Der Umfang der Auskunft ergibt sich aus Art. 15 DSGVO. Ihr Auskunftsbegehren richten Sie bitte via Mail oder per Post an den oben genannten Ansprechpartner für Datenschutz.</p>
 <h4>Recht auf Berichtigung Ihrer Daten</h4>
 <p>Sie haben gemäß Art. 16 DSGVO das Recht, bei Vorliegen unrichtiger oder unvollständiger Daten über Sie, die Berichtigung oder Vervollständigung dieser zu verlangen. Wir werden entsprechende Anfragen prüfen und in berechtigten Fällen die erforderlichen Maßnahmen ergreifen.</p>
 <h4>Recht auf Löschung und Sperrung Ihrer Daten</h4>
@@ -123,11 +133,10 @@ Sand 14<br />
 
 
 </div>
-
 <footer>
-	<div class="container">
-		<a href="imprint">Imprint</a><br>
-		<a href="datenschutzerklarung" aria-current="page">Datenschutzerklärung</a>	
-	</div>	
+  <div class="container">
+    <a class="page-link" href="/imprint/">Imprint</a><br>
+    <a class="page-link" href="/datenschutzerklarung/" aria-current="page">Datenschutzerklärung</a> 
+  </div>  
 </footer>
 </body></html>
