@@ -193,13 +193,14 @@ input:hover{
 }
 
 #cy {
-      width: 60%;
+      width: 65%;
       position: absolute;
       top: 160px;
       left: 190px;
       bottom: 70px;
       background-color:none;
       z-index: 2;
+      /*margin-right: 10px;*/
   }
 #searchgene{
   margin-left: 30px;
@@ -229,17 +230,17 @@ input:hover{
 .KEGGpathsButton{
   position: absolute;
   top: 160px;
-  left:85%;
+  margin-left:85%;
 }
 #KEGGpaths{
   position: absolute;
   top: 210px;
-  left:86%;
+  margin-left:86%;
 }
 #keggpathways{
   position: absolute;
   top: 180px;
-  left:86%;
+  margin-left:86%;
 }
 #keggpathwaysMerge{
   position: absolute;

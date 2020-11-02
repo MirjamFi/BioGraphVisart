@@ -228,6 +228,13 @@ function loadFile() {
   document.getElementById("configPart").appendChild(undobutn);
   document.getElementById("undobutn").className = 'butn';  
   undobutn.onclick = undoDeletion;
+
+  var resetbutn = document.createElement("button");
+  resetbutn.id = "resetLayout";
+  resetbutn.innerHTML = "Reset layout";
+  document.getElementById("configPart").appendChild(resetbutn);
+  document.getElementById("resetLayout").className = 'butn';  
+  undobutn.onclick = changeLayout;
   if(!isJson && ! isSIF){
     // get attributes for coloring -> double/boolean and shape -> boolean
     for (var i = 0; i <= graphString.length - 1; i++) {
