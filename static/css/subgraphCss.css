@@ -200,7 +200,6 @@ input:hover{
       bottom: 70px;
       background-color:none;
       z-index: 2;
-      /*margin-right: 10px;*/
   }
 #searchgene{
   margin-left: 30px;
@@ -396,15 +395,13 @@ input:hover{
     margin: 0% 10% 5% 0%;
 }
  #merged_graph {
-      width: 65%;
-      /*height: 75%;*/
+  width: 65%;
       position: absolute;
-      top: 200px;
+      top: 150px;
       left: 280px;
-      bottom: 90px;
-      max-height : 80%;
+      bottom: 70px;
       background-color:none;
-      flex: 1;
+      z-index: 2;
 }
 
 #legend_heatmap {
