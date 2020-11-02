@@ -152,7 +152,7 @@ function highlightKEGGpaths(ctx, canvas, cy, nodes, layer, pos="", allPaths, col
 
 // draw rectangles highlighting the selected pathways
 function drawPathwayRectangles(ctx, cy, nodes, allPaths, colorschemePaths, pos=""){
-  var allCheckedPaths = getCheckedBoxes($('#form'+pos+' input:checkbox'));
+  var allCheckedPaths = getCheckedBoxes(jQuery('#form'+pos+' input:checkbox'));
   if(allCheckedPaths){
     for(var path of allCheckedPaths){
         var cp = [... allPaths[path]];
