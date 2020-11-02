@@ -230,17 +230,17 @@ input:hover{
 .KEGGpathsButton{
   position: absolute;
   top: 160px;
-  margin-left:85%;
+  margin-left:84%;
 }
 #KEGGpaths{
   position: absolute;
   top: 210px;
-  margin-left:86%;
+  margin-left:85%;
 }
 #keggpathways{
   position: absolute;
   top: 180px;
-  margin-left:86%;
+  margin-left:85%;
 }
 #keggpathwaysMerge{
   position: absolute;
