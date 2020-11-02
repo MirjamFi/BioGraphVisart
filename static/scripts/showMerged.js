@@ -182,9 +182,8 @@ function setbuttons(val){
     })
 
     // node shape drop dpwn
-
     if(window.opener.shapeAttributes.length > 0){
-      var nodeShapesAttr = document.createElement("ul")
+     var nodeShapesAttr = document.createElement("ul")
      nodeShapesAttr.classList.add("Menu")
      nodeShapesAttr.classList.add("-horizontal")
      nodeShapesAttr.id="nodeShapesAttr"
@@ -197,7 +196,7 @@ function setbuttons(val){
       labelShape.appendChild(ulShapes)
       const shapesArray = ["rectangle", "octagon", "rhomboid", "pentagon", "tag"];
       shapeAttributes = Array.from(new Set(window.opener.shapeAttributes)); 
-      if(shapeAttributes.length > 0){
+      // if(shapeAttributes.length > 0){
         for(nodeattrShape of shapeAttributes){
         var liShape = document.createElement("li")
         liShape.classList.add("-hasSubmenu")
@@ -222,56 +221,36 @@ function setbuttons(val){
               hideMenu(document.getElementById("nodeShapesAttr"))}
           })
       }
-      }
+    }
 
     // layout dropdown
-    // var drpLayout = document.createElement("select");
-    // drpLayout.id = "selectlayoutMerge";
-    // drpLayout.name = "selectlayout";
-    // document.getElementById("merged_graph_buttons").appendChild(drpLayout);
-    // drpLayout.style.visibility = "visible";
-    // drpLayout.onchange = function(){changeLayout(merge_graph, 'Merge')};
-
-    // var seleLayout = document.createElement("OPTION");
-    // seleLayout.text = "Select Layout";
-    // drpLayout.add(seleLayout);
-
     const layoutArray = ["dagre", "klay", "breadthfirst", "cose-bilkent", "grid"];
+    var drpLayout = document.createElement("ul");
+    drpLayout.classList.add("Menu")
+    drpLayout.classList.add("-horizontal")
+    drpLayout.id = "selectlayoutMerge";
+    document.getElementById("merged_graph_buttons").appendChild(drpLayout);
+    var labelLayout = document.createElement("li")
+    labelLayout.classList.add("-hasSubmenu")
+    labelLayout.innerHTML = "<a href='#'>Layout</a>"
+    drpLayout.appendChild(labelLayout)
+    var ulLayout = document.createElement("ul")
+    labelLayout.appendChild(ulLayout)
 
-    // layoutArray.forEach(function(s){
-    //   var graphLayout = s;
-    //   var optnLayout = document.createElement("OPTION");
-    //   optnLayout.text=graphLayout;
-    //   optnLayout.value=graphLayout;
-    //   drpLayout.add(optnLayout);
-    // });
-    // layout dropdown
-  var drpLayout = document.createElement("ul");
-  drpLayout.classList.add("Menu")
-  drpLayout.classList.add("-horizontal")
-  drpLayout.id = "selectlayoutMerge";
-  document.getElementById("merged_graph_buttons").appendChild(drpLayout);
-  var labelLayout = document.createElement("li")
-  labelLayout.classList.add("-hasSubmenu")
-  labelLayout.innerHTML = "<a href='#'>Layout</a>"
-  drpLayout.appendChild(labelLayout)
-  var ulLayout = document.createElement("ul")
-  labelLayout.appendChild(ulLayout)
+    layoutArray.forEach(function(s){
+      var optnLayout = addLayoutOptions(s, "layoutOpt");
+      optnLayout.onclick = function(){
+        selectedLayout = s; 
+        changeLayout(merge_graph, s);
+        document.querySelectorAll('.fa-check').forEach(function(e){
+          if(e.classList.contains('layoutOpt')){
+          e.remove()}});
+        optnLayout.innerHTML = "<a href='#'><i class='fas fa-check layoutOpt' style='margin-right:5px'></i>"+s+"</a>"
+      };
+      ulLayout.appendChild(optnLayout);
+    });
 
-  layoutArray.forEach(function(s){
-    var optnLayout = addLayoutOptions(s, "layoutOpt");
-    optnLayout.onclick = function(){
-      selectedLayout = s; 
-      changeLayout(merge_graph, s);
-      document.querySelectorAll('.fa-check').forEach(function(e){
-        if(e.classList.contains('layoutOpt')){
-        e.remove()}});
-      optnLayout.innerHTML = "<a href='#'><i class='fas fa-check layoutOpt' style='margin-right:5px'></i>"+s+"</a>"
-    };
-    ulLayout.appendChild(optnLayout);
-  });
-
-// search gene
+    // search gene
     var searchgene = document.createElement("input");
     searchgene.id = "searchgene";
     searchgene.value = "Search gene"
@@ -284,6 +263,13 @@ function setbuttons(val){
     document.getElementById("merged_graph_buttons").appendChild(searchbutn);
     document.getElementById("searchbutn").className = 'butn';  
     searchbutn.onclick = highlightSearchedGene;
+
+    var resetbutn = document.createElement("button")
+    resetbutn.id = "resetMerge"
+    resetbutn.innerHTML = "Reset layout"
+    resetbutn.classList.add("butn");
+    resetbutn.onclick = function(){resetLayout(merge_graph, "Merge")}
+    document.getElementById("merged_graph_buttons").appendChild(resetbutn);
 
           forEach($(".Menu li.-hasSubmenu"), function(e){
         e.showMenu = showMenu;
@@ -304,7 +290,7 @@ function setbuttons(val){
 
       document.addEventListener("click", hideAllInactiveMenus);
     }
-}
+// }
 
 function mergeFunction(leftNodes, rightNodes, leftEdges, rightEdges, interactionTypes, edgesToMerge, val){
   merge_graph = createCyObject('merged_graph', -1,1, )
