@@ -273,13 +273,14 @@ function calculateOverlap(data){
 
 var drpValues = [];
 var shapeAttributes = [];
+  var onceSearch=false;
+
 function loadGraphml(sampleLeft, sampleRight, graphsList) {
   cleanSelectionsHeatmap();
   samples = [sampleLeft, sampleRight];
   var onceAttr = false
   var firstVal = true;
   var onceShapes = false
-  var onceSearch=false;
   samples.forEach(sample=>{
     var graphString;
     if(!!sample){
