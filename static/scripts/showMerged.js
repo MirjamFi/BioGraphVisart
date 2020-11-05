@@ -348,7 +348,6 @@ function mergeFunction(leftNodes, rightNodes, leftEdges, rightEdges, interaction
   var filteredRight = arrRight.filter(function (el) {
     return el != null;
   });
-  console.log(merge_graph.nodes())
   // legend node
   mergeColorLegend(merge_graph, mergeMin, labelVal, mergeMax)
 
