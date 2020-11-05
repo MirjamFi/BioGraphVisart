@@ -67,7 +67,6 @@ async function createMerged(file1, file2, nodeVal, leftID, rightID, example){
           var edgesToMerge=true;
           for(g in graphsList){
             var graphml = graphsList[g];
-            console.log(graphml)
             if(j == 0){
               var nodesAndEdges = getNodesAndEdges(graphml,nodeVal, 'left');
               leftNodes = nodesAndEdges[0];
@@ -349,7 +348,7 @@ function mergeFunction(leftNodes, rightNodes, leftEdges, rightEdges, interaction
   var filteredRight = arrRight.filter(function (el) {
     return el != null;
   });
-
+  console.log(merge_graph.nodes())
   // legend node
   mergeColorLegend(merge_graph, mergeMin, labelVal, mergeMax)
 
