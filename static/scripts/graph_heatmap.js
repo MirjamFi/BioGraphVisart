@@ -75,7 +75,6 @@ function visualize(firstTime=false, files, example) {
       var leftNodesMin = leftRange[0];
       var leftNodesMax = leftRange[1];
       graphLeft= createCyObject(cyO, leftNodesMin, leftNodesMax, nodeVal);
-      console.log(leftNodes)
       addNodesAndEdges(graphLeft, leftNodes, leftEdges, leftFirstTime, leftNodesMin, leftNodesMax);
       // document.getElementById('downloadPDF').style.visibility = "visible";
       // document.getElementById('downloadPDF').disabled = false;

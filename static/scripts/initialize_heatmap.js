@@ -342,9 +342,7 @@ function loadGraphml(sampleLeft, sampleRight, graphsList) {
               }
               if(graphString[i].includes("attr.type=\"boolean\"")){
                 shapeAttributes.push(nodeattr);
-                console.log(onceShapes)
                 if(!onceShapes){
-                  console.log(onceShapes)
                   var drpShapes = document.createElement("ul")
                   drpShapes.id="nodeShapesAttr"
                   drpShapes.classList.add("Menu")
