@@ -67,6 +67,7 @@ async function createMerged(file1, file2, nodeVal, leftID, rightID, example){
           var edgesToMerge=true;
           for(g in graphsList){
             var graphml = graphsList[g];
+            console.log(graphml)
             if(j == 0){
               var nodesAndEdges = getNodesAndEdges(graphml,nodeVal, 'left');
               leftNodes = nodesAndEdges[0];

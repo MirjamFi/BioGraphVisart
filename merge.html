@@ -35,7 +35,6 @@
         <script type="text/javascript" src="https://raw.githack.com/MirjamFi/BioGraphVisart/master/static/scripts/keggpathways.js"></script>
 
         <script type="text/javascript" src="https://rawcdn.githack.com/MirjamFi/BioGraphVisart/master/static/scripts/initialize_heatmap.js"></script>
-        <script type="text/javascript" src="https://rawcdn.githack.com/MirjamFi/BioGraphVisart/master/static/scripts/legend.js"></script>
 
         <script type="text/javascript" src="https://raw.githack.com/MirjamFi/BioGraphVisart/master/static/scripts/graph_heatmap.js"></script>
         <script type="text/javascript" src="https://raw.githack.com/MirjamFi/BioGraphVisart/master/static/scripts/mergeSubgraphs.js"></script>
@@ -128,6 +127,7 @@
         else{
             var file1 = queries[2].split('=')[1].split("blob:")[1];
             var file2 = queries[3].split('=')[1].split("blob:")[1];
+            console.log(file1, file2)
             createMerged(file1, file2, val, leftID, rightID)
         }
     </script>
