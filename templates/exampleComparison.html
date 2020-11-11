@@ -119,13 +119,15 @@
             </div>
         </div>
         <div id="resetLeft" style="visibility: hidden">
+          <div id="downloadPartLeft" style="visibility: hidden" class="dropdown" style="float: left">
+              <button class="butn"><i class="fas fa-file-download fa-lg"></i></button>
+              <div id="downloadTypes" class="dropdown-content">
+                <a id="downloadLeftPNG">.png</a>
+                <a id="downloadLeftSVG">.svg</a>
+              </div>
+            </div>
           <button class= 'butn' id="resetLeftLayout">Reset layout</button>
           <ul id ="selectlayoutLeft"></ul>
-        </div>
-        <div id="downloadPartLeft" style="visibility: hidden">
-          <input name="outputFileLeft" type="text" maxlength="512" id="outputNameLeft" value="File name"/>
-          <button class= 'butn' id="downloadLeftPNG" disabled="disabled">.png</button>
-          <button class= 'butn' id="downloadLeftSVG" disabled="disabled">.svg</button>
         </div>
         <p></p>
         <div align="left" id="right">
@@ -138,13 +140,15 @@
             </div>
         </div>
         <div id="resetRight" style="visibility: hidden">
+          <div id="downloadPartRight" style="visibility: hidden" class="dropdown" style="float: left">
+              <button class="butn"><i class="fas fa-file-download fa-lg"></i></button>
+              <div id="downloadTypes" class="dropdown-content">
+                <a id="downloadRightPNG">.png</a>
+                <a id="downloadRightSVG">.svg</a>
+              </div>
+            </div>
           <button class = "butn" id="resetRightLayout">Reset layout</button>
           <ul id ="selectlayoutRight"></ul>
-        </div>
-        <div id="downloadPartRight" style="visibility: hidden">
-          <input name="outputFileRight" type="text" maxlength="512" id="outputNameRight" value="File name"/>
-          <button class= 'butn' id="downloadRightPNG" disabled="disabled">.png</button>
-          <button class= 'butn' id="downloadRightSVG" disabled="disabled">.svg</button>
         </div>
         <div class="clear"></div>
     </div>
