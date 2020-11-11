@@ -56,35 +56,33 @@
 		}
 	</script>
 	<div class="content">
-	<div class="topnav" id="nav"  style="margin-bottom: 20px">
-		<div class="topnav-left">
-		    <a class="page-link" href="heatmap">Comparison</a>
-		</div>
-		<div class="topnav-centered">
-			<a class="page-link" href="/BioGraphVisart/">BioGraphVisart</a>
-		</div>
-	    <div class="dropdown topnav-right">
-          <button class="dropbtn"><a href="about" class="page-link">About</a>  
-            <i class="fa fa-caret-down"></i>
+	<div class="topnav" id ="nav" style="margin-bottom: 20px">
+
+      	<div class="dropdown topnav-left">
+          <button class="dropbtn_topnav"><i class="fas fa-bars"></i>  
           </button>
           <div class="dropdown-content">
-            <a class="page-link" href="documentation">Documentation</a>
-            <a class="page-link" href="contact">Contact</a>
+          	<a class="page-link" href="/BioGraphVisart/heatmap">Comparison</a>
+			<a class="page-link"href="/BioGraphVisart/about" class="page-link">About</a>            
+			<a class="page-link" href="/BioGraphVisart/documentation">Documentation</a>
+            <a class="page-link" href="/BioGraphVisart/contact">Contact</a>
           </div>
-      </div>
-	</div>
-	 <script>
-        // Add active class to the current button (highlight it)
-        var header = document.getElementById("nav");
-        var btns = header.getElementsByClassName("page-link");
-        for (var i = 0; i < btns.length; i++) {
-          btns[i].addEventListener("click", function() {
-          var current = document.getElementsByClassName("active");
-          current[0].className = current[0].className.replace(" active", "");
-          this.className += " active";
-          });
-        }
-    </script>
+      	</div>
+        <div class="topnav-centered">
+            <a class="page-link" href="/BioGraphVisart">BioGraphVisart</a>
+        </div>
+      	<div class="topnav-right">
+            <div id="downloadPart" style="visibility: hidden" class="dropdown">
+	  			<button class="dropbtnright"><i class="fas fa-file-download fa-sm"></i></button>
+	  			<div id="downloadTypes" class="dropdown-content">
+			    	<a onClick="downloadPDF()">PDF</a>
+			    	<a onclick="downloadPNG()">PNG</a>
+			    	<a onclick="downloadSVG()">SVG</a>
+			    	<!--<a onclick="downloadJSON()">JSON</a>-->
+		  		</div>
+			</div>
+        </div>
+    </div>
 
 	<div  class="datapart" id="dataPart">
 		<input type="file" accept=".graphml,.jso,.sif" id="fileName" name="file" />
@@ -99,15 +97,6 @@
 	</div>
 	<p></p>
 
-
-
-	<div id="downloadPart" style="visibility: hidden">
-		<input name="outputFile" type="text" maxlength="512" id="outputName" value="Download File name"/>
-		<button  class= 'butn' id="downloadPDF" onClick=downloadPDF() disabled="disabled" id="downloadPDF">.pdf</button>
-		<button class= 'butn' id="downloadPNG" onclick="downloadPNG()" disabled="disabled">.png</button>
-		<button class= 'butn' id="downloadSVG" onclick="downloadSVG()" disabled="disabled">.svg</button>
-		<button class= 'butn' id="downloadJSON" onclick="downloadJSON()" disabled="disabled">.json</button>
-	</div>
 	<!--<button onclick=" window.print()">print</button>-->
 	<p></p>
 	<div align="left" id="legend" style="visibility: hidden">
