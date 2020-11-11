@@ -32,7 +32,6 @@ function downloadPDF() {
       document.getElementById('downloadPDF').remove();
       document.getElementById('resetLeft').remove();
       document.getElementById('resetRight').remove();
-      document.getElementById('dataPart').remove();
       document.getElementById('keggpathwaysLeft').style.visibility = 'hidden'
       document.getElementById('keggpathwaysRight').style.visibility = 'hidden'
       document.getElementById('nav').style.visibility = 'hidden'
