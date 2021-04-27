@@ -246,68 +246,68 @@ function loadFile() {
           (graphString[i].includes("attr.type=\"boolean\""))))){
         noOptn = false;
         var nodeattr = graphString[i].split("attr.name=")[1].split(" ")[0].replace(/"/g, "");
+        if(nodeattr != "Drugtarget"){
 
-        var optnDrp = document.createElement("li");
-        optnDrp.innerHTML="<a href='#'>"+nodeattr+"</a>";
-        optnDrp.id=nodeattr;
-        ulDrp.appendChild(optnDrp)
-        optnDrp.onclick = function(){
-        document.querySelectorAll('.fa-check').forEach(function(e){
-          if(e.classList.contains('optnDrp')){
-            e.remove()}});
-        this.innerHTML = "<a href='#'><i class='fas fa-check optnDrp' style='margin-right:5px'></i>"+this.id+"</a>"
-        nodeVal = this.id;
-        var newValues = []
-        for(var i = 0; i < cy.filter('node').size(); i++){
-          if(cy.nodes()[i].data()[nodeVal]){
-            newValues.push(cy.nodes()[i].data()[nodeVal])
-          }
-        }
-        var range = legendsRange(newValues);
-        var nodesMin = range[0];
-        var nodesMa
-        x = range[1];
-        cy.style().selector('node[!'+nodeVal+']').style({
-              'background-color': 'white',
-              'color':'black'
-          }).update()
-          // attributes with numbers
-        cy.style().selector('node['+nodeVal+' < "0"]').style({
-              'background-color': 'mapData('+nodeVal+','+ nodesMin+', 0, #006cf0, white)',
-              'color': 'black'
-          }).update()
-         cy.style().selector('node['+nodeVal+' <='+0.5*nodesMin+']').style({
-              'color': 'white'
-          }).update()
-         cy.style().selector('node['+nodeVal+' > "0"]').style({
-              'background-color': 'mapData('+nodeVal+', 0,'+ nodesMax+', white, #d50000)',
-              'color': 'black'
-          }).update()
-          cy.style().selector('node['+nodeVal+' >='+0.5*nodesMax+']').style({
-              'color': 'white'
-          }).update()
-          cy.style().selector('node['+nodeVal+' = "0"]').style({
-              'background-color': 'white',
-              'color':'black'
-          }).update()
-
-          // attributes with boolean
-          cy.style().selector('node['+nodeVal+' = "false"]').style({
-              'background-color': '#006cf0',
-              'color':'white'
-          }).update()
-          cy.style().selector('node['+nodeVal+' = "true"]').style({
-              'background-color': '#d50000',
-              'color':'white'
-          }).update()
-          cy.style().selector('node[!'+nodeVal+']').style({
+          var optnDrp = document.createElement("li");
+          optnDrp.innerHTML="<a href='#'>"+nodeattr+"</a>";
+          optnDrp.id=nodeattr;
+          ulDrp.appendChild(optnDrp)
+          optnDrp.onclick = function(){
+            document.querySelectorAll('.fa-check').forEach(function(e){
+              if(e.classList.contains('optnDrp')){
+                e.remove()}});
+            this.innerHTML = "<a href='#'><i class='fas fa-check optnDrp' style='margin-right:5px'></i>"+this.id+"</a>"
+            nodeVal = this.id;
+            var newValues = []
+            for(var i = 0; i < cy.filter('node').size(); i++){
+              if(cy.nodes()[i].data()[nodeVal]){
+                newValues.push(cy.nodes()[i].data()[nodeVal])
+              }
+            }
+            var range = legendsRange(newValues);
+            var nodesMin = range[0];
+            var nodesMax = range[1];
+            cy.style().selector('node[!'+nodeVal+']').style({
                   'background-color': 'white',
                   'color':'black'
               }).update()
-          var fontSize = 10;
-          calculateLabelColorLegend(nodeVal, fontSize, cy, nodesMin, nodesMax);
-        };
-        
+              // attributes with numbers
+            cy.style().selector('node['+nodeVal+' < "0"]').style({
+                  'background-color': 'mapData('+nodeVal+','+ nodesMin+', 0, #006cf0, white)',
+                  'color': 'black'
+              }).update()
+             cy.style().selector('node['+nodeVal+' <='+0.5*nodesMin+']').style({
+                  'color': 'white'
+              }).update()
+             cy.style().selector('node['+nodeVal+' > "0"]').style({
+                  'background-color': 'mapData('+nodeVal+', 0,'+ nodesMax+', white, #d50000)',
+                  'color': 'black'
+              }).update()
+              cy.style().selector('node['+nodeVal+' >='+0.5*nodesMax+']').style({
+                  'color': 'white'
+              }).update()
+              cy.style().selector('node['+nodeVal+' = "0"]').style({
+                  'background-color': 'white',
+                  'color':'black'
+              }).update()
+
+              // attributes with boolean
+              cy.style().selector('node['+nodeVal+' = "false"]').style({
+                  'background-color': '#006cf0',
+                  'color':'white'
+              }).update()
+              cy.style().selector('node['+nodeVal+' = "true"]').style({
+                  'background-color': '#d50000',
+                  'color':'white'
+              }).update()
+              cy.style().selector('node[!'+nodeVal+']').style({
+                  'background-color': 'white',
+                  'color':'black'
+              }).update()
+              var fontSize = 10;
+              calculateLabelColorLegend(nodeVal, fontSize, cy, nodesMin, nodesMax);
+          };
+        }
 
         if(graphString[i].includes("attr.type=\"boolean\"")){
           var nodeattrShape = graphString[i].split("attr.name=")[1].split(" ")[0].replace(/"/g, "");
@@ -336,26 +336,27 @@ function loadFile() {
                 hideMenu(document.getElementById("nodeShapesAttr"))}
             })
 
-          noDrpShapes = false;
+            noDrpShapes = false;
+            forEach($(".Menu li.-hasSubmenu"), function(e){
+                e.showMenu = showMenu;
+                e.hideMenu = hideMenu;
+            });
+
+            forEach($(".Menu > li.-hasSubmenu"), function(e){
+                e.addEventListener("click", showMenu);
+            });
+
+            forEach($(".Menu > li.-hasSubmenu li"), function(e){
+                e.addEventListener("mouseenter", hideAllInactiveMenus);
+            });
+
+            forEach($(".Menu > li.-hasSubmenu li.-hasSubmenu"), function(e){
+                e.addEventListener("click", showMenu);
+            });
+
+            document.addEventListener("click", hideAllInactiveMenus);
+          }
         }
-        forEach($(".Menu li.-hasSubmenu"), function(e){
-              e.showMenu = showMenu;
-              e.hideMenu = hideMenu;
-          });
-
-          forEach($(".Menu > li.-hasSubmenu"), function(e){
-              e.addEventListener("click", showMenu);
-          });
-
-          forEach($(".Menu > li.-hasSubmenu li"), function(e){
-              e.addEventListener("mouseenter", hideAllInactiveMenus);
-          });
-
-          forEach($(".Menu > li.-hasSubmenu li.-hasSubmenu"), function(e){
-              e.addEventListener("click", showMenu);
-          });
-
-          document.addEventListener("click", hideAllInactiveMenus);
       };
       // do not search whole file, only header
       if(graphString[i].includes("<node id=\"n0\">")){
