@@ -16,11 +16,11 @@ function createLayoutSele(){
 }
 
 // add layout options
-function addLayoutOptions(graphLayout, layoutOpt){
+function addLayoutOptions(graphLayout, cy){
     var optnLayout = document.createElement("li");
     optnLayout.innerHTML="<a href='#'>"+graphLayout+"</a>";
     if(graphLayout == "cose-bilkent"){
-      optnLayout.innerHTML="<a href='#'><i class='fas fa-check "+ layoutOpt+"' style='margin-right:5px'></i>"+graphLayout+"</a>";
+      optnLayout.innerHTML="<a href='#'><i class='fas fa-check layoutOpt' style='margin-right:5px'></i>"+graphLayout+"</a>";
     }
     optnLayout.id=graphLayout;
     return optnLayout;
@@ -72,35 +72,35 @@ function calculateLabelColorLegend(labelVal, fontSize, cy, nodesMin, nodesMax){
         +' '.repeat(neededWhitespace) + nodesMax)
 
 }
-  function appendText(text, interact){
-    if(text != ""){
-      text = text + ", "
-    }
-    text  = text + capitalize(interact);
-    return text;
+function appendText(text, interact){
+  if(text != ""){
+    text = text + ", "
   }
+  text  = text + capitalize(interact);
+  return text;
+}
 
-  function createImg(){
-    var img = document.createElement('img');
-    img.width =40;
-    img.height =30;
-    return img;
-  }
-    const capitalize = (s) => {
-    if (typeof s !== 'string') return ''
-    return s.charAt(0).toUpperCase() + s.slice(1)
-  }
+function createImg(){
+  var img = document.createElement('img');
+  img.width =40;
+  img.height =30;
+  return img;
+}
+const capitalize = (s) => {
+  if (typeof s !== 'string') return ''
+  return s.charAt(0).toUpperCase() + s.slice(1)
+}
 
-    function appendToInteractionLegend(table, text, img){
-    // Insert a row in the table at the last row
-    var newRow   = table.insertRow();
-    // Insert a cells
-    var newInteraction  = newRow.insertCell(0);
-    var newArrow  = newRow.insertCell(1);
-    var newText  = document.createTextNode(text);
-    newInteraction.appendChild(newText);
-    newArrow.appendChild(img);
-  }
+function appendToInteractionLegend(table, text, img){
+  // Insert a row in the table at the last row
+  var newRow   = table.insertRow();
+  // Insert a cells
+  var newInteraction  = newRow.insertCell(0);
+  var newArrow  = newRow.insertCell(1);
+  var newText  = document.createTextNode(text);
+  newInteraction.appendChild(newText);
+  newArrow.appendChild(img);
+}
 // create legend for edges
 function createInteractionLegend(interactionTypes, graphLeft, edgesToMerge, graphRight=undefined, edgesToMergeRight = null) {
   // show legend and update if necessary
@@ -393,6 +393,9 @@ function getNodesAndEdges(graphString, nodeVal,graphpos = undefined, noOptn = fa
                 curNode.val = val;
             }
           }
+          // if(graphString[i].includes("\"v_midrug_id\"\>")){
+          //   drugnodes.push(curNode.id)
+          // }
       }   
       if(graphString[i].includes("edge source")){     // get edges
           var curEdge = {};
@@ -515,7 +518,7 @@ function getNodesAndEdges(graphString, nodeVal,graphpos = undefined, noOptn = fa
       }
     }
     if(!noOptn){
-    var legendNode = {};
+      var legendNode = {};
         legendNode.id = "l1";
         legendNode.symbol = "legend";
         nodes.push({data:legendNode});
@@ -543,116 +546,116 @@ function getNodesAndEdgesSIF(graphString, graphpos = undefined, noOptn = false){
     var el = graphString.find(a =>a.includes("\t"));    
     for (var i = 0; i <= graphString.length - 1; i++) { 
       if(el){
-      var nodesAndInteraction = graphString[i].split("\t");
-    }
-    else{
-      var nodesAndInteraction = graphString[i].split(" ");
-    }
-    var n1 = nodesAndInteraction[0].trim();
-    nodesSet.add(n1);
-    var interact = nodesAndInteraction[1].trim();
-    var n2 = nodesAndInteraction[2].trim();
-    nodesSet.add(n2);
-
-    if(interact.includes(",")){
-        var interactarray = interact.split(",")
-        for(let inter of interactarray){
-          interactionTypes.add(inter);
-        }
-    }
-    else{ 
-        interactionTypes.add(interact);
-    }
-  }
-  var nodesWIDs = {};
-  var j = 0;
-  for(var node of nodesSet){
-    var curNode = {};
-    curNode.id = "n"+j;
-    curNode.name = node;
-    nodesWIDs[node] = curNode.id;
-    j++;
-    if(graphpos == "left"){
-      curNode.graph = "g1";
-      leftNodes.push({data: curNode});
-    }
-    else if(graphpos == "right"){
-      curNode.graph = "g2";
-      rightNodes.push({data: curNode});
-    }
-    nodes.push({data: curNode});
-  }
-  for (var i = 0; i <= graphString.length - 1; i++) { 
-    var curEdge = {};
-    if(el){
-      var nodesAndInteraction = graphString[i].split("\t");
-    }
-    else{
-      var nodesAndInteraction = graphString[i].split(" ");
-    }
-    var n1 = nodesAndInteraction[0].trim();
-    var interact = nodesAndInteraction[1].trim();
-    var n2 = nodesAndInteraction[2].trim();
-    var s = nodesWIDs[n1];
-    var t = nodesWIDs[n2];
-    curEdge.id = s.concat(t)
-    curEdge.source = s;
-    curEdge.target = t;
-    if(prevId == curEdge.id){                       // multiple edges between two nodes
-          if(!Array.isArray(edges[pos-1].data.interaction)){
-            curEdge.interaction=
-              [edges[pos-1].data.interaction, interact]
-            if(graphpos == "left"){
-                leftEdges.splice(pos-1,1)
-            }
-            else if(graphpos == "right"){
-                rightEdges.splice(pos-1,1)
-            }
-            edges.splice(pos-1,1)
-            pos = pos -1
-          }
-          else{
-            edges[pos-1].data.interaction.push(interact)
-            if(graphpos == "left"){
-                if(!Array.isArray(leftEdges[pos-1].data.interaction)){
-                  leftEdges[pos-1].data.interaction = 
-                    [leftEdges[pos-1].data.interaction]
-                }
-                leftEdges[pos-1].data.interaction.push(interact);
-            }
-          else if(graphpos == "right"){
-              if(!Array.isArray(rightEdges[pos-1].data.interaction)){
-                rightEdges[pos-1].data.interaction = 
-                  [rightEdges[pos-1].data.interaction]
-              }
-              rightEdges[pos-1].data.interaction.push(interact)
-          }
-          continue;
-        }
-        edgesToMerge = true;
+        var nodesAndInteraction = graphString[i].split("\t");
       }
       else{
-        curEdge.interaction = interact;
+        var nodesAndInteraction = graphString[i].split(" ");
       }
+      var n1 = nodesAndInteraction[0].trim();
+      nodesSet.add(n1);
+      var interact = nodesAndInteraction[1].trim();
+      var n2 = nodesAndInteraction[2].trim();
+      nodesSet.add(n2);
+
+      if(interact.includes(",")){
+          var interactarray = interact.split(",")
+          for(let inter of interactarray){
+            interactionTypes.add(inter);
+          }
+      }
+      else{ 
+          interactionTypes.add(interact);
+      }
+    }
+    var nodesWIDs = {};
+    var j = 0;
+    for(var node of nodesSet){
+      var curNode = {};
+      curNode.id = "n"+j;
+      curNode.name = node;
+      nodesWIDs[node] = curNode.id;
+      j++;
       if(graphpos == "left"){
-        curEdge.graph = "g1";
-        leftEdges.push({data: curEdge});
+        curNode.graph = "g1";
+        leftNodes.push({data: curNode});
       }
       else if(graphpos == "right"){
-        curEdge.graph = "g2";
-        rightEdges.push({data: curEdge});
+        curNode.graph = "g2";
+        rightNodes.push({data: curNode});
       }
-      edges.push({data: curEdge} );
-
-      prevId = curEdge.id;
-      pos = pos +1;
+      nodes.push({data: curNode});
     }
-    if(!noOptn){
-    var legendNode = {};
-        legendNode.id = "l1";
-        legendNode.symbol = "legend";
-        nodes.push({data:legendNode});
-  }
+    for (var i = 0; i <= graphString.length - 1; i++) { 
+      var curEdge = {};
+      if(el){
+        var nodesAndInteraction = graphString[i].split("\t");
+      }
+      else{
+        var nodesAndInteraction = graphString[i].split(" ");
+      }
+      var n1 = nodesAndInteraction[0].trim();
+      var interact = nodesAndInteraction[1].trim();
+      var n2 = nodesAndInteraction[2].trim();
+      var s = nodesWIDs[n1];
+      var t = nodesWIDs[n2];
+      curEdge.id = s.concat(t)
+      curEdge.source = s;
+      curEdge.target = t;
+      if(prevId == curEdge.id){                       // multiple edges between two nodes
+            if(!Array.isArray(edges[pos-1].data.interaction)){
+              curEdge.interaction=
+                [edges[pos-1].data.interaction, interact]
+              if(graphpos == "left"){
+                  leftEdges.splice(pos-1,1)
+              }
+              else if(graphpos == "right"){
+                  rightEdges.splice(pos-1,1)
+              }
+              edges.splice(pos-1,1)
+              pos = pos -1
+            }
+            else{
+              edges[pos-1].data.interaction.push(interact)
+              if(graphpos == "left"){
+                  if(!Array.isArray(leftEdges[pos-1].data.interaction)){
+                    leftEdges[pos-1].data.interaction = 
+                      [leftEdges[pos-1].data.interaction]
+                  }
+                  leftEdges[pos-1].data.interaction.push(interact);
+              }
+            else if(graphpos == "right"){
+                if(!Array.isArray(rightEdges[pos-1].data.interaction)){
+                  rightEdges[pos-1].data.interaction = 
+                    [rightEdges[pos-1].data.interaction]
+                }
+                rightEdges[pos-1].data.interaction.push(interact)
+            }
+            continue;
+          }
+          edgesToMerge = true;
+        }
+        else{
+          curEdge.interaction = interact;
+        }
+        if(graphpos == "left"){
+          curEdge.graph = "g1";
+          leftEdges.push({data: curEdge});
+        }
+        else if(graphpos == "right"){
+          curEdge.graph = "g2";
+          rightEdges.push({data: curEdge});
+        }
+        edges.push({data: curEdge} );
+
+        prevId = curEdge.id;
+        pos = pos +1;
+      }
+      if(!noOptn){
+      var legendNode = {};
+          legendNode.id = "l1";
+          legendNode.symbol = "legend";
+          nodes.push({data:legendNode});
+    }
     return [nodes, edges, [], interactionTypes, edgesToMerge];
 }
 
@@ -721,108 +724,108 @@ function changeNodeShapes(cy, container, shapeAttribute, shape){
         .selector('node['+shapeAttribute+' ="true"]')        
         .style('shape', shape)
         .update();
-  }
+   }
 
-  // list all shapes already used
-  usedShapes = []
-  for (var key in usedShapeAttributes) {
-    if (Object.prototype.hasOwnProperty.call(usedShapeAttributes, key)) {
-          var val = usedShapeAttributes[key];
-          usedShapes[val] = key;
-      }
-  }
-
-  // no shapes have been used so far
-  if(isEmpty(usedShapeAttributes)){
-    usedShapeAttributes[shapeAttribute] = shape;
-     shapeNode = cytoscape({
-        container: document.getElementById(container),
-        autolock: true,
-        layout: {
-          name: 'preset'
-        },
-        style: [
-            {selector: 'node',
-              style: {
-              width: 18,
-              height: 18,
-              shape: shape,
-              'background-color': '#666666',
-              label: 'data(id)',
-              'font-size': 10,
-              'overlay-opacity': 0,
-            }
-          }
-        ],
-      });
-
-    shapeNode.userZoomingEnabled( false );
-   shapeNode.add({ // node n1
-              group: 'nodes', 
-
-              data: { 
-                id: shapeAttribute, 
-              },
-              position: { // the model position of the node (optional on init, mandatory after)
-                x: 80,
-                y: 50
-              },
-               locked: true,
-            });
-   ycoord = 50;
-   shapeNode.nodes().ungrabify();
-
-  } 
-  // test if shape has been used for another attribute
-  else if(Object.keys(usedShapes).includes(shape)){
-    if(usedShapes[shape] == shapeAttribute) return;
-    var replace = 
-      confirm("Shape is already used. Do you want to replace "+
-        usedShapes[shape]+" by "+ shapeAttribute+"?")
-
-    // is shape has been used change previous attributes shape back to ellipse
-    if(replace){
-      delete(usedShapeAttributes[usedShapes[shape]]);
-      ycoord = shapeNode.$('node[id ="'+usedShapes[shape]+'"]')
-        .position()['y']-35;
-      shapeNode.remove('node[id ="'+usedShapes[shape]+'"]');
-    }
-    else return;
-
-  }
-  
-  // update shape of a attribute already used
-  if (usedShapeAttributes.hasOwnProperty(shapeAttribute)){
-    if(shape == "ellipse"){
-        shapeNode.remove('node[id ="'+shapeAttribute+'"]')
-        if(shapeNode.nodes().length == 0){
-          usedShapeAttributes = [];
+    // list all shapes already used
+    usedShapes = []
+    for (var key in usedShapeAttributes) {
+      if (Object.prototype.hasOwnProperty.call(usedShapeAttributes, key)) {
+            var val = usedShapeAttributes[key];
+            usedShapes[val] = key;
         }
-      }
-    else{
-      usedShapeAttributes[shapeAttribute] = shape;
-      usedShapes[shape] = shapeAttribute
-      shapeNode.style()
-        .selector('node[id ="'+shapeAttribute+'"]')        
-        .style('shape', shape)
-        .update();
     }
-  }
 
-  // add new shape and attribute
-  else if(!isEmpty(usedShapeAttributes) && 
-      !usedShapeAttributes.hasOwnProperty(shapeAttribute)){
-    ycoord = ycoord + 35;
-    usedShapeAttributes[shapeAttribute] = shape;
-    shapeNode.add( { group: "nodes", data: { id: shapeAttribute}, 
-      position:{'x':80, 'y':ycoord}});
-    shapeNode.style()
-        .selector('node[id ="'+shapeAttribute+'"]')        
-        .style('shape', shape)
-        .update();
-    shapeNode.nodes().ungrabify().update();
+    // no shapes have been used so far
+    if(isEmpty(usedShapeAttributes)){
+      usedShapeAttributes[shapeAttribute] = shape;
+       shapeNode = cytoscape({
+          container: document.getElementById(container),
+          autolock: true,
+          layout: {
+            name: 'preset'
+          },
+          style: [
+              {selector: 'node',
+                style: {
+                width: 18,
+                height: 18,
+                shape: shape,
+                'background-color': '#666666',
+                label: 'data(id)',
+                'font-size': 10,
+                'overlay-opacity': 0,
+              }
+            }
+          ],
+        });
 
-  }
+      shapeNode.userZoomingEnabled( false );
+      shapeNode.add({ // node n1
+                group: 'nodes', 
+
+                data: { 
+                  id: shapeAttribute, 
+                },
+                position: { // the model position of the node (optional on init, mandatory after)
+                  x: 80,
+                  y: 50
+                },
+                 locked: true,
+              });
+     ycoord = 50;
+     shapeNode.nodes().ungrabify();
+
+    } 
+    // test if shape has been used for another attribute
+    else if(Object.keys(usedShapes).includes(shape)){
+      if(usedShapes[shape] == shapeAttribute) return;
+      var replace = 
+        confirm("Shape is already used. Do you want to replace "+
+          usedShapes[shape]+" by "+ shapeAttribute+"?")
+
+      // is shape has been used change previous attributes shape back to ellipse
+      if(replace){
+        delete(usedShapeAttributes[usedShapes[shape]]);
+        ycoord = shapeNode.$('node[id ="'+usedShapes[shape]+'"]')
+          .position()['y']-35;
+        shapeNode.remove('node[id ="'+usedShapes[shape]+'"]');
+      }
+      else return;
+
+    }
+  
+    // update shape of a attribute already used
+    if (usedShapeAttributes.hasOwnProperty(shapeAttribute)){
+      if(shape == "ellipse"){
+          shapeNode.remove('node[id ="'+shapeAttribute+'"]')
+          if(shapeNode.nodes().length == 0){
+            usedShapeAttributes = [];
+          }
+        }
+      else{
+        usedShapeAttributes[shapeAttribute] = shape;
+        usedShapes[shape] = shapeAttribute
+        shapeNode.style()
+          .selector('node[id ="'+shapeAttribute+'"]')        
+          .style('shape', shape)
+          .update();
+      }
+    }
+
+    // add new shape and attribute
+    else if(!isEmpty(usedShapeAttributes) && 
+        !usedShapeAttributes.hasOwnProperty(shapeAttribute)){
+      ycoord = ycoord + 35;
+      usedShapeAttributes[shapeAttribute] = shape;
+      shapeNode.add( { group: "nodes", data: { id: shapeAttribute}, 
+        position:{'x':80, 'y':ycoord}});
+      shapeNode.style()
+          .selector('node[id ="'+shapeAttribute+'"]')        
+          .style('shape', shape)
+          .update();
+      shapeNode.nodes().ungrabify().update();
+
+    }
 }
 
 /*
@@ -838,7 +841,7 @@ function getTextWidth(text, font) {
     return metrics.width;
 } 
 
-function changeLayout(cy, selectedLayout){
+function changeLayout(cy, selectedLayout, pos=""){
   var animateLayout = true;
   // var selectedLayout = document.getElementById('selectlayout'+pos).id;
   if(selectedLayout == "klay"){
