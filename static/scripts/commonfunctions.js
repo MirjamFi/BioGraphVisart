@@ -364,12 +364,12 @@ function getNodesAndEdges(graphString, nodeVal,graphpos = undefined, noOptn = fa
       if(!isEmpty(curNode)){
           if(graphString[i].includes("key=\"v_") && 
             !graphString[i].includes("v_id")){
-            var attrname = graphString[i].split("v_")[1].split("\">")[0]
+            var attrname = graphString[i].split("v_")[1].split("\">")[0].replace(/=\"\"/,"").replace(/\\\"=\"/,"").replace(/\s/,"_").replace(/\"/,"")
             var val = graphString[i].split(/\>/)[1].split(/\</)[0]
             if(attrname == "entrez_gene" && val.includes("http")){
               val = val.split("/").pop()
             }
-            if(!isNaN(parseFloat(val)) && attrname != "name"){
+            if(!isNaN(parseFloat(val)) && attrname != "name" && !attrname.includes("PDB") && !attrname.includes("Drug IDs")){
                 curNode[attrname] = parseFloat(val);
             }
             else{
@@ -392,9 +392,6 @@ function getNodesAndEdges(graphString, nodeVal,graphpos = undefined, noOptn = fa
                 nodeValuesNum.push(currVal);
                 curNode.val = val;
             }
-          }
-          if(graphString[i].includes("\"v_midrug_id\"\>")){
-            drugnodes.push(curNode.id)
           }
       }   
       if(graphString[i].includes("edge source")){     // get edges
@@ -473,6 +470,48 @@ function getNodesAndEdges(graphString, nodeVal,graphpos = undefined, noOptn = fa
             prevId = curEdge.id;
             pos = pos +1;
           }
+      }
+    }
+    for(var node of nodes){
+      if(node.data.Drugtarget == "true"){
+        var drugnumbers = []
+        for (const [key, value] of Object.entries(node.data)) {
+          if(key.includes("Drugtarget_")){
+            var drugsplit = key.split("_")
+            var drugnum = drugsplit[1]
+            if(!drugnumbers.includes(drugnum)){
+              var drug = {}
+              drug.target = node.data.id
+              drug.number = drugnum
+              drug.id = "n" + Object.keys(nodes).length
+              drugnodes.push(drug)
+              drugnumbers.push(drugnum)
+              drug.drug = true
+              nodes.push({data: drug});
+              if(!drugedges[node.data.id]){
+                drugedges[node.data.id] = []
+              }
+              drugedges[node.data.id].push(drug.id)
+              var edge = {}
+              edge.id = drug.id.concat(node.data.id);
+              edge.source = drug.id;
+              edge.target = node.data.id;
+              edge.interaction = "stimulation"
+              edges.push({data:edge})
+            }
+            else if(drugnumbers.includes(drugnum)){
+              for(var drugnode of drugnodes){
+                if(drugnode.target == node.data.id && drugnode.number == drugnum){
+                  drugnode[drugsplit.slice(2).join("_")] = value
+                  if(drugsplit.slice(2).join("_") == "Name"){
+                    drugnode.name = value
+                  }
+                }
+              } 
+            }
+          }
+        }
+        delete node.data.Drugtarget
       }
     }
     if(!noOptn){
