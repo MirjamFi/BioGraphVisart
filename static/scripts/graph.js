@@ -87,7 +87,9 @@ function visualize(graphString, noOptn) {
       .selector('node['+document.getElementById('nodeShapesAttr').value+' ="true"]')        
       .update();
       if(document.getElementById('nodeShapes')){
-        cy.style('shape', document.getElementById('nodeShapes').value).update();
+        cy.style()
+        .selector('node['+document.getElementById('nodeShapesAttr').value+' ="true"]') 
+        .style('shape', document.getElementById('nodeShapes').value).update();
       }
   }
   
