@@ -85,9 +85,12 @@ function visualize(graphString, noOptn) {
   if(document.getElementById('nodeShapesAttr')){
     cy.style()
       .selector('node['+document.getElementById('nodeShapesAttr').value+' ="true"]')        
-      .style('shape', document.getElementById('nodeShapes').value)
       .update();
+      if(document.getElementById('nodeShapes')){
+        cy.style('shape', document.getElementById('nodeShapes').value).update();
+      }
   }
+  
   addcolorlegend(cy);
   var api = cy.expandCollapse('get');
   var options = {
