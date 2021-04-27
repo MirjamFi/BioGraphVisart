@@ -82,7 +82,7 @@ function visualize(graphString, noOptn) {
   var defaultVal = false;
   
 
-  if(document.getElementById('nodeShapesAttr').value){
+  if(document.getElementById('nodeShapesAttr')){
     cy.style()
       .selector('node['+document.getElementById('nodeShapesAttr').value+' ="true"]')        
       .style('shape', document.getElementById('nodeShapes').value)

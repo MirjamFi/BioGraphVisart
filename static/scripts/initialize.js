@@ -88,6 +88,9 @@ function cleanSelections(layer = undefined){
   var undobutn = document.getElementById("undobutn")
   if(undobutn){
       undobutn.parentNode.removeChild(undobutn); }
+  var resetbutn = document.getElementById("resetLayout")
+  if(resetbutn){
+      resetbutn.parentNode.removeChild(resetbutn); }
   if(document.getElementById('mergeEdges'))
     document.getElementById('mergeEdges').checked = true;
   noOptn = true;
