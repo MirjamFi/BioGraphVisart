@@ -217,6 +217,7 @@ function addNodesAndEdges(nodes, edges, drugedges, nodesMin, nodesMax, noOptn){
           'background-width': '45%',   
           'background-height': '45%',    
           'background-position-y': '100%', 
+          'shape': "diamond",
      }},
      {selector: ':parent',
         style: {
