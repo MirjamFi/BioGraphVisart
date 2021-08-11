@@ -262,8 +262,48 @@ function addNodesAndEdges(nodes, edges, drugedges, nodesMin, nodesMax, noOptn){
           'target-arrow-shape': 'triangle',
         },
       },
+      {
+            selector: 'node.highlight',
+            style: {
+                'border-color': '#FFF',
+                'border-width': '2px'
+            }
+        },
+        {
+            selector: 'node.semitransp',
+            style:{ 'opacity': '0.5' }
+        },
+        {
+            selector: 'edge.highlight',
+            style: { 'mid-target-arrow-color': '#FFF' }
+        },
+        {
+            selector: 'edge.semitransp',
+            style:{ 'opacity': '0.2' }
+        }
       ]
   });
+cy.on('mouseover', 'node', function(e) {
+    var sel = e.target;
+    cy.elements()
+        .difference(sel.outgoers()
+            .union(sel.incomers()))
+        .not(sel)
+        .addClass('semitransp');
+    sel.addClass('highlight')
+        .outgoers()
+        .union(sel.incomers())
+        .addClass('highlight');
+});
+cy.on('mouseout', 'node', function(e) {
+    var sel = e.target;
+    cy.elements()
+        .removeClass('semitransp');
+    sel.removeClass('highlight')
+        .outgoers()
+        .union(sel.incomers())
+        .removeClass('highlight');
+});
 var selectedLayout = document.getElementById('selectlayout').value;
 var layoutBy = {};
   if(selectedLayout == "klay"){
