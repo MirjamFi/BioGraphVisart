@@ -124,31 +124,33 @@ function visualize(graphString, noOptn) {
 //add nodes and edges to cy-object (update if attribute has changed)
 function addNodesAndEdges(nodes, edges, drugedges, nodesMin, nodesMax, noOptn){
   // add parent nodes for every drug group
-  for(const [target, drugs] of Object.entries(drugedges)){
-    for(const [target2, drugs2] of Object.entries(drugedges)){
-      if(target == target2){
-        continue;
-      }
-      if(drugs.length === drugs2.length &&
-        drugs.every((val, index) => val === drugs2[index])){
-        delete drugedges[target2]
-      }
-    }
-  }
-  for(const [target, drugs] of Object.entries(drugedges)){
-    if(drugs.length > 1){
-      var drugNode = {};
-      drugNode.id = "n"+(nodes.length-1).toString()
-      drugNode.symbol = drugs.length + " Drugs"
-      nodes.push({data: drugNode});
-      for(var drugnode of drugs){
-        for(var node of nodes){
-          if(node.data.id == drugnode){
-            node.data.parent = drugNode.id
-          }
+  if(drugedges){
+    for(const [target, drugs] of Object.entries(drugedges)){
+      for(const [target2, drugs2] of Object.entries(drugedges)){
+        if(target == target2){
+          continue;
+        }
+        if(drugs.length === drugs2.length &&
+          drugs.every((val, index) => val === drugs2[index])){
+          delete drugedges[target2]
         }
       }
-    } 
+    }
+    for(const [target, drugs] of Object.entries(drugedges)){
+      if(drugs.length > 1){
+        var drugNode = {};
+        drugNode.id = "n"+(nodes.length-1).toString()
+        drugNode.symbol = drugs.length + " Drugs"
+        nodes.push({data: drugNode});
+        for(var drugnode of drugs){
+          for(var node of nodes){
+            if(node.data.id == drugnode){
+              node.data.parent = drugNode.id
+            }
+          }
+        }
+      } 
+    }
   }
   cy = cytoscape({
     container: document.getElementById('cy'),
