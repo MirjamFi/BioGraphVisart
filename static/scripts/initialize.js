@@ -238,7 +238,7 @@ function loadFile() {
   document.getElementById("configPart").appendChild(resetbutn);
   document.getElementById("resetLayout").className = 'butn';  
   undobutn.onclick = changeLayout;
-  if(!isJson && ! isSIF){
+  if(!isJson){
     // get attributes for coloring -> double/boolean and shape -> boolean
     for (var i = 0; i <= graphString.length - 1; i++) {
       if(graphString[i].includes("for=\"node\"") && 
