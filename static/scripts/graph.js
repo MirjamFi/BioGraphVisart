@@ -519,7 +519,7 @@ if(!collapsed){
      else if(clickedNode.data().symbol != undefined && clickedNode.data().symbol.includes("Drugs")){
         clickedNode.style('shape','diamond')
         api.expand(clickedNode)    
-      }    
+     }    
      // var clickedNodesPosition = cy.$(clickedNode).position();
      // if(clickedNode.data().Drug_IDs === undefined && clickedNode.data().symbol != undefined && !clickedNode.data().symbol.includes("Drugs")){   
      //    var neighboringgraphml = getGraphforGene(targetNode).then(   
@@ -553,7 +553,7 @@ if(!collapsed){
      //        }; 
      //      }}); 
      //      }  
-     //    });
+        });
 
      //    if(document.getElementById("maingraph")){
      //      document.getElementById("maingraph").remove();
