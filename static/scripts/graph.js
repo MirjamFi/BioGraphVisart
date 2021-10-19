@@ -553,12 +553,12 @@ if(!collapsed){
      //        }; 
      //      }}); 
      //      }  
-        });
+      });
 
      //    if(document.getElementById("maingraph")){
      //      document.getElementById("maingraph").remove();
      //    }
-     // }
+}
   // update node values if tracer or values change
   if(!firstTime){
     for(n=0; n < nodes.length; n++){

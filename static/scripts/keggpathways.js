@@ -45,7 +45,7 @@ async function listKEGGPathways(ctx, cy, nodes, layer, canvas, pos = ""){
           else if(n["data"]["entrez"] != undefined){
             var entrezID = n["data"]["entrez"].toString();            
           }
-          else if()(n["data"]["entrez_gene"] != undefined){
+          else if(n["data"]["entrez_gene"] != undefined){
             var splitentrez = n["data"]["entrez_gene"].split("/")
             var entrezID = splitentrez[splitentrez.length-1].toString();            
           }
