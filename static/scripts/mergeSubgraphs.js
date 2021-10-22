@@ -70,11 +70,119 @@ function mergeMousover(merge_graph, GA, nodeVal, filenameSplit){
 	      solo: true,
 	    },
 	    content: {text : function(){
-	      if(!isNaN(parseFloat(this.data(nodeVal)))){
-	        return '<b>'+nodeVal +' ' +filenameSplit +'</b>: ' + parseFloat(this.data(nodeVal)).toFixed(2) ; } //numbers
-	       else{
-	        return '<b>'+nodeVal +'</b>: '+ this.data(nodeVal) ;          //bools
-	      }
+	      // if(!isNaN(parseFloat(this.data(nodeVal)))){
+	      //   return '<b>'+nodeVal +' ' +filenameSplit +'</b>: ' + parseFloat(this.data(nodeVal)).toFixed(2) ; } //numbers
+	      //  else{
+	      //   return '<b>'+nodeVal +'</b>: '+ this.data(nodeVal) ;          //bools
+	      // }
+	      if(!isNaN(parseFloat(this.data()[nodeVal]))){
+            if(this.data('symbol') != undefined){
+              if(this.data('DriverType')!=undefined){
+                if(this.data("secondaryNames")){
+                  return '<b>'+ this.data('symbol') +'</b><br>' + 
+                  '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2) + '</b><br>' + 
+                  '<b> Driver Type: </b>'+ this.data('DriverType') + '<br><b> Secondary Names: </b>' +
+                  this.data('secondaryNames')
+                }
+                else{
+                  return '<b>'+ this.data('symbol') +'</b><br>' + 
+                  '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2) + '</b><br>' + 
+                  '<b> Driver Type: </b>'+ this.data('DriverType')
+                }
+              }
+              else{
+                if(this.data("secondaryNames")){
+                  return '<b>'+ this.data('symbol') +'</b><br>' + 
+                  '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2)+ '<br><b> Secondary Names: </b>' +
+                  this.data('secondaryNames')
+                }
+                else{
+                  return '<b>'+ this.data('symbol') +'</b><br>' + 
+                  '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2)
+                }
+              }
+            }
+            else if(this.data('name') != undefined){
+              if(this.data('DriverType')!= undefined){
+                if(this.data("secondaryNames") != undefined){
+                  return '<b>'+ this.data('name')+'</b><br>' +
+                  '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2)+ '</b><br>' + 
+                  '<b> Driver Type: </b>'+ this.data('DriverType')+ '<br><b> Secondary Names: </b>' +
+                  this.data('secondaryNames')
+                }
+                else{
+                  return '<b>'+ this.data('name')+'</b><br>' +
+                  '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2)+ '</b><br>' + 
+                  '<b> Driver Type: </b>'+ this.data('DriverType')
+                }
+                
+              }
+              else{
+                if(this.data("secondaryNames") != undefined){
+                  return '<b>'+ this.data('name')+'</b><br>' +
+                  '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2)+ '<br><b> Secondary Names: </b>' +
+                  this.data('secondaryNames')
+                }
+                else{
+                  return '<b>'+ this.data('name')+'</b><br>' +
+                  '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2)
+                }
+              }
+            }
+          } //numbers          
+          else{
+            if(this.data('symbol') != undefined){
+              if(this.data('DriverType')!= undefined){
+                if(this.data("secondaryNames") != undefined){
+                  return '<b>'+ this.data('symbol') +'</b><br>' + 
+                  '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal]+ '</b><br>' + 
+                  '<b> Driver Type: </b>'+ this.data('DriverType')+ '<br><b> Secondary Names: </b>' +
+                  this.data('secondaryNames')
+                }
+                else{
+                  return '<b>'+ this.data('symbol') +'</b><br>' + 
+                  '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal]+ '</b><br>' + 
+                  '<b> Driver Type: </b>'+ this.data('DriverType');
+                }
+              }
+              else{
+                if(this.data("secondaryNames") != undefined){
+                  return '<b>'+ this.data('symbol') +'</b><br>' + 
+                 '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal]+ '<br><b> Secondary Names: </b>' +
+                  this.data('secondaryNames')
+                }
+                else{
+                 return '<b>'+ this.data('symbol') +'</b><br>' + 
+                 '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal];
+                }
+              }
+             }
+            else if(this.data('name') != undefined){
+              if(this.data('DriverType')!= undefined){
+                if(this.data("secondaryNames") != undefined){
+                  return '<b>'+ this.data('name')+'</b><br>' +
+                  '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal]+ '</b><br>' + 
+                  '<b> Driver Type: </b>'+ this.data('DriverType')+ '<br><b> Secondary Names: </b>' +
+                  this.data('secondaryNames')
+                }
+                else{
+                  return '<b>'+ this.data('name')+'</b><br>' +
+                  '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal]+ '</b><br>' + 
+                  '<b> Driver Type: </b>'+ this.data('DriverType');
+                }
+              }
+              else{
+                if(this.data("secondaryNames") != undefined){
+                  return '<b>'+ this.data('name')+'</b><br>' +
+                 '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal]+ '<br><b> Secondary Names: </b>' +
+                  this.data('secondaryNames')
+                }
+                else{
+                 return '<b>'+ this.data('name')+'</b><br>' +
+                 '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal];
+               }
+            }}
+         }
 		    }},
 		    position: {
 		      my: 'top center',
@@ -137,36 +245,42 @@ var unionNodes;
 function getmergedGraph(nodesL, nodesR, edgesL, edgesR, interactionTypes, edgesToMerge, nodeVal){
 	var nodes1 = nodesL;
 	var nodes2 = nodesR;
+
 	var edges1 = edgesL;
 	var edges2 = edgesR;
 	// add length of nodes1 to node ids of nodes2 and according edges to make them unique
 	for(var i = 0; i < nodes2.length; i++){
     	var n = nodes2[i].data;
     	if(n.graph == "g2"){
-	        if(n.id != undefined){
+	        if(n.id !== undefined){
 	        	var old_id = n.id
 	        	nodes2[i].data.id = "n"+ (Number(n.id.replace( /^\D+/g, ''))+nodes1.length);
-	        	for(var j=0; j < edges2.length; j++){
-	          		if(edges2[j].data.source == old_id){
-		            	edges2[j].data.source = nodes2[i].data.id;
-		            	edges2[j].data.id = edges2[j].data.source+edges2[j].data.target;
-
-		          	}
-		       	 	if(edges2[j].data.target == old_id){
-			            edges2[j].data.target = nodes2[i].data.id;
-			            edges2[j].data.id = edges2[j].data.source+edges2[j].data.target;
-			        }
-	        	}
 	      	}
+	      	if(n.target !== undefined){	        	
+	        	nodes2[i].data.target = "n"+ (Number(n.target.replace( /^\D+/g, ''))+nodes1.length);
+	        }
 	    }
+	}
+	for(var i = 0; i < edges2.length; i++){
+    	var e = edges2[i].data;
+    	if(e.graph == "g2"){
+	        if(e.id !== undefined){
+	        	var old_id = e.id
+	        	edges2[i].data.id = "n"+ (Number(e.source.replace( /^\D+/g, ''))+nodes1.length) + "n"+ (Number(e.target.replace( /^\D+/g, ''))+nodes1.length);
+	        	edges2[i].data.target = "n" + (Number(e.target.replace( /^\D+/g, ''))+nodes1.length);
+	        	edges2[i].data.source = "n" + (Number(e.source.replace( /^\D+/g, ''))+nodes1.length);  
+	        }
+		}
 	}
 
 	var mergedNodes = [];
+	var duplicatedNodes2 = [];
 	for(var i = 0; i < nodes1.length; i++){
 	  	var n1 = nodes1[i];
 	  	for(var j = 0; j < nodes2.length; j++){
 	  		var n2 = nodes2[j];
-	  		if(n1.data.symbol == n2.data.symbol || n1.data.name == n2.data.name){
+	  		if((n1.data.symbol !== undefined && n2.data.symbol!== undefined && n1.data.symbol == n2.data.symbol)|| 
+	  			(n1.data.name!== undefined && n2.data.name!== undefined && n1.data.name == n2.data.name)){
 	  			mergedNodes[i] = n1;
 	  			mergedNodes[i].data.graph = "both";
 	  			for(let d in n1.data){
@@ -177,27 +291,30 @@ function getmergedGraph(nodesL, nodesR, edgesL, edgesR, interactionTypes, edgesT
 				        }
 	  				}
 	  			}
-		        for(var k=0; k < edges2.length; k++){
-		          if(edges2[k].data.source == n2.data.id){
-		            edges2[k].data.source = n1.data.id;
-		            edges2[k].data.id = edges2[k].data.source+edges2[k].data.target;
+	        for(var k=0; k < edges2.length; k++){
+	          if(edges2[k].data.source == n2.data.id){
+	            edges2[k].data.source = n1.data.id;
+	            edges2[k].data.id = edges2[k].data.source+edges2[k].data.target;
 
-		          }
-		          if(edges2[k].data.target == n2.data.id){
-		            edges2[k].data.target = n1.data.id;
-		            edges2[k].data.id = edges2[k].data.source+edges2[k].data.target;
-		          }
-		        }
-		        nodes2.splice(j,1);
-		        break;
+	          }
+	          if(edges2[k].data.target == n2.data.id){
+	            edges2[k].data.target = n1.data.id;
+	            edges2[k].data.id = edges2[k].data.source+edges2[k].data.target;
+	          }
+	        }
+	        duplicatedNodes2.push(n2)
+	        // nodes2.splice(j,1);
+	        // break;
 	  		}
 	  	}
 	  	if(mergedNodes[i] == undefined|| mergedNodes[i].data.id != n1.data.id){
-			mergedNodes.push(n1);
+				mergedNodes.push(n1);
 		}
 	}
 	for(var l = 0; l < nodes2.length; l++){
-		mergedNodes.push(nodes2[l])
+		if(!duplicatedNodes2.includes(nodes2[l])){
+			mergedNodes.push(nodes2[l])
+		}
 	}
 	var legendNode = {};
 	legendNode.data = {};
@@ -209,33 +326,45 @@ function getmergedGraph(nodesL, nodesR, edgesL, edgesR, interactionTypes, edgesT
 	g1Legend.data={};
 	g1Legend.data.id = "g1";
 	g1Legend.data.graph = "g1";
-	g1Legend.data.symbol = leftID;
+	g1Legend.data.symbol = rightID;
 	mergedNodes.push(g1Legend);
 	var g2Legend = {};
 	g2Legend.data={};
 	g2Legend.data.id = "g2";
 	g2Legend.data.graph = "g2";
-	g2Legend.data.symbol = rightID;
+	g2Legend.data.symbol = leftID;
 	mergedNodes.push(g2Legend);
 
-  	// mergedArray have duplicates, lets remove the duplicates using Set
-  	let set = new Set();
-  	unionNodes = Array.from(mergedNodes.filter(item => {
-  		if(item.data.symbol){
-		    if (!set.has(item.data.symbol)) {
-		      set.add(item.data.symbol);
-		      return true;
-		    }
-		    return false;
-		}
-		else{
-			if (!set.has(item.data.name)) {
-		      set.add(item.data.name);
-		      return true;
-		    }
-		    return false;
-		}
-	}, set));
+  // mergedArray have duplicates, lets remove the duplicates using Set
+ //  var removedNodes =[]
+ //  let set = new Set();
+ //  unionNodes = Array.from(mergedNodes.filter(item => {
+ //  	if(item.data.symbol){
+	//     if (!set.has(item.data.symbol)) {
+	//       set.add(item.data.symbol);
+	//       return true;
+	//     }
+	//     removedNodes.push(item.data.id)
+	//     return false;
+	// 	}
+	// 	else if (item.data.name){
+	// 		if (!set.has(item.data.name)) {
+	// 	      set.add(item.data.name);
+	// 	      return true;
+	// 	    }
+	// 	    removedNodes.push(item.data.id)
+	// 	    return false;
+	// 	}
+	// 	else if (item.data.Name){
+	// 		if (!set.has(item.data.Name)) {
+	// 	      set.add(item.data.Name);
+	// 	      return true;
+	// 	    }
+	// 	    removedNodes.push(item.data.id)
+	// 	    return false;
+	// 	}
+	// }, set));
+	unionNodes = mergedNodes;
 	const mergedEdges = [...edges1, ...edges2];
 	for(var i = 0; i<mergedEdges.length; i++){
 	    var n1 = mergedEdges[i];
@@ -248,15 +377,21 @@ function getmergedGraph(nodesL, nodesR, edgesL, edgesR, interactionTypes, edgesT
 	      	}
 	    }
 	}
+	unionEdges = mergedEdges
 	// mergedArray have duplicates, lets remove the duplicates using Set
-	set = new Set();
-	let unionEdges = Array.from(mergedEdges.filter(item => {
-	    if (!set.has(item.data.id)) {
-		    set.add(item.data.id);
-	      	return true;
-	    }
-	    return false;
-	}, set));
+	// set = new Set();
+	// let unionEdges = Array.from(mergedEdges.filter(item => {
+	//     if(!set.has(item.data.id)) {
+	//     	for(nid of removedNodes){
+	//     		if(item.data.id.includes(nid)){
+	//     			return false;
+	//     		}
+	//     	}
+	//     	set.add(item.data.id);
+ //      	return true;
+	//     }
+	//     return false;
+	// }, set));
 	var minMax = getNodeValueRange(unionNodes, nodeVal);
 	mergeMin = minMax[0];
 	mergeMax = minMax[1];
@@ -291,6 +426,6 @@ async function clickMerge(files,val, example){
 		var objectURL2 = URL.createObjectURL(files[1]);
 	}
 	
-    window.open('/BioGraphVisart/merge?leftID='+leftID+'&rightID='+rightID +'&file1='+objectURL1+'&file2='+objectURL2+'&nodeVal='+val+'&example='+example);
+    window.open('/merge?leftID='+leftID+'&rightID='+rightID +'&file1='+objectURL1+'&file2='+objectURL2+'&nodeVal='+val+'&example='+example);
 }
 
