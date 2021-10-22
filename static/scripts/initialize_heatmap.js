@@ -273,14 +273,13 @@ function calculateOverlap(data){
 
 var drpValues = [];
 var shapeAttributes = [];
-  var onceSearch=false;
-
 function loadGraphml(sampleLeft, sampleRight, graphsList) {
   cleanSelectionsHeatmap();
   samples = [sampleLeft, sampleRight];
   var onceAttr = false
   var firstVal = true;
   var onceShapes = false
+  var onceSearch=false;
   samples.forEach(sample=>{
     var graphString;
     if(!!sample){
@@ -322,72 +321,68 @@ function loadGraphml(sampleLeft, sampleRight, graphsList) {
               }
               var ulDrp = document.getElementById("ulDrp")
               var optnDrp = document.createElement("li");
-              if(nodeattr != "Drugtarget"){
-                optnDrp.id=nodeattr;
+              optnDrp.id=nodeattr;
 
-                if(firstVal){
-                  optnDrp.innerHTML="<a href='#'><i class='fas fa-check optnDrp' style='margin-right:5px'></i>"+optnDrp.id+"</a>"
-                  nodeVal = optnDrp.id
-                  firstVal = false;
-                }
-                else{
-                  optnDrp.innerHTML="<a href='#'>"+nodeattr+"</a>";}
-                  ulDrp.appendChild(optnDrp)
-                  optnDrp.onclick = function(){
-                  document.querySelectorAll('.fa-check').forEach(e =>{
-                    if(e.classList.contains('optnDrp')){
-                      e.remove()}});
-                    this.innerHTML = "<a href='#'><i class='fas fa-check optnDrp' style='margin-right:5px'></i>"+this.id+"</a>"
-                    nodeVal = this.id
-                    visualize()
-                }
-                if(graphString[i].includes("attr.type=\"boolean\"")){
-                  shapeAttributes.push(nodeattr);
-                   var nodeattrShape = graphString[i].split("attr.name=")[1].split(" ")[0].replace(/"/g, "");
-                  if(nodeattrShape != "Drugtarget"){
-                    if(!onceShapes){
-                      var drpShapes = document.createElement("ul")
-                      drpShapes.id="nodeShapesAttr"
-                      drpShapes.classList.add("Menu")
-                      drpShapes.classList.add("-horizontal")
-                      drpShapes.style.visibility = "visible"
-                      document.getElementById("config").appendChild(drpShapes)
-                      var labelShape = document.createElement("li")
-                      labelShape.classList.add("-hasSubmenu")
-                      labelShape.innerHTML = "<a href='#'>Node shape</a>"
-                      drpShapes.appendChild(labelShape)
-                      var ulShapes = document.createElement("ul")
-                      labelShape.appendChild(ulShapes)
-                      onceShapes = true
-                    }
-                    const shapesArray = ["rectangle", "octagon", "rhomboid", "pentagon", "tag"];
-                    var liShape = document.createElement("li")
-                    liShape.classList.add("-hasSubmenu")
-                    liShape.innerHTML = "<a href='#'>"+nodeattr+"</a>"
-                    liShape.id= nodeattrShape
-                    liShape.id="nodeShapes"
-                    ulShapes.appendChild(liShape)
-                    var ulShape = document.createElement("ul")
-                    ulShape.id = nodeattrShape
-                    liShape.appendChild(ulShape)
-                    shapesArray.forEach(function(s){
-                      var optnShape = document.createElement("li")
-                      optnShape.innerHTML = "<a hre='#'>"+s+"</a>"
-                      optnShape.id= s
-                      ulShape.appendChild(optnShape)
-                      optnShape.onclick=function(){
-                      document.querySelectorAll('.fa-check').forEach(function(e){
-                          if(e.classList.contains('optnShape')){
-                            e.remove()}});
-                        optnShape.innerHTML = "<a href='#'><i class='fas fa-check optnShape' style='margin-right:5px'></i>"+s+"</a>"
-                      // optnShape.parentElement.innerHTML = "<a href='#'><i class='fas fa-check liShape' style='margin-right:5px'></i>"+optnShape.parentElement.id+"</a>"
-                      changeNodeShapes(graphLeft, "heatmapcontainer", optnShape.parentElement.id, this.id)
-                      changeNodeShapes(graphRight, "heatmapcontainer", optnShape.parentElement.id, this.id)
-                      hideMenu(document.getElementById("nodeShapesAttr"))}
-                    })
-                  }
-                }
+              if(firstVal){
+                optnDrp.innerHTML="<a href='#'><i class='fas fa-check optnDrp' style='margin-right:5px'></i>"+optnDrp.id+"</a>"
+                nodeVal = optnDrp.id
+                firstVal = false;
               }
+              else{
+                optnDrp.innerHTML="<a href='#'>"+nodeattr+"</a>";}
+                ulDrp.appendChild(optnDrp)
+                optnDrp.onclick = function(){
+                document.querySelectorAll('.fa-check').forEach(e =>{
+                  if(e.classList.contains('optnDrp')){
+                    e.remove()}});
+                  this.innerHTML = "<a href='#'><i class='fas fa-check optnDrp' style='margin-right:5px'></i>"+this.id+"</a>"
+                  nodeVal = this.id
+                  visualize()
+              }
+              if(graphString[i].includes("attr.type=\"boolean\"")){
+                shapeAttributes.push(nodeattr);
+                if(!onceShapes){
+                  var drpShapes = document.createElement("ul")
+                  drpShapes.id="nodeShapesAttr"
+                  drpShapes.classList.add("Menu")
+                  drpShapes.classList.add("-horizontal")
+                  drpShapes.style.visibility = "visible"
+                  document.getElementById("config").appendChild(drpShapes)
+                  var labelShape = document.createElement("li")
+                  labelShape.classList.add("-hasSubmenu")
+                  labelShape.innerHTML = "<a href='#'>Node shape</a>"
+                  drpShapes.appendChild(labelShape)
+                  var ulShapes = document.createElement("ul")
+                  labelShape.appendChild(ulShapes)
+                  onceShapes = true
+                
+                const shapesArray = ["rectangle", "octagon", "rhomboid", "pentagon", "tag"];
+                var liShape = document.createElement("li")
+                liShape.classList.add("-hasSubmenu")
+                liShape.innerHTML = "<a href='#'>"+nodeattr+"</a>"
+                liShape.id= nodeattr
+                liShape.id="nodeShapes"
+                ulShapes.appendChild(liShape)
+                var ulShape = document.createElement("ul")
+                ulShape.id = nodeattr
+                liShape.appendChild(ulShape)
+                shapesArray.forEach(function(s){
+                var optnShape = document.createElement("li")
+                optnShape.innerHTML = "<a hre='#'>"+s+"</a>"
+                optnShape.id= s
+                ulShape.appendChild(optnShape)
+                optnShape.onclick=function(){
+                  document.querySelectorAll('.fa-check').forEach(function(e){
+                    if(e.classList.contains('optnShape')){
+                      e.remove()}});
+                  optnShape.innerHTML = "<a href='#'><i class='fas fa-check optnShape' style='margin-right:5px'></i>"+s+"</a>"
+                  // optnShape.parentElement.innerHTML = "<a href='#'><i class='fas fa-check liShape' style='margin-right:5px'></i>"+optnShape.parentElement.id+"</a>"
+                  changeNodeShapes(graphLeft, "heatmapcontainer", optnShape.parentElement.id, this.id)
+                  changeNodeShapes(graphRight, "heatmapcontainer", optnShape.parentElement.id, this.id)
+                  hideMenu(document.getElementById("nodeShapesAttr"))}
+                })
+              }
+            }
             }
           };
           if(graphString[i].includes("<node id=\"n0\">")){
@@ -430,7 +425,7 @@ function loadGraphml(sampleLeft, sampleRight, graphsList) {
   drpLayoutLeft.classList.add("-horizontal")
 
   var drpLayoutRight = document.getElementById("selectlayoutRight")
-  drpLayoutRight.classList.add("Menu")
+   drpLayoutRight.classList.add("Menu")
   drpLayoutRight.classList.add("-horizontal")
   drpLayoutRight.id = "selectlayoutRight";
 
@@ -451,6 +446,7 @@ function loadGraphml(sampleLeft, sampleRight, graphsList) {
   layoutArray.forEach(function(s){
     var optnLayoutLeft = addLayoutOptions(s, "layoutOptLeft");
     optnLayoutLeft.onclick = function(){
+      selectedLayoutLeft = s; 
       changeLayout(graphLeft, s);
       document.querySelectorAll('.fa-check').forEach(function(e){
         if(e.classList.contains('layoutOptLeft')){
@@ -460,6 +456,7 @@ function loadGraphml(sampleLeft, sampleRight, graphsList) {
     ulLayoutLeft.appendChild(optnLayoutLeft);
     var optnLayoutRight= addLayoutOptions(s, "layoutOptRight");
     optnLayoutRight.onclick = function(){
+      selectedLayoutRight = s; 
       changeLayout(graphRight, s);
       document.querySelectorAll('.fa-check').forEach(function(e){
         if(e.classList.contains('layoutOptRight')){
@@ -540,52 +537,60 @@ function createCyObject(cyDiv, nodesMin, nodesMax, val){
     style: [
          // style nodes
       basicstyle,
-      // {selector: 'node',
-      // style:{
-      //   'label':'data(symbol)'
-      // }},
+      {selector: 'node[!'+nodeVal+']',
+        style: {
+          'background-color': 'white',
+          'color':'black'
+      }},
       // attributes with numbers
-      {selector: 'node['+val+' <0]',
+      {selector: 'node['+nodeVal+']['+nodeVal+' < "0"]',
         style: {
-          'background-color': 'mapData('+val+','+ nodesMin+', 0, #006cf0, white)',
+          'background-color': 'mapData('+nodeVal+','+ nodesMin+', 0, #006cf0, white)',
           'color': 'black'
       }},
-      {selector: 'node['+val+'<='+0.5*nodesMin+']',
+      {selector: 'node['+nodeVal+']['+nodeVal+' <='+0.5*nodesMin+']',
         style: {
           'color': 'white'
       }},
-      {selector: 'node['+val+'>0]',
+      {selector: 'node['+nodeVal+']['+nodeVal+' > "0"]',
         style: {
-          'background-color': 'mapData('+val+', 0,'+ nodesMax+', white, #d50000)',
+          'background-color': 'mapData('+nodeVal+', 0,'+ nodesMax+', white, #d50000)',
           'color': 'black'
       }},
-      {selector: 'node['+val+'>='+0.5*nodesMax+']',
+      {selector: 'node['+nodeVal+']['+nodeVal+' >='+0.5*nodesMax+']',
         style: {
           'color': 'white'
       }},
-      {selector: 'node['+val+'= 0]',
+      {selector: 'node['+nodeVal+']['+nodeVal+' = "0"]',
         style: {
           'background-color': 'white',
           'color':'black'
       }},
 
       // attributes with boolean
-      {selector: 'node['+val+'= "false"]',
+      {selector: 'node['+nodeVal+']['+nodeVal+' = "false"]',
         style: {
           'background-color': '#006cf0',
           'color':'white'
       }},
-      {selector: 'node['+val+'= "true"]',
+      {selector: 'node['+nodeVal+']['+nodeVal+' = "true"]',
         style: {
           'background-color': '#d50000',
           'color':'white'
       }},
 
-      {selector: '.highlighted',
-            style:{
-                'border-width': 8,
-                'height':70,
-                width:70
+      {selector: 'node[id = "l1"]',
+        style:{
+          'color': 'black',
+          'background-height':50,
+          'background-width':200,
+          'background-position-y':'100%',
+          'shape': 'rectangle',
+          'width':200,
+          'height':50,
+          'border-width':1,
+          'text-valign' : 'bottom',
+          'text-max-width': 200
       }},
       {selector: 'node[drug]',   
         style:{    
@@ -594,36 +599,41 @@ function createCyObject(cyDiv, nodesMin, nodesMax, val){
           'background-height': '45%',    
           'background-position-y': '100%', 
           'shape': "diamond",
-       }},
-       {selector: ':parent',
-          style: {
-            'border-width':0.5,
-            "background-color": "lightgrey",
-            'background-opacity': 0.5,
-          }},
-      {selector: "node.cy-expand-collapse-collapsed-node",
+     }},
+     {selector: ':parent',
         style: {
-          'shape': "diamond",
+          'border-width':0.5,
           "background-color": "lightgrey",
-          'background-image': 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNS4wLjIsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4KCjxzdmcKICAgeG1sbnM6ZGM9Imh0dHA6Ly9wdXJsLm9yZy9kYy9lbGVtZW50cy8xLjEvIgogICB4bWxuczpjYz0iaHR0cDovL2NyZWF0aXZlY29tbW9ucy5vcmcvbnMjIgogICB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiCiAgIHhtbG5zOnN2Zz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciCiAgIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICAgeG1sbnM6c29kaXBvZGk9Imh0dHA6Ly9zb2RpcG9kaS5zb3VyY2Vmb3JnZS5uZXQvRFREL3NvZGlwb2RpLTAuZHRkIgogICB4bWxuczppbmtzY2FwZT0iaHR0cDovL3d3dy5pbmtzY2FwZS5vcmcvbmFtZXNwYWNlcy9pbmtzY2FwZSIKICAgdmVyc2lvbj0iMS4xIgogICBpZD0iTGF5ZXJfMSIKICAgeD0iMHB4IgogICB5PSIwcHgiCiAgIHdpZHRoPSIyNDkuMjM1cHgiCiAgIGhlaWdodD0iMjQ5LjIzNnB4IgogICB2aWV3Qm94PSIwIDAgMjQ5LjIzNSAyNDkuMjM2IgogICBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCAyNDkuMjM1IDI0OS4yMzYiCiAgIHhtbDpzcGFjZT0icHJlc2VydmUiCiAgIHNvZGlwb2RpOmRvY25hbWU9InBpbGxfaWNvbl9yZWRfMjU2LnN2ZyIKICAgaW5rc2NhcGU6dmVyc2lvbj0iMC45Mi4yIDVjM2U4MGQsIDIwMTctMDgtMDYiPjxtZXRhZGF0YQogICAgIGlkPSJtZXRhZGF0YTEzIj48cmRmOlJERj48Y2M6V29yawogICAgICAgICByZGY6YWJvdXQ9IiI+PGRjOmZvcm1hdD5pbWFnZS9zdmcreG1sPC9kYzpmb3JtYXQ+PGRjOnR5cGUKICAgICAgICAgICByZGY6cmVzb3VyY2U9Imh0dHA6Ly9wdXJsLm9yZy9kYy9kY21pdHlwZS9TdGlsbEltYWdlIiAvPjwvY2M6V29yaz48L3JkZjpSREY+PC9tZXRhZGF0YT48ZGVmcwogICAgIGlkPSJkZWZzMTEiIC8+PHNvZGlwb2RpOm5hbWVkdmlldwogICAgIHBhZ2Vjb2xvcj0iI2ZmZmZmZiIKICAgICBib3JkZXJjb2xvcj0iIzY2NjY2NiIKICAgICBib3JkZXJvcGFjaXR5PSIxIgogICAgIG9iamVjdHRvbGVyYW5jZT0iMTAiCiAgICAgZ3JpZHRvbGVyYW5jZT0iMTAiCiAgICAgZ3VpZGV0b2xlcmFuY2U9IjEwIgogICAgIGlua3NjYXBlOnBhZ2VvcGFjaXR5PSIwIgogICAgIGlua3NjYXBlOnBhZ2VzaGFkb3c9IjIiCiAgICAgaW5rc2NhcGU6d2luZG93LXdpZHRoPSI3NzgiCiAgICAgaW5rc2NhcGU6d2luZG93LWhlaWdodD0iNDgwIgogICAgIGlkPSJuYW1lZHZpZXc5IgogICAgIHNob3dncmlkPSJmYWxzZSIKICAgICBpbmtzY2FwZTp6b29tPSIwLjk0Njg5Mzc0IgogICAgIGlua3NjYXBlOmN4PSIxMjQuNjE3NSIKICAgICBpbmtzY2FwZTpjeT0iMTI0LjYxOCIKICAgICBpbmtzY2FwZTp3aW5kb3cteD0iMjIzIgogICAgIGlua3NjYXBlOndpbmRvdy15PSI3NCIKICAgICBpbmtzY2FwZTp3aW5kb3ctbWF4aW1pemVkPSIwIgogICAgIGlua3NjYXBlOmN1cnJlbnQtbGF5ZXI9IkxheWVyXzEiIC8+PGcKICAgICBpZD0iZzYiCiAgICAgc3R5bGU9ImZpbGw6IzAwMDAwMDtmaWxsLW9wYWNpdHk6MSI+PHBhdGgKICAgICAgIGZpbGw9IiNGQkZCRkIiCiAgICAgICBkPSJNMTk1LjUxMiw1NC4yOTRjLTguMTQyLTguMTQzLTE4LjgxNS0xMi4yMjYtMjkuNDk0LTEyLjIyNmMtMTAuNjc0LDAtMjEuMzUxLDQuMDgzLTI5LjQ3LDEyLjIyNiAgIEw5NC4zOTYsOTYuNDM4bDAsMGwtNDIuMTQyLDQyLjEzNWMtMTYuMjg3LDE2LjI2Ny0xNi4yODcsNDIuNjgsMC4wMSw1OC45NjVjMTYuMjY2LDE2LjI3OCw0Mi42ODIsMTYuMjc4LDU4Ljk1NiwwbDMzLjE2My0zMy4xNSAgIGw1MS4xMTktNTEuMTE5QzIxMS43NzYsOTYuOTc0LDIxMS43NzYsNzAuNTU5LDE5NS41MTIsNTQuMjk0eiBNMTg2LjUzMiwxMDQuMjgzbC00Mi4xNDgsNDIuMTRMMTAzLjM2NSwxMDUuNGw0Mi4xNDItNDIuMTQgICBjNS40NzMtNS40NzQsMTIuNzY1LTguNTA3LDIwLjQ5Mi04LjUwN2M3Ljc1MSwwLDE1LjA0MiwzLjAzMywyMC41MTgsOC41MDdDMTk3LjgzOCw3NC41NjQsMTk3LjgzOCw5Mi45ODMsMTg2LjUzMiwxMDQuMjgzeiIKICAgICAgIGlkPSJwYXRoNCIKICAgICAgIHN0eWxlPSJmaWxsOiMwMDAwMDA7ZmlsbC1vcGFjaXR5OjEiIC8+PC9nPjwvc3ZnPg==',    
-          'background-width': '45%',   
-          'background-height': '45%',    
-          'background-position-y': '100%' 
+          'background-opacity': 0.5,
+        }},
+    {selector: "node.cy-expand-collapse-collapsed-node",
+      style: {
+        'shape': "diamond",
+        "background-color": "lightgrey",
+        'background-image': 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNS4wLjIsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4KCjxzdmcKICAgeG1sbnM6ZGM9Imh0dHA6Ly9wdXJsLm9yZy9kYy9lbGVtZW50cy8xLjEvIgogICB4bWxuczpjYz0iaHR0cDovL2NyZWF0aXZlY29tbW9ucy5vcmcvbnMjIgogICB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiCiAgIHhtbG5zOnN2Zz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciCiAgIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICAgeG1sbnM6c29kaXBvZGk9Imh0dHA6Ly9zb2RpcG9kaS5zb3VyY2Vmb3JnZS5uZXQvRFREL3NvZGlwb2RpLTAuZHRkIgogICB4bWxuczppbmtzY2FwZT0iaHR0cDovL3d3dy5pbmtzY2FwZS5vcmcvbmFtZXNwYWNlcy9pbmtzY2FwZSIKICAgdmVyc2lvbj0iMS4xIgogICBpZD0iTGF5ZXJfMSIKICAgeD0iMHB4IgogICB5PSIwcHgiCiAgIHdpZHRoPSIyNDkuMjM1cHgiCiAgIGhlaWdodD0iMjQ5LjIzNnB4IgogICB2aWV3Qm94PSIwIDAgMjQ5LjIzNSAyNDkuMjM2IgogICBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCAyNDkuMjM1IDI0OS4yMzYiCiAgIHhtbDpzcGFjZT0icHJlc2VydmUiCiAgIHNvZGlwb2RpOmRvY25hbWU9InBpbGxfaWNvbl9yZWRfMjU2LnN2ZyIKICAgaW5rc2NhcGU6dmVyc2lvbj0iMC45Mi4yIDVjM2U4MGQsIDIwMTctMDgtMDYiPjxtZXRhZGF0YQogICAgIGlkPSJtZXRhZGF0YTEzIj48cmRmOlJERj48Y2M6V29yawogICAgICAgICByZGY6YWJvdXQ9IiI+PGRjOmZvcm1hdD5pbWFnZS9zdmcreG1sPC9kYzpmb3JtYXQ+PGRjOnR5cGUKICAgICAgICAgICByZGY6cmVzb3VyY2U9Imh0dHA6Ly9wdXJsLm9yZy9kYy9kY21pdHlwZS9TdGlsbEltYWdlIiAvPjwvY2M6V29yaz48L3JkZjpSREY+PC9tZXRhZGF0YT48ZGVmcwogICAgIGlkPSJkZWZzMTEiIC8+PHNvZGlwb2RpOm5hbWVkdmlldwogICAgIHBhZ2Vjb2xvcj0iI2ZmZmZmZiIKICAgICBib3JkZXJjb2xvcj0iIzY2NjY2NiIKICAgICBib3JkZXJvcGFjaXR5PSIxIgogICAgIG9iamVjdHRvbGVyYW5jZT0iMTAiCiAgICAgZ3JpZHRvbGVyYW5jZT0iMTAiCiAgICAgZ3VpZGV0b2xlcmFuY2U9IjEwIgogICAgIGlua3NjYXBlOnBhZ2VvcGFjaXR5PSIwIgogICAgIGlua3NjYXBlOnBhZ2VzaGFkb3c9IjIiCiAgICAgaW5rc2NhcGU6d2luZG93LXdpZHRoPSI3NzgiCiAgICAgaW5rc2NhcGU6d2luZG93LWhlaWdodD0iNDgwIgogICAgIGlkPSJuYW1lZHZpZXc5IgogICAgIHNob3dncmlkPSJmYWxzZSIKICAgICBpbmtzY2FwZTp6b29tPSIwLjk0Njg5Mzc0IgogICAgIGlua3NjYXBlOmN4PSIxMjQuNjE3NSIKICAgICBpbmtzY2FwZTpjeT0iMTI0LjYxOCIKICAgICBpbmtzY2FwZTp3aW5kb3cteD0iMjIzIgogICAgIGlua3NjYXBlOndpbmRvdy15PSI3NCIKICAgICBpbmtzY2FwZTp3aW5kb3ctbWF4aW1pemVkPSIwIgogICAgIGlua3NjYXBlOmN1cnJlbnQtbGF5ZXI9IkxheWVyXzEiIC8+PGcKICAgICBpZD0iZzYiCiAgICAgc3R5bGU9ImZpbGw6IzAwMDAwMDtmaWxsLW9wYWNpdHk6MSI+PHBhdGgKICAgICAgIGZpbGw9IiNGQkZCRkIiCiAgICAgICBkPSJNMTk1LjUxMiw1NC4yOTRjLTguMTQyLTguMTQzLTE4LjgxNS0xMi4yMjYtMjkuNDk0LTEyLjIyNmMtMTAuNjc0LDAtMjEuMzUxLDQuMDgzLTI5LjQ3LDEyLjIyNiAgIEw5NC4zOTYsOTYuNDM4bDAsMGwtNDIuMTQyLDQyLjEzNWMtMTYuMjg3LDE2LjI2Ny0xNi4yODcsNDIuNjgsMC4wMSw1OC45NjVjMTYuMjY2LDE2LjI3OCw0Mi42ODIsMTYuMjc4LDU4Ljk1NiwwbDMzLjE2My0zMy4xNSAgIGw1MS4xMTktNTEuMTE5QzIxMS43NzYsOTYuOTc0LDIxMS43NzYsNzAuNTU5LDE5NS41MTIsNTQuMjk0eiBNMTg2LjUzMiwxMDQuMjgzbC00Mi4xNDgsNDIuMTRMMTAzLjM2NSwxMDUuNGw0Mi4xNDItNDIuMTQgICBjNS40NzMtNS40NzQsMTIuNzY1LTguNTA3LDIwLjQ5Mi04LjUwN2M3Ljc1MSwwLDE1LjA0MiwzLjAzMywyMC41MTgsOC41MDdDMTk3LjgzOCw3NC41NjQsMTk3LjgzOCw5Mi45ODMsMTg2LjUzMiwxMDQuMjgzeiIKICAgICAgIGlkPSJwYXRoNCIKICAgICAgIHN0eWxlPSJmaWxsOiMwMDAwMDA7ZmlsbC1vcGFjaXR5OjEiIC8+PC9nPjwvc3ZnPg==',    
+        'background-width': '45%',   
+        'background-height': '45%',    
+        'background-position-y': '100%' 
 
-       }},
+     }},
 
-     // style edges
+      // style edges
       basicedgestyle,
       actstyle,
+      stimstyle,
+      targetsstyle,
       expstyle,
       inhistyle, 
       reprstyle,
       bindstyle,
       dissostyle,
       compstyle,
+      noncovstyle,
+      molinteractstyle,
       indeffstyle,
       missstyle,
       statestyle,
+      controlstyle,
       phosphostyle,
       dephosphostyle,
       glycostyle,
@@ -656,8 +666,7 @@ function createCyObject(cyDiv, nodesMin, nodesMax, val){
             style:{ 'opacity': '0.2' }
         }
       ]
-  })
-
+  });
 }
 
 function highlightNodeTapped(symbol, graphL=undefined, graphR=undefined){
