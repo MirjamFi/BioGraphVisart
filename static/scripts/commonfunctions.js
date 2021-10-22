@@ -143,7 +143,7 @@ function createInteractionLegend(interactionTypes, graphLeft, edgesToMerge, grap
           secondText  = appendText(secondText, interact)
           secondimg.src = inhibition_repression;
         }
-        else if(["compound", "non-covalent binding", "molecular interaction"].includes(interact)){
+        else if(["compound", "non-covalent binding", "molecular interaction", "proteincomplexformation", "molecularinteraction"].includes(interact)){
           thirdText  = appendText(thirdText, interact)
           thirdimg.src = compound;
         }
@@ -335,12 +335,12 @@ function getNodesAndEdges(graphString, nodeVal,graphpos = undefined, noOptn = fa
     var drugnodes = [];
     var drugedges = [];
     var drugtargets = {};
-    if(graphpos == "left"){
-        var leftNodes = [];
-    }
-    else if(graphpos == "right"){
-        var rightNodes = [];
-    }
+    // if(graphpos == "left"){
+   //     var leftNodes = [];
+    // }
+    // else if(graphpos == "right"){
+   //     var rightNodes = [];
+    // }
 
     var prevId = "";
     var pos = 0;
@@ -353,11 +353,11 @@ function getNodesAndEdges(graphString, nodeVal,graphpos = undefined, noOptn = fa
           curNode.id = graphString[i].split("\"")[1]  ;
           if(graphpos == "left"){
             curNode.graph = "g1";
-            leftNodes.push({data: curNode});
+            // leftNodes.push({data: curNode});
           }
           else if(graphpos == "right"){
             curNode.graph = "g2";
-            rightNodes.push({data: curNode});
+            // rightNodes.push({data: curNode});
           }
           nodes.push({data: curNode});
       }
@@ -369,12 +369,13 @@ function getNodesAndEdges(graphString, nodeVal,graphpos = undefined, noOptn = fa
             if(attrname == "entrez_gene" && val.includes("http")){
               val = val.split("/").pop()
             }
-            if(!isNaN(parseFloat(val)) && attrname != "name" && !attrname.includes("PDB") && !attrname.includes("Drug IDs")){
+            if(!isNaN(parseFloat(val)) && attrname != "name" && !attrname.includes("PDB") && !attrname.includes("DrugBank_ID") && !attrname.includes("Common_name") && !attrname.includes("Synonyms")){
                 curNode[attrname] = parseFloat(val);
             }
             else{
                 curNode[attrname] = val;
             }
+
           }
           if(graphString[i].includes("\"v_"+nodeVal+"\"\>")){
             var val = regExp.exec(graphString[i])[1]; // if availabe get node value
@@ -479,6 +480,7 @@ function getNodesAndEdges(graphString, nodeVal,graphpos = undefined, noOptn = fa
       if(node.data.Drugtarget == "true"){
         var drugnumbers = []
         for (const [key, value] of Object.entries(node.data)) {
+          var drugid = "";
           if(key.includes("Drugtarget_")){
             var drugsplit = key.split("_")
             var drugnum = drugsplit[1]
@@ -487,26 +489,56 @@ function getNodesAndEdges(graphString, nodeVal,graphpos = undefined, noOptn = fa
               drug.target = node.data.id
               drug.number = drugnum
               drug.id = "n" + Object.keys(nodes).length
-              drugnodes.push(drug)
-              drugnumbers.push(drugnum)
-              drug.drug = true
-              nodes.push({data: drug});
-              if(!drugedges[node.data.id]){
-                drugedges[node.data.id] = []
+              if(graphpos == "left"){
+                drug.graph = "g1";
+                // leftNodes.push({data: curNode});
               }
-              drugedges[node.data.id].push(drug.id)
-              var edge = {}
-              edge.id = drug.id.concat(node.data.id);
-              edge.source = drug.id;
-              edge.target = node.data.id;
-              edge.interaction = "stimulation"
-              edges.push({data:edge})
+              else if(graphpos == "right"){
+                drug.graph = "g2";
+                // rightNodes.push({data: curNode});
+              }
+              if(drugsplit.slice(2).join("_") == "Common_name"){
+                drug.name = value
+              }
+              else if(drugsplit.slice(2).join("_") == "DrugBank_ID"){
+                drug.DrugBank_ID = value
+              }
+              if(drug.name){
+                for(var drugnode of drugnodes){
+                  if(drugnode.name === drug.name){
+                    drugid = drugnode.id
+                  }
+                }
+                if(drugid === ""){
+                  drugnodes.push(drug)
+                  drugnumbers.push(drugnum)
+                  drug.drug = true
+                  nodes.push({data: drug});
+                  drugid = drug.id
+                }
+                if(!drugedges[node.data.id]){
+                  drugedges[node.data.id] = []
+                }
+                drugedges[node.data.id].push(drugid)
+                var edge = {}
+                edge.id = drugid.concat(node.data.id);
+                edge.source = drugid;
+                edge.target = node.data.id;
+                edge.interaction = "stimulation"
+                if(graphpos == "left"){
+                  edge.graph = "g1";
+                }
+                else if(graphpos == "right"){
+                  edge.graph = "g2";
+                }
+                edges.push({data:edge})
+              }
             }
             else if(drugnumbers.includes(drugnum)){
               for(var drugnode of drugnodes){
                 if(drugnode.target == node.data.id && drugnode.number == drugnum){
                   drugnode[drugsplit.slice(2).join("_")] = value
-                  if(drugsplit.slice(2).join("_") == "Name"){
+                  if(drugsplit.slice(2).join("_") == "Common_name"){
                     drugnode.name = value
                   }
                 }
