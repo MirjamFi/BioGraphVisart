@@ -49,14 +49,14 @@ function createHeatmap(heatmapData, foundFiles, graphsList, example=false){
     var normalizedValues = heatmapData;
     var sampleSizes = [];
     for (let i in heatmapData){
-    	sample = heatmapData[i]['sample']
-    	sampleSizes[sample] = heatmapData[i][sample];
+        sample = heatmapData[i]['sample']
+        sampleSizes[sample] = heatmapData[i][sample];
     }
 
     for (let i in heatmapData){
-		sampleRow = heatmapData[i]['sample'];
-		for(j=0;j < axes.length; j++){
-			sampleCol = axes[j];
+        sampleRow = heatmapData[i]['sample'];
+        for(j=0;j < axes.length; j++){
+            sampleCol = axes[j];
             i = parseInt(i);
             overlapArrays.push([j,i, Math.round(parseInt(heatmapData[i][axes[j]])*200/(parseInt(sampleSizes[sampleRow])+parseInt(sampleSizes[sampleCol])))]);
         }
@@ -100,7 +100,7 @@ function createHeatmap(heatmapData, foundFiles, graphsList, example=false){
                             }
                             document.getElementById("leftID").innerHTML = "";
                             document.getElementById("rightID").innerHTML = "";
-                            // document.getElementById('values').setAttribute('style','visibility:visible');
+                            document.getElementById('values').setAttribute('style','visibility:visible');
                             document.getElementById("leftID").innerHTML = leftSelect;
                             if(left === right){
                                 document.getElementById("rightID").innerHTML = "";
