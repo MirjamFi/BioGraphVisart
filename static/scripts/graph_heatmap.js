@@ -70,37 +70,40 @@ function visualize(firstTime=false, files, example) {
       var leftNodeValuesNum = leftnodesAndEdges[2];
       interactionTypes = leftnodesAndEdges[3];
       edgesToMergeLeft = leftnodesAndEdges[4]
-      var drugedgesLeft = nodesAndEdges[5];
+      var drugedgesleft = leftnodesAndEdges[5]
       // set min and max for legend  and add nodes and edges to graph
       var leftRange = legendsRange(leftNodeValuesNum);
       var leftNodesMin = leftRange[0];
       var leftNodesMax = leftRange[1];
       graphLeft= createCyObject(cyO, leftNodesMin, leftNodesMax, nodeVal);
-      graphLeft.on('mouseover', 'node', function(e) {
-        var sel = e.target;
-        graphLeft.elements()
-          .difference(sel.outgoers()
-              .union(sel.incomers()))
-          .not(sel)
-          .addClass('semitransp');
-        sel.addClass('highlight')
-          .outgoers()
-          .union(sel.incomers())
-          .addClass('highlight');
-      });
-      graphLeft.on('mouseout', 'node', function(e) {
-          var sel = e.target;
-          cy.elements()
-              .removeClass('semitransp');
-          sel.removeClass('highlight')
-              .outgoers()
-              .union(sel.incomers())
-              .removeClass('highlight');
-      });
-      addNodesAndEdges(graphLeft, leftNodes, leftEdges, leftFirstTime, leftNodesMin, leftNodesMax);
-      // document.getElementById('downloadPDF').style.visibility = "visible";
-      // document.getElementById('downloadPDF').disabled = false;
+      addNodesAndEdges(graphLeft, leftNodes, leftEdges, leftFirstTime, leftNodesMin, leftNodesMax, drugedgesleft);
+      var api = graphLeft.expandCollapse('get');
+      var options = {
+        layoutBy: null, // to rearrange after expand/collapse. It's just layout options or whole layout function. Choose your side!
+        // recommended usage: use cose-bilkent layout with randomize: false to preserve mental map upon expand/collapse
+        fisheye: false, // whether to perform fisheye view after expand/collapse you can specify a function too
+        animate: true, // whether to animate on drawing changes you can specify a function too
+        animationDuration: 1000, // when animate is true, the duration in milliseconds of the animation
+        ready: function () {}, // callback when expand/collapse initialized
+        undoable: true, // and if undoRedoExtension exists,
+
+        cueEnabled: true, // Whether cues are enabled
+        expandCollapseCuePosition: 'top-left', // default cue position is top left you can specify a function per node too
+        expandCollapseCueSize: 12, // size of expand-collapse cue
+        expandCollapseCueLineSize: 8, // size of lines used for drawing plus-minus icons
+        expandCueImage: undefined, // image of expand icon if undefined draw regular expand cue
+        collapseCueImage: undefined, // image of collapse icon if undefined draw regular collapse cue
+        expandCollapseCueSensitivity: 1, // sensitivity of expand-collapse cues
+        edgeTypeInfo: "interaction", // the name of the field that has the edge type, retrieved from edge.data(), can be a function, if reading the field returns undefined the collapsed edge type will be "unknown"
+        groupEdgesOfSameTypeOnCollapse : true, // if true, the edges to be collapsed will be grouped according to their types, and the created collapsed edges will have same type as their group. if false the collapased edge will have "unknown" type.
+        allowNestedEdgeCollapse: true, // when you want to collapse a compound edge (edge which contains other edges) and normal edge, should it collapse without expanding the compound first
+        zIndex: 999 // z-index value of the canvas in which cue ımages are drawn
+      };
+      api.collapseAll(options)
+      document.getElementById('downloadPDF').style.visibility = "visible";
+      document.getElementById('downloadPDF').disabled = false;
       showConfigurationParts('Left', graphLeft, left);
+      resetLayout(graphLeft, "Left");      
       showMetaInfo(graphLeft, nodeVal);
       // set background layer to hoghlight pathways
       var layerLeft = createLayoutKeggPathways(graphLeft, allPathsLeft, "Left")
@@ -113,60 +116,6 @@ function visualize(firstTime=false, files, example) {
         evt.target.addClass('highlighted');
         if(right){
           highlightNodeTapped(evt.target.data().symbol, graphLeft, graphRight);
-        }  
-        var clickedNode = evt.target;    
-        if(clickedNode.data().symbol != undefined){    
-          var targetNode = clickedNode.data().symbol   
-        }    
-        else if(clickedNode.data().name != undefined && clickedNode.data().drugbank_id == undefined && clickedNode.data().symbol != undefined && !clickedNode.data().symbol.includes("Drugs")){    
-          var targetNode = clickedNode.data().name   
-        }    
-       else if(clickedNode.data().drug){  
-        var info = "<div align='left' id='information'><table><tr>"    
-        Object.keys(clickedNode.data()).forEach(function(key) {  
-         if(key == "GenBank_Protein_ID"){
-           info+= "<td><b>"+key.split("_").join(" ")+    
-             "</b></td><td><a href='https://www.ncbi.nlm.nih.gov/protein/"+clickedNode.data()[key]+"'target='_blank'>"+clickedNode.data()[key]+"</a></td></tr>"    
-         } 
-         else if(key == "GenBank_gene_ID"){    
-           info+= "<td><b>"+key.split("_").join(" ")+    
-             "</b></td><td><a href='https://www.ncbi.nlm.nih.gov/nuccore/"+clickedNode.data()[key]+"'target='_blank'>"+clickedNode.data()[key]+"</a></td></tr>"    
-         }  
-         else if(key == "HGNC_ID"){    
-           info+= "<td><b>"+key.split("_").join(" ")+    
-             "</b></td><td><a href='https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/"+clickedNode.data()[key]+"'target='_blank'>"+clickedNode.data()[key]+"</a></td></tr>"    
-         } 
-         else if(key == "PDB_ID"){    
-          var pdbids = clickedNode.data()[key].split(" ")
-          for(var pdbid of pdbids){
-            info+= "<td><b>"+key.split("_").join(" ")+    
-             "</b></td><td><a href='http://www.rcsb.org/structure/"+pdbid+"'target='_blank'>"+pdbid+"</a></td></tr>"    
-          }
-         }
-         else if(key == "UniProt_ID"){  
-           info+= "<td><b>"+key.split("_").join(" ")+    
-             "</b></td><td><a href='https://www.uniprot.org/uniprot/"+clickedNode.data()[key]+"'target='_blank'>"+clickedNode.data()[key]+"</a></td></tr>"    
-         } 
-         else if(key == "Drug_IDs"){   
-          var drugids = clickedNode.data()[key].split(" ")
-          for(var drugid of drugids){
-           info+= "<td><b>DrugBank ID</b></td><td><a href='https://go.drugbank.com/drugs/"+drugid+"'target='_blank'>"+drugid+"</a></td></tr>"    
-          }
-         }      
-        });    
-         info += "</table>"   
-         var newWindow = window.open("/DrugInformation");   
-         var doc = newWindow.document;    
-         doc.open("text/html", "replace");   
-         doc.write("<HTML><HEAD><TITLE>"+clickedNode.data().name+   
-           "</TITLE><link rel='stylesheet' type='text/css' href='/css/subgraphCss.css'></HEAD>"+    
-           "<BODY><H1>"+clickedNode.data().name+    
-           "</H1>"+info+"</BODY></HTML>");    
-         doc.close();   
-        }
-        else if(clickedNode.data().symbol != undefined && clickedNode.data().symbol.includes("Drugs")){
-          clickedNode.style('shape','diamond')
-          api.expand(clickedNode)    
         }
       })
       graphLeft.on('tap', function(event){
@@ -178,7 +127,6 @@ function visualize(firstTime=false, files, example) {
           }
         }
       });
-      changeLayout(graphLeft, 'Left')
     }
     else if(cyO = 'cyRight'){
       leftGraph = false;
@@ -194,40 +142,45 @@ function visualize(firstTime=false, files, example) {
       var rightNodeValuesNum = rightnodesAndEdges[2];
       var interactionTypesRight = rightnodesAndEdges[3];
       edgesToMergeRight = rightnodesAndEdges[4]
-       var drugedgesRight = nodesAndEdges[5];
+      var drugedgesright = rightnodesAndEdges[5]
 
       interactionTypes = interactionTypes.add(...interactionTypesRight);
       // set min and max for legend  and add nodes and edges to graph
       var rightRange = legendsRange(rightNodeValuesNum);
       var rightNodesMin = rightRange[0];
       var rightNodesMax = rightRange[1];
+
       graphRight= createCyObject(cyO, rightNodesMin, rightNodesMax, nodeVal);
-      graphRight.on('mouseover', 'node', function(e) {
-        var sel = e.target;
-        graphRight.elements()
-            .difference(sel.outgoers()
-                .union(sel.incomers()))
-            .not(sel)
-            .addClass('semitransp');
-        sel.addClass('highlight')
-            .outgoers()
-            .union(sel.incomers())
-            .addClass('highlight');
-    });
-    graphRight.on('mouseout', 'node', function(e) {
-        var sel = e.target;
-        cy.elements()
-            .removeClass('semitransp');
-        sel.removeClass('highlight')
-            .outgoers()
-            .union(sel.incomers())
-            .removeClass('highlight');
-    });
-      addNodesAndEdges(graphRight,rightNodes, rightEdges, rightFirstTime, rightNodesMin, rightNodesMax);
+
+      addNodesAndEdges(graphRight,rightNodes, rightEdges, rightFirstTime, rightNodesMin, rightNodesMax, drugedgesright);
+      var api = graphRight.expandCollapse('get');
+      var options = {
+        layoutBy: null, // to rearrange after expand/collapse. It's just layout options or whole layout function. Choose your side!
+        // recommended usage: use cose-bilkent layout with randomize: false to preserve mental map upon expand/collapse
+        fisheye: false, // whether to perform fisheye view after expand/collapse you can specify a function too
+        animate: true, // whether to animate on drawing changes you can specify a function too
+        animationDuration: 1000, // when animate is true, the duration in milliseconds of the animation
+        ready: function () {}, // callback when expand/collapse initialized
+        undoable: true, // and if undoRedoExtension exists,
+
+        cueEnabled: true, // Whether cues are enabled
+        expandCollapseCuePosition: 'top-left', // default cue position is top left you can specify a function per node too
+        expandCollapseCueSize: 12, // size of expand-collapse cue
+        expandCollapseCueLineSize: 8, // size of lines used for drawing plus-minus icons
+        expandCueImage: undefined, // image of expand icon if undefined draw regular expand cue
+        collapseCueImage: undefined, // image of collapse icon if undefined draw regular collapse cue
+        expandCollapseCueSensitivity: 1, // sensitivity of expand-collapse cues
+        edgeTypeInfo: "interaction", // the name of the field that has the edge type, retrieved from edge.data(), can be a function, if reading the field returns undefined the collapsed edge type will be "unknown"
+        groupEdgesOfSameTypeOnCollapse : true, // if true, the edges to be collapsed will be grouped according to their types, and the created collapsed edges will have same type as their group. if false the collapased edge will have "unknown" type.
+        allowNestedEdgeCollapse: true, // when you want to collapse a compound edge (edge which contains other edges) and normal edge, should it collapse without expanding the compound first
+        zIndex: 999 // z-index value of the canvas in which cue ımages are drawn
+      };
+      api.collapseAll(options)
       document.getElementById('cyRight').style.visibility = "visible";
       showConfigurationParts('Right', graphRight, right);
       document.getElementById('right').style.visibility = "visibile";
       document.getElementById('rightID').style.visibility = "visible";
+      resetLayout(graphRight, "Right");
       showMetaInfo(graphRight, nodeVal);
       // set background layer to hoghlight pathways
       var layerRight = createLayoutKeggPathways(graphRight, allPathsRight,"Right")
@@ -239,60 +192,6 @@ function visualize(firstTime=false, files, example) {
       graphRight.on('tap', 'node',function(evt){
         highlightNodeTapped(evt.target.data().symbol, graphLeft, graphRight);
         evt.target.addClass('highlighted');
-        var clickedNode = evt.target;    
-        if(clickedNode.data().symbol != undefined){    
-          var targetNode = clickedNode.data().symbol   
-        }    
-        else if(clickedNode.data().name != undefined && clickedNode.data().drugbank_id == undefined && clickedNode.data().symbol != undefined && !clickedNode.data().symbol.includes("Drugs")){    
-          var targetNode = clickedNode.data().name   
-        }    
-       else if(clickedNode.data().drug){  
-        var info = "<div align='left' id='information'><table><tr>"    
-        Object.keys(clickedNode.data()).forEach(function(key) {  
-         if(key == "GenBank_Protein_ID"){
-           info+= "<td><b>"+key.split("_").join(" ")+    
-             "</b></td><td><a href='https://www.ncbi.nlm.nih.gov/protein/"+clickedNode.data()[key]+"'target='_blank'>"+clickedNode.data()[key]+"</a></td></tr>"    
-         } 
-         else if(key == "GenBank_gene_ID"){    
-           info+= "<td><b>"+key.split("_").join(" ")+    
-             "</b></td><td><a href='https://www.ncbi.nlm.nih.gov/nuccore/"+clickedNode.data()[key]+"'target='_blank'>"+clickedNode.data()[key]+"</a></td></tr>"    
-         }  
-         else if(key == "HGNC_ID"){    
-           info+= "<td><b>"+key.split("_").join(" ")+    
-             "</b></td><td><a href='https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/"+clickedNode.data()[key]+"'target='_blank'>"+clickedNode.data()[key]+"</a></td></tr>"    
-         } 
-         else if(key == "PDB_ID"){    
-          var pdbids = clickedNode.data()[key].split(" ")
-          for(var pdbid of pdbids){
-            info+= "<td><b>"+key.split("_").join(" ")+    
-             "</b></td><td><a href='http://www.rcsb.org/structure/"+pdbid+"'target='_blank'>"+pdbid+"</a></td></tr>"    
-          }
-         }
-         else if(key == "UniProt_ID"){  
-           info+= "<td><b>"+key.split("_").join(" ")+    
-             "</b></td><td><a href='https://www.uniprot.org/uniprot/"+clickedNode.data()[key]+"'target='_blank'>"+clickedNode.data()[key]+"</a></td></tr>"    
-         } 
-         else if(key == "Drug_IDs"){   
-          var drugids = clickedNode.data()[key].split(" ")
-          for(var drugid of drugids){
-           info+= "<td><b>DrugBank ID</b></td><td><a href='https://go.drugbank.com/drugs/"+drugid+"'target='_blank'>"+drugid+"</a></td></tr>"    
-          }
-         }      
-        });    
-         info += "</table>"   
-         var newWindow = window.open("/DrugInformation");   
-         var doc = newWindow.document;    
-         doc.open("text/html", "replace");   
-         doc.write("<HTML><HEAD><TITLE>"+clickedNode.data().name+   
-           "</TITLE><link rel='stylesheet' type='text/css' href='/css/subgraphCss.css'></HEAD>"+    
-           "<BODY><H1>"+clickedNode.data().name+    
-           "</H1>"+info+"</BODY></HTML>");    
-         doc.close();   
-        }
-        else if(clickedNode.data().symbol != undefined && clickedNode.data().symbol.includes("Drugs")){
-          clickedNode.style('shape','diamond')
-          api.expand(clickedNode)    
-        }
       })
       graphRight.on('tap', function(event){
           var evtTarget = event.target;
@@ -301,12 +200,11 @@ function visualize(firstTime=false, files, example) {
             graphRight.$('node').removeClass('highlighted')
           }
         });
-      changeLayout(graphRight, "Right")
     }
   });
   document.getElementById("arrows").innerHTML = "";
   createInteractionLegend(interactionTypes, graphLeft, edgesToMergeLeft, graphRight, edgesToMergeRight);
-  // if(document.getElementById('nodeShapesAttr')){
+  if(document.getElementById('nodeShapesAttr')){
     if(!document.getElementById('heatmap_shapes')){
       var shapelegend = document.createElement("div")
       shapelegend.id = "heatmap_shapes";
@@ -314,12 +212,30 @@ function visualize(firstTime=false, files, example) {
       document.getElementById("legend_heatmap").appendChild(shapelegend);
       
     }
-  // }
+    if(document.getElementById("nodeShapes")){
+      document.getElementById("nodeShapes").onchange=function(){
+        changeNodeShapes(graphLeft, 'heatmap_shapes');
+        if(graphRight){
+          changeNodeShapes(graphRight, 'heatmap_shapes');
+        }
+      }
+
+      graphLeft.style()
+          .selector('node['+document.getElementById('nodeShapesAttr').value+' ="true"]')        
+          .style('shape', document.getElementById('nodeShapes').value)
+          .update();
+      if(graphRight){
+        graphRight.style()
+          .selector('node['+document.getElementById('nodeShapesAttr').value+' ="true"]')        
+          .style('shape', document.getElementById('nodeShapes').value)
+          .update();
+      }
+    }
+  }
   if(firstTime && graphRight){
     firstTime = false;
     clickMerge(files, nodeVal, example);
   }
-
   document.getElementById('legend_heatmap').setAttribute('style','visibility:visible');
   document.getElementById('searchgene').setAttribute('style','visibility:visible');
   document.getElementById('searchbutton').setAttribute('style','visibility:visible');
@@ -341,8 +257,8 @@ function showConfigurationParts(pos, cy, name){
   }
   document.getElementById('KEGGpathsButton'+pos).style.visibility ="visible";
   document.getElementById('keggpathways'+pos).style.visibility = "visible";
-  // document.getElementById("selectlayout"+pos).visibility = "visible";
-  // document.getElementById("selectlayout"+pos).onchange= function(){changeLayout(cy, pos)}
+  document.getElementById("selectlayout"+pos).visibility = "visible";
+  document.getElementById("selectlayout"+pos).onchange= function(){changeLayout(cy, pos)}
 }
 
 function showKEGGParts(pos, ctx, cy, nodes, layer, canvas){
@@ -352,36 +268,35 @@ function showKEGGParts(pos, ctx, cy, nodes, layer, canvas){
 
 }
 //add nodes and edges to cy-object (update if attribute has changed)
-function addNodesAndEdges(cyObject, nodes, edges, drugedges, firstTime, nodesMin, nodesMax){
+function addNodesAndEdges(cyObject, nodes, edges, firstTime, nodesMin, nodesMax, drugedges){
   // add parent nodes for every drug group
-  if(drugedges){
-    for(const [target, drugs] of Object.entries(drugedges)){
-      for(const [target2, drugs2] of Object.entries(drugedges)){
-        if(target == target2){
-          continue;
-        }
-        if(drugs.length === drugs2.length &&
-          drugs.every((val, index) => val === drugs2[index])){
-          delete drugedges[target2]
-        }
+  for(const [target, drugs] of Object.entries(drugedges)){
+    for(const [target2, drugs2] of Object.entries(drugedges)){
+      if(target == target2){
+        continue;
+      }
+      if(drugs.length === drugs2.length &&
+        drugs.every((val, index) => val === drugs2[index])){
+        delete drugedges[target2]
       }
     }
-    for(const [target, drugs] of Object.entries(drugedges)){
-      if(drugs.length > 1){
-        var drugNode = {};
-        drugNode.id = "n"+(nodes.length-1).toString()
-        drugNode.symbol = drugs.length + " Drugs"
-        nodes.push({data: drugNode});
-        for(var drugnode of drugs){
-          for(var node of nodes){
-            if(node.data.id == drugnode){
-              node.data.parent = drugNode.id
-            }
+  }
+  for(const [target, drugs] of Object.entries(drugedges)){
+    if(drugs.length > 1){
+      var drugNode = {};
+      drugNode.id = "n"+(nodes.length-1).toString()
+      drugNode.symbol = drugs.length + " Drugs"
+      nodes.push({data: drugNode});
+      for(var drugnode of drugs){
+        for(var node of nodes){
+          if(node.data.id == drugnode){
+            node.data.parent = drugNode.id
           }
         }
-      } 
-    }
+      }
+    } 
   }
+
   if(loadGraphCount > 1){
     cyObject.elements().remove();
     if(cyObject === 'cyLeft'){
@@ -394,58 +309,59 @@ function addNodesAndEdges(cyObject, nodes, edges, drugedges, firstTime, nodesMin
   }
   cyObject.add(nodes);
   cyObject.add(edges);
+  for(node of cyObject.nodes("node[id != 'l1']")){
+    if(!node.isParent()){
+      if(node.connectedEdges().size() == 0){
+        node.remove()
+      }
+    }
+  }
+ 
   cyObject.nodes().noOverlap({ padding: 5 });
   // calculate label position for legend and style legend
   var fontSize = 10;
-
-  if(nodes.every(function(x){return(x.data["symbol"])})){
-    for(n=0; n < nodes.length; n++){
-      cyObject.batch(function(){
+  for(n=0; n < nodes.length; n++){
+    cyObject.batch(function(){
+      if(nodes[n].data.symbol){
         var labelText = nodes[n].data.symbol;
-        var oldLabelText = nodes[n].data.symbol;
-          while(getTextWidth(labelText, fontSize +" arial") > 49){
-            oldLabelText = oldLabelText.slice(0,-1);
-            labelText = oldLabelText+'...';
-          }
-         // }
-         cyObject.$('node[id =\''  + nodes[n].data.id + '\']').style("label", labelText);
-      });
-    }
-  }
-  else{
-    for(n=0; n < nodes.length; n++){
-      cyObject.batch(function(){
+        var oldLabelText = nodes[n].data.symbol;}
+      else if(nodes[n].data.name){
         var labelText = nodes[n].data.name;
-        var oldLabelText = nodes[n].data.name;
-          while(getTextWidth(labelText, fontSize +" arial") > 49){
-            oldLabelText = oldLabelText.slice(0,-1);
-            labelText = oldLabelText+'...';
-          }
-         // }
-         cyObject.$('node[id =\''  + nodes[n].data.id + '\']').style("label",labelText);
-      });
-    }
+        var oldLabelText = nodes[n].data.name;}
+      else if(nodes[n].data.Name){
+        var labelText = nodes[n].data.Name;
+        var oldLabelText = nodes[n].data.Name;}
+        while(getTextWidth(labelText, fontSize +" arial") > 49){
+          oldLabelText = oldLabelText.slice(0,-1);
+          labelText = oldLabelText+'...';
+        }
+       // }
+       cyObject.$('node[id =\''  + nodes[n].data.id + '\']').style("label",labelText);
+    });
   }
   // update node values if tracer or values change
   if(!firstTime){
     for(n=0; n < nodes.length; n++){
       cyObject.batch(function(){
       cyObject.$('node[id =\''  + nodes[n].data.id + '\']')
-        .data(nodeVal, nodes[n].data.val)
+        .data('val', nodes[n].data.val)
       });
     }
   }
   calculateLabelColorLegend(nodeVal, fontSize, cyObject, nodesMin, nodesMax);
 
   addcolorlegend(cyObject)
-  if(cyObject == 'cyLeft'){
-      pos = 'left';
+  // cyObject.layout({
+  //   name: 'cose-bilkent'
+  // }).run();
+  if(cyObject === 'cyLeft'){
+      var selectedLayout = document.getElementById('selectlayoutLeft').value;
     }
     else if(cyObject === 'cyRight'){
-      pos = 'right';
+      var selectedLayout = document.getElementById('selectlayoutRight').value;
     }
-  var selectedLayout = document.getElementById('selectlayout'+pos).value;
-  var layoutBy = {};
+  
+var layoutBy = {};
   if(selectedLayout == "klay"){
     var options = {
       animate: animateLayout, // Whether to transition the node positions
@@ -478,7 +394,7 @@ function addNodesAndEdges(cyObject, nodes, edges, drugedges, firstTime, nodesMin
         animate: animateLayout
       }
   }
-  else if(selectedLayout == "cose-bilkent"){
+  else if(selectedLayout == "cose-bilkent (default)"){
     layoutBy ={
         name: "cose-bilkent",
         gravityRange: 1.3,
@@ -510,7 +426,7 @@ function addNodesAndEdges(cyObject, nodes, edges, drugedges, firstTime, nodesMin
       animate: true, // whether to animate on drawing changes you can specify a function too
       animationDuration: 1000, // when animate is true, the duration in milliseconds of the animation
       ready: function () {
-        cy.style().selector('edge[interaction = \'targets\']').style('target-arrow-shape', 'triangle').update();}, // callback when expand/collapse initialized
+        cyObject.style().selector('edge[interaction = \'targets\']').style('target-arrow-shape', 'triangle').update();}, // callback when expand/collapse initialized
       undoable: true, // and if undoRedoExtension exists,
 
       cueEnabled: true, // Whether cues are enabled
@@ -526,7 +442,8 @@ function addNodesAndEdges(cyObject, nodes, edges, drugedges, firstTime, nodesMin
       zIndex: 999 // z-index value of the canvas in which cue ımages are drawn
     };
   cyObject.expandCollapse(options)
-  var api = cy.expandCollapse('get');
+  var api = cyObject.expandCollapse('get');
+
 
 }
 
@@ -538,11 +455,114 @@ function showMetaInfo(cyObject, nodeVal){
       solo: true,
     },
     content: {text : function(){
-      if(!isNaN(parseFloat(this.data(nodeVal)))){
-        return '<b>'+nodeVal +'</b>: ' + parseFloat(this.data(nodeVal)).toFixed(2); } //numbers
-      else{
-        return '<b>'+nodeVal +'</b>: '+ this.data(nodeVal);          //bools
-      }
+      if(!isNaN(parseFloat(this.data()[nodeVal]))){
+            if(this.data('symbol') != undefined){
+              if(this.data('DriverType')!=undefined){
+                if(this.data("secondaryNames")){
+                  return '<b>'+ this.data('symbol') +'</b><br>' + 
+                  '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2) + '</b><br>' + 
+                  '<b> Driver Type: </b>'+ this.data('DriverType') + '<br><b> Secondary Names: </b>' +
+                  this.data('secondaryNames')
+                }
+                else{
+                  return '<b>'+ this.data('symbol') +'</b><br>' + 
+                  '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2) + '</b><br>' + 
+                  '<b> Driver Type: </b>'+ this.data('DriverType')
+                }
+              }
+              else{
+                if(this.data("secondaryNames")){
+                  return '<b>'+ this.data('symbol') +'</b><br>' + 
+                  '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2)+ '<br><b> Secondary Names: </b>' +
+                  this.data('secondaryNames')
+                }
+                else{
+                  return '<b>'+ this.data('symbol') +'</b><br>' + 
+                  '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2)
+                }
+              }
+            }
+            else if(this.data('name') != undefined){
+              if(this.data('DriverType')!= undefined){
+                if(this.data("secondaryNames") != undefined){
+                  return '<b>'+ this.data('name')+'</b><br>' +
+                  '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2)+ '</b><br>' + 
+                  '<b> Driver Type: </b>'+ this.data('DriverType')+ '<br><b> Secondary Names: </b>' +
+                  this.data('secondaryNames')
+                }
+                else{
+                  return '<b>'+ this.data('name')+'</b><br>' +
+                  '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2)+ '</b><br>' + 
+                  '<b> Driver Type: </b>'+ this.data('DriverType')
+                }
+                
+              }
+              else{
+                if(this.data("secondaryNames") != undefined){
+                  return '<b>'+ this.data('name')+'</b><br>' +
+                  '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2)+ '<br><b> Secondary Names: </b>' +
+                  this.data('secondaryNames')
+                }
+                else{
+                  return '<b>'+ this.data('name')+'</b><br>' +
+                  '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2)
+                }
+              }
+            }
+          } //numbers          
+          else{
+            if(this.data('symbol') != undefined){
+              if(this.data('DriverType')!= undefined){
+                if(this.data("secondaryNames") != undefined){
+                  return '<b>'+ this.data('symbol') +'</b><br>' + 
+                  '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal]+ '</b><br>' + 
+                  '<b> Driver Type: </b>'+ this.data('DriverType')+ '<br><b> Secondary Names: </b>' +
+                  this.data('secondaryNames')
+                }
+                else{
+                  return '<b>'+ this.data('symbol') +'</b><br>' + 
+                  '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal]+ '</b><br>' + 
+                  '<b> Driver Type: </b>'+ this.data('DriverType');
+                }
+              }
+              else{
+                if(this.data("secondaryNames") != undefined){
+                  return '<b>'+ this.data('symbol') +'</b><br>' + 
+                 '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal]+ '<br><b> Secondary Names: </b>' +
+                  this.data('secondaryNames')
+                }
+                else{
+                 return '<b>'+ this.data('symbol') +'</b><br>' + 
+                 '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal];
+                }
+              }
+             }
+            else if(this.data('name') != undefined){
+              if(this.data('DriverType')!= undefined){
+                if(this.data("secondaryNames") != undefined){
+                  return '<b>'+ this.data('name')+'</b><br>' +
+                  '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal]+ '</b><br>' + 
+                  '<b> Driver Type: </b>'+ this.data('DriverType')+ '<br><b> Secondary Names: </b>' +
+                  this.data('secondaryNames')
+                }
+                else{
+                  return '<b>'+ this.data('name')+'</b><br>' +
+                  '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal]+ '</b><br>' + 
+                  '<b> Driver Type: </b>'+ this.data('DriverType');
+                }
+              }
+              else{
+                if(this.data("secondaryNames") != undefined){
+                  return '<b>'+ this.data('name')+'</b><br>' +
+                 '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal]+ '<br><b> Secondary Names: </b>' +
+                  this.data('secondaryNames')
+                }
+                else{
+                 return '<b>'+ this.data('name')+'</b><br>' +
+                 '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal];
+               }
+            }}
+         }
     }},
     position: {
       my: 'top center',
@@ -617,7 +637,7 @@ var animateLayout = true;
         animate: animateLayout
       }).run();
   }
-  else if(selectedLayout == "cose-bilkent"){
+  else if(selectedLayout == "cose-bilkent (default)"){
     cy.layout({
         name: "cose-bilkent",
         // Gravity range (constant)
@@ -637,10 +657,9 @@ var animateLayout = true;
         name: "cose-bilkent",
         // Gravity range (constant)
         gravityRange: 1.3,
-        animate: true,
-        randomize: false
+        animate: true
       }).run();
-    //document.getElementById('selectlayout'+pos).value = "dagre";
+    document.getElementById('selectlayout'+pos).value = "cose-bilkent (default)";
   }
   if(highlightedNode){
     cy.$('node[symbol="'+highlightedNode+'"]').addClass("highlighted");
