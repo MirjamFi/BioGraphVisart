@@ -426,6 +426,6 @@ async function clickMerge(files,val, example){
 		var objectURL2 = URL.createObjectURL(files[1]);
 	}
 	
-    window.open('/merge?leftID='+leftID+'&rightID='+rightID +'&file1='+objectURL1+'&file2='+objectURL2+'&nodeVal='+val+'&example='+example);
+    window.open('/BioGraphVisart//merge?leftID='+leftID+'&rightID='+rightID +'&file1='+objectURL1+'&file2='+objectURL2+'&nodeVal='+val+'&example='+example);
 }
 
