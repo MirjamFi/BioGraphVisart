@@ -346,7 +346,7 @@ var animateLayout = true;
         animate: animateLayout
       }).run();
   }
-  else if(selectedLayout == "dagre (default)"){
+  else if(selectedLayout == "dagre"){
     cy.layout({
         name: "dagre",
         animate: animateLayout
@@ -372,7 +372,7 @@ var animateLayout = true;
         name: "dagre",
         animate: animateLayout
       }).run();
-    document.getElementById('selectlayout'+pos).value = "dagre (default)";
+    //document.getElementById('selectlayout'+pos).value = "dagre";
   }
   if(highlightedNode){
     cy.$('node[symbol="'+highlightedNode+'"]').addClass("highlighted");

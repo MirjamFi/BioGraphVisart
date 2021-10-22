@@ -376,10 +376,6 @@ function getNodesAndEdges(graphString, nodeVal,graphpos = undefined, noOptn = fa
                 curNode[attrname] = val;
             }
           }
-           if(graphString[i].includes("key=\"v_") && 
-            !graphString[i].includes("name") && (graphpos == "left" || graphpos == "right"){
-              curNode["symbol"] = graphString[i].split(/\>/)[1].split(/\</)[0]
-           }
           if(graphString[i].includes("\"v_"+nodeVal+"\"\>")){
             var val = regExp.exec(graphString[i])[1]; // if availabe get node value
             if(!isNaN(parseFloat(val))){
