@@ -596,6 +596,39 @@ function showMetaInfo(cyObject, nodeVal){
           }
         },
         });
+  cyObject.on('tap', 'node', function(evt){    
+     var clickedNode = evt.target;    
+     if(clickedNode.data().symbol != undefined){    
+       var targetNode = clickedNode.data().symbol   
+     }    
+     else if(clickedNode.data().name != undefined && clickedNode.data().drugbank_id == undefined && clickedNode.data().symbol != undefined && !clickedNode.data().symbol.includes("Drugs")){    
+       var targetNode = clickedNode.data().name   
+     }    
+     else if(clickedNode.data().drug){  
+       var info = "<div align='left' id='information'><table><tr>"    
+       Object.keys(clickedNode.data()).forEach(function(key) { 
+        if(key == "Synonyms"){
+          info += "<td><b>Synonyms</b></td><td>"+clickedNode.data()[key]+"</td></tr>"
+        }
+        else if(key == "DrugBank_ID"){   
+          var drugid = clickedNode.data()[key].split(" ")
+           info+= "<td><b>DrugBank ID</b></td><td><a href='https://go.drugbank.com/drugs/"+drugid+"'target='_blank'>"+drugid+"</a></td></tr>"    
+         }      
+       });    
+       info += "</table>"   
+       var newWindow = window.open("/DrugInformation");   
+       var doc = newWindow.document;    
+       doc.open("text/html", "replace");   
+       doc.write("<HTML><HEAD><TITLE>"+clickedNode.data().name+   
+         "</TITLE><link rel='stylesheet' type='text/css' href='/css/subgraphCss.css'></HEAD>"+    
+         "<BODY><H1>"+clickedNode.data().name+    
+         "</H1>"+info+"</BODY></HTML>");    
+       doc.close();   
+     }
+     else if(clickedNode.data().symbol != undefined && clickedNode.data().symbol.includes("Drugs")){
+        clickedNode.style('shape','diamond')
+        api.expand(clickedNode)    
+      }   
 }
 
 
