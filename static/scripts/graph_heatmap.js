@@ -628,7 +628,8 @@ function showMetaInfo(cyObject, nodeVal){
      else if(clickedNode.data().symbol != undefined && clickedNode.data().symbol.includes("Drugs")){
         clickedNode.style('shape','diamond')
         api.expand(clickedNode)    
-      }   
+      }
+      })   
 }
 
 
