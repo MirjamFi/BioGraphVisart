@@ -348,7 +348,7 @@ function loadGraphml(sampleLeft, sampleRight, graphsList) {
                   drpShapes.classList.add("Menu")
                   drpShapes.classList.add("-horizontal")
                   drpShapes.style.visibility = "visible"
-                  document.getElementById("config").appendChild("drpShapes")
+                  document.getElementById("config").appendChild(drpShapes)
                   var labelShape = document.createElement("li")
                   labelShape.classList.add("-hasSubmenu")
                   labelShape.innerHTML = "<a href='#'>Node shape</a>"
