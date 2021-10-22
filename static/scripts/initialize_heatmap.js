@@ -358,30 +358,32 @@ function loadGraphml(sampleLeft, sampleRight, graphsList) {
                   const shapesArray = ["rectangle", "octagon", "rhomboid", "pentagon", "tag"];
                   onceShapes = true
                 }
-                var liShape = document.createElement("li")
-                liShape.classList.add("-hasSubmenu")
-                liShape.innerHTML = "<a href='#'>"+nodeattr+"</a>"
-                liShape.id= nodeattr
-                liShape.id="nodeShapes"
-                ulShapes.appendChild(liShape)
-                var ulShape = document.createElement("ul")
-                ulShape.id = nodeattrShape
-                liShape.appendChild(ulShape)
-                shapesArray.forEach(function(s){
-                var optnShape = document.createElement("li")
-                optnShape.innerHTML = "<a hre='#'>"+s+"</a>"
-                optnShape.id= s
-                ulShape.appendChild(optnShape)
-                optnShape.onclick=function(){
-                  document.querySelectorAll('.fa-check').forEach(function(e){
-                    if(e.classList.contains('optnShape')){
-                      e.remove()}});
-                  optnShape.innerHTML = "<a href='#'><i class='fas fa-check optnShape' style='margin-right:5px'></i>"+s+"</a>"
+                if(nodeattr[d] == "true" || nodeattr[d] == "false"){
+                  var liShape = document.createElement("li")
+                  liShape.classList.add("-hasSubmenu")
+                  liShape.innerHTML = "<a href='#'>"+nodeattr+"</a>"
+                  liShape.id= nodeattr
+                  liShape.id="nodeShapes"
+                  ulShapes.appendChild(liShape)
+                  var ulShape = document.createElement("ul")
+                  ulShape.id = nodeattrShape
+                  liShape.appendChild(ulShape)
+                  shapesArray.forEach(function(s){
+                  var optnShape = document.createElement("li")
+                  optnShape.innerHTML = "<a hre='#'>"+s+"</a>"
+                  optnShape.id= s
+                  ulShape.appendChild(optnShape)
+                  optnShape.onclick=function(){
+                    document.querySelectorAll('.fa-check').forEach(function(e){
+                      if(e.classList.contains('optnShape')){
+                        e.remove()}});
+                    optnShape.innerHTML = "<a href='#'><i class='fas fa-check optnShape' style='margin-right:5px'></i>"+s+"</a>"
                   // optnShape.parentElement.innerHTML = "<a href='#'><i class='fas fa-check liShape' style='margin-right:5px'></i>"+optnShape.parentElement.id+"</a>"
-                  changeNodeShapes(graphLeft, "heatmapcontainer", optnShape.parentElement.id, this.id)
-                  changeNodeShapes(graphRight, "heatmapcontainer", optnShape.parentElement.id, this.id)
-                  hideMenu(document.getElementById("nodeShapesAttr"))}
-                })
+                    changeNodeShapes(graphLeft, "heatmapcontainer", optnShape.parentElement.id, this.id)
+                    changeNodeShapes(graphRight, "heatmapcontainer", optnShape.parentElement.id, this.id)
+                    hideMenu(document.getElementById("nodeShapesAttr"))}
+                  })
+                }
               }
             }
           };
