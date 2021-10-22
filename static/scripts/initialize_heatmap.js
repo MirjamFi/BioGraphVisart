@@ -356,9 +356,9 @@ function loadGraphml(sampleLeft, sampleRight, graphsList) {
                   drpShapes.appendChild(labelShape)
                   var ulShapes = document.createElement("ul")
                   labelShape.appendChild(ulShapes)
-                  const shapesArray = ["rectangle", "octagon", "rhomboid", "pentagon", "tag"];
                   onceShapes = true
                 }
+                const shapesArray = ["rectangle", "octagon", "rhomboid", "pentagon", "tag"];
                 var liShape = document.createElement("li")
                 liShape.classList.add("-hasSubmenu")
                 liShape.innerHTML = "<a href='#'>"+nodeattr+"</a>"
