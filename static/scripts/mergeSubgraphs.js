@@ -132,20 +132,20 @@ function mergeMousover(merge_graph, GA, nodeVal, filenameSplit){
           } //numbers          
           else{
             if(this.data('symbol') != undefined){
-              if(this.data('DriverType')!= undefined){
-                if(this.data("secondaryNames") != undefined){
-                  return '<b>'+ this.data('symbol') +'</b><br>' + 
-                  '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal]+ '</b><br>' + 
-                  '<b> Driver Type: </b>'+ this.data('DriverType')+ '<br><b> Secondary Names: </b>' +
-                  this.data('secondaryNames')
-                }
-                else{
-                  return '<b>'+ this.data('symbol') +'</b><br>' + 
-                  '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal]+ '</b><br>' + 
-                  '<b> Driver Type: </b>'+ this.data('DriverType');
-                }
-              }
-              else{
+              // if(this.data('DriverType')!= undefined){
+              //   if(this.data("secondaryNames") != undefined){
+              //     return '<b>'+ this.data('symbol') +'</b><br>' + 
+              //     '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal]+ '</b><br>' + 
+              //     '<b> Driver Type: </b>'+ this.data('DriverType')+ '<br><b> Secondary Names: </b>' +
+              //     this.data('secondaryNames')
+              //   }
+              //   else{
+              //     return '<b>'+ this.data('symbol') +'</b><br>' + 
+              //     '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal]+ '</b><br>' + 
+              //     '<b> Driver Type: </b>'+ this.data('DriverType');
+              //   }
+              // }
+              // else{
                 if(this.data("secondaryNames") != undefined){
                   return '<b>'+ this.data('symbol') +'</b><br>' + 
                  '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal]+ '<br><b> Secondary Names: </b>' +
@@ -156,22 +156,22 @@ function mergeMousover(merge_graph, GA, nodeVal, filenameSplit){
                  '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal];
                 }
               }
-             }
+             // }
             else if(this.data('name') != undefined){
-              if(this.data('DriverType')!= undefined){
-                if(this.data("secondaryNames") != undefined){
-                  return '<b>'+ this.data('name')+'</b><br>' +
-                  '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal]+ '</b><br>' + 
-                  '<b> Driver Type: </b>'+ this.data('DriverType')+ '<br><b> Secondary Names: </b>' +
-                  this.data('secondaryNames')
-                }
-                else{
-                  return '<b>'+ this.data('name')+'</b><br>' +
-                  '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal]+ '</b><br>' + 
-                  '<b> Driver Type: </b>'+ this.data('DriverType');
-                }
-              }
-              else{
+              // if(this.data('DriverType')!= undefined){
+              //   if(this.data("secondaryNames") != undefined){
+              //     return '<b>'+ this.data('name')+'</b><br>' +
+              //     '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal]+ '</b><br>' + 
+              //     '<b> Driver Type: </b>'+ this.data('DriverType')+ '<br><b> Secondary Names: </b>' +
+              //     this.data('secondaryNames')
+              //   }
+              //   else{
+              //     return '<b>'+ this.data('name')+'</b><br>' +
+              //     '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal]+ '</b><br>' + 
+              //     '<b> Driver Type: </b>'+ this.data('DriverType');
+              //   }
+              // }
+              // else{
                 if(this.data("secondaryNames") != undefined){
                   return '<b>'+ this.data('name')+'</b><br>' +
                  '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal]+ '<br><b> Secondary Names: </b>' +
@@ -181,7 +181,8 @@ function mergeMousover(merge_graph, GA, nodeVal, filenameSplit){
                  return '<b>'+ this.data('name')+'</b><br>' +
                  '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal];
                }
-            }}
+            // }
+          }
          }
 		    }},
 		    position: {
