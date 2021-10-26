@@ -46,7 +46,7 @@ async function listKEGGPathways(ctx, cy, nodes, layer, canvas, pos = ""){
             var entrezID = n["data"]["entrez"].toString();            
           }
           else if(n["data"]["entrez_gene"] != undefined){
-            var splitentrez = n["data"]["entrez_gene"].split("/")
+            var splitentrez = n["data"]["entrez_gene"].toString().split("/")
             var entrezID = splitentrez[splitentrez.length-1].toString();            
           }
           let keggpaths = await getPathwaysFromKEGG(entrezID);
