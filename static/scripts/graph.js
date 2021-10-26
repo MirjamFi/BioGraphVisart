@@ -597,45 +597,48 @@ function showMetaInfo(noOptn){
         content: {text : function(){
           if(!isNaN(parseFloat(this.data()[nodeVal]))){
             if(this.data('symbol') != undefined){
-              if(this.data('DriverType')!=undefined){
-                return '<b>'+ this.data('symbol') +'</b><br>' + 
-               '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2) + '</b><br>' + 
-               '<b> Driver Type: </b>'+ this.data('DriverType')
-              }
-              else{
+              // if(this.data('DriverType')!=undefined){
+              //   return '<b>'+ this.data('symbol') +'</b><br>' + 
+              //  '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2) + '</b><br>' + 
+              //  '<b> Driver Type: </b>'+ this.data('DriverType')
+              // }
+              // else{
                return '<b>'+ this.data('symbol') +'</b><br>' + 
-               '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2)}}
+               '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2)}
+             // }
              else if(this.data('name') != undefined){
-              if(this.data('DriverType')!= undefined){
-                return '<b>'+ this.data('name')+'</b><br>' +
-               '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2)+ '</b><br>' + 
-               '<b> Driver Type: </b>'+ this.data('DriverType')
-              }
-              else{
+              // if(this.data('DriverType')!= undefined){
+              //   return '<b>'+ this.data('name')+'</b><br>' +
+              //  '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2)+ '</b><br>' + 
+              //  '<b> Driver Type: </b>'+ this.data('DriverType')
+              // }
+              // else{
                return '<b>'+ this.data('name')+'</b><br>' +
-               '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2)}}
+               '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2)}
+             // }
              } //numbers          
           else{
             if(this.data('symbol') != undefined){
-              if(this.data('DriverType')!= undefined){
-                return '<b>'+ this.data('symbol') +'</b><br>' + 
-               '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal]+ '</b><br>' + 
-               '<b> Driver Type: </b>'+ this.data('DriverType');
-              }
-              else{
+              // if(this.data('DriverType')!= undefined){
+              //   return '<b>'+ this.data('symbol') +'</b><br>' + 
+              //  '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal]+ '</b><br>' + 
+              //  '<b> Driver Type: </b>'+ this.data('DriverType');
+              // }
+              // else{
                return '<b>'+ this.data('symbol') +'</b><br>' + 
                '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal];}
-             }
+             // }
             else if(this.data('name') != undefined){
-              if(this.data('DriverType')!= undefined){
-                return '<b>'+ this.data('name')+'</b><br>' +
-             '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal]+ '</b><br>' + 
-               '<b> Driver Type: </b>'+ this.data('DriverType');
-              }
-              else{
+             //  if(this.data('DriverType')!= undefined){
+             //    return '<b>'+ this.data('name')+'</b><br>' +
+             // '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal]+ '</b><br>' + 
+             //   '<b> Driver Type: </b>'+ this.data('DriverType');
+             //  }
+             //  else{
              return '<b>'+ this.data('name')+'</b><br>' +
              '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal];
-            }}
+            // }
+          }
          }
          }},
          position: {
@@ -659,21 +662,21 @@ function showMetaInfo(noOptn){
          },
          content: {text : function(){
            if(this.data('symbol')){
-            if(this.data('DriverType')){
-              return '<b>'+ this.data('symbol') +'</b>'+'</b><br>' + 
-               '<b> Driver Type:</b>'+ this.data('DriverType');
-            }
-            else{
+            // if(this.data('DriverType')){
+            //   return '<b>'+ this.data('symbol') +'</b>'+'</b><br>' + 
+            //    '<b> Driver Type:</b>'+ this.data('DriverType');
+            // }
+            // else{
              return '<b>'+ this.data('symbol') +'</b>'; } 
-            }
+            // }
            else if(this.data('name')){
-            if(this.data('DriverType')){
-              return '<b>'+ this.data('name')+'</b>'+'</b><br>' + 
-               '<b> Driver Type:</b>'+ this.data('DriverType');
-            }
-            else{
+            // if(this.data('DriverType')){
+            //   return '<b>'+ this.data('name')+'</b>'+'</b><br>' + 
+            //    '<b> Driver Type:</b>'+ this.data('DriverType');
+            // }
+            // else{
              return '<b>'+ this.data('name')+'</b>';
-            }
+            // }
            }
          }},
          position: {
