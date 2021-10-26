@@ -427,7 +427,7 @@ input:hover{
 }
 
 #selectlayoutLeft{
-    z-index: 1;
+    z-index: 12;
 }
 
 #selectlayoutMerge{
