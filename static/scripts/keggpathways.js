@@ -1,31 +1,29 @@
 // create canvas for kegg pathway rectangles
-function createLayoutKeggPathways(cy, nodes, allPaths, pos=""){
-	var layer = cy.cyCanvas({
-	          zIndex: -1,
-	        });
-	var canvas = layer.getCanvas();
-	var ctx = canvas.getContext('2d');
-  if(document.getElementById("keggpathways"+pos)){
-	var b = jQuery.extend( [], document.getElementById("keggpathways"+pos)
-		.firstChild.data).join("");
-  	if(b == "Hide KEGG Pathways" && allPaths){
-  	    // highlightKEGGpaths(ctx, cy, layer, canvas);
-  	    highlightKEGGpaths(ctx, canvas, cy, nodes, layer, pos, allPaths, colorschemePaths)
-  	}
-  	else if(b == "Show KEGG Pathways" && allPaths){
-  	    document.getElementById("KEGGpaths"+pos).style.visibility ="hidden";
-  	}
+function createLayoutKeggPathways(cy, allPaths, pos=""){
+  var layer = cy.cyCanvas({
+            zIndex: -1,
+          });
+  var canvas = layer.getCanvas();
+  var ctx = canvas.getContext('2d');
+  var b = jQuery.extend( [], document.getElementById("keggpathways"+pos)
+    .firstChild.data ).join("");
+  if(b == "Hide KEGG Pathways" && allPaths){
+      // highlightKEGGpaths(ctx, cy, layer, canvas);
+      highlightKEGGpaths(ctx, canvas, cy, layer, pos, allPaths, colorschemePaths)
   }
-	return layer;
+  else if(b == "Show KEGG Pathways" && allPaths){
+      document.getElementById("KEGGpaths"+pos).style.visibility ="hidden";
+  }
+  return layer;
 }
 
 // create list of top 5 KEGG  pathways of the displayed nodes
 async function listKEGGPathways(ctx, cy, nodes, layer, canvas, pos = ""){
   //swap button "Hide"/"show"
   if(document.getElementById('keggpathways'+pos)
-  		.firstChild.data == "Show KEGG Pathways"){
+      .firstChild.data == "Show KEGG Pathways"){
     document.getElementById('keggpathways'+pos)
-	.firstChild.data  = "Hide KEGG Pathways";
+  .firstChild.data  = "Hide KEGG Pathways";
 
     if(document.getElementById('KEGGpaths'+pos).style.visibility == "hidden"){
       document.getElementById('KEGGpaths'+pos).style.visibility="visible";
@@ -34,33 +32,46 @@ async function listKEGGPathways(ctx, cy, nodes, layer, canvas, pos = ""){
     else{
       document.getElementById('loader'+pos).style.visibility = "visible";
       document.getElementById('keggpathways'+pos).disabled = true;
-      var pathsCount = [];
-      allPaths = [];
-      colorschemePaths = [];
+      var entrezIDs = [];
       for(var n of nodes){
         if(n["data"]["symbol"]!="legend"){
           if(n["data"]["entrezID"] != undefined){
             var entrezID = n["data"]["entrezID"].toString();
+            entrezIDs.push(entrezID)
+
           }
           else if(n["data"]["entrez"] != undefined){
-            var entrezID = n["data"]["entrez"].toString();            
+            var entrezID = n["data"]["entrez"].toString();    
+            entrezIDs.push(entrezID)
+        
           }
           else if(n["data"]["entrez_gene"] != undefined){
-            var splitentrez = n["data"]["entrez_gene"].toString().split("/")
-            var entrezID = splitentrez[splitentrez.length-1].toString();            
+            var splitentrez = n["data"]["entrez_gene"].split("/")
+            var entrezID = splitentrez[splitentrez.length-1].toString();  
           }
-          let keggpaths = await getPathwaysFromKEGG(entrezID);
-          keggpaths = keggpaths.split("\n")
+        }
+      }
+      var keggpathways = getPathwaysFromKEGG(entrezIDs).then(response => keggpathways = response.text())
+       keggpathways.then(keggpathways => {
+        keggpathways = keggpathways.split("|")
+        var allPaths = {};
+        var pathsCount = {};
+        var colorschemePaths = {};
+        for(keggpath of keggpathways){
+          keggpaths = keggpath.split("\n")
           var line = 0;
           while(line < keggpaths.length){
+            if(keggpaths[line].includes("<title>KEGG T01001: ")){
+              entrezID = keggpaths[line].split("<title>KEGG T01001: ")[1].split("<")[0]
+            }
             if(keggpaths[line].includes("<nobr>Pathway</nobr>")){
               line++;
               var splitarray =keggpaths[line].split("</td>")
               for(var i = 1; i < splitarray.length-2; i=i+2){
                 let hsa = "hsa"+splitarray[i-1].split(">hsa")[1].split("</a>")[0]
                 let p = splitarray[i].split("<td>")[1]
-                p = hsa+" "+p;
                 if(p != undefined){
+                  p = hsa+" "+p;
                   if(typeof allPaths[p] == 'undefined'){
                     allPaths[p]=[];
                   }
@@ -78,84 +89,84 @@ async function listKEGGPathways(ctx, cy, nodes, layer, canvas, pos = ""){
             else{
               line++;
             }
-          }
+          } 
         }
-      }
-          // only get top 5 of pathways (most genes in)
-      var props = Object.keys(pathsCount).map(function(key) {
-        return { key: key, value: this[key] };}, pathsCount);
-      props = props.sort(function(p1, p2) { return p2.value - p1.value; });
-      var topFive = props.slice(0, 5);
-          //show table of pathways
-      var tbody = document.getElementById("KEGGpaths"+pos);
-      var keggForm = document.createElement('form');
-      keggForm.id = "form"+pos
-   
-      var headerKegg = document.createElement ("h3");
-      headerKegg.innerHTML = "KEGG Pathways:"
-      keggForm.appendChild(headerKegg)
-      // var htmlString ="<form> <h3>KEGG Pathways:</h3><br>";
-      var colors = ["#66c2a5","#dfc27d","#8da0cb","#e78ac3","#a6d854"]
+        // only get top 5 of pathways (most genes in)
+        var props = Object.keys(pathsCount).map(function(key) {
+          return { key: key, value: this[key] };}, pathsCount);
+        props = props.sort(function(p1, p2) { return p2.value - p1.value; });
+        var topFive = props.slice(0, 5);
+            //show table of pathways
+        var tbody = document.getElementById("KEGGpaths"+pos);
+        var keggForm = document.createElement('form');
+        keggForm.id = "form"+pos
+     
+        var headerKegg = document.createElement ("h3");
+        headerKegg.innerHTML = "KEGG Pathways:"
+        keggForm.appendChild(headerKegg)
+        // var htmlString ="<form> <h3>KEGG Pathways:</h3><br>";
+        var colors = ["#66c2a5","#dfc27d","#8da0cb","#e78ac3","#a6d854"]
 
-      for (var i = 0; i < topFive.length; i++) {
-        colorschemePaths[topFive[i].key] = colors[i];
-        var checkboxKegg = document.createElement('input');
-        checkboxKegg.type = 'checkbox';
-        checkboxKegg.value = topFive[i].key
-        checkboxKegg.onclick=
-        	function(){highlightKEGGpaths(ctx, canvas, cy, nodes, layer, pos, allPaths, 
-        		colorschemePaths)};
-        var label = document.createElement('label')
-        label.innerHTML = topFive[i].key;
-        label.style.color = colors[i];
-        label.id = topFive[i].key; 
-        label.style.fontWeight = "bold";
-        // label.appendChild(checkboxKegg);  
-        keggForm.appendChild(checkboxKegg);
-        keggForm.appendChild(label)
-        keggForm.appendChild(document.createElement("br"))
-        keggForm.appendChild(document.createElement("br"))
+        for (var i = 0; i < topFive.length; i++) {
+          colorschemePaths[topFive[i].key] = colors[i];
+          var checkboxKegg = document.createElement('input');
+          checkboxKegg.type = 'checkbox';
+          checkboxKegg.value = topFive[i].key
+          checkboxKegg.onclick=
+           function(){highlightKEGGpaths(ctx, canvas, cy, layer, pos, allPaths, 
+             colorschemePaths)};
+          var label = document.createElement('label')
+          label.innerHTML = topFive[i].key;
+          label.style.color = colors[i];
+          label.id = topFive[i].key; 
+          label.style.fontWeight = "bold";
+          // label.appendChild(checkboxKegg);  
+          keggForm.appendChild(checkboxKegg);
+          keggForm.appendChild(label)
+          keggForm.appendChild(document.createElement("br"))
+          keggForm.appendChild(document.createElement("br"))
+        }
+        tbody.appendChild(keggForm)
+        document.getElementById('loader'+pos).style.visibility = "hidden";
+        document.getElementById('keggpathways'+pos).disabled = false;
+        document.getElementById('KEGGpaths'+pos).style.visibility = "visible";
+        })
       }
-      tbody.appendChild(keggForm)
+    }
+    //Hide table, switch button to show
+    else {
+      document.getElementById('keggpathways'+pos)
+        .firstChild.data  = "Show KEGG Pathways";
+      document.getElementById('KEGGpaths'+pos).style.visibility = "hidden";
       document.getElementById('loader'+pos).style.visibility = "hidden";
-      document.getElementById('keggpathways'+pos).disabled = false;
-      document.getElementById('KEGGpaths'+pos).style.visibility = "visible";
+      var mergeEdgeschecked = document.getElementById('mergeEdges').checked;
+      $('#form'+pos+' input:checkbox').prop('checked', false);
+      if(mergeEdgeschecked){
+        document.getElementById('mergeEdges').checked = true;
+      }
+      layer.resetTransform(ctx);
+      ctx.clearRect(0,0,canvas.width, canvas.height);          
+      layer.setTransform(ctx);
+      ctx.save();
     }
-  }
-  //Hide table, switch button to show
-  else {
-    document.getElementById('keggpathways'+pos)
-    	.firstChild.data  = "Show KEGG Pathways";
-    document.getElementById('KEGGpaths'+pos).style.visibility = "hidden";
-    document.getElementById('loader'+pos).style.visibility = "hidden";
-    var mergeEdgeschecked = document.getElementById('mergeEdges').checked;
-    jQuery('#form'+pos+' input:checkbox').prop('checked', false);
-    if(mergeEdgeschecked){
-      document.getElementById('mergeEdges').checked = true;
-    }
-    layer.resetTransform(ctx);
-    ctx.clearRect(0,0,canvas.width, canvas.height);          
-    layer.setTransform(ctx);
-    ctx.save();
-  }
 }
 
 // show rectangles for selected pathways
-function highlightKEGGpaths(ctx, canvas, cy, nodes, layer, pos="", allPaths, colorschemePaths){
+function highlightKEGGpaths(ctx, canvas, cy, layer, pos="", allPaths, colorschemePaths){
   ctx.clearRect(0,0,canvas.width, canvas.height);
   cy.on("render cyCanvas.resize", evt => {
     layer.resetTransform(ctx);
     ctx.clearRect(0,0,canvas.width, canvas.height);          
     layer.setTransform(ctx);
     ctx.save();
-    drawPathwayRectangles(ctx, cy, nodes, allPaths, colorschemePaths, pos);
+    drawPathwayRectangles(ctx, cy, allPaths, colorschemePaths, pos);
     ctx.restore();
   });
   cy.zoom(cy.zoom()*1.000000000000001);
 }
 
 // draw rectangles highlighting the selected pathways
-function drawPathwayRectangles(ctx, cy, nodes, allPaths, colorschemePaths, pos=""){
+function drawPathwayRectangles(ctx, cy, allPaths, colorschemePaths, pos=""){
   var allCheckedPaths = getCheckedBoxes(jQuery('#form'+pos+' input:checkbox'));
   if(allCheckedPaths){
     for(var path of allCheckedPaths){
@@ -166,8 +177,7 @@ function drawPathwayRectangles(ctx, cy, nodes, allPaths, colorschemePaths, pos="
         var merged_nodes = mergeNodeGroups(nearest_groups, cp);
         //mark connected nodes in pathway
         ctx.globalAlpha = 0.6;
-        var merged_nodes_grouped = Object.values(merged_nodes)
-        for(var grouped_nodes of merged_nodes_grouped){
+        for(var grouped_nodes of Object.values(merged_nodes)){
           var max_dist_x = 0;
           var max_dist_y = 0;
           var most_x=100000;
@@ -181,6 +191,9 @@ function drawPathwayRectangles(ctx, cy, nodes, allPaths, colorschemePaths, pos="
               else if(cy.$("node[entrez ="+n+"]").position()){
                 var position = cy.$("node[entrez ="+n+"]").position();
               }
+              else if(cy.$("node[entrez_gene ="+n+"]").position()){
+                var position = cy.$("node[entrez_gene ="+n+"]").position();
+              }
               for(let m of grouped_nodes){
                 var pos_m;
                 if(cy.$("node[entrezID ="+m+"]").position()){
@@ -188,6 +201,9 @@ function drawPathwayRectangles(ctx, cy, nodes, allPaths, colorschemePaths, pos="
                 }
                 else if(cy.$("node[entrez ="+m+"]").position()){
                   pos_m = cy.$("node[entrez ="+m+"]").position()
+                }
+                else if(cy.$("node[entrez_gene ="+m+"]").position()){
+                  pos_m = cy.$("node[entrez_gene ="+m+"]").position()
                 }
                 let dist_x = Math.abs(position['x'] -  pos_m['x']);
                 if(dist_x >= max_dist_x){
@@ -213,11 +229,15 @@ function drawPathwayRectangles(ctx, cy, nodes, allPaths, colorschemePaths, pos="
             }
             if(cy.$("node[entrezID ="+[...grouped_nodes][0]+"]").length > 0){
               var renderedWidth = 
-              	cy.$("node[entrezID ="+[...grouped_nodes][0]+"]").width();
+                cy.$("node[entrezID ="+[...grouped_nodes][0]+"]").width();
             }
             else if(cy.$("node[entrez ="+[...grouped_nodes][0]+"]").length > 0){
               var renderedWidth = 
-              	cy.$("node[entrez ="+[...grouped_nodes][0]+"]").width();
+                cy.$("node[entrez ="+[...grouped_nodes][0]+"]").width();
+            }
+            else if(cy.$("node[entrez_gene ="+[...grouped_nodes][0]+"]").length > 0){
+              var renderedWidth = 
+                cy.$("node[entrez_gene ="+[...grouped_nodes][0]+"]").width();
             }
             max_dist_x = (max_dist_x + renderedWidth);
             max_dist_y = (max_dist_y + renderedWidth);
@@ -230,30 +250,8 @@ function drawPathwayRectangles(ctx, cy, nodes, allPaths, colorschemePaths, pos="
               max_dist_y = renderedWidth;
             }
             centroid = {"x": most_x, "y":most_y}
-            var breaked = false;
-            for(var node of nodes){
-              if(cy.$("node[entrez ="+node.data['entrez']+"]")){
-                var testposition =  cy.$("node[entrez ="+node.data['entrez']+"]").renderedPosition();}
-              else if(cy.$("node[entrezID ="+node.data['entrezID']+"]")){
-                var testposition =  cy.$("node[entrezID ="+node.data['entrezID']+"]").renderedPosition();}
-              if(!grouped_nodes.has(node.data["symbol"]) && testposition &&
-                testposition['x'] > centroid['x']-(0.5*renderedWidth) && testposition['x'] < centroid['x']-(0.5*renderedWidth) + max_dist_x &&
-                testposition['y'] > centroid['y']-(0.5*renderedWidth) && testposition['y'] < centroid['y']-(0.5*renderedWidth) + max_dist_y){
-                for(var n of grouped_nodes){
-                  if(cy.$("node[entrez ="+n+"]")){
-                    var npos = cy.$("node[entrez ="+n+"]").position();}
-                  else if(cy.$("node[entrezID ="+n+"]")){
-                    var npos = cy.$("node[entrezID ="+n+"]").position();}
-                  merged_nodes_grouped.push(new Set([n]));
-                }
-                breaked = true;
-                break;
-              }
-            }
-            if(!breaked){
-              drawRect(pos, centroid, renderedWidth, max_dist_x, max_dist_y, path, 
-              	ctx, colorschemePaths)         
-            }  
+            drawRect(pos, centroid, renderedWidth, max_dist_x, max_dist_y, path, 
+              ctx, colorschemePaths)           
           }
 
           // single node in square
@@ -261,6 +259,7 @@ function drawPathwayRectangles(ctx, cy, nodes, allPaths, colorschemePaths, pos="
             var k = [...grouped_nodes][0];
             let renderedPos_id = cy.$("node[entrezID ="+k+"]").position();
             let renderedPos = cy.$("node[entrez ="+k+"]").position();
+            let renderedPos_sbml4j = cy.$("node[entrez_gene ="+k+"]").position();
             if(renderedPos_id){
               var position = renderedPos_id;
               var side = (cy.$("node[entrezID ="+k+"]").width()/Math.sqrt(2))*1.7;
@@ -269,6 +268,11 @@ function drawPathwayRectangles(ctx, cy, nodes, allPaths, colorschemePaths, pos="
             else if(renderedPos){
               var position = renderedPos;
               var side = (cy.$("node[entrez ="+k+"]").width()/Math.sqrt(2))*1.7;
+              drawRect(pos, position, side, side, side, path, ctx, colorschemePaths);
+            }
+            else if(renderedPos){
+              var position = renderedPos_sbml4j;
+              var side = (cy.$("node[entrez_gene ="+k+"]").width()/Math.sqrt(2))*1.7;
               drawRect(pos, position, side, side, side, path, ctx, colorschemePaths);
             }
           }
@@ -292,30 +296,19 @@ function getCheckedBoxes(chkboxName) {
   return checkboxesChecked.length > 0 ? checkboxesChecked : null;
 }
 
-// make httprequest to kegg
-async function getPathwaysFromKEGG(name) {
-     return new Promise(function (resolve, reject) {
-         let xhr = new XMLHttpRequest();
-         xhr.open('GET', "https://www.kegg.jp/entry/hsa:" + name);
-         xhr.onload = function () {
-             if (this.status >= 200 && this.status < 300) {
-                 resolve(xhr.response);
-             } else {
-                 reject({
-                     status: this.status,
-                     statusText: xhr.statusText
-                 });
-             }
-         };
-         xhr.onerror = function () {
-             reject({
-                 status: this.status,
-                 statusText: xhr.statusText
-             });
-         };
-         xhr.send();
-     });
- }
+async function getPathwaysFromKEGG(name){
+  var data = {'name':name};
+  const response = await fetch("/kegg", {
+    method: 'POST', // *GET, POST, PUT, DELETE, etc.
+    mode: 'cors', // no-cors, *cors, same-origin
+    //credentials: 'same-origin', // include, *same-origin, omit
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data) // body data type must match "Content-Type" header
+  });
+  return await response; // parses JSON response into native JavaScript objects
+}
 
 // get neighbored nodes in same pathway for each node
 function getNeighbors(cp, cy){
@@ -324,6 +317,7 @@ function getNeighbors(cp, cy){
   for(var i = 0; i < cp.length-1; i++){
     let renderedPos_i_id = cy.$("node[entrezID ="+cp[i]+"]").renderedPosition();
     let renderedPos_i = cy.$("node[entrez ="+cp[i]+"]").renderedPosition();
+    let renderedPos_gene = cy.$("node[entrez_gene ="+cp[i]+"]").renderedPosition();
     var position = 0;
     if(renderedPos_i_id){
       position = renderedPos_i_id;
@@ -331,12 +325,16 @@ function getNeighbors(cp, cy){
     else if(renderedPos_i){
       position = renderedPos_i;
     }
+    else if(renderedPos_gene){
+      position = renderedPos_gene;
+    }
     else{
       continue;
     }
     for(var j = 1; j < cp.length; j++){
       let renderedPos_j_id = cy.$("node[entrezID ="+cp[j]+"]").renderedPosition();
       let renderedPos_j = cy.$("node[entrez ="+cp[j]+"]").renderedPosition();
+      let renderedPos_gene = cy.$("node[entrez_gene ="+cp[j]+"]").renderedPosition();
       var pos_m = 0;
       if(renderedPos_j_id){
         pos_m = renderedPos_j_id;
@@ -344,12 +342,15 @@ function getNeighbors(cp, cy){
       else if(renderedPos_j){
         pos_m = renderedPos_j;
       }
+      else if(renderedPos_gene){
+        pos_m = renderedPos_gene;
+      }
       else{
         continue;
       }
       let dist = 
         Math.getDistance(position['x'], position['y'], pos_m['x'], pos_m['y']);
-      if(dist < (0.1*cy.width()) && dist > 0){
+      if(dist < (0.15*cy.width()) && dist > 0){
         nearest_groups[g] = new Set()
         nearest_groups[g].add(cp[i]);
         nearest_groups[g].add(cp[j]);
@@ -368,7 +369,6 @@ Math.getDistance = function( x1, y1, x2, y2 ) {
   ys *= ys;
   return Math.sqrt( xs + ys );
 };
-
 
 // merge groups if they intersect
 function mergeNodeGroups(nearest_groups, cp_copy){
