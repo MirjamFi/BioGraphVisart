@@ -296,19 +296,29 @@ function getCheckedBoxes(chkboxName) {
   return checkboxesChecked.length > 0 ? checkboxesChecked : null;
 }
 
-async function getPathwaysFromKEGG(name){
-  var data = {'name':name};
-  const response = await fetch("/kegg", {
-    method: 'POST', // *GET, POST, PUT, DELETE, etc.
-    mode: 'cors', // no-cors, *cors, same-origin
-    //credentials: 'same-origin', // include, *same-origin, omit
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data) // body data type must match "Content-Type" header
-  });
-  return await response; // parses JSON response into native JavaScript objects
-}
+async function getPathwaysFromKEGG(name) {
+     return new Promise(function (resolve, reject) {
+         let xhr = new XMLHttpRequest();
+         xhr.open('GET', "https://www.kegg.jp/entry/hsa:" + name);
+         xhr.onload = function () {
+             if (this.status >= 200 && this.status < 300) {
+                 resolve(xhr.response);
+             } else {
+                 reject({
+                     status: this.status,
+                     statusText: xhr.statusText
+                 });
+             }
+         };
+         xhr.onerror = function () {
+             reject({
+                 status: this.status,
+                 statusText: xhr.statusText
+             });
+         };
+         xhr.send();
+     });
+ }
 
 // get neighbored nodes in same pathway for each node
 function getNeighbors(cp, cy){
