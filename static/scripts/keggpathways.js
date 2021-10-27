@@ -47,11 +47,7 @@ async function listKEGGPathways(ctx, cy, nodes, layer, canvas, pos = ""){
           }
           else if(n["data"]["entrez_gene"] != undefined){
             var splitentrez = n["data"]["entrez_gene"].toString().split("/")
-<<<<<<< HEAD
             var entrezID = splitentrez[splitentrez.length-1].toString();  
-=======
-            var entrezID = splitentrez[splitentrez.length-1].toString();            
->>>>>>> parent of c1c921b (Update keggpathways.js)
           }
           let keggpaths = await getPathwaysFromKEGG(entrezID);
           keggpaths = keggpaths.split("\n")
