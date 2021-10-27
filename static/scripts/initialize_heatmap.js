@@ -279,7 +279,6 @@ function loadGraphml(sampleLeft, sampleRight, graphsList) {
   var onceAttr = false
   var firstVal = true;
   var onceShapes = false
-  var onceSearch=false;
   samples.forEach(sample=>{
     var graphString;
     if(!!sample){
@@ -389,7 +388,7 @@ function loadGraphml(sampleLeft, sampleRight, graphsList) {
             break;
           };
         };
-        if(!onceSearch){
+        if(!document.getElementById("searchgene")){
           var searchgeneInput = document.createElement("input")
           searchgeneInput.type = "text"
           searchgeneInput.id = "searchgene"
@@ -411,7 +410,6 @@ function loadGraphml(sampleLeft, sampleRight, graphsList) {
           // downloadbtn.style.visibility ="hidden"
           downloadbtn.innerHTML="<i class='fas fa-file-download fa-lg'></i>"
           document.getElementById("config").appendChild(downloadbtn)
-          onceSearch = true;
         }
       }
     }
