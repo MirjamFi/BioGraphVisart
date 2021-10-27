@@ -46,21 +46,6 @@ async function createMerged(file1, file2, nodeVal, leftID, rightID, example){
                   }
                 }
               }
-              for(const [target, drugs] of Object.entries(leftdrugedges)){
-                if(drugs.length > 1){
-                  var drugNode = {};
-                  drugNode.id = "n"+(leftNodes.length-1).toString()
-                  drugNode.symbol = drugs.length + " Drugs"
-                  leftNodes.push({data: drugNode});
-                  for(var drugnode of drugs){
-                    for(var node of leftNodes){
-                      if(node.data.id == drugnode){
-                        node.data.parent = drugNode.id
-                      }
-                    }
-                  }
-                } 
-              }
               j ++;
             }
             else if(j == 1){
@@ -81,21 +66,6 @@ async function createMerged(file1, file2, nodeVal, leftID, rightID, example){
                   }
                 }
               }
-              for(const [target, drugs] of Object.entries(rightdrugedges)){
-                if(drugs.length > 1){
-                  var drugNode = {};
-                  drugNode.id = "n"+(rightNodes.length-1).toString()
-                  drugNode.symbol = drugs.length + " Drugs"
-                  rightNodes.push({data: drugNode});
-                  for(var drugnode of drugs){
-                    for(var node of rightNodes){
-                      if(node.data.id == drugnode){
-                        node.data.parent = drugNode.id
-                      }
-                    }
-                  }
-                } 
-              } 
 
             setbuttons(nodeVal);
             mergeFunction(leftNodes, rightNodes, leftEdges, rightEdges, interactionTypes, edgesToMerge, nodeVal);
@@ -320,7 +290,7 @@ function mergeFunction(leftNodes, rightNodes, leftEdges, rightEdges, interaction
   for(node of merge_graph.nodes("node[id != 'l1']")){
     if(!node.isParent()){
       if(node.connectedEdges().size() == 0){
-        node.remove()
+        merge_graph.remove('node#'+node.data().id)
       }
     }
   }
@@ -493,6 +463,21 @@ function mergeFunction(leftNodes, rightNodes, leftEdges, rightEdges, interaction
 
   // legend node
   mergeColorLegend(merge_graph, mergeMin, labelVal, mergeMax)
+
+  var g1Legend = {};
+  g1Legend.data={};
+  g1Legend.data.id = "g1";
+  g1Legend.data.graph = "g1";
+  g1Legend.data.symbol = rightID;
+  g1Legend.data.group = "nodes";
+  merge_graph.add(g1Legend);
+  var g2Legend = {};
+  g2Legend.data={};
+  g2Legend.data.id = "g2";
+  g2Legend.data.graph = "g2";
+  g2Legend.data.symbol = leftID;
+  g2Legend.data.group = "nodes";
+  merge_graph.add(g2Legend);
 
   // circle nodes only in GA orange
   merge_graph.nodes('[graph="g1"]').style('border-width', 5).style('border-color', '#fdae61');
