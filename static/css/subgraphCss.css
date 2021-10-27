@@ -393,6 +393,7 @@ input:hover{
     height: 100%;
     position: absolute;
     margin: 0% 10% 5% 0%;
+    z-index: 11;
 }
  #merged_graph {
   width: 65%;
