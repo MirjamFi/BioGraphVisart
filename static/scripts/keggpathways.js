@@ -292,10 +292,7 @@ function getCheckedBoxes(chkboxName) {
   return checkboxesChecked.length > 0 ? checkboxesChecked : null;
 }
 
-<<<<<<< HEAD
-=======
 // make httprequest to kegg
->>>>>>> parent of c1c921b (Update keggpathways.js)
 async function getPathwaysFromKEGG(name) {
      return new Promise(function (resolve, reject) {
          let xhr = new XMLHttpRequest();
