@@ -265,7 +265,7 @@ input:hover{
 #KEGGpathsRight{
     position: absolute;
   top: 30px;
-  left:84%;
+  left:86%;
 }
 #keggpathwaysLeft{
     position: absolute;
@@ -275,7 +275,7 @@ input:hover{
 #KEGGpathsLeft{
     position: absolute;
   top: 30px;
-  left:84%;
+  left:86%;
 }
 
 #heatmap_shapes{
