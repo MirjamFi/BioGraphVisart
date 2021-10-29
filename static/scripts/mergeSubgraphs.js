@@ -8,21 +8,18 @@ function mapValuestoNodeColor(merge_graph, group, pieno, mergeMin, mergeMax, val
 		merge_graph.style()                // update the elements in the graph with the new style            
 	    .selector('node['+val+' <0]')
 	        .style('color', 'black').update();
-	    merge_graph.style() 
-	      .selector('node['+val+' <='+0.5*mergeMin+']')
-	        .style('color', 'white').update();
 	   	merge_graph.style().selector('node[graph="'+group+'"]['+val+' <0]')
 	  		.style('background-color', 'mapData('+val+','+ mergeMin+', 0, #006cf0, white)').update();
 	  	merge_graph.style().selector('node[graph="both"]['+val+'_'+group+' <0]')
 	  		.style('pie-'+pieno+'-background-color', 'mapData('+val+'_'+group+','+ mergeMin+', 0, #006cf0, white)')
 	  		.style('pie-'+pieno+'-background-size','50').update();
+	  	merge_graph.style() 
+	      .selector('node['+val+' <='+0.5*mergeMin+']')
+	        .style('color', 'white').update();
 		// else if(value > 0){
 	  	merge_graph.style() 
 	      .selector('node['+val+' >0]') 
 	        .style('color', 'black').update();
-	    merge_graph.style() 
-	      .selector('node['+val+' >='+0.5*mergeMax+']')
-	        .style('color', 'white').update(); 
 		merge_graph.style().selector('node[graph="'+group+'"]['+val+' >0]')
 	  		.style('background-color', 'mapData('+val+', 0,'+ mergeMax+', white, #d50000)').update();
 	  	merge_graph.style().selector('node[graph="both"]['+val+'_'+group+' >0]')
@@ -34,6 +31,9 @@ function mapValuestoNodeColor(merge_graph, group, pieno, mergeMin, mergeMax, val
 	  	merge_graph.style()                // update the elements in the graph with the new style            
 	    .selector('node['+val+' = 0]')
 	        .style('color', 'black').update();
+	    merge_graph.style() 
+	      .selector('node['+val+' >='+0.5*mergeMax+']')
+	        .style('color', 'white').update(); 
   	}
   	else{
   		// if(value false){
