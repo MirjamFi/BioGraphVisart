@@ -456,113 +456,27 @@ function showMetaInfo(cyObject, nodeVal){
     },
     content: {text : function(){
       if(!isNaN(parseFloat(this.data()[nodeVal]))){
-            if(this.data('symbol') != undefined){
-              if(this.data('DriverType')!=undefined){
-                if(this.data("secondaryNames")){
-                  return '<b>'+ this.data('symbol') +'</b><br>' + 
-                  '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2) + '</b><br>' + 
-                  '<b> Driver Type: </b>'+ this.data('DriverType') + '<br><b> Secondary Names: </b>' +
-                  this.data('secondaryNames')
-                }
-                else{
-                  return '<b>'+ this.data('symbol') +'</b><br>' + 
-                  '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2) + '</b><br>' + 
-                  '<b> Driver Type: </b>'+ this.data('DriverType')
-                }
-              }
-              else{
-                if(this.data("secondaryNames")){
-                  return '<b>'+ this.data('symbol') +'</b><br>' + 
-                  '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2)+ '<br><b> Secondary Names: </b>' +
-                  this.data('secondaryNames')
-                }
-                else{
-                  return '<b>'+ this.data('symbol') +'</b><br>' + 
-                  '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2)
-                }
-              }
-            }
-            else if(this.data('name') != undefined){
-              if(this.data('DriverType')!= undefined){
-                if(this.data("secondaryNames") != undefined){
-                  return '<b>'+ this.data('name')+'</b><br>' +
-                  '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2)+ '</b><br>' + 
-                  '<b> Driver Type: </b>'+ this.data('DriverType')+ '<br><b> Secondary Names: </b>' +
-                  this.data('secondaryNames')
-                }
-                else{
-                  return '<b>'+ this.data('name')+'</b><br>' +
-                  '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2)+ '</b><br>' + 
-                  '<b> Driver Type: </b>'+ this.data('DriverType')
-                }
-                
-              }
-              else{
-                if(this.data("secondaryNames") != undefined){
-                  return '<b>'+ this.data('name')+'</b><br>' +
-                  '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2)+ '<br><b> Secondary Names: </b>' +
-                  this.data('secondaryNames')
-                }
-                else{
-                  return '<b>'+ this.data('name')+'</b><br>' +
-                  '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2)
-                }
-              }
-            }
-          } //numbers          
-          else{
-            if(this.data('symbol') != undefined){
-              if(this.data('DriverType')!= undefined){
-                if(this.data("secondaryNames") != undefined){
-                  return '<b>'+ this.data('symbol') +'</b><br>' + 
-                  '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal]+ '</b><br>' + 
-                  '<b> Driver Type: </b>'+ this.data('DriverType')+ '<br><b> Secondary Names: </b>' +
-                  this.data('secondaryNames')
-                }
-                else{
-                  return '<b>'+ this.data('symbol') +'</b><br>' + 
-                  '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal]+ '</b><br>' + 
-                  '<b> Driver Type: </b>'+ this.data('DriverType');
-                }
-              }
-              else{
-                if(this.data("secondaryNames") != undefined){
-                  return '<b>'+ this.data('symbol') +'</b><br>' + 
-                 '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal]+ '<br><b> Secondary Names: </b>' +
-                  this.data('secondaryNames')
-                }
-                else{
-                 return '<b>'+ this.data('symbol') +'</b><br>' + 
-                 '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal];
-                }
-              }
-             }
-            else if(this.data('name') != undefined){
-              if(this.data('DriverType')!= undefined){
-                if(this.data("secondaryNames") != undefined){
-                  return '<b>'+ this.data('name')+'</b><br>' +
-                  '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal]+ '</b><br>' + 
-                  '<b> Driver Type: </b>'+ this.data('DriverType')+ '<br><b> Secondary Names: </b>' +
-                  this.data('secondaryNames')
-                }
-                else{
-                  return '<b>'+ this.data('name')+'</b><br>' +
-                  '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal]+ '</b><br>' + 
-                  '<b> Driver Type: </b>'+ this.data('DriverType');
-                }
-              }
-              else{
-                if(this.data("secondaryNames") != undefined){
-                  return '<b>'+ this.data('name')+'</b><br>' +
-                 '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal]+ '<br><b> Secondary Names: </b>' +
-                  this.data('secondaryNames')
-                }
-                else{
-                 return '<b>'+ this.data('name')+'</b><br>' +
-                 '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal];
-               }
-            }}
-         }
+        if(this.data('symbol') != undefined){
+              return '<b>'+ this.data('symbol') +'</b><br>' + 
+              '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2) + '</b><br>' + 
+              '<b> Driver Type: </b>'+ this.data('DriverType')
+        }
+        else if(this.data('name') != undefined){
+              return '<b>'+ this.data('name')+'</b><br>' +
+              '<b>'+nodeVal +'</b>: ' + parseFloat(this.data()[nodeVal]).toFixed(2)
+        }
+
+      } //numbers          
+      else{
+        if(this.data('symbol') != undefined){
+          return '<b>'+ this.data('symbol') +'</b><br>' + 
+            '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal];
+
+        }
+         else if(this.data('name') != undefined){
+          return '<b>'+ this.data('name')+'</b><br>' +
+            '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal];
+        }
     }},
     position: {
       my: 'top center',

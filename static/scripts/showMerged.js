@@ -482,7 +482,7 @@ function mergeFunction(leftNodes, rightNodes, leftEdges, rightEdges, interaction
   // circle nodes only in GA orange
   merge_graph.nodes('[graph="g1"]').style('border-width', 5).style('border-color', '#fdae61');
   merge_graph.nodes('[symbol = "'+leftID+'"]').style('border-width', 13).style('width', 50)
-  .style('height', 50).style('height', 50).style('font-weight', 'bold').style('font-size',16);
+  .style('height', 50).style('font-weight', 'bold').style('font-size',16);
   // circle nodes only in GB light blue
   merge_graph.nodes('[graph="g2"]').style('border-width', 5).style('border-color', '#abd9e9');
   merge_graph.nodes('[symbol = "'+rightID+'"]').style('border-width', 13)
