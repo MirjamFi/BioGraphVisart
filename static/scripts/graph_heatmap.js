@@ -477,7 +477,7 @@ function showMetaInfo(cyObject, nodeVal){
           return '<b>'+ this.data('name')+'</b><br>' +
             '<b>'+nodeVal +'</b>: '+ this.data()[nodeVal];
         }
-    }},
+    }}},
     position: {
       my: 'top center',
       at: 'bottom center'
