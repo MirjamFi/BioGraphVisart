@@ -476,42 +476,20 @@ if(!collapsed){
      else if(clickedNode.data().drug){  
        var info = "<div align='left' id='information'><table><tr>"    
        Object.keys(clickedNode.data()).forEach(function(key) {  
-         if(key == "GenBank_Protein_ID"){
-           info+= "<td><b>"+key.split("_").join(" ")+    
-             "</b></td><td><a href='https://www.ncbi.nlm.nih.gov/protein/"+clickedNode.data()[key]+"'target='_blank'>"+clickedNode.data()[key]+"</a></td></tr>"    
-         } 
-         else if(key == "GenBank_gene_ID"){    
-           info+= "<td><b>"+key.split("_").join(" ")+    
-             "</b></td><td><a href='https://www.ncbi.nlm.nih.gov/nuccore/"+clickedNode.data()[key]+"'target='_blank'>"+clickedNode.data()[key]+"</a></td></tr>"    
-         }  
-         else if(key == "HGNC_ID"){    
-           info+= "<td><b>"+key.split("_").join(" ")+    
-             "</b></td><td><a href='https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/"+clickedNode.data()[key]+"'target='_blank'>"+clickedNode.data()[key]+"</a></td></tr>"    
-         } 
-         else if(key == "PDB_ID"){    
-          var pdbids = clickedNode.data()[key].split(" ")
-          for(var pdbid of pdbids){
-            info+= "<td><b>"+key.split("_").join(" ")+    
-             "</b></td><td><a href='http://www.rcsb.org/structure/"+pdbid+"'target='_blank'>"+pdbid+"</a></td></tr>"    
-          }
-         }
-         else if(key == "UniProt_ID"){  
-           info+= "<td><b>"+key.split("_").join(" ")+    
-             "</b></td><td><a href='https://www.uniprot.org/uniprot/"+clickedNode.data()[key]+"'target='_blank'>"+clickedNode.data()[key]+"</a></td></tr>"    
-         } 
-         else if(key == "Drug_IDs"){   
-          var drugids = clickedNode.data()[key].split(" ")
-          for(var drugid of drugids){
+         if(key == "Synonyms"){
+          info += "<td><b>Synonyms</b></td><td>"+clickedNode.data()[key]+"</td></tr>"
+        }
+        else if(key == "DrugBank_ID"){   
+          var drugid = clickedNode.data()[key].split(" ")
            info+= "<td><b>DrugBank ID</b></td><td><a href='https://go.drugbank.com/drugs/"+drugid+"'target='_blank'>"+drugid+"</a></td></tr>"    
-          }
-         }      
+         }   
        });    
        info += "</table>"   
        var newWindow = window.open("/DrugInformation");   
        var doc = newWindow.document;    
        doc.open("text/html", "replace");   
        doc.write("<HTML><HEAD><TITLE>"+clickedNode.data().name+   
-         "</TITLE><link rel='stylesheet' type='text/css' href='/css/subgraphCss.css'></HEAD>"+    
+         "</TITLE><link rel='stylesheet' type='text/css' href='https://raw.githack.com/MirjamFi/BioGraphVisart/master/static/css/subgraphCss.css'></HEAD>"+    
          "<BODY><H1>"+clickedNode.data().name+    
          "</H1>"+info+"</BODY></HTML>");    
        doc.close();   
