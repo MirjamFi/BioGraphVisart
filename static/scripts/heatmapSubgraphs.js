@@ -58,7 +58,7 @@ function createHeatmap(heatmapData, foundFiles, graphsList, example=false){
         for(j=0;j < axes.length; j++){
             sampleCol = axes[j];
             i = parseInt(i);
-            overlapArrays.push([j,i, Math.round(parseInt(heatmapData[i][axes[j]])*200/(parseInt(sampleSizes[sampleRow])+parseInt(sampleSizes[sampleCol])))]);
+            overlapArrays.push([j,i, Math.round(parseInt(heatmapData[i][axes[j]])*100/(parseInt(sampleSizes[sampleCol])))]);
         }
     }
     var heatmapColorStopsDist = 1/9;

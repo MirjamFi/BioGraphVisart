@@ -87,11 +87,6 @@ isSIF = false;
                     data[g] = []
                   }
                   data[g].push(symbol);
-                  if(j == Object.keys(graphsList).length){ 
-                      var overlapDict = calculateOverlap(data);
-                      createHeatmap(overlapDict, foundFiles, graphsList);
-                      document.getElementById('selectAttribute').style.visibility = "visible";
-                  };
                 };
               });
             }
@@ -116,13 +111,11 @@ isSIF = false;
                 nodesSet.add(n2);
               }
               data[g] = Array.from(nodesSet);
-              if(j == Object.keys(graphsList).length){
-                var overlapDict = calculateOverlap(data);
-                createHeatmap(overlapDict, foundFiles, graphsList);
-                document.getElementById('selectAttribute').style.visibility = "visible";
-              };
             }
           };
+          var overlapDict = calculateOverlap(data);
+          createHeatmap(overlapDict, foundFiles, graphsList);
+          document.getElementById('selectAttribute').style.visibility = "visible";
         }
       };
     };
@@ -235,14 +228,12 @@ function loadExample(){
           data[g] = []
         }
         data[g].push(symbol);
-        if(g == Object.keys(graphsList)[Object.keys(graphsList).length-1]){ 
-            var overlapDict = calculateOverlap(data);
-            createHeatmap(overlapDict, foundFiles, graphsList, example);
-            document.getElementById('selectAttribute').style.visibility = "visible";
-        };
       };
     });
   };
+  var overlapDict = calculateOverlap(data);
+  createHeatmap(overlapDict, foundFiles, graphsList, example);
+  document.getElementById('selectAttribute').style.visibility = "visible";
 }
 
 
@@ -261,14 +252,11 @@ function calculateOverlap(data){
       let symbols2 = data[key2];
       let sym2 = new Set(symbols2);
       let overlapnodes = symbols1.filter(x => sym2.has(x));     // overlap number
+      overlapnodes = [...new Set(overlapnodes)]
       overlap[counter][key2]=overlapnodes.length;
-      if(counter == Object.keys(data).length-1){
-        if(count2 == Object.keys(data).length-1){
-          return(overlap);
-        };
-      };
     };
   };
+  return(overlap);
 };
 
 var drpValues = [];
