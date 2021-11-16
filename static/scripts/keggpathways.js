@@ -298,7 +298,7 @@ async function getPathwaysFromKEGG(name){
   var data = {'name':name};
   const response = await fetch("/kegg", {
     method: 'POST', // *GET, POST, PUT, DELETE, etc.
-    mode: 'cors', // no-cors, *cors, same-origin
+    mode: 'no-cors', // no-cors, *cors, same-origin
     //credentials: 'same-origin', // include, *same-origin, omit
     headers: {
       'Content-Type': 'application/json'
