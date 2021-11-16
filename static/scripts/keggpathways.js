@@ -50,6 +50,7 @@ async function listKEGGPathways(ctx, cy, nodes, layer, canvas, pos = ""){
             var entrezID = splitentrez[splitentrez.length-1].toString();  
           }
           let keggpaths = await getPathwaysFromKEGG(entrezID);
+          console.log(keggpaths)
           keggpaths = keggpaths.split("\n")
           var line = 0;
           while(line < keggpaths.length){
