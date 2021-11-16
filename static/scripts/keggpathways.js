@@ -296,7 +296,7 @@ function getCheckedBoxes(chkboxName) {
 async function getPathwaysFromKEGG(name) {
      return new Promise(function (resolve, reject) {
          let xhr = new XMLHttpRequest();
-         xhr.open('GET', "http://rest.kegg.jp/get/hsa:" + name);
+         xhr.open('GET', "https://www.kegg.jp/entry/hsa:" + name);
          xhr.onload = function () {
              if (this.status >= 200 && this.status < 300) {
                  resolve(xhr.response);
