@@ -305,7 +305,7 @@ async function getPathwaysFromKEGG(name){
     },
     body: JSON.stringify(data) // body data type must match "Content-Type" header
   });
-  return await response.text(); // parses JSON response into native JavaScript objects
+  return await response.data; // parses JSON response into native JavaScript objects
 }
 
 // get neighbored nodes in same pathway for each node
