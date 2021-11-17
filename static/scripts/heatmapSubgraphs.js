@@ -170,8 +170,8 @@ function createHeatmap(heatmapData, foundFiles, graphsList, example=false){
                 formatter: function () {
                     leftSelect = this.series.xAxis.categories[this.point.y];
                     rightSelect = this.series.yAxis.categories[this.point.x];
-                    return '<b>' + this.series.yAxis.categories[this.point.x] + '</b> includes<br><b>' +
-                        this.point.value + '% </b> of <br><b>' + this.series.xAxis.categories[this.point.y] + '</b>';
+                    return '<b>' + this.series.yAxis.categories[this.point.y] + '</b> includes <br><b>' +
+                        this.point.value + '% </b> of <br><b>' + this.series.xAxis.categories[this.point.x] + '</b>';
                 }
             },
             series: [{
