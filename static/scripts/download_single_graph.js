@@ -47,7 +47,7 @@ function downloadPDF () {
 
     html2canvas(jQuery("#everything").get(0), { onclone: (document) => {
       document.getElementById('nav').style.visibility = 'hidden'
-      document.getElementById('dataPart').style.visibility = 'hidden'
+      document.getElementById('configPart').style.visibility = 'hidden'
       document.getElementById('downloadPart').style.visibility = 'hidden' 
       document.getElementById('resetLayout').style.visibility = 'hidden'
       document.getElementById('searchgene').style.visibility = 'hidden'
