@@ -77,7 +77,7 @@ function visualize(firstTime=false, files, example) {
       var leftNodesMax = leftRange[1];
       graphLeft= createCyObject(cyO, leftNodesMin, leftNodesMax, nodeVal);
       addNodesAndEdges(graphLeft, leftNodes, leftEdges, leftFirstTime, leftNodesMin, leftNodesMax, drugedgesleft);
-      var api = graphLeft.expandCollapse('get');
+      var apileft = graphLeft.expandCollapse('get');
       var options = {
         layoutBy: null, // to rearrange after expand/collapse. It's just layout options or whole layout function. Choose your side!
         // recommended usage: use cose-bilkent layout with randomize: false to preserve mental map upon expand/collapse
@@ -99,12 +99,12 @@ function visualize(firstTime=false, files, example) {
         allowNestedEdgeCollapse: true, // when you want to collapse a compound edge (edge which contains other edges) and normal edge, should it collapse without expanding the compound first
         zIndex: 999 // z-index value of the canvas in which cue ımages are drawn
       };
-      api.collapseAll(options)
+      apileft.collapseAll(options)
       document.getElementById('downloadPDF').style.visibility = "visible";
       document.getElementById('downloadPDF').disabled = false;
       showConfigurationParts('Left', graphLeft, left);
       resetLayout(graphLeft, "Left");      
-      showMetaInfo(graphLeft, nodeVal);
+      showMetaInfo(graphLeft, nodeVal, apileft);
       // set background layer to hoghlight pathways
       var layerLeft = createLayoutKeggPathways(graphLeft, allPathsLeft, "Left")
       var canvasLeft = layerLeft.getCanvas();
@@ -181,7 +181,7 @@ function visualize(firstTime=false, files, example) {
       document.getElementById('right').style.visibility = "visibile";
       document.getElementById('rightID').style.visibility = "visible";
       resetLayout(graphRight, "Right");
-      showMetaInfo(graphRight, nodeVal);
+      showMetaInfo(graphRight, nodeVal,api;
       // set background layer to hoghlight pathways
       var layerRight = createLayoutKeggPathways(graphRight, allPathsRight,"Right")
       var canvasRight = layerRight.getCanvas();
@@ -422,7 +422,7 @@ var layoutBy = {};
 }
 
 //show meta-information of nodes by mouseover
-function showMetaInfo(cyObject, nodeVal){
+function showMetaInfo(cyObject, nodeVal, api){
   cyObject.elements('node').qtip({       // show node attibute value by mouseover
     show: {   
       event: 'mouseover', 
