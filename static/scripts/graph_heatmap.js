@@ -181,7 +181,7 @@ function visualize(firstTime=false, files, example) {
       document.getElementById('right').style.visibility = "visibile";
       document.getElementById('rightID').style.visibility = "visible";
       resetLayout(graphRight, "Right");
-      showMetaInfo(graphRight, nodeVal,api;
+      showMetaInfo(graphRight, nodeVal,api);
       // set background layer to hoghlight pathways
       var layerRight = createLayoutKeggPathways(graphRight, allPathsRight,"Right")
       var canvasRight = layerRight.getCanvas();
