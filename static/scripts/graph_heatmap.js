@@ -77,7 +77,6 @@ function visualize(firstTime=false, files, example) {
       var leftNodesMax = leftRange[1];
       graphLeft= createCyObject(cyO, leftNodesMin, leftNodesMax, nodeVal);
       addNodesAndEdges(graphLeft, leftNodes, leftEdges, leftFirstTime, leftNodesMin, leftNodesMax, drugedgesleft);
-      var apileft = graphLeft.expandCollapse('get');
       var options = {
         layoutBy: null, // to rearrange after expand/collapse. It's just layout options or whole layout function. Choose your side!
         // recommended usage: use cose-bilkent layout with randomize: false to preserve mental map upon expand/collapse
@@ -99,7 +98,10 @@ function visualize(firstTime=false, files, example) {
         allowNestedEdgeCollapse: true, // when you want to collapse a compound edge (edge which contains other edges) and normal edge, should it collapse without expanding the compound first
         zIndex: 999 // z-index value of the canvas in which cue ımages are drawn
       };
-      apileft.collapseAll(options)
+      graphLeft.collapseAll(options)
+      var apileft = graphLeft.expandCollapse('get');
+
+
       document.getElementById('downloadPDF').style.visibility = "visible";
       document.getElementById('downloadPDF').disabled = false;
       showConfigurationParts('Left', graphLeft, left);
@@ -153,7 +155,6 @@ function visualize(firstTime=false, files, example) {
       graphRight= createCyObject(cyO, rightNodesMin, rightNodesMax, nodeVal);
 
       addNodesAndEdges(graphRight,rightNodes, rightEdges, rightFirstTime, rightNodesMin, rightNodesMax, drugedgesright);
-      var api = graphRight.expandCollapse('get');
       var options = {
         layoutBy: null, // to rearrange after expand/collapse. It's just layout options or whole layout function. Choose your side!
         // recommended usage: use cose-bilkent layout with randomize: false to preserve mental map upon expand/collapse
@@ -175,7 +176,9 @@ function visualize(firstTime=false, files, example) {
         allowNestedEdgeCollapse: true, // when you want to collapse a compound edge (edge which contains other edges) and normal edge, should it collapse without expanding the compound first
         zIndex: 999 // z-index value of the canvas in which cue ımages are drawn
       };
-      api.collapseAll(options)
+      graphRight.collapseAll(options)
+      var api = graphRight.expandCollapse('get');
+
       document.getElementById('cyRight').style.visibility = "visible";
       showConfigurationParts('Right', graphRight, right);
       document.getElementById('right').style.visibility = "visibile";

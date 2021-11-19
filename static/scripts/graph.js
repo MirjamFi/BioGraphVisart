@@ -92,8 +92,9 @@ function visualize(graphString, noOptn) {
         .style('shape', document.getElementById('nodeShapes').value).update();
       }
   }
-  
-  addcolorlegend(cy);
+  if(!isSIF){
+    addcolorlegend(cy);
+  }
   var api = cy.expandCollapse('get');
   var options = {
       layoutBy: null, // to rearrange after expand/collapse. It's just layout options or whole layout function. Choose your side!
