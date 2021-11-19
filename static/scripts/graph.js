@@ -33,7 +33,7 @@ function visualize(graphString, noOptn) {
     else{
       // get nodes and edges
       if(isSIF){
-        var nodesAndEdges = getNodesAndEdgesSIF(graphString, nodeVal, "", noOptn);
+        var nodesAndEdges = getNodesAndEdgesSIF(graphString, nodeVal, "", true);
       }
       else{
         var nodesAndEdges = getNodesAndEdges(graphString, nodeVal,"", noOptn);

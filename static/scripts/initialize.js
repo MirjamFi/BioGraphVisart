@@ -337,24 +337,6 @@ function loadFile() {
             })
 
             noDrpShapes = false;
-            forEach($(".Menu li.-hasSubmenu"), function(e){
-                e.showMenu = showMenu;
-                e.hideMenu = hideMenu;
-            });
-
-            forEach($(".Menu > li.-hasSubmenu"), function(e){
-                e.addEventListener("click", showMenu);
-            });
-
-            forEach($(".Menu > li.-hasSubmenu li"), function(e){
-                e.addEventListener("mouseenter", hideAllInactiveMenus);
-            });
-
-            forEach($(".Menu > li.-hasSubmenu li.-hasSubmenu"), function(e){
-                e.addEventListener("click", showMenu);
-            });
-
-            document.addEventListener("click", hideAllInactiveMenus);
           }
         }
       };
@@ -406,6 +388,24 @@ function loadFile() {
       visualize(graphString, noOptn);
     }
   }
+  forEach($(".Menu li.-hasSubmenu"), function(e){
+      e.showMenu = showMenu;
+      e.hideMenu = hideMenu;
+  });
+
+  forEach($(".Menu > li.-hasSubmenu"), function(e){
+      e.addEventListener("click", showMenu);
+  });
+
+  forEach($(".Menu > li.-hasSubmenu li"), function(e){
+      e.addEventListener("mouseenter", hideAllInactiveMenus);
+  });
+
+  forEach($(".Menu > li.-hasSubmenu li.-hasSubmenu"), function(e){
+      e.addEventListener("click", showMenu);
+  });
+
+  document.addEventListener("click", hideAllInactiveMenus);
   // if no attributes found for coloring/shape, remove dropdown menus and visualize
   if(noOptn && noDrpShapes){
     drp.parentNode.removeChild(drp);
