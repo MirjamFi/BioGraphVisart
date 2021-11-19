@@ -77,6 +77,7 @@ function visualize(firstTime=false, files, example) {
       var leftNodesMax = leftRange[1];
       graphLeft= createCyObject(cyO, leftNodesMin, leftNodesMax, nodeVal);
       addNodesAndEdges(graphLeft, leftNodes, leftEdges, leftFirstTime, leftNodesMin, leftNodesMax, drugedgesleft);
+      var apileft = graphLeft.expandCollapse('get');
       var options = {
         layoutBy: null, // to rearrange after expand/collapse. It's just layout options or whole layout function. Choose your side!
         // recommended usage: use cose-bilkent layout with randomize: false to preserve mental map upon expand/collapse
@@ -98,8 +99,8 @@ function visualize(firstTime=false, files, example) {
         allowNestedEdgeCollapse: true, // when you want to collapse a compound edge (edge which contains other edges) and normal edge, should it collapse without expanding the compound first
         zIndex: 999 // z-index value of the canvas in which cue ımages are drawn
       };
-      graphLeft.collapseAll(options)
-      var apileft = graphLeft.expandCollapse('get');
+      apileft.collapseAll(options)
+      
 
 
       document.getElementById('downloadPDF').style.visibility = "visible";
@@ -155,6 +156,7 @@ function visualize(firstTime=false, files, example) {
       graphRight= createCyObject(cyO, rightNodesMin, rightNodesMax, nodeVal);
 
       addNodesAndEdges(graphRight,rightNodes, rightEdges, rightFirstTime, rightNodesMin, rightNodesMax, drugedgesright);
+      var api = graphRight.expandCollapse('get');
       var options = {
         layoutBy: null, // to rearrange after expand/collapse. It's just layout options or whole layout function. Choose your side!
         // recommended usage: use cose-bilkent layout with randomize: false to preserve mental map upon expand/collapse
@@ -176,8 +178,8 @@ function visualize(firstTime=false, files, example) {
         allowNestedEdgeCollapse: true, // when you want to collapse a compound edge (edge which contains other edges) and normal edge, should it collapse without expanding the compound first
         zIndex: 999 // z-index value of the canvas in which cue ımages are drawn
       };
-      graphRight.collapseAll(options)
-      var api = graphRight.expandCollapse('get');
+      api.collapseAll(options)
+      
 
       document.getElementById('cyRight').style.visibility = "visible";
       showConfigurationParts('Right', graphRight, right);
@@ -421,6 +423,29 @@ var layoutBy = {};
         randomize: false
       }  
     }
+    var options = {
+      layoutBy: layoutBy, // to rearrange after expand/collapse. It's just layout options or whole layout function. Choose your side!
+      // recommended usage: use cose-bilkent layout with randomize: false to preserve mental map upon expand/collapse
+      fisheye: false, // whether to perform fisheye view after expand/collapse you can specify a function too
+      animate: true, // whether to animate on drawing changes you can specify a function too
+      animationDuration: 1000, // when animate is true, the duration in milliseconds of the animation
+      ready: function () {
+        cyObject.style().selector('edge[interaction = \'targets\']').style('target-arrow-shape', 'triangle').update();}, // callback when expand/collapse initialized
+      undoable: true, // and if undoRedoExtension exists,
+
+      cueEnabled: true, // Whether cues are enabled
+      expandCollapseCuePosition: 'top-left', // default cue position is top left you can specify a function per node too
+      expandCollapseCueSize: 12, // size of expand-collapse cue
+      expandCollapseCueLineSize: 8, // size of lines used for drawing plus-minus icons
+      expandCueImage: undefined, // image of expand icon if undefined draw regular expand cue
+      collapseCueImage: undefined, // image of collapse icon if undefined draw regular collapse cue
+      expandCollapseCueSensitivity: 1, // sensitivity of expand-collapse cues
+      edgeTypeInfo: "interaction", // the name of the field that has the edge type, retrieved from edge.data(), can be a function, if reading the field returns undefined the collapsed edge type will be "unknown"
+      groupEdgesOfSameTypeOnCollapse : true, // if true, the edges to be collapsed will be grouped according to their types, and the created collapsed edges will have same type as their group. if false the collapased edge will have "unknown" type.
+      allowNestedEdgeCollapse: true, // when you want to collapse a compound edge (edge which contains other edges) and normal edge, should it collapse without expanding the compound first
+      zIndex: 999 // z-index value of the canvas in which cue ımages are drawn
+    };
+  cyObject.expandCollapse(options)
 
 }
 
