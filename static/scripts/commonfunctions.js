@@ -559,7 +559,7 @@ function getNodesAndEdges(graphString, nodeVal,graphpos = undefined, noOptn = fa
 }
 
 // get nodes and edges grom sif string
-function getNodesAndEdgesSIF(graphString, graphpos = undefined, noOptn = false){
+function getNodesAndEdgesSIF(graphString, graphpos = undefined, noOptn = true){
     var nodes = [];
     var edges = [];
     var interactionTypes = new Set();
@@ -682,12 +682,6 @@ function getNodesAndEdgesSIF(graphString, graphpos = undefined, noOptn = false){
         prevId = curEdge.id;
         pos = pos +1;
       }
-      if(!noOptn){
-      var legendNode = {};
-          legendNode.id = "l1";
-          legendNode.symbol = "legend";
-          nodes.push({data:legendNode});
-    }
     return [nodes, edges, [], interactionTypes, edgesToMerge];
 }
 
